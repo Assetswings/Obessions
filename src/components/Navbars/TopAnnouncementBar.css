@@ -1,0 +1,25 @@
+.top-announcement-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #d32020;
+    color: white;
+    height: 35px;
+    padding: 0 16px;
+    font-size: 13px;
+    overflow: hidden;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  
+  .scrolling-text {
+    flex: 1;
+    margin-right: 16px;
+  }
+  
+  .icons {
+    display: flex;
+    gap: 20px;
+    width: 150px;
+    justify-content: center;
+  }

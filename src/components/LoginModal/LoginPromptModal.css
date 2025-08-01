@@ -1,0 +1,77 @@
+@import url('https://fonts.cdnfonts.com/css/canela-text-trial');
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-55');
+@import url('https://fonts.cdnfonts.com/css/playfair-display');
+
+.login-prompt-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .login-prompt-modal {
+    background: #ffffff;
+    padding: 40px 30px;
+    width: 450px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-logo {
+    height: 80px;
+    margin-bottom: 20px;
+  }
+  
+  .modal-heading {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color:#1B170E;
+    font-family: "Playfair Display", serif;
+  }
+  
+  .modal-subtext {
+    font-size: 14px;
+    color: #404040;
+    margin-bottom: 28px;
+  font-weight: 400;
+    padding: 0 10px;
+    /* font-family: 'Helvetica Neue', sans-serif; */
+  }
+  
+  .login-btn {
+    background-color: #111;
+    color: #fff;
+    border: none;
+    padding: 12px 0;
+    width: 100%;
+    /* font-weight: bold; */
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 14px;
+    /* transition: background 0.2s ease; */
+      font-family: 'Helvetica Neue', sans-serif;
+  }
+  
+  .login-btn:hover {
+    background-color: #333;
+  }
+  
+  .close-btn-md {
+    position: absolute;
+    right: 15px;
+    top: 0px;
+    font-size: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #000;
+  }
+  

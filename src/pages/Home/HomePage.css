@@ -1,0 +1,761 @@
+@import url('https://fonts.cdnfonts.com/css/canela-text-trial');
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-55');
+@import url('https://fonts.cdnfonts.com/css/playfair-display');
+
+
+/* ─── Global ─── */
+body {
+  background: #f7f7f7;
+}
+
+/* ─────────────── HERO ─────────────── */
+.homepage {
+  height: 120vh;
+  background: #f7f7f7;
+  overflow: hidden;
+}
+.obsessions-text {
+  top: 100px;
+  left: 140px;
+  z-index: 0;
+  font-size: 16vw;
+  color: #000;
+  font-weight: 500;
+  letter-spacing: -10px;     /* valid */
+  font-family: 'Helvetica Neue', sans-serif;
+}
+.category-list {
+  top: 75vh;
+  left: 40px;
+  z-index: 2;
+}
+.category-list li {
+  font-size: 12px;
+  color: #625e55;
+  margin: 4px;
+}
+.category-list li:hover {
+  font-size: 12px;
+  color: #D52326;
+  margin: 4px;
+  cursor: pointer;
+}
+.description {
+  top: 55vh;
+  right: 80px;
+  width: 300px;
+  font-size: 12px;
+  z-index: 2;
+  color: #625e55;
+}
+.search-wrapper {
+  bottom: 240px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  z-index: 3;
+}
+.footer-note {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #333;
+  z-index: 2;
+}
+.floating-img {
+  position: absolute;
+}
+.img-left {
+  top: 243px;
+  left: 209px;
+  width: 160px;
+}
+.img-top {
+  top: 40px;
+  left: 640px;
+  width: 70px;
+}
+.img-center {
+  top: 250px;
+  left: 640px;
+  width: 280px;
+}
+.img-right {
+  top: 100px;
+  right: 414px;
+  width: 145px
+}
+.sltfector {
+  width: 10rem;
+}
+
+
+/* ───────────── COLLECTION ───────────── */
+.section_collection {
+  padding: 9rem 0;
+  position: relative;
+}
+.collection-content {
+  max-width: 560px;
+  z-index: 2;
+  margin-top: 5rem;
+  text-align: center;
+}
+.tagline {
+  font-family: "Playfair Display", serif;
+  font-size: 3.2rem;
+  line-height: 1.2;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+}
+.lead-copy {
+  font-size:16px;
+  color: #625E55;
+  margin-bottom: 2.5rem;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.collection-img {
+  position: absolute;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.collection-img.img-left {
+  left: 0;
+  top: 55%;
+  width: 265px;
+  height: 520px;
+  transform: translateY(-25%);
+}
+.collection-img.img-right {
+  right: 0;
+  top: 80px;
+  width: 265px;
+  height: 520px;
+}
+
+.input_home{
+ padding: 16px;
+ font-size: 12px;
+ padding-left: 24px;
+ border-radius: 8px 0px 0px 8px ;
+}
+.button_search{
+  padding-top: 12px ;
+padding-right: 20px;
+padding-bottom: 16px;
+padding-left: 20px;
+width: auto;
+border-radius: 0px 8px 8px 0px ;
+}
+.img_turner{
+  width: 24px;
+  position: relative;
+  margin-bottom: 10px;
+}
+/* ───────────── SHOP BY ───────────── */
+.shopby {
+  background: #f7f7f7;
+  margin-top: 120px;
+}
+
+.shopby-title {
+  letter-spacing: 0.2em;
+  font-size: 0.95rem;
+  text-align: center;
+  color: #111;
+}
+
+.shopby-list {
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.shopby-item {
+  border-bottom: 1px solid black;
+  position: relative;
+  font-family: 'Canela Trial', sans-serif;
+  font-size: clamp(2rem, 3vw, 5.5rem);
+  line-height: 1.1;
+  text-align: center;
+  cursor: pointer;
+  padding: 0.4rem 0;
+  transition: color 0.25s ease;
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  font-weight: 300;
+}
+
+.txt_shopby {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #1B170E;
+}
+
+.shopby-item.sale {
+  color: #c01e1e;
+  font-style: italic;
+}
+
+.shopby-item .shopby-label {
+  pointer-events: none;
+}
+
+.shopby-item .thumb-bar,
+.shopby-item .view-tag {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease 0.05s;
+}
+
+/* Thumbnails bar */
+.thumb-bar {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+ 
+}
+
+ /* .thumb-bar img {
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  transition: all 0.3s ease;
+}  */
+
+.shopby-item:hover{
+  padding: 1.1rem;
+  transform: scale(1.05);
+}
+/* Hover animation */
+.shopby-item:hover .thumb-bar img {
+  width: 120px;
+  height: 120px;
+  padding: 1.2rem;
+  /* transition: all 0.3s ease; */
+  gap: 0px;
+}
+
+
+
+/* "VIEW" tag */
+.view-tag {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #3a3a3a;
+  /* padding-right: 10px; */
+}
+
+/* Active state */
+.shopby-item.is-active .thumb-bar,
+.shopby-item:hover .thumb-bar,
+.shopby-item.is-active .view-tag,
+.shopby-item:hover .view-tag {
+  visibility: visible;
+  opacity: 1;
+}
+
+.shopby-item:hover {
+  border-bottom: 1px solid #ccd1d1;
+  border-top: 1px solid #ccd1d1;
+}
+
+.shopby-item:hover:not(.sale) {
+  color: #111;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 992px) {
+  .collection-img {
+    display: none;
+  }
+
+  .tagline {
+    font-size: 2.4rem;
+  }
+
+  .shopby-item {
+    font-size: 2.25rem;
+  }
+}
+
+
+/* _______ Tbltop section ________*/
+
+.hero-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4rem 2rem;
+  background-color: #f3f0eb; /* light beige background */
+  font-family: "Playfair Display", serif;
+  flex-wrap: wrap;
+}
+
+.hero-text {
+  flex: 1;
+  width: "100%";
+}
+
+.hero-text h1 {
+  font-size: 4rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  color: #111;
+  font-family: "Canela Trial", sans-serif;
+}
+
+.hero-text p {
+  font-size: 1rem;
+  color: #625E55;
+  margin-bottom: 2rem;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.hero-button {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #111;
+  background: transparent;
+  color: #111;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.hero-button:hover {
+  background-color: #111;
+  color: #fff;
+}
+
+.hero-image {
+  flex: 1;
+  text-align: right;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.promo-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 3rem 1rem;
+  background: #fff;
+  flex-wrap: wrap;
+}
+
+.promo-card {
+  flex: 1 1 calc(33.333% - 1rem); /* 3 per row with gap */
+  box-sizing: border-box;
+  text-align: center;
+  background: #fff;
+}
+
+.promo-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.promo-title {
+  margin-top: 1rem;
+  font-family: 'Canela Trial', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #111;
+  text-transform: uppercase;
+  line-height: 1.4;
+  text-align: start;
+  width: 100%;
+  letter-spacing: 0.02em;
+}
+
+/* Tablet view: 2 per row */
+@media (max-width: 768px) {
+  .promo-card {
+    flex: 1 1 calc(50% - 1rem);
+  }
+}
+
+/* Mobile view: 1 per row */
+@media (max-width: 480px) {
+  .promo-card {
+    flex: 1 1 100%;
+  }
+}
+
+/* Carpet css */
+.carpet-section {
+  background: #f2f2f2;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.carpet-heading {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  margin-bottom: 3rem;
+}
+
+.carpet-heading em {
+  font-style: italic;
+}
+
+.carpet-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      padding-right: 80px;
+      padding-left: 80px;
+      padding-bottom: 100px;
+}
+
+.carpet-tile {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.carpet-tile:hover {
+  transform: scale(1.02);
+}
+
+.carpet-label {
+  font-family: "Playfair Display", serif;
+  font-size: 1rem;
+  color: white;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .carpet-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .carpet-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .carpet-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Floorsection css */
+.floor-matcher {
+  position: relative;
+  background: url("../../assets/images/Background_image.jpg") center/cover
+    no-repeat;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  overflow: hidden;
+  text-align: center;
+}
+
+.matcher-content {
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 600px;
+}
+
+.matcher-content h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.matcher-content em {
+  font-style: italic;
+}
+
+.matcher-content p {
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+  color: #625E55;
+  font-family: 'Helvetica Neue', sans-serif;
+
+}
+
+.matcher-btn {
+  background: none;
+  border: 1px solid black;
+  padding: 0.6rem 1.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.matcher-btn:hover {
+  background: black;
+  color: white;
+}
+
+/* Floating Image Styles */
+.floating-imgf {
+  position: absolute;
+  width: 80px;
+  height: auto;
+}
+
+/* Positions for 6 images */
+.imgf1 {
+  top: 0%;
+  left: 5%;
+  width: 13%;
+}
+.imgf2 {
+  top: 5%;
+  right: 25%;
+}
+.imgf3 {
+  top: 0%;
+  left: 40%;
+}
+.imgf4 {
+  bottom: 10%;
+  left: 18%;
+  width: 9%;
+  height: 30%;
+}
+.imgf5 {
+  bottom: 0%;
+  right: 20%;
+  width: 13%;
+}
+.imgf6 {
+  top: 30%;
+  right: 0%;
+  height: 50%;
+  width: 10%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .floating-imgf {
+    width: 50px;
+  }
+
+  .imgf1 {
+    top: 5%;
+    left: 2%;
+  }
+  .imgf2 {
+    top: 2%;
+    right: 5%;
+  }
+  .imgf3 {
+    top: 25%;
+    left: 30%;
+  }
+  .imgf4 {
+    bottom: 10%;
+    left: 5%;
+  }
+  .imgf5 {
+    bottom: 10%;
+    right: 5%;
+  }
+  .imgf6 {
+    top: 60%;
+    right: 2%;
+  }
+
+  .matcher-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .matcher-content p {
+    font-size: 0.9rem;
+  }
+
+  .matcher-btn {
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* Obession css */
+
+.obsessed-section {
+  padding: 4rem 1rem;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.obsessed-section h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  margin-bottom: 3rem;
+}
+
+.obsessed-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  /* max-width: 1200px; */
+  margin: 0 auto;
+}
+
+.obsessed-card {
+  text-align: center;
+}
+
+.obsessed-card img {
+  width: 100%;
+  height: 434px;
+}
+
+.obsessed-card p {
+  margin-top: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #222;
+  text-align: start;
+  font-family: 'Canela Trial', sans-serif;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .obsessed-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .obsessed-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .obsessed-section h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .obsessed-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+
+   
+/* OUR OBSESSIONS css*/
+.obsession-section {
+    padding: 60px 20px;
+    max-width: 100%;
+    margin: auto;
+    margin-bottom: 30px;
+  }
+  
+  .obsession-title {
+    font-size: 12vw;
+    width: 100%;
+     white-space: nowrap;
+    text-align: center;
+    /* font-family: 'Playfair Display', serif; */
+    font-family: 'Canela Trial', sans-serif;
+       font-weight: 100;
+    letter-spacing: -2px;
+    margin-bottom: 40px;
+  }
+  
+  .obsession-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px; 
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  
+  .obsession-image {
+    flex: 1 1 300px;
+    max-width: 300px;
+    justify-content: end;
+  }
+  
+  .obsession-image img {
+    width: 75%;
+    height: auto;
+    border-radius: 4px;
+  }
+  
+  .obsession-text {
+    flex: 2 1 400px;
+    max-width: 600px;
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  
+  .obsession-text p {
+    margin-bottom: 20px;
+    font-family: 'Helvetica Neue', sans-serif;
+    color:#625E55;
+
+    font-size: 15px;
+  }
+  
+  .obsession-button {
+    margin-top: 10px;
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid #000;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+  }
+  
+  .obsession-button:hover {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .obsession-title {
+      font-size: 10vw;
+    }
+  
+    .obsession-content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .obsession-text {
+      max-width: 90%;
+    }
+  }
+  

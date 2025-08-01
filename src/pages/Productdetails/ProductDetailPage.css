@@ -1,0 +1,647 @@
+@import url("https://fonts.cdnfonts.com/css/canela-text-trial");
+@import url("https://fonts.cdnfonts.com/css/helvetica-neue-55");
+@import url("https://fonts.cdnfonts.com/css/playfair-display");
+
+/* 
+font-family: 'Canela Trial', sans-serif;
+font-family: 'Helvetica Neue', sans-serif;
+font-family: "Playfair Display", serif; */
+
+.product-page {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+}
+
+.product-gallery {
+  flex: 1;
+  min-width: 300px;
+  padding: 20px;
+}
+
+.main-image {
+  width: 65%;
+}
+.image_track {
+  background-color: #f2f2f2;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.thumbnail-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.product-info .title {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+  color: #111;
+  line-height: 1.2;
+  text-wrap: auto;
+  width: 205px;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.product-info {
+  flex: 1;
+  min-width: 300px;
+  padding: 20px;
+}
+
+.title_details {
+  font-size: 28px;
+  font-weight: bold;
+}
+.sub-1 {
+  font-size: 14px;
+  color: #625e55;
+  margin-left: 4px;
+  font-weight: 400;
+  position: relative;
+  bottom: 2px;
+}
+.txt-sc {
+  font-size: 14px;
+  color: #625e55;
+  position: relative;
+  bottom: 12px;
+}
+.txt-sc-under {
+  text-decoration: underline;
+}
+.id_tracker {
+  font-size: 14px;
+  color: #625e55;
+}
+.dis-sub {
+  color: #e43b3e;
+}
+.price_details {
+  font-size: 20px !important;
+  margin: 10px 0;
+  font-weight: 600 !important;
+  color: #1b170e !important;
+  /* font-family: "Helvetica Neue", sans-serif; */
+}
+
+.add-cart-section {
+  display: flex;
+}
+
+.tax-info {
+  display: flex;
+      position: relative;
+      bottom: 4px;
+}
+.details_flx{
+  display: flex;
+    align-items: center;
+    gap: 32px;
+    padding-top: 16px;
+    padding-bottom: 12px;
+}
+.size-selector,
+.color-selector,
+.quantity-selector,
+.product-description {
+  margin: 20px 0;
+}
+.img-ruppee{
+  height: 18px;
+  width: 25px;
+}
+.img-truck{
+    height: 20px;
+    width: 20px;
+}
+.size-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+ .txt-exchange{
+  padding-bottom: 24px;
+ }
+
+ .txt-Carpet-Finder{
+  padding-bottom: 28px;
+ }
+
+.size-btn {
+  padding: 6px 12px;
+  border: 1.5px solid #ccc;
+  background: none;
+  cursor: pointer;
+  padding: 10px;
+}
+.size-btn.active-size {
+  border: 1.6px solid #000; 
+}
+
+
+.txt-des{
+  font-size: 14px;
+  color: black;
+}
+
+.product-description  p {
+  color: #625e55;
+  font-size: 14px;  
+  width: 500px;
+}
+.lbl-track {
+  font-size: 14px;
+  font-weight: 400;
+  /* font-family: ; */
+  color: #625e55;
+}
+.size-image {
+  width: 43px;
+  height: 40px;
+  margin-bottom: 10px;
+}
+.txt_crp{
+  font-weight: 500;
+  text-decoration: underline;
+}
+.txt-sub-info-pdp{
+  position: relative;
+  left: 4px;
+  top: 1px;
+}
+.img-exchange{
+  height: 20px;
+  width: 25px;
+}
+.set_btn_trcak {
+  display: flex;
+  justify-content: center;
+}
+
+.color-options {
+  display: flex;
+  gap: 10px;
+}
+
+.selected-color {
+  border: 2px solid #bdbdbd;
+  padding: 5px;
+}
+.color-circle {
+  width: 32px;
+  height: 32px;
+  /* border-radius: 50%; */
+}
+
+.qty-control {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.qty-control button {
+  padding: 5px 17px;
+  font-size: 18px;
+  border: none;
+}
+
+.pincode-check {
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+.check-heading {
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #aaa;
+  padding: 10px 12px;
+  max-width: 416px;
+}
+
+.input-wrapper input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.check-btn {
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a4a4a;
+  cursor: pointer;
+  padding-left: 12px;
+  text-decoration: underline;
+}
+
+.checkup_track_txt {
+  background-color: #f7f7f7;
+}
+.delivery-info {
+  font-size: 13px;
+  color: #777;
+  margin-top: 8px;
+}
+.add-to-cart-btn {
+  padding: 10px 20px;
+  background-color: #000;
+  color: white;
+  border: none;
+  /* margin-top: 20px; */
+  width: 60%;
+  height: 60px;
+}
+
+.wst_box {
+  border: 1px solid #959595;
+  width: 60px;
+  /* padding: 10px 20px; */
+  height: 60px;
+  margin-left: 10px;
+  margin-top: 15px;
+}
+.wishlist {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.delivery-info {
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .product-page {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .product-gallery,
+  .product-info {
+    padding: 10px;
+  }
+
+  .add-to-cart-btn {
+    font-size: 16px;
+  }
+}
+
+/* the specification section85 */
+.product-tabs-container {
+  width: 100%;
+  /* max-width: 1100px; */
+  margin: auto;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+  background-color: #f1f3f1;
+}
+
+.track_box_pr {
+  display: flex;
+}
+
+.img_section {
+  position: sticky;
+  top: 60px; /* adjust based on your tab height */
+  align-self: flex-start;
+  z-index: 1;
+  width: 46%;
+}
+
+.highlight-image {
+  width: 100%;
+  max-width: 693px;
+  display: block;
+}
+
+.highlight-image {
+  width: 100%;
+}
+.tabs-bar {
+  display: flex;
+  justify-content: space-around;
+  position: sticky;
+  width: 44rem;
+  top: 0;
+  background: #f1f3f1;
+  z-index: 10;
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+  color: #444;
+}
+
+.tab-btn.active {
+  font-weight: bold;
+  color: #000;
+}
+
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #000;
+}
+
+.tab-section {
+  padding: 25px 85px;
+  /* min-height: 400px; */
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.tab-section-txt{
+  font-size: 16px;
+  padding-bottom: 5px;
+  color: black;
+}
+.section_care li{
+ color: #625e55;
+ font-size: 14px;
+}
+.sub-section-pdp{
+   color: #625e55;
+}
+.size_sction_root{
+  display: flex;
+  padding-bottom: 20px;
+}
+ .img-guild-section{
+   height: 44px;
+   width:60px;
+ }
+ .txt-ft{
+  font-size: 14px;
+  font-weight: 600;
+  color: black;
+ }
+ .txt-ft2{
+  color: #625e55;
+  font-size: 14px;
+ }
+ .title-size-gid{
+  font-size: 16px;
+ }
+ .pp-mc-txt{
+  font-size: 14px;
+  color: #625e55;
+
+ }
+ .sub-pp-mc{
+  text-decoration: underline;
+  font-weight: bold;
+ }
+ .sector_group_txt{
+  padding-left: 20px;
+ }
+ .section-txt-pdb{
+ padding-top: 8px;
+ }
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+.feature-grid-section{
+  padding-top: 60px;
+}
+.semi-txt{
+  padding-top: 10px;
+   color: #000;
+   font-size: 14px;
+}
+.sub-text-semi{
+  color: #625e55;
+}
+
+.recommend-good-know {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  /* margin-top: 50px; */
+  flex-wrap: wrap;
+  padding: 44px;
+  background-color: #f1f3f1;
+  padding-top: 160px;
+}
+
+
+.recommend-section,
+.good-to-know-section {
+  flex: 1;
+  min-width: 250px;
+}
+
+.recommend-section h4,
+.good-to-know-section h4 {
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 15px;
+  color: #000;
+}
+
+.recommend-section ul,
+.good-to-know-section ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  font-size: 13px;
+   color:#625e55;
+  line-height: 1.6;
+}
+
+.center-image {
+  flex: 1;
+  min-width: 280px;
+  text-align: center;
+}
+
+.center-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.carpet-note {
+  margin-top: 40px;
+  font-size: 11px;
+  text-align: center;
+  color: #625e55;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.image_good{
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.msg_track {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 60px;
+}
+
+.similar-styles-section {
+  padding: 40px 20px;
+  background: #fdfdfd;
+  text-align: center;
+}
+
+.similar-styles-section h2 {
+  font-size: 3rem;
+  font-weight: 300;
+  margin-bottom: 30px;
+  font-family: "Canela Trial", sans-serif;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+.product-card-dtl {
+  background: #fff;
+  border-radius: 8px;
+  text-align: left;
+  padding: 27px;
+  position: relative;
+}
+
+.product-img-box {
+  position: relative;
+  background: #f2f2f2;
+  padding: 50px;
+  /* border-radius: 6px; */
+}
+
+.product-img-box img {
+  width: 100%;
+}
+
+.wishlist-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: #fff;
+  /* border-radius: 50%; */
+  padding: -13px 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.product-title {
+  margin: 10px 0 4px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
+  min-height: 16px;
+}
+
+.product-price {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.product-price .original {
+  margin-left: 6px;
+  text-decoration: line-through;
+  color: #888;
+  font-weight: 400;
+}
+
+.product-price .discount {
+  margin-left: 4px;
+  color: red;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.wishlist-btn_products_pd{
+  position: absolute;
+  padding: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  /* padding: inherit; */
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: #fff;
+  /* border-radius: 50%; */
+  padding: -13px 6px;
+  /* font-size: 20px; */
+  cursor: pointer;
+}
+
+@media (min-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .product-title {
+    min-height: auto;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .tabs-bar {
+    flex-direction: row;
+    overflow-x: auto;
+    justify-content: flex-start;
+    scrollbar-width: none;
+  }
+
+  .tab-btn {
+    white-space: nowrap;
+    margin-right: 20px;
+  }
+
+  .tab-section {
+    padding: 30px 10px;
+  }
+}

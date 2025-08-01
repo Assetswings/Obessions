@@ -1,0 +1,113 @@
+
+@import url('https://fonts.cdnfonts.com/css/canela-text-trial');
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-55');
+@import url('https://fonts.cdnfonts.com/css/playfair-display');
+
+  
+/* 
+font-family: 'Canela Trial', sans-serif;
+font-family: 'Helvetica Neue', sans-serif;
+font-family: "Playfair Display", serif; */
+
+
+.collection-container {
+    display: flex;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .sidebar {
+    width: 250px;
+    padding-right: 20px;
+  }
+  
+  .sidebar h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-family: 'Playfair Display';
+    font-weight: 500;
+  }
+  
+   .category-group {
+    margin-bottom: 20px;
+  }
+  
+  .category-group h4 {
+    font-size: 14px;
+    color: #625E55;
+    margin-bottom: 8px;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+  }
+  
+  .category-group ul {
+    padding-left: 5px;
+    list-style: none;
+  }
+  
+  .category-group li {
+    font-size: 13px;
+    margin: 4px 0;
+    cursor: pointer;
+    color: #555;
+    padding: 5PX;
+  }
+
+  .category-group li:hover{
+    color: RED;
+  }
+  
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 80%;
+  }
+  
+  .product-card:nth-child(3n) {
+    grid-column: span 2; /* Make every 3rd item span full width */
+  }
+  
+  .product-card {
+    text-align: center;
+  }
+  
+  .product-card img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .product-card p {
+    margin-top: 10px;
+    font-size: 19px;
+    font-weight: 500;
+    font-family: 'Playfair Display';
+  }
+  
+
+  .good-to-know-section {
+    margin-top: 20vh;
+}
+
+@media (max-width: 768px) {
+  .recommend-good-know {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .recommend-section,
+  .good-to-know-section {
+    text-align: left;
+  }
+}
+  /* Responsive: 1 column on small screens */
+  @media (max-width: 768px) {
+    .products-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .product-card:nth-child(3n) {
+      grid-column: span 1; /* Reset on mobile */
+    }
+  }

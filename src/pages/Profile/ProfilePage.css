@@ -1,0 +1,212 @@
+/* ProfilePage.css */
+.profile-container {
+  font-family: sans-serif;
+  padding: 20px;
+  position: relative;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  padding: 10px 5px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #888;
+  border-bottom: 2px solid transparent;
+}
+
+.tabs button.active {
+  color: black;
+  border-color: red;
+  width: 200px;
+}
+
+.content-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 300px;
+}
+
+.profile-section {
+  text-align: left;
+  max-width: 630px;
+  width: 100%;
+}
+
+.orders-section {
+  text-align: left;
+  max-width: 1051px;
+  width: 100%;
+}
+
+.profile-section h3 {
+  margin: 10px 0;
+}
+
+.profile-section div {
+  margin: 10px 0;
+}
+
+.edit-btn p {
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.address-section {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 200px;
+}
+
+.address-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  width: 250px;
+  background: white;
+  text-align: left;
+  position: relative;
+}
+
+.address-card.add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #aaa;
+  cursor: pointer;
+  color: #888;
+  font-weight: bold;
+  height: 185px;
+}
+
+.address-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  padding-bottom: 15px;
+}
+
+.green-tick {
+  color: green;
+  font-size: 20px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  font-size: 14px;
+  color:#1B170E;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 400;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.side-modal {
+  background: white;
+  width: 350px;
+  height: 100%;
+  padding: 30px;
+  overflow-y: auto;
+  position: relative;
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.button_group_tracker {
+  display: flex;
+  gap: 125px;
+}
+
+.txt_head_add {
+  text-align: center;
+}
+.set_box {
+  display: flex;
+  justify-content: space-between;
+}
+ 
+.edit_text{
+text-decoration: underline;
+font-size: 14px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.side-modal h3 {
+  margin-bottom: 20px;
+}
+
+.side-modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.side-modal label {
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+}
+
+.side-modal input {
+  margin-top: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.side-modal button[type="submit"] {
+  margin-top: 10px;
+  background: black;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}

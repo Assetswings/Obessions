@@ -1,0 +1,275 @@
+@import url("https://fonts.cdnfonts.com/css/canela-text-trial");
+@import url("https://fonts.cdnfonts.com/css/helvetica-neue-55");
+@import url("https://fonts.cdnfonts.com/css/playfair-display");
+
+.custom-products-page {
+  display: flex;
+  padding: 20px;
+  gap: 30px;
+  font-family: Arial, sans-serif;
+}
+.title_prd_roots {
+  font-family: "Playfair Display", serif;
+  font-size: 32px !important;
+}
+
+.root_devider_flt {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.clr-all {
+  text-decoration: underline;
+  font-size: 12px;
+  color: #625e55;
+  position: relative;
+  top: 10px;
+  cursor: pointer;
+}
+.custom-filters {
+  width: 220px;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.custom-filters h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-family: "Playfair Display", serif;
+}
+
+.custom-filter-group {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #d7dbdd;
+  padding: 0px;
+}
+
+.custom-filter-group h4 {
+  font-weight: bold;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: #555;
+}
+
+.custom-filter-group input[type="checkbox"] {
+  width: 18px; /* set width */
+  height: 18px; /* set height */
+  cursor: pointer;
+  accent-color: #111; /* optional: customize tick color */
+}
+
+.txt_checkbox {
+  position: relative;
+  bottom: 4px;
+  left: 4px;
+  color: #625e55;
+  font-family: "Helvetica Neue 55", sans-serif;
+  font-weight: 400;
+}
+.custom-filter-group label {
+  display: block;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.custom-product-list {
+  flex: 1;
+}
+
+.custom-product-list h2 {
+  font-size: 34px;
+  margin-bottom: 20px;
+  color: #1b170e;
+}
+
+.custom-products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0px;
+}
+
+.custom-product-card {
+  /* background: #F2F2F2; */
+  padding: 10px;
+  /* text-align: center; */
+  /* border: 1px solid #eee; */
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  border-radius: 6px;
+  /* align-items: center; */
+}
+/*   
+  .custom-product-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  } */
+
+.wishlist-btn_products {
+  position: absolute;
+  padding: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  /* padding: inherit; */
+  top: 15px;
+  right: 15px;
+  border: none;
+  background: #fff;
+  /* border-radius: 50%; */
+  padding: -13px 6px;
+  /* font-size: 20px; */
+  cursor: pointer;
+}
+
+.custom-product-image {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+  background-color: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-product-image img {
+  width: 230px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.custom-product-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 10px 0 5px;
+  flex-grow: 1;
+}
+
+.custom-product-price {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.custom-old-price {
+  text-decoration: line-through;
+  font-size: 12px;
+  color: #777;
+  margin-left: 5px;
+}
+
+.custom-discount {
+  font-size: 12px;
+  color: red;
+  margin-left: 5px;
+}
+
+/* top picks section */
+
+.top-picks-section {
+  padding: 60px 40px;
+  text-align: center;
+  background-color: none;
+}
+.qucick_dv {
+  display: flex;
+  justify-content: center;
+  /* width: 100%; */
+  /* border: 1px solid black; */
+  padding: 10px;
+  position: absolute;
+  opacity: 0;
+  width: 150px;
+  bottom: 40px;
+}
+.quick-view_pd {
+  /* position: absolute; */
+  background: white;
+  padding: 6px 8px;
+  text-align: center;
+  font-family: "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+.custom-product-card:hover .qucick_dv {
+  opacity: 1;
+}
+
+
+.top-picks-heading {
+  font-size: 56px;
+  font-weight: 300;
+  margin-bottom: 40px;
+  font-family: "Canela Trial", sans-serif;
+}
+
+.top-picks-grid {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.top-pick-card {
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+
+.top-pick-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+}
+
+.top-pick-title {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Canela Trial", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: start;
+}
+
+/* Responsive Layout products*/
+@media (max-width: 1024px) {
+  .custom-products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-products-page {
+    flex-direction: column;
+  }
+
+  .custom-filters {
+    display: none;
+  }
+
+  .custom-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .custom-product-card {
+    height: 300px;
+  }
+
+  .custom-product-image {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-products-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+ 

@@ -1,0 +1,155 @@
+
+@import url('https://fonts.cdnfonts.com/css/canela-text-trial');
+.login-container {
+    min-height: 100vh;
+    background-image: url('https://i.ibb.co/1tyNg9bS/profile-bg-1.jpg'); 
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    font-family: 'Georgia', serif;
+  }
+  
+  .login-box {
+    background-color: white;
+    padding: 40px;
+    width: 100%;
+    max-width: 460px;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    text-align: center;
+  }
+  
+  .login-box h2 {
+    font-size: 32px;
+    margin-bottom: 25px;
+    font-weight: 500;
+  }
+  
+  .login-box p {
+    font-size: 13px;
+    margin-bottom: 25px;
+    font-family: "Helvetica Neue";
+    font-weight: 400;
+    /* margin-right: 28px; */
+    text-align: left;
+
+  }
+  
+  .login-box input[type="text"],
+  .login-box input[type="email"] {
+    width: 100%;
+    padding: 14px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    border-radius: 2px;
+    font-weight: 400;
+    font-family: "Helvetica Neue", sans-serif;
+  }
+  
+  .login-box button {
+    width: 100%;
+    padding: 14px;
+    background-color: #1d1a14;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    /* margin-bottom: 20px; */
+    font-family: sans-serif;
+     font-weight: 400;
+  }
+  
+  .login-box button:hover {
+    background-color: #000;
+  }
+  
+  .login-box .or-divider {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+  }
+  
+  .login-box .or-divider::before,
+  .login-box .or-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+    margin: 0 10px;
+  }
+  
+  .login-box .change-link,
+  .login-box .skip-link {
+    font-size: 13px;
+    color: #000;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+  
+  .login-box .change-link:hover,
+  .login-box .skip-link:hover {
+    color: #555;
+  }
+  
+  .login-box .resend-code {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #000;
+  }
+  
+  .login-box .resend-code span {
+    font-weight: bold;
+  }
+  .title_track{
+    display: flex;
+    justify-content: flex-start;
+    font-family: 'Playfair Display';
+  }
+ 
+  .divider {
+    padding: 10px;
+}
+  .tracker_port{
+    text-decoration: underline;
+     color: #1d1a14;
+   }
+   p.timer {
+    /* padding: 16px; */
+    /* margin-bottom: 28px; */
+    padding-top: 31px;
+   }
+   .skip{
+  margin-top: 20px;
+   }
+   .skip  a{
+    text-decoration: underline;
+    color: #1d1a14;
+   }
+  /* .button_track{
+    font-family: sans-serif;
+    font-weight: 500;
+  } */
+  @media screen and (max-width: 600px) {
+    .login-box {
+      padding: 25px;
+    }
+  
+    .login-box h2 {
+      font-size: 24px;
+    }
+  
+    .login-box input,
+    .login-box button {
+      font-size: 14px;
+      padding: 12px;
+    }
+  }
+  

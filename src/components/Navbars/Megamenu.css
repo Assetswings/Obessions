@@ -1,0 +1,150 @@
+/* Full-screen overlay modal container */
+
+@import url('https://fonts.cdnfonts.com/css/canela-text-trial');
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-55');
+@import url('https://fonts.cdnfonts.com/css/playfair-display');
+
+
+.mega-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* allow clicks to go through by default */
+    z-index: 998;
+     }
+  
+  .mega-backdrop {
+    position: absolute;
+    top: 80px; /* So Topnav is not covered */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 80px);
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+    pointer-events: auto;
+  }
+  
+  /* Actual mega menu content area */
+  .mega-menu-content {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: calc(93% - 81px);
+    background: #fff;
+    z-index: 2;
+    display: flex;
+    padding: 40px;
+    overflow-y: auto;
+    pointer-events: auto;
+    animation: fadeSlideDown 0.7s ease-out forwards;
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  
+  @keyframes fadeSlideDown {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Sections */
+  .mega-menu-left {
+    width: 15%;
+    border-right: 1px solid #eee;
+    position: sticky;
+    top: 0px;
+  }
+  
+  .menu-categories {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .menu-categories li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .menu-categories li.active {
+    color: red; 
+  }
+
+  /* .menu-categories li:hover {
+    background-color: #f1f1f1;
+  } */
+
+  .icon_arrow_section{
+     margin-right: 20px;
+  }
+  
+  .mega-menu-center {
+    width: 60%;
+    max-height: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 30px;
+  }
+  
+  .menu-section {
+    flex: 1 1 30%;
+    margin-bottom: 20px;
+  }
+  
+  .menu-section h4 {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+  
+  .menu-section ul {
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+  }
+  
+  .menu-section li {
+    margin-bottom: 11px;
+    cursor: pointer;
+    color: #444;
+    font-size: 12px;
+  }
+  
+  /* Image area */
+  .mega-menu-right {
+    width: 25%;
+  }
+  
+  .mega-menu-right img {
+    width: 80%;
+    height: 90%;
+    object-fit: cover;
+    margin-top: 30px;
+  }
+  
+  /* Close Button */
+  .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+  }
+  
+  .mega-menu {
+    /* existing styles */
+    top: 100%; /* default positioning */
+  }
+  
+  .other-nav-offset .mega-menu {
+    top: calc(100% + 20px); /* move it a little lower */
+  }

@@ -1,0 +1,211 @@
+.about-wrapper {
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  /* Hero Section */
+  .about-hero {
+    background-image: url('https://i.ibb.co/Y4gnCPJk/happy-loving-family-2024-11-05-08-49-35-utc-1.png'); /* Replace with actual image URL */
+    background-size: cover;
+    background-position: center;
+    height: 120vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+   justify-content: flex-start;
+  }
+  
+  .hero-overlay {
+    padding: 2rem 3rem;
+    text-align: center;
+    max-width: 594px;
+    border-radius: 12px;
+    margin-top: 588px;
+    margin-left: 13vh;
+  }
+  
+  .hero-overlay h1 {
+    font-size: 2.2rem;
+    color: #ffffff;
+    line-height: 1;
+    font-family: "Playfair Display", serif;
+    font-size: 58px;
+  }
+  
+  .italic {
+    font-family: "Playfair Display", serif;
+    font-weight: 500;
+    color: #ffffff;
+  }
+  
+  /* Text Section */
+  .about-text {
+    background: #fff;
+    padding: 5rem 1rem;
+    text-align: center;
+  }
+  
+  .about-text p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #333;
+  }
+  
+  .highlight {
+    color: #aaa;
+    font-weight: 500;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-overlay h1 {
+      font-size: 1.6rem;
+    }
+  
+    .about-text p {
+      font-size: 1rem;
+    }
+  }
+  
+.about-text-section {
+    position: relative;
+    background: #fff;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  
+  .about-text-content p {
+    font-size: 1.7rem;
+    line-height: 1.8;
+    color: #333;
+    font-weight: 400;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .about-text-content .fade {
+    color: #c0c0c0;
+    font-weight: 400;
+  }
+  
+  /* Icons */
+  .top-left-icon {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    font-size: 1.5rem;
+    color: #111;
+  }
+  
+  .bottom-right-icon {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    font-size: 1.5rem;
+    color: #111;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .about-text-content p {
+      font-size: 1rem;
+    }
+  
+    .top-left-icon,
+    .bottom-right-icon {
+      font-size: 1.2rem;
+    }
+  }
+
+  .philosophy-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5rem 2rem;
+    background-color: #fff;
+    flex-wrap: wrap;
+  }
+  
+  .philosophy-left {
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .philosophy-left h2 {
+    font-size: 2rem;
+    font-family: "Playfair Display";
+    margin-bottom: 1rem;
+    position: relative;
+    right: 29px;
+  }
+  
+  .philosophy-left .italic {
+    font-style: italic;
+    font-weight: 400;
+  }
+  
+  .philosophy-subimage {
+    width: 180px;
+    height: auto;
+    margin: 1rem auto;
+    display: block;
+    border-radius: 4px;
+  }
+  
+  .philosophy-left p {
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .philosophy-right {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .philosophy-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .philosophy-section {
+      flex-direction: column;
+      padding: 3rem 1rem;
+    }
+  
+    .philosophy-left, .philosophy-right {
+      padding: 1rem 0;
+    }
+  
+    .philosophy-subimage {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+
+  .tr_div{
+    height: 100%;
+    width: 100%;
+    background-color: #F2F2F2;
+    display: flex ;
+    justify-content: center ;
+     position: relative;
+     bottom: 81px;
+  }
+
+  .tr_div2{
+    display: flex ;
+    justify-content: center ;
+    margin: 60px;
+
+  }

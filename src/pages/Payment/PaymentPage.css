@@ -1,0 +1,169 @@
+.checkout-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2rem;
+    gap: 2rem;
+    font-family: sans-serif;
+    color: #222;
+  }
+  
+  .checkout-left, .checkout-right {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  /* .checkout-left {
+    border-right: 1px solid #cacfd2;
+    padding-right: 2rem;
+  } */
+  
+  .checkout-right {
+    padding-left: 2rem;
+  }
+  
+  .section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .section h4 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .payment-options {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  
+  .payment-options label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .payment-options img {
+    height: 30px;
+    object-fit: contain;
+  }
+  
+  .terms {
+    font-size: 0.9rem;
+    color: #444;
+    margin: 1rem 0;
+  }
+  
+  .terms a {
+    color: #0077cc;
+    text-decoration: none;
+  }
+  
+  .terms a:hover {
+    text-decoration: underline;
+  }
+  
+  .payment-btn {
+    background: #000;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    width: 80%;
+    margin-top: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .info-note {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: #666;
+  }
+  
+  .item-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .item-summary img {
+    width: 112px;
+    height: 130px;
+    object-fit: cover;
+    background-color: #F2F2F2;
+    padding: 15px;
+  }
+  
+  .qty {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .qty button {
+    padding: 0.3rem 0.6rem;
+    background: #fff;
+    cursor: pointer;
+  }
+  
+  .price {
+    margin-left: auto;
+    font-weight: bold;
+  }
+  
+  .price-summary {
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .price-summary .coupon {
+    color: green;
+  }
+  
+  .price-summary .discount {
+    color: green;
+  }
+  
+  .price-summary .total {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  .trackvel {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+  }
+  
+  input[type="radio"] {
+    accent-color: black;
+    width: 18px;
+    height: 18px;
+    transform: scale(1.2); /* makes it slightly bigger */
+    cursor: pointer;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .checkout-container {
+      flex-direction: column;
+    }
+  
+    .checkout-left, .checkout-right {
+      padding: 0;
+      border: none;
+    }
+  
+    .item-summary {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .price {
+      margin: 0;
+    }
+  }
+  

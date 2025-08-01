@@ -1,0 +1,147 @@
+.order-history {
+    display: flex;
+    padding: 2rem;
+    gap: 2rem;
+    font-family: sans-serif;
+    color: #222;
+  }
+  
+  .sidebar {
+    min-width: 220px;
+  }
+  
+  .sidebar h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .filters h4 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .filters p {
+    margin: 1rem 0 0.5rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+  
+  .filters label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .clear-all {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #555;
+    text-decoration: underline;
+  }
+  
+  .order-list {
+    flex: 1;
+  }
+  
+  .order-card {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1.5rem;
+   
+  }
+  
+  .order-header {
+    display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.75rem;
+        margin-bottom: 1rem;
+        background-color: #F2F2F2;
+        padding: 10px;
+  }
+  
+  .order-header span {
+    font-size: 0.85rem;
+    color: #555;
+  }
+  
+  .order-actions a {
+    display: block;
+    font-size: 0.85rem;
+    color: #333;
+    margin-top: 0.2rem;
+  }
+  
+  .order-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 25px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .order-item:last-child {
+    border-bottom: none;
+  }
+  
+  .order-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 1rem;
+  }
+  
+  .item-info {
+    flex: 1;
+  }
+  
+  .item-info p {
+    margin: 0 0 0.3rem;
+    font-size: 0.95rem;
+  }
+  
+  .item-info a {
+    font-size: 0.85rem;
+    color: #333;
+    text-decoration: underline;
+    margin-right: 1rem;
+  }
+  
+  .actions a {
+    margin-right: 1rem;
+  }
+  
+  .arrow {
+    font-size: 1.5rem;
+    color: #999;
+  }
+  
+  /* Responsive */
+   @media (max-width: 768px) {
+    .order-history {
+      flex-direction: column;
+      padding: 1rem;
+    }
+  
+    .sidebar {
+      width: 100%;
+    }
+  
+    .order-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .order-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .order-item img {
+      margin-bottom: 0.5rem;
+    }
+    .arrow {
+      display: none;
+    }
+  }
+  

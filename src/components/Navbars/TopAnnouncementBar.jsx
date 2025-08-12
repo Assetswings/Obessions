@@ -11,25 +11,24 @@ const TopAnnouncementBar = () => {
   const [showUserPopup, setShowUserPopup] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-
   const navigate = useNavigate();
   const location = useLocation();
   const userWrapperRef = useRef(null);
 
-  useEffect(() => {
+    useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, [location.pathname]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
+     useEffect(() => {
+     const handleClickOutside = (event) => {
+        if (
         userWrapperRef.current &&
         !userWrapperRef.current.contains(event.target)
-      ) {
+      ){
         setShowUserPopup(false);
       }
-    };
+      };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);

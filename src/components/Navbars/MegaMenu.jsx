@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMegamenuData } from "./megamenuSlice";
 import { useNavigate } from "react-router-dom";
 
-const MegaMenu = ({ closeMenu }) => {
+  const MegaMenu = ({ closeMenu }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -15,9 +15,9 @@ const MegaMenu = ({ closeMenu }) => {
   const menuList = Array.isArray(data) ? data : [];
   const activeSection = menuList[activeSectionIndex];
 
-  useEffect(() => {
+    useEffect(() => {
     dispatch(fetchMegamenuData());
-  }, [dispatch]);
+  },[dispatch]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";

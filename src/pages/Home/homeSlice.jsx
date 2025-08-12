@@ -3,7 +3,7 @@ import API from '../../app/api';
 
 export const fetchHomeData = createAsyncThunk(
   'home/fetchHomeData',
-  async () => {
+    async () => {
     const response = await API.get('/banners/home-page');
     return response.data.data; 
   }

@@ -273,7 +273,7 @@ font-family: "Playfair Display", serif; */
   color: white;
   border: none;
   /* margin-top: 20px; */
-  width: 60%;
+  width: 50%;
   height: 60px;
 }
 
@@ -284,6 +284,9 @@ font-family: "Playfair Display", serif; */
   height: 60px;
   margin-left: 10px;
   margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .wishlist {
   font-size: 24px;
@@ -594,7 +597,7 @@ font-family: "Playfair Display", serif; */
 
 .product-price .discount {
   margin-left: 4px;
-  color: red;
+  color: #e43b3e;
   font-weight: 500;
   font-size: 14px;
 }

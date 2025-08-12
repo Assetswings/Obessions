@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { addToCart } from "../cart/cartSlice";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
+import {  fetchWishlist, addToWishlist, removeFromWishlist } from "../../components/Wishtlist/WishlistSlice";
+import { Player } from "@lottiefiles/react-lottie-player";
+import heartAnimation from "../../assets/icons/Heart.json"; 
 
 const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
@@ -18,21 +21,24 @@ const ProductDetailPage = () => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [localLoading, setLocalLoading] = useState(true);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [animatedWish, setAnimatedWish] = useState(null); 
 
   const dispatch = useDispatch();
   const sectionsRef = useRef({});
   const location = useLocation();
   const navigate = useNavigate();
+
   const productSlug = location.state?.product;
   const { data, loading, error } = useSelector((state) => state.productDetail);
-
+   const wishlist = useSelector((state) => state.wishlist);
+  
   // Scroll instantly to top before anything renders
-  useLayoutEffect(() => {
+    useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [productSlug]);
 
   // Fetch product on slug change
-  useEffect(() => {
+     useEffect(() => {
     if (productSlug) {
       setLocalLoading(true);
       setSelectedImage(null);
@@ -71,12 +77,12 @@ const ProductDetailPage = () => {
     return () => observer.disconnect();
   }, []);
 
-  // add To cart  
+  // add To cart
   const handleAddToCart = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       setShowLoginPrompt(true);
-      return
+      return;
     }
 
     // if (!selectedSize) {
@@ -84,48 +90,102 @@ const ProductDetailPage = () => {
     //   return;
     // }
 
-    dispatch(addToCart({ product_id: productId, quantity }))
+       dispatch(addToCart({ product_id: productId, quantity }))
       .unwrap()
       .then(() => {
         toast.success("Product added to cart successfully!", {
           style: {
             background: "#1f1f1f",
             color: "#fff",
-            borderRadius: "0px",        // or "4px", "8px" for slight rounding
+            borderRadius: "0px", // or "4px", "8px" for slight rounding
             padding: "12px 16px",
             fontSize: "14px",
           },
-          hideProgressBar: true,         // optional, removes bottom progress line
-          closeButton: false,            // optional, hides the 'X' close icon
-          icon: true                  // optional, removes the success icon
+          hideProgressBar: true, // optional, removes bottom progress line
+          closeButton: false, // optional, hides the 'X' close icon
+          icon: true,
         });
-        
       })
       .catch((error) => {
         toast.error("Failed to add to cart");
         console.error(error);
       });
   };
+
   // Price dynamics solution
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
   const productId = data?.id || productSlug;
   console.log("Current Product ID:------->", productId);
 
+  // ping the wishlist
   const handleSimilarProductClick = (slug) => {
     navigate("/productsdetails", { state: { product: slug } });
   };
 
-  if (error) return <div className="error">Error: {error}</div>;
 
+  const toggleWishlist = async (e, product) => {
+    e.stopPropagation();
+    const isInWishlist = wishlist.productIds.includes(product.id);
+
+    try {
+         if (isInWishlist) {
+         const wishlistItem = wishlist.items.find(
+          (item) => item.product_id === product.id
+        );
+          if (wishlistItem?.id) {
+          await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
+          toast.success("Removed from wishlist", {
+              style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+              iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+          });
+            dispatch(fetchWishlist());
+        }
+      } else {
+        await dispatch(addToWishlist({ product_id: product.id })).unwrap();
+        toast.success("Added to wishlist", {
+            style: {
+            border: "1px solid #713200",
+            padding: "16px",
+            color: "#713200",
+          },
+            iconTheme: {
+            primary: "#713200",
+            secondary: "#FFFAEE",
+          },
+        });
+        setAnimatedWish(product.id); 
+        dispatch(fetchWishlist());
+        setTimeout(() => setAnimatedWish(null), 1500);
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
+  };
+
+
+  useEffect(() => {
+    dispatch(fetchWishlist());
+ }, [dispatch]);
+
+ if (error) {
+  return <div className="error">Error: {error}</div>;
+}
   return (
     <>
-         <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">
           <div
             className="image_track"
-            style={{ width: "100%", minHeight: "450px" }}
+            style={{ width: "100%", minHeight: "750px" }}
           >
             {loading || !selectedImage ? (
               <div style={{ width: "100%", height: "100%" }}>
@@ -142,7 +202,7 @@ const ProductDetailPage = () => {
                 alt="Main Product"
                 className="main-image"
                 style={{
-                  width: "80%",
+                  width: "100%",
                   height: "auto",
                   mixBlendMode: "darken",
                   objectFit: "cover",
@@ -207,7 +267,6 @@ const ProductDetailPage = () => {
               </>
             )}
           </p>
-
           <p className="id_tracker">
             {loading ? <Skeleton width={100} /> : `SKU: ${data?.sku}`}
           </p>
@@ -261,7 +320,6 @@ const ProductDetailPage = () => {
           </div>
 
           <div className="color-selector">
-  
             {loading ? (
               <div style={{ display: "flex", gap: "10px" }}>
                 {Array(5)
@@ -271,26 +329,23 @@ const ProductDetailPage = () => {
                   ))}
               </div>
             ) : (
-                <> 
-                  <div>
+              <>
+                <div>
                   <p>CHOOSE A COLOR:</p>
-                     </div>
-              <div className="color-options">
-                  
-                {["#3d3d3d", "#2f4f4f", "#8b0000", "#5f4b8b", "#5e412f"].map(
-                  (color, idx) => (
-                    <div className="selected-color" key={idx}>
-                              
-                      <div
-                        className="color-circle"
-                        style={{ backgroundColor: color }}
-                      ></div>
-                    </div>
-                  )
-                )}
-              </div>
-                </>
-             
+                </div>
+                <div className="color-options">
+                  {["#3d3d3d", "#2f4f4f", "#8b0000", "#5f4b8b", "#5e412f"].map(
+                    (color, idx) => (
+                      <div className="selected-color" key={idx}>
+                        <div
+                          className="color-circle"
+                          style={{ backgroundColor: color }}
+                        ></div>
+                      </div>
+                    )
+                  )}
+                </div>
+              </>
             )}
           </div>
 
@@ -323,16 +378,27 @@ const ProductDetailPage = () => {
           </div>
 
           {/* Cart & Wishlist */}
-          <div className="add-cart-section">
-            <button className="add-to-cart-btn" 
-             onClick={handleAddToCart}
-            >ADD TO CART</button>
-            <div className="wst_box">
-              <p className="wishlist">
-                <Heart size={27} />
-              </p>
-            </div>
-          </div>
+      <div className="add-cart-section">
+            <button className="add-to-cart-btn" onClick={handleAddToCart}>
+              ADD TO CART
+            </button>
+            <div className="wst_box" onClick={(e) => toggleWishlist(e, data)}>
+  {animatedWish === data?.id ? (
+    <Player
+      autoplay
+      keepLastFrame
+      src={heartAnimation}
+      style={{ width: 102, height: 102 }}
+    />
+  ) : (
+    <Heart
+      size={27}
+      color={wishlist.productIds.includes(data?.id) ? "#FF0000" : "#000"}
+      fill={wishlist.productIds.includes(data?.id) ? "#FF0000" : "none"}
+    />
+  )}
+</div>
+  </div>
 
           {/* Return Info */}
           <div className="root_return_details">
@@ -401,7 +467,10 @@ const ProductDetailPage = () => {
           </div>
         ) : (
           <div className="product-grid">
-            {data?.discover_similar_styles?.map((item) => (
+          {data?.discover_similar_styles?.map((item) => {
+            const isWishlisted = wishlist.productIds.includes(item.id);
+        
+            return (
               <div
                 className="product-card-dtl"
                 key={item.id}
@@ -409,8 +478,43 @@ const ProductDetailPage = () => {
               >
                 <div className="product-img-box">
                   <img src={item.media} alt={item.name} />
-                  <button className="wishlist-btn_products_pd">
-                    <Heart color="#000000" size={20} strokeWidth={2} />
+        
+                  {/* wishlist button */}
+                  <button
+                    className="wishlist-btn_products"
+                    onClick={(e) => toggleWishlist(e, item)}
+                  >
+                    {animatedWish === item.id ? (
+                      <div
+                        style={{
+                          width: 20,
+                          height: 24,
+                          overflow: "hidden",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Player
+                          autoplay
+                          keepLastFrame
+                          src={heartAnimation}
+                          style={{
+                            width: 139,
+                            height: 139,
+                            transform: "scale(0.5)",
+                            transformOrigin: "center",
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <Heart
+                        color={isWishlisted ? "#FF0000" : "#000"}
+                        fill={isWishlisted ? "#FF0000" : "none"}
+                        size={20}
+                        strokeWidth={2}
+                      />
+                    )}
                   </button>
                 </div>
                 <p className="product-title">{item.name}</p>
@@ -424,8 +528,9 @@ const ProductDetailPage = () => {
                   )}
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
+        </div>
         )}
       </div>
 
@@ -446,36 +551,78 @@ const ProductDetailPage = () => {
           </div>
         ) : (
           <div className="product-grid">
-            {data?.dont_miss_these_matching_finds?.map((item) => (
+  {data?.dont_miss_these_matching_finds?.map((item) => {
+    const isWishlisted = wishlist.productIds.includes(item.id);
+
+    return (
+      <div
+        className="product-card-dtl"
+        key={item.id}
+        // onClick={() => handleSimilarProductClick(item.action_url)}
+      >
+        <div className="product-img-box">
+          <img src={item.media} alt={item.name} />
+          {/* wishlist button */}
+          <button
+            className="wishlist-btn_products"
+            onClick={(e) => toggleWishlist(e, item)}
+          >
+            {animatedWish === item.id ? (
               <div
-                className="product-card-dtl"
-                key={item.id}
-                onClick={() => handleSimilarProductClick(item.action_url)}
+                style={{
+                  width: 20,
+                  height: 24,
+                  overflow: "hidden",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
-                <div className="product-img-box">
-                  <img src={item.media} alt={item.name} />
-                  <button className="wishlist-btn_products_pd">
-                    <Heart color="#000000" size={20} strokeWidth={2} />
-                  </button>
-                </div>
-                <p className="product-title">{item.name}</p>
-                <div className="product-price">
-                  <span>₹{item.selling_price}</span>
-                  {item.mrp && item.mrp !== item.selling_price && (
-                    <>
-                      <span className="original">₹{item.mrp}</span>
-                      <span className="discount">({item.discount}% OFF)</span>
-                    </>
-                  )}
-                </div>
+                <Player
+                  autoplay
+                  keepLastFrame
+                  src={heartAnimation}
+                  style={{
+                    width: 139,
+                    height: 139,
+                    transform: "scale(0.5)",
+                    transformOrigin: "center",
+                  }}
+                />
               </div>
-            ))}
-          </div>
+            ) : (
+              <Heart
+                color={isWishlisted ? "#FF0000" : "#000"}
+                fill={isWishlisted ? "#FF0000" : "none"}
+                size={20}
+                strokeWidth={2}
+              />
+            )}
+          </button>
+        </div>
+
+        <p className="product-title">{item.name}</p>
+        <div className="product-price">
+          <span>₹{item.selling_price}</span>
+          {item.mrp && item.mrp !== item.selling_price && (
+            <>
+              <span className="original">₹{item.mrp}</span>
+              <span className="discount">({item.discount}% OFF)</span>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  })}
+</div>
+
         )}
       </div>
 
       <Footer />
-      {showLoginPrompt && <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />}
+      {showLoginPrompt && (
+        <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
+      )}
     </>
   );
 };

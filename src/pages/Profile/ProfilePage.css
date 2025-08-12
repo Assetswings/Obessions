@@ -78,6 +78,7 @@
   background: white;
   text-align: left;
   position: relative;
+  height: 100%;
 }
 
 .address-card.add {
@@ -129,7 +130,7 @@
 
 .side-modal {
   background: white;
-  width: 350px;
+  width: 450px;
   height: 100%;
   padding: 30px;
   overflow-y: auto;
@@ -153,6 +154,9 @@
 .edit_text{
 text-decoration: underline;
 font-size: 14px;
+}
+.address_title_text{
+  overflow-wrap: break-word;
 }
 
 @keyframes slideIn {
@@ -187,7 +191,7 @@ font-size: 14px;
   margin-top: 5px;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 .side-modal button[type="submit"] {

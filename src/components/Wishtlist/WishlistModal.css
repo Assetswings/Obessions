@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-55');
+
 .wishlist-modal-overlay {
     position: fixed;
     top: 0;
@@ -13,16 +15,21 @@
     right: 0;
     top: 0;
     background: #fff;
-    width: 400px;
+    width: 500px;
     height: 100%;
     padding: 20px;
     overflow-y: auto;
   }
   
   .wishlist-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+         display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0px;
+        background-color: white;
+        padding: 10px;
+        top: -21px;
   }
   
   .wishlist-header h3 {
@@ -41,8 +48,8 @@
   }
   
   .wishlist-item img {
-    width: 80px;
-    height: auto;
+    width: 120px;
+    height: 130px;
     margin-right: 15px;
   }
   
@@ -50,18 +57,28 @@
     font-size: 14px;
     font-weight: bold;
     margin: 0 0 5px;
+    font-weight: 400;
+    font-family: 'Helvetica Neue', sans-serif;
   }
   
   .move-to-cart {
-    padding: 5px 10px;
+    padding: 10px 10px;
     font-size: 12px;
-    border: 1px solid #000;
+    border: 1px solid #1B170E;
     background: none;
     cursor: pointer;
     margin-top: 5px;
+    color:#1B170E;
+    font-weight: 500;
+    font-family: 'Helvetica Neue', sans-serif;
   }
   
-  .close-icon {
+    .close-icon-whst {
     cursor: pointer;
+  }
+  .wishlist-actions{
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
   }
   

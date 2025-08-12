@@ -7,14 +7,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProductQuickViewModal from "./ProductQuickViewModal";
-import { addToWishlist } from "../../components/Wishtlist/WishlistSlice";
-
+import {
+  addToWishlist,
+  fetchWishlist,
+  removeFromWishlist,
+} from "../../components/Wishtlist/WishlistSlice";
+import { toast } from "react-hot-toast";
+import { Player } from "@lottiefiles/react-lottie-player";
+import heartAnimation from "../../assets/icons/Heart.json"; 
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
   const category = location.state?.category;
   const subcategory = location.state?.subcategory;
 
@@ -29,15 +34,14 @@ const ProductsPage = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
+  const [animatedWish, setAnimatedWish] = useState(null); // Product ID for Lottie animation
 
-  // Fetch products
   useEffect(() => {
     if (category) {
       dispatch(fetchProducts({ category, subcategory, page: 1, limit: 20 }));
     }
   }, [dispatch, category, subcategory]);
 
-  // Fetch products with filters
   useEffect(() => {
     if (category) {
       dispatch(
@@ -52,10 +56,9 @@ const ProductsPage = () => {
     }
   }, [selectedFilters]);
 
-  // // Fetch wishlist
-  // useEffect(() => {
-  //   dispatch(fetchWishlist());
-  // }, [dispatch]);
+     useEffect(() => {
+     dispatch(fetchWishlist());
+  }, [dispatch]);
 
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
@@ -67,13 +70,58 @@ const ProductsPage = () => {
     });
   };
 
-  const formatTitle = (text) => {
-    return text
+  const toggleWishlist = async (e, product) => {
+    e.stopPropagation();
+    const isInWishlist = wishlist.productIds.includes(product.id);
+console.log("prodcut______page--->",product);
+    try {
+      if (isInWishlist) {
+        const wishlistItem = wishlist.items.find(
+          (item) => item.product_id === product.id
+        );
+        if (wishlistItem?.id) {
+          await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
+          toast.success("Removed from wishlist", {
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+            iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+          });
+          dispatch(fetchWishlist());
+        }
+      } else {
+        await dispatch(addToWishlist({ product_id: product.id })).unwrap();
+        toast.success("Added to wishlist", {
+          style: {
+            border: "1px solid #713200",
+            padding: "16px",
+            color: "#713200",
+          },
+          iconTheme: {
+            primary: "#713200",
+            secondary: "#FFFAEE",
+          },
+        });
+        setAnimatedWish(product.id); 
+        dispatch(fetchWishlist());
+        setTimeout(() => setAnimatedWish(null), 1500);
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
+  };
+
+  const formatTitle = (text) =>
+    text
       .replace(/-/g, " ")
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
-  };
 
   const renderFilterGroup = (title, options, key) => (
     <div className="custom-filter-group" key={key}>
@@ -93,7 +141,6 @@ const ProductsPage = () => {
 
   return (
     <div className="custom-products-page">
-      {/* Filters Sidebar */}
       <aside className="custom-filters">
         <h2 className="title_prd_roots">
           {subcategory ? formatTitle(subcategory) : formatTitle(category)}
@@ -106,24 +153,15 @@ const ProductsPage = () => {
         </div>
 
         {loading ? (
-          <>
+           <>
             <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
             {Array.from({ length: 3 }).map((_, i) => (
               <div className="custom-filter-group" key={i}>
-                <Skeleton
-                  height={14}
-                  width={100}
-                  style={{ marginBottom: 10 }}
-                />
-                <Skeleton
-                  count={4}
-                  height={16}
-                  width={120}
-                  style={{ marginBottom: 8 }}
-                />
+                <Skeleton height={14} width={100} style={{ marginBottom: 10 }} />
+                <Skeleton count={4} height={16} width={120} style={{ marginBottom: 8 }} />
               </div>
             ))}
-          </>
+            </>
         ) : (
           filters &&
           Object.entries(filters).map(([filterKey, values]) =>
@@ -132,7 +170,6 @@ const ProductsPage = () => {
         )}
       </aside>
 
-      {/* Product Grid */}
       <main className="custom-product-list">
         <div className="custom-products-grid">
           {loading
@@ -149,80 +186,96 @@ const ProductsPage = () => {
                   </p>
                 </div>
               ))
-            : products.map((item) => (
-                <div
-                  key={item.id}
-                  className="custom-product-card"
-                  onClick={(e) => {
-                    const isQuickView = e.target.closest(".qucick_dv");
-                    const isWishlist = e.target.closest(
-                      ".wishlist-btn_products"
-                    );
+             : products.map((item) => {
+             const isWishlisted = wishlist.productIds.includes(item.id);
+                  return (
+                  <div
+                    key={item.id}
+                    className="custom-product-card"
+                    onClick={(e) => {
+                      const isQuickView = e.target.closest(".qucick_dv");
+                      const isWishlist = e.target.closest(".wishlist-btn_products");
+                      if (!isQuickView && !isWishlist) {
+                        navigate("/productsdetails", {
+                          state: { product: item.action_url },
+                        });
+                      }
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className="custom-product-image">
+                      <img src={item.media} alt={item.name} />
 
-                    if (!isQuickView && !isWishlist) {
-                      navigate("/productsdetails", {
-                        state: { product: item.action_url },
-                      });
-                    }
-                  }}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="custom-product-image">
-                    <img src={item.media} alt={item.name} />
-                    <button
-                      className="wishlist-btn_products"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        dispatch(addToWishlist({ product_id: item.id }));
-                      }}
-                    >
-                      <Heart
-                        color={
-                          wishlist.productIds.includes(item.id)
-                            ? "red"
-                            : "#000000"
-                        }
-                        fill={
-                          wishlist.productIds.includes(item.id)
-                            ? "red"
-                            : "none"
-                        }
-                        size={20}
-                        strokeWidth={2}
-                      />
-                    </button>
-                    <div className="qucick_dv">
-                      <span
-                        className="quick-view_pd"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setQuickViewProduct(item);
-                          setShowModal(true);
-                        }}
+                {/* wishliat_track */}
+                      <button
+                        className="wishlist-btn_products"
+                        onClick={(e) => toggleWishlist(e, item)}
                       >
-                        Quick View &nbsp;
-                        <Expand color="#000000" size={15} strokeWidth={1.25} />
-                      </span>
-                    </div>
-                  </div>
-                  <p className="custom-product-title">{item.name}</p>
-                  <p className="custom-product-price">
-                    ₹{item.selling_price}
-                    {item.mrp && item.mrp !== item.selling_price && (
-                      <>
-                        <span className="custom-old-price">₹{item.mrp}</span>
-                        <span className="custom-discount">
-                          (-{item.discount_percent}%)
+                        {animatedWish === item.id ? (
+                          <div 
+                          style={{
+                            width: 20,
+                            height: 24,
+                            overflow: "hidden",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                          >
+                           <Player
+      autoplay
+      keepLastFrame
+      src={heartAnimation}
+      style={{
+        width: 139, 
+        height: 139,
+        transform: "scale(0.5)", 
+        transformOrigin: "center",
+      }}
+    />
+                        </div>
+                        ) : (
+                          <Heart
+                            color={isWishlisted ? "#FF0000" : "#000"}
+                            fill={isWishlisted ? "#FF0000" : "none"}
+                            size={20}
+                            strokeWidth={2}
+                          />
+                        )}
+                      </button>
+
+                      <div className="qucick_dv">
+                        <span
+                          className="quick-view_pd"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setQuickViewProduct(item);
+                            setShowModal(true);
+                          }}
+                        >
+                          Quick View &nbsp;
+                          <Expand color="#000000" size={15} strokeWidth={1.25} />
                         </span>
-                      </>
-                    )}
-                  </p>
-                </div>
-              ))}
+                      </div>
+                    </div>
+                    <p className="custom-product-title">{item.name}</p>
+                    <p className="custom-product-price">
+                      ₹{item.selling_price}
+                      {item.mrp && item.mrp !== item.selling_price && (
+                        <>
+                          <span className="custom-old-price">₹{item.mrp}</span>
+                          <span className="custom-discount">
+                            (-{item.discount_percent}%)
+                          </span>
+                        </>
+                      )}
+                    </p>
+                  </div>
+                );
+              })}
         </div>
       </main>
 
-      {/* Quick View Modal */}
       <ProductQuickViewModal
         show={showModal}
         onHide={() => setShowModal(false)}

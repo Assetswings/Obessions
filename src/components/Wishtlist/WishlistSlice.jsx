@@ -1,4 +1,3 @@
-// src/features/wishlist/wishlistSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../app/api';
 
@@ -7,8 +6,8 @@ export const addToWishlist = createAsyncThunk(
   'wishlist/addToWishlist',
   async ({ product_id }, { rejectWithValue }) => {
     try {
-      const response = await API.post('/wishlist/add-to-wishlist', { product_id });
-      return { product_id }; // Only return product_id for tracking
+      await API.post('/wishlist/add-to-wishlist', { product_id });
+      return { product_id };
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message || 'Failed to add to wishlist');
     }
@@ -28,14 +27,40 @@ export const fetchWishlist = createAsyncThunk(
   }
 );
 
+// ✅ Remove from Wishlist
+export const removeFromWishlist = createAsyncThunk(
+  'wishlist/removeFromWishlist',
+  async (wishlist_id, { rejectWithValue }) => {
+    try {
+      await API.delete(`/wishlist/item/${wishlist_id}`);
+      return wishlist_id;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data?.message || 'Failed to remove from wishlist');
+    }
+  }
+);
+
+// ✅ Move to Cart
+export const moveToCart = createAsyncThunk(
+  'wishlist/moveToCart',
+  async ({ product_id, quantity = 1 }, { rejectWithValue }) => {
+    try {
+      const response = await API.post('/wishlist/move-to-cart', { product_id, quantity });
+      return { product_id, data: response.data.data };
+    } catch (error) {
+      return rejectWithValue(error?.response?.data?.message || 'Failed to move to cart');
+    }
+  }
+);
+
 const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState: {
     loading: false,
     success: false,
     error: null,
-    items: [], // product list
-    productIds: [], // just product IDs for quick check
+    items: [],
+    productIds: [],
   },
   reducers: {
     clearWishlistState: (state) => {
@@ -46,6 +71,7 @@ const wishlistSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Add to Wishlist
       .addCase(addToWishlist.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -63,15 +89,54 @@ const wishlistSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
+      // Fetch Wishlist
       .addCase(fetchWishlist.pending, (state) => {
         state.loading = true;
       })
       .addCase(fetchWishlist.fulfilled, (state, action) => {
         state.loading = false;
         state.items = action.payload;
-        state.productIds = action.payload.map((item) => item.product_id); // assumes API returns product_id
+        state.productIds = action.payload.map((item) => item.product_id);
       })
       .addCase(fetchWishlist.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Remove from Wishlist
+      .addCase(removeFromWishlist.pending, (state) => {
+        state.loading = true;
+        state.success = false;
+        state.error = null;
+      })
+      .addCase(removeFromWishlist.fulfilled, (state, action) => {
+        const wishlist_id = action.payload;
+        state.loading = false;
+        state.success = true;
+        state.items = state.items.filter(item => item.id !== wishlist_id);
+        state.productIds = state.items.map(item => item.product_id);
+      })
+      .addCase(removeFromWishlist.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Move to Cart
+      .addCase(moveToCart.pending, (state) => {
+        state.loading = true;
+        state.success = false;
+        state.error = null;
+      })
+      .addCase(moveToCart.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        const { product_id } = action.payload;
+        // Remove moved product from wishlist state
+        state.items = state.items.filter(item => item.product_id !== product_id);
+        state.productIds = state.items.map(item => item.product_id);
+      })
+      .addCase(moveToCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

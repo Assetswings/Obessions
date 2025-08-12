@@ -17,19 +17,23 @@
     max-width: 160vh;
     position: relative;
     overflow-y: auto;
-    max-height: 80vh;
+    max-height: 90vh;
   }
   
   .quickview-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 15px;
   }
   
   .close-icon {
     cursor: pointer;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 31px;
+    font-weight: 300;
+    position: relative;
+    top: 30px;
+    right: 25px;
   }
   
   .quickview-content {
@@ -87,7 +91,24 @@
     align-items: center;
     overflow: hidden;
 }
-  
+  .add-to-cart-btn_qucick{
+    padding: 10px 20px;
+    background-color: #000;
+    color: white;
+    border: none;
+    /* margin-top: 20px; */
+    width: 71%;
+    height: 60px;
+  }
+  .wst_box_quick{
+    border: 1px solid #959595;
+    width: 60px;
+    height: 60px;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 .thumbnail-row {
     display: flex;
     overflow-x: auto;

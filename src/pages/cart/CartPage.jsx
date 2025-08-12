@@ -2,17 +2,15 @@ import React, { useEffect, useState } from "react";
 import "./CartPage.css";
 import { Minus, Plus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchCartDetails,
-  removeCartItem,
-  updateCartItem,
-} from "./cartSlice";
+import { fetchCartDetails, removeCartItem, updateCartItem } from "./cartSlice";
+import { addToWishlist } from "../../components/Wishtlist/WishlistSlice";
 import Footer from "../../components/Footer/Footer";
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const [token] = useState(localStorage.getItem("token"));
   const { cartItems, loading, error } = useSelector((state) => state.cart);
+  const [updatingId, setUpdatingId] = useState(null);
 
   useEffect(() => {
     if (token) {
@@ -22,12 +20,18 @@ const CartPage = () => {
 
   const handleRemoveItem = async (cartId) => {
     await dispatch(removeCartItem(cartId));
-    dispatch(fetchCartDetails()); // Refresh cart after removal
   };
 
-  const handleUpdateQty = async (product_id, qtn) => {
-    await dispatch(updateCartItem({ product_id, qtn }));
-    dispatch(fetchCartDetails()); // Refresh cart after update
+  const handleUpdateQty = async (product_id, newQty) => {
+    if (newQty < 1) return;
+    setUpdatingId(product_id);
+    await dispatch(updateCartItem({ product_id, quantity: newQty }));
+    setUpdatingId(null);
+  };
+
+  const handleMoveToWishlist = async (item) => {
+    await dispatch(addToWishlist({ product_id: item.product.id }));
+    await dispatch(removeCartItem(item.id));
   };
 
   const items = cartItems?.items ?? [];
@@ -86,18 +90,23 @@ const CartPage = () => {
                         <button
                           className="tracker-btn"
                           onClick={() =>
-                            handleUpdateQty(item.product_id, Math.max(1, item.cart_qty - 1))
+                            handleUpdateQty(item.product_id, item.cart_qty - 1)
                           }
+                          disabled={updatingId === item.product_id}
                         >
                           <Minus size={20} strokeWidth={1.25} />
                         </button>
-                        <span className="qtn_track">{item.cart_qty}</span>
+
+                        <span className="qtn_track">
+                          {updatingId === item.product_id ? "" : item.cart_qty}
+                        </span>
 
                         <button
                           className="tracker-btn"
                           onClick={() =>
                             handleUpdateQty(item.product_id, item.cart_qty + 1)
                           }
+                          disabled={updatingId === item.product_id}
                         >
                           <Plus size={20} strokeWidth={1.25} />
                         </button>
@@ -106,12 +115,19 @@ const CartPage = () => {
 
                     <div className="actions">
                       <span
-                        style={{ color: "red", cursor: "pointer" }}
+                        style={{ color: "black", cursor: "pointer" }}
                         onClick={() => handleRemoveItem(item.id)}
                       >
                         Remove
                       </span>
-                      <span style={{ marginLeft: "10px", cursor: "pointer" }}>
+                      <span
+                        style={{
+                          marginLeft: "10px",
+                          cursor: "pointer",
+                          color: "black",
+                        }}
+                        onClick={() => handleMoveToWishlist(item)}
+                      >
                         Move to Wishlist
                       </span>
                     </div>
@@ -122,7 +138,7 @@ const CartPage = () => {
           )}
         </div>
 
-        <div className="cart-right">
+        <div className="cart-right sticky-summary">
           <div className="summary">
             <div className="summary-row total">
               <span>ORDER TOTAL</span>

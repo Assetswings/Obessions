@@ -14,6 +14,7 @@ import image1 from "../../assets/images/Maskgroup-1.png";
 import image2 from "../../assets/images/Maskgroup-2.png";
 import image3 from "../../assets/images/Maskgroup-3.png";
 import image4 from "../../assets/images/Maskgroup.png";
+import logo from "../../assets/icons/Obslogo.png"; 
 import livingroomLeft from "../../assets/images/livingroomLeft.png";
 import livingroomRight from "../../assets/images/livingroomRight.png";
 
@@ -87,8 +88,6 @@ const shopByItems = [
   },
 ];
 
-
-
   const floatingImages = [
   { id: 1, src: FloorDesign1, className: "imgf1" },
   { id: 2, src: FloorDesign2, className: "imgf2" },
@@ -97,7 +96,6 @@ const shopByItems = [
   { id: 5, src: FloorDesign5, className: "imgf5" },
   { id: 6, src: FloorDesign6, className: "imgf6" },
 ];
-
 
 
 const HomePage = () => {
@@ -164,9 +162,11 @@ const HomePage = () => {
         {/* ───────────────────── HERO ───────────────────── */}
       <div className="homepage container-fluid position-relative p-5">
         <img src={image4} className="floating-img img-left" alt="" />
+        <img src={logo} className="floating-img img-left-logo" alt="" />
         <h1 className="display-1 bold position-absolute obsessions-text">
           obsessions
         </h1>
+
 
         {/* Floating Images */}
         <img src={image3} className="floating-img img-top" alt="" />

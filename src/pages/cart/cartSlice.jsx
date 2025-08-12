@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../app/api';
 
-// Add to cart
 export const addToCart = createAsyncThunk(
   'cart/addToCart',
   async ({ product_id, quantity }, { rejectWithValue }) => {
@@ -14,7 +13,6 @@ export const addToCart = createAsyncThunk(
   }
 );
 
-// Fetch cart
 export const fetchCartDetails = createAsyncThunk(
   'cart/fetchCartDetails',
   async (_, { rejectWithValue }) => {
@@ -27,7 +25,6 @@ export const fetchCartDetails = createAsyncThunk(
   }
 );
 
-// Remove from cart
 export const removeCartItem = createAsyncThunk(
   'cart/removeCartItem',
   async (cart_id, { rejectWithValue }) => {
@@ -40,7 +37,6 @@ export const removeCartItem = createAsyncThunk(
   }
 );
 
-// ✅ Update quantity in cart
 export const updateCartItem = createAsyncThunk(
   'cart/updateCartItem',
   async ({ product_id, quantity }, { rejectWithValue }) => {
@@ -69,7 +65,6 @@ const cartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Add to cart
       .addCase(addToCart.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -84,7 +79,6 @@ const cartSlice = createSlice({
         state.error = action.payload || action.error.message;
       })
 
-      // Fetch cart
       .addCase(fetchCartDetails.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -98,7 +92,6 @@ const cartSlice = createSlice({
         state.error = action.payload || action.error.message;
       })
 
-      // Remove item
       .addCase(removeCartItem.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -107,22 +100,32 @@ const cartSlice = createSlice({
         state.loading = false;
         const removedId = action.payload;
         state.cartItems.items = state.cartItems.items.filter((item) => item.id !== removedId);
+        let newTotal = 0;
+        state.cartItems.items.forEach(i => {
+          newTotal += (i.product?.selling_price || 0) * (i.cart_qty || 0);
+        });
+        state.cartItems.total = newTotal;
       })
       .addCase(removeCartItem.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
       })
 
-      // ✅ Update quantity
       .addCase(updateCartItem.pending, (state) => {
-        state.loading = true;
+        state.loading = false;
         state.error = null;
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
-        state.loading = false;
         const { product_id, quantity } = action.payload;
-        // const item = state.cartItems.items?.find((i) => i.product_id === product_id);
-
+        const item = state.cartItems.items?.find((i) => i.product_id === product_id);
+        if (item) {
+          item.cart_qty = quantity;
+          let newTotal = 0;
+          state.cartItems.items.forEach(i => {
+            newTotal += (i.product?.selling_price || 0) * (i.cart_qty || 0);
+          });
+          state.cartItems.total = newTotal;
+        }
       })
       .addCase(updateCartItem.rejected, (state, action) => {
         state.loading = false;
@@ -133,4 +136,3 @@ const cartSlice = createSlice({
 
 export const { resetCartStatus } = cartSlice.actions;
 export default cartSlice.reducer;
-

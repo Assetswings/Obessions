@@ -7,7 +7,7 @@
     height: 35px;
     padding: 0 16px;
     font-size: 13px;
-    overflow: hidden;
+    /* overflow: hidden; */
     box-sizing: border-box;
     cursor: pointer;
   }
@@ -22,4 +22,22 @@
     gap: 20px;
     width: 150px;
     justify-content: center;
+  }
+
+  .user-popup_AN{
+     position: absolute;
+    top: 35px;
+    right: -5px;
+    background: #fff;
+    color: #000;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 8px 0;
+    padding: 10px;
+    min-width: 140px;
+    z-index: 10000;
+  }
+
+  .user-icon-wrapper {
+    position: relative;
   }

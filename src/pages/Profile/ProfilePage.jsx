@@ -1,61 +1,37 @@
-// ProfilePage.jsx
 import React, { useState, useEffect } from "react";
 import "./ProfilePage.css";
 import { IoMdClose } from "react-icons/io";
 import { SquareCheck, SquarePen } from "lucide-react";
-import { ChevronRight } from "lucide-react";
 import Footer from "../../components/Footer/Footer";
-
-const orders = [
-    {
-      id: "#AWB2390678",
-      status: "Estimated Delivery",
-      date: "Fri, 16 May",
-      showTrack: true,
-      items: [
-        { name: "Sophia Small Foldable Laundry Basket Storage Camel", image: "https://i.ibb.co/hJkH0jfd/image-7.png", cancelable: true },
-        { name: "Nefais Set of 3 Pcs Storage Basket Aqua", image: "https://i.ibb.co/C3G4gkM0/Image-Holder-3.png", cancelable: true },
-        { name: "Mehari Polypropylene Shaggy Carpet Brown", image: "https://i.ibb.co/yMvvrry/Image-Holder-4.png", cancelable: true },
-      ],
-    },
-    {
-      id: "#AWB2390678",
-      status: "Delivered",
-      date: "Wed, 26 Mar",
-      showTrack: false,
-      items: [
-        { name: "Alvina Polyresin Soap Dish Beige Gold", image: "https://i.ibb.co/qYFj4610/Image-Holder-5.png", cancelable: false, actions: true },
-      ],
-    },
-    {
-      id: "#AWB2390678",
-      status: "Delivered",
-      date: "Jan, 10 Fri",
-      showTrack: false,
-      items: [
-        { name: "Alvina Polyresin Bath Set Silver Grey", image: "https://i.ibb.co/pvBmBJK9/Image-Holder-7.png", cancelable: false, actions: true },
-        { name: "Azure Soap Dispenser Polyresin Black", image: "https://i.ibb.co/k2Bqq16T/Image-Holder-6.png", cancelable: false, actions: true },
-      ],
-    },
-  ];
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserProfile, updateUserProfile } from "./profileSlice";
+import {
+  getAddress,
+  createAddress,
+  deleteAddress,
+  editAddress,
+} from "./addressSlice";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
   const [showEditAddressModal, setShowEditAddressModal] = useState(false);
+  const [editAddressData, setEditAddressData] = useState(null);
 
-  
   const [newAddress, setNewAddress] = useState({
-    pin: "",
-    state: "",
-    city: "",
-    flat: "",
-    street: "",
+    first_name: "",
+    last_name: "",
+    mobile: "",
+    address: "",
+    address2: "",
     landmark: "",
+    city: "",
+    state: "",
+    pincode: "",
   });
 
-     useEffect(() => {
+  useEffect(() => {
     if (showEditModal || showAddAddressModal || showEditAddressModal) {
       document.body.style.overflow = "hidden";
     } else {
@@ -67,10 +43,86 @@ const ProfilePage = () => {
     };
   }, [showEditModal, showAddAddressModal, showEditAddressModal]);
 
+  const dispatch = useDispatch();
+  const {
+    data: profileData,
+    // loading,
+    // error,
+  } = useSelector((state) => state.profile);
+
+  useEffect(() => {
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
+
+  const { data: addressdata } = useSelector((state) => state.address);
+
+  useEffect(() => {
+    dispatch(getAddress());
+  }, [dispatch]);
+
+  console.log("DATA_FROM_ADDRESS--->", addressdata);
+  const [editForm, setEditForm] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    mobile: "",
+    dob: "",
+  });
+
+  const [dob, setDob] = useState("");
+
+  useEffect(() => {
+    if (showEditModal && profileData) {
+      const formattedDOB = profileData?.dob
+        ? formatDateForInput(profileData.dob)
+        : "";
+
+      setEditForm({
+        first_name: profileData?.first_name || "",
+        last_name: profileData?.last_name || "",
+        email: profileData?.email || "",
+        mobile: profileData?.mobile || "",
+        dob: formattedDOB,
+      });
+      setDob(formattedDOB);
+    }
+  }, [showEditModal, profileData]);
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditForm((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "dob") {
+      setDob(value);
+    }
+  };
+
   const handleModalClick = (e, closer) => {
     if (e.target.classList.contains("modal-overlay")) {
       closer();
     }
+  };
+
+  const handleSubmitEditForm = (e) => {
+    e.preventDefault();
+    const updatedData = { ...editForm, dob };
+
+    dispatch(
+      updateUserProfile({
+        id: profileData?.billingAddress?.id,
+        data: updatedData,
+      })
+    ).then(() => setShowEditModal(false));
+
+    dispatch(fetchUserProfile());
+  };
+
+  const formatDateForInput = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
 
   const handleNewAddressChange = (e) => {
@@ -78,331 +130,436 @@ const ProfilePage = () => {
     setNewAddress((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Address chnage
+  const handleEditAddressChange = (e) => {
+    const { name, value } = e.target;
+    setEditAddressData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const deteteAddress = (id) => {
+    console.log("====================================");
+    console.log("is--->", id);
+    console.log("====================================");
+    dispatch(deleteAddress(id));
+  };
+
   return (
-      <> 
-        <div className="profile-container">
-      <div className="tabs">
-        <div className="button_group_tracker">
-          {["profile", "address", "orders"].map((tab) => (
-            <button
-              key={tab}
-              className={activeTab === tab ? "active" : ""}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab.toUpperCase()}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="content-wrapper">
-        {activeTab === "profile" && (
-          <div className="profile-section">
-            <div className="set_box">
-              <div>
-                <h5>MY DETAILS</h5>
-                <p>Update your details below to keep your account current.</p>
-              </div>
-              <div>
-                  <div
-                  className="edit-btn"
-                  onClick={() => setShowEditModal(true)}>
-                 <p> <span> <SquarePen   /> </span> 
-                 <span className="edit_text"> EDIT DETAILS </span> 
-                 </p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <strong>Name</strong>
-              <div>John Doe</div>
-            </div>
-            <div>
-              <strong>Email</strong>
-              <div>JohnDoe@gmail.com</div>
-            </div>
-            <div>
-              <strong>Phone</strong>
-              <div>+91 123456789</div>
-            </div>
-            <div>
-              <strong>Date of Birth</strong>
-              <div>10/08/1999</div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "address" && (
-          <div className="address-section">
-            <div
-              className="address-card add"
-              onClick={() => setShowAddAddressModal(true)}
-            >
-              + Add Address
-            </div>
-            <div className="address-card default">
-              <div className="address-header">
-                <span className="txt_head_add">HOME (Default)</span>
-                <span className="green-tick">
-                  <SquareCheck />
-                </span>
-              </div>
-              <p>
-                44/1 Bharat Apartment 4C, 5th Main Road, Jayanagar, Bangalore
-                560041, KA IND
-              </p>
-              <div className="card-actions">
-                <span onClick={() => setShowEditAddressModal(true)}>Edit</span>
-                <span>Remove</span>
-              </div>
-            </div>
-            <div className="address-card default">
-              <div className="address-header">
-                <span className="txt_head_add">
-                    WORK 
-                </span>
-              </div>
-              <p>
-                44/1 Bharat Apartment 4C, 5th Main Road, Jayanagar, Bangalore
-                560041, KA IND
-              </p>
-              <div className="card-actions">
-                <span onClick={() => setShowEditAddressModal(true)}>Edit</span>
-                <span>Remove</span>
-                <span>Make Default</span>
-              </div>
-            </div>
-            <div className="address-card default">
-              <div className="address-header">
-                <span className="txt_head_add">  Business</span>
-              </div>
-              <p>
-                44/1 Bharat Apartment 4C, 5th Main Road, Jayanagar, Bangalore
-                560041, KA IND
-              </p>
-              <div className="card-actions">
-                <span onClick={() => setShowEditAddressModal(true)}>Edit</span>
-                <span>Remove</span>
-                <span>Make Default</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "orders" && (
-          <div className="orders-section">
-               <div className="order-history">
-      <aside className="sidebar">
-        <div className="filters">
-          <h4>Filters</h4>
-          <p>ORDER STATUS</p>
-          <label><input type="checkbox" /> Order Placed</label>
-          <label><input type="checkbox" /> Delivered</label>
-          <label><input type="checkbox" /> Cancelled</label>
-          <label><input type="checkbox" /> Returned</label>
-          <a href="#" className="clear-all">Clear all</a>
-        </div>
-      </aside>
-
-      <main className="order-list">
-        {orders.map((order, idx) => (
-          <div className="order-card" key={idx}>
-            <div className="order-header">
-              <div><strong>{order.status}</strong><br /><span>{order.date}</span></div>
-              <div>
-                <span>Order ID: {order.id}</span>
-                <div className="order-actions">
-                  {order.showTrack && <a href="#">Track Order</a>}
-                  <a href="#">View Invoice</a>
-                </div>
-              </div>
-            </div>  
-
-            {order.items.map((item, i) => (
-              <div className="order-item" key={i}>
-                <img src={item.image} alt={item.name} />
-                <div className="item-info">
-                  <p>{item.name}</p>
-                  {item.cancelable && <a href="#">Cancel Order</a>}
-                  {item.actions && (
-                    <div className="actions">
-                      <a href="#">Buy Again</a>
-                      <a href="#">Return / Exchange</a>
-                    </div>
-                  )}
-                </div>
-                <div className="arrow">
-            <ChevronRight size={24} />
-                </div>  
-              </div>
+    <>
+      <div className="profile-container">
+        <div className="tabs">
+          <div className="button_group_tracker">
+            {["profile", "address", "orders"].map((tab) => (
+              <button
+                key={tab}
+                className={activeTab === tab ? "active" : ""}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab.toUpperCase()}
+              </button>
             ))}
           </div>
-        ))}
-      </main>
-    </div>
+        </div>
+
+        <div className="content-wrapper">
+          {activeTab === "profile" && (
+            <div className="profile-section">
+              <div className="set_box">
+                <div>
+                  <h5>MY DETAILS</h5>
+                  <p>Update your details below to keep your account current.</p>
+                </div>
+                <div>
+                  <div
+                    className="edit-btn"
+                    onClick={() => setShowEditModal(true)}
+                  >
+                    <p>
+                      <span>
+                        <SquarePen />
+                      </span>
+                      <span className="edit_text"> EDIT DETAILS </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <strong>Name</strong>
+                <div>
+                  {profileData?.first_name} {profileData?.last_name}
+                </div>
+              </div>
+              <div>
+                <strong>Email</strong>
+                <div>{profileData?.email}</div>
+              </div>
+              <div>
+                <strong>Phone</strong>
+                <div>{profileData?.mobile}</div>
+              </div>
+              <div>
+                <strong>Date of Birth</strong>
+                <div>
+                  {profileData?.dob &&
+                    new Date(profileData.dob)
+                      .toLocaleDateString("en-GB")
+                      .replaceAll("/", "-")}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "address" && (
+            <div className="address-section">
+              <div
+                className="address-card add"
+                onClick={() => setShowAddAddressModal(true)}
+              >
+                + Add Address
+              </div>
+              {addressdata.map((item) => (
+                <div className="address-list">
+                  <div
+                    key={item.id}
+                    className={`address-card ${
+                      item.is_default ? "default" : ""
+                    }`}
+                  >
+                    <div className="address-header">
+                      <span className="txt_head_add">
+                        {/* {item.is_default ? "HOME (Default)" : "Address"} */}
+                        {item.first_name} {item.last_name}
+                      </span>
+                      {item.is_default && (
+                        <span className="green-tick">
+                          <SquareCheck />
+                        </span>
+                      )}
+                    </div>
+                    <p className="address_title_text">
+                      {item.address},{item.landmark},{item.city}, {item.state},
+                      {item.pincode}
+                    </p>
+                    <div className="card-actions">
+                      <span
+                        span
+                        onClick={() => {
+                          setEditAddressData(item);
+                          setShowEditAddressModal(true);
+                        }}
+                      >
+                        Edit
+                      </span>
+                      <span onClick={() => deteteAddress(item.id)}>Remove</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {activeTab === "orders" && (
+            <div className="orders-section">
+              <div>No orders found.</div>
+            </div>
+          )}
+        </div>
+
+        {/* ✅ Edit Profile Modal */}
+        {showEditModal && (
+          <div
+            className="modal-overlay"
+            onClick={(e) => handleModalClick(e, () => setShowEditModal(false))}
+          >
+            <div className="side-modal">
+              <button
+                className="close-btn"
+                onClick={() => setShowEditModal(false)}
+              >
+                <IoMdClose />
+              </button>
+              <h3>Edit Profile</h3>
+              <form onSubmit={handleSubmitEditForm}>
+                <label>
+                  First Name
+                  <input
+                    name="first_name"
+                    value={editForm.first_name}
+                    onChange={handleEditChange}
+                  />
+                </label>
+                <label>
+                  Last Name
+                  <input
+                    name="last_name"
+                    value={editForm.last_name}
+                    onChange={handleEditChange}
+                  />
+                </label>
+                <label>
+                  Email
+                  <input
+                    name="email"
+                    value={editForm.email}
+                    onChange={handleEditChange}
+                  />
+                </label>
+                <label>
+                  Phone
+                  <input
+                    name="mobile"
+                    value={editForm.mobile}
+                    onChange={handleEditChange}
+                  />
+                </label>
+                <label>
+                  Date of Birth
+                  <input
+                    type="date"
+                    name="dob"
+                    value={dob}
+                    onChange={handleEditChange}
+                  />
+                </label>
+                <button type="submit">Save Changes</button>
+              </form>
+            </div>
+          </div>
+        )}
+        {showAddAddressModal && (
+          <div
+            className="modal-overlay"
+            onClick={(e) =>
+              handleModalClick(e, () => setShowAddAddressModal(false))
+            }
+          >
+            <div className="side-modal">
+              <button
+                className="close-btn"
+                onClick={() => setShowAddAddressModal(false)}
+              >
+                <IoMdClose />
+              </button>
+              <h3>Add New Address</h3>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  dispatch(createAddress(newAddress)).then((res) => {
+                    if (res.meta.requestStatus === "fulfilled") {
+                      dispatch(getAddress());
+                      setNewAddress({
+                        first_name: "",
+                        last_name: "",
+                        mobile: "",
+                        address: "",
+                        address2: "",
+                        landmark: "",
+                        city: "",
+                        state: "",
+                        pincode: "",
+                      });
+                      setShowAddAddressModal(false);
+                    }
+                  });
+                }}
+              >
+                <label>
+                  First Name
+                  <input
+                    name="first_name"
+                    value={newAddress.first_name}
+                    onChange={handleNewAddressChange}
+                    required
+                  />
+                </label>
+
+                <label>
+                  Last Name
+                  <input
+                    name="last_name"
+                    value={newAddress.last_name}
+                    onChange={handleNewAddressChange}
+                    required
+                  />
+                </label>
+                <label>
+                  Mobile Number
+                  <input
+                    name="mobile"
+                    value={newAddress.mobile}
+                    onChange={handleNewAddressChange}
+                    required
+                  />
+                </label>
+                <label>
+                  PIN Code
+                  <input
+                    name="pincode"
+                    value={newAddress.pincode}
+                    onChange={handleNewAddressChange}
+                    required
+                  />
+                </label>
+                <label>
+                  State
+                  <input
+                    name="state"
+                    value={newAddress.state}
+                    onChange={handleNewAddressChange}
+                    required
+                  />
+                </label>
+                <label>
+                  City
+                  <input
+                    name="city"
+                    value={newAddress.city}
+                    onChange={handleNewAddressChange}
+                    required
+                  />
+                </label>
+                <label>
+                  Street Address 1
+                  <input
+                    name="address"
+                    value={newAddress.address}
+                    onChange={handleNewAddressChange}
+                    required
+                  />
+                </label>
+                <label>
+                  Street Address 2
+                  <input
+                    name="address2"
+                    value={newAddress.address2}
+                    onChange={handleNewAddressChange}
+                  />
+                </label>
+                <label>
+                  Landmark
+                  <input
+                    name="landmark"
+                    value={newAddress.landmark}
+                    onChange={handleNewAddressChange}
+                  />
+                </label>
+                <button type="submit">Add Address</button>
+              </form>
+            </div>
+          </div>
+        )}
+        {showEditAddressModal && (
+          <div
+            className="modal-overlay"
+            onClick={(e) =>
+              handleModalClick(e, () => setShowEditAddressModal(false))
+            }
+          >
+            <div className="side-modal">
+              <button
+                className="close-btn"
+                onClick={() => setShowEditAddressModal(false)}
+              >
+                <IoMdClose />
+              </button>
+              <h3>Edit Address</h3>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  dispatch(
+                    editAddress({
+                      id: editAddressData.id,
+                      data: editAddressData,
+                    })
+                  ).then((res) => {
+                    if (res.meta.requestStatus === "fulfilled") {
+                      dispatch(getAddress());
+                      setShowEditAddressModal(false);
+                      setEditAddressData(null);
+                    }
+                  });
+                }}
+              >
+                <label>
+                  First Name
+                  <input
+                    name="first_name"
+                    value={editAddressData?.first_name || ""}
+                    onChange={handleEditAddressChange}
+                  />
+                </label>
+                <label>
+                  Last Name
+                  <input
+                    name="last_name"
+                    value={editAddressData?.last_name || ""}
+                    onChange={handleEditAddressChange}
+                  />
+                </label>
+                <label>
+                  Mobile Number
+                  <input
+                    name="mobile"
+                    value={editAddressData?.mobile || ""}
+                    onChange={handleEditAddressChange}
+                  />
+                </label>
+                <label>
+                  PIN Code
+                  <input
+                    name="pincode"
+                    value={editAddressData?.pincode || ""}
+                    onChange={handleEditAddressChange}
+                  />
+                </label>
+                <label>
+                  State
+                  <input
+                    name="state"
+                    value={editAddressData?.state || ""}
+                    onChange={handleEditAddressChange}
+                  />
+                </label>
+                <label>
+                  City
+                  <input
+                    name="city"
+                    value={editAddressData?.city || ""}
+                    onChange={handleEditAddressChange}
+                  />
+                </label>
+                <label>
+                  Street Address 1
+                  <input
+                    name="address"
+                    value={editAddressData?.address || ""}
+                    onChange={handleEditAddressChange}
+                  />
+                </label>
+                <label>
+                  Street Address 2
+                  <input
+                    name="address2"
+                    value={editAddressData?.address2 || ""}
+                    onChange={handleEditAddressChange}
+                  />
+                </label>
+                <label>
+                  Landmark
+                  <input
+                    name="landmark"
+                    value={editAddressData?.landmark || ""}
+                    onChange={handleEditAddressChange}
+                  />
+                </label>
+                <button type="submit">Update Address</button>
+              </form>
+            </div>
           </div>
         )}
       </div>
-
-      {showEditModal && (
-        <div
-          className="modal-overlay"
-          onClick={(e) => handleModalClick(e, () => setShowEditModal(false))}
-        >
-          <div className="side-modal">
-            <button
-              className="close-btn"
-              onClick={() => setShowEditModal(false)}
-            >
-              <IoMdClose />
-            </button>
-            <h3>Edit Profile</h3>
-            <form>
-              <label>
-                First Name
-                <input defaultValue="John" />
-              </label>
-              <label>
-                Last Name
-                <input defaultValue="Doe" />
-              </label>
-              <label>
-                Email
-                <input defaultValue="johndoe@gmail.com" />
-              </label>
-              <label>
-                Phone
-                <input defaultValue="1234567890" />
-              </label>
-              <label>
-                Date of Birth
-                <input type="date" defaultValue="1999-10-10" />
-              </label>
-              <button type="submit">Save Changes</button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {showAddAddressModal && (
-        <div
-          className="modal-overlay"
-          onClick={(e) =>
-            handleModalClick(e, () => setShowAddAddressModal(false))
-          }
-        >
-          <div className="side-modal">
-            <button
-              className="close-btn"
-              onClick={() => setShowAddAddressModal(false)}
-            >
-              <IoMdClose />
-            </button>
-            <h3>Add New Address</h3>
-            <form>
-              <label>
-                PIN Code
-                <input
-                  name="pin"
-                  value={newAddress.pin}
-                  onChange={handleNewAddressChange}
-                />
-              </label>
-              <label>
-                State
-                <input
-                  name="state"
-                  value={newAddress.state}
-                  onChange={handleNewAddressChange}
-                />
-              </label>
-              <label>
-                City
-                <input
-                  name="city"
-                  value={newAddress.city}
-                  onChange={handleNewAddressChange}
-                />
-              </label>
-              <label>
-                Flat Number
-                <input
-                  name="flat"
-                  value={newAddress.flat}
-                  onChange={handleNewAddressChange}
-                />
-              </label>
-              <label>
-                Street Address
-                <input
-                  name="street"
-                  value={newAddress.street}
-                  onChange={handleNewAddressChange}
-                />
-              </label>
-              <label>
-                Landmark
-                <input
-                  name="landmark"
-                  value={newAddress.landmark}
-                  onChange={handleNewAddressChange}
-                />
-              </label>
-              <button type="submit">Add Address</button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {showEditAddressModal && (
-        <div
-          className="modal-overlay"
-          onClick={(e) =>
-            handleModalClick(e, () => setShowEditAddressModal(false))
-          }
-        >
-          <div className="side-modal">
-            <button
-              className="close-btn"
-              onClick={() => setShowEditAddressModal(false)}
-            >
-              <IoMdClose />
-            </button>
-            <h3>Edit Address</h3>
-            <form>
-              <label>
-                PIN Code
-                <input defaultValue="560041" />
-              </label>
-              <label>
-                State
-                <input defaultValue="Karnataka" />
-              </label>
-              <label>
-                City
-                <input defaultValue="Bangalore" />
-              </label>
-              <label>
-                Flat Number
-                <input defaultValue="44/1 Bharat Apartment 4C" />
-              </label>
-              <label>
-                Street Address
-                <input defaultValue="5th Main Road, Jayanagar" />
-              </label>
-              <label>
-                Landmark
-                <input defaultValue="Near Metro Station" />
-              </label>
-              <button type="submit">Update Address</button>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
-      {/* fotter section */}
-  <Footer />
-      </> 
+      <Footer />
+    </>
   );
 };
 

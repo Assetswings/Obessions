@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./CarpetFinder.css";
 
 
-const steps = [
-    {
+     const steps = [
+      {
       title: "Where will your new floor covering be placed?",
       options: [
         { label: "Living Room", image: "https://i.ibb.co/C5DrsJrn/image-5.jpg" },
@@ -56,6 +56,7 @@ const CarpetFinder = () => {
     const toggleOption = (stepIndex, label) => {
     const current = selections[stepIndex] || [];
     const exists = current.includes(label);
+    
     const updated = exists ? current.filter((l) => l !== label) : [...current, label];
     setSelections({ ...selections, [stepIndex]: updated });
   };
@@ -63,9 +64,9 @@ const CarpetFinder = () => {
     // sector track
     const isSelected = (stepIndex, label) => {
     return selections[stepIndex]?.includes(label);
-  };
+     };
 
-  return (
+    return (
     <div className="finder-wrapper">
       <div className="finder-main">
         <h2 className="finder-title">{steps[currentStep].title}</h2>

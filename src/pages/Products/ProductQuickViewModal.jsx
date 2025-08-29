@@ -11,9 +11,11 @@ import { Heart } from "lucide-react";
 import { addToCart } from "../cart/cartSlice";
 import { ToastContainer, toast } from "react-toastify";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
-import {  fetchWishlist, addToWishlist, removeFromWishlist } from "../../components/Wishtlist/WishlistSlice";
+import { fetchWishlist, addToWishlist, removeFromWishlist,} from "../../components/Wishtlist/WishlistSlice";
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json"; 
+import { checkPincode, resetPincodeState} from "../Productdetails/pincodeSlice";
+
 
 const ProductQuickViewModal = ({ show, product, onHide }) => {
   const [quantity, setQuantity] = useState(1);
@@ -23,14 +25,17 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const [activeTab, setActiveTab] = useState("highlights");
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [animatedWish, setAnimatedWish] = useState(null); 
+  const [pincode, setPincode] = useState('');
+  const [pincodeChecked, setPincodeChecked] = useState(false);
 
   const modalRef = useRef();
   const sectionsRef = useRef({});
   const dispatch = useDispatch();
-  const actionurl = product?.action_url;
-  console.log("url_trck----->", actionurl);
+  const actionurl = product?.action_url ? product?.action_url  : product?.slug;
   const { data, loading, error } = useSelector((state) => state.productDetail);
+  const pincodeset = useSelector((state) => state.pincode);
   const wishlist = useSelector((state) => state.wishlist);
+
   useEffect(() => {
     if (actionurl) {
       setLocalLoading(true);
@@ -40,13 +45,14 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       dispatch(fetchProductDetail(actionurl));
     }
   }, [dispatch, actionurl]);
-     console.log(" data_comming form details----->", data);
-
   // Set image when data loads
     useEffect(() => {
     if (data?.product_images?.length > 0) {
       setSelectedImage(data.product_images[0].media);
       setLocalLoading(false);
+    }
+    if(data?.product_sizes.length > 0){
+      setSelectedSize(data?.product_sizes[0])
     }
   }, [data]);
 
@@ -71,7 +77,6 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   // Price dynamics solution
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
   const productId = data?.id;
-  console.log("Current Product ID:------->", productId);
 
   useEffect(() => {
     if (show) {
@@ -93,18 +98,45 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
 
   // Don't render if not shown
   if (!show || !product) return null;
+  const handleCheck = () => {
+    if (pincode.trim()) {
+    dispatch(checkPincode(pincode)).then(() => {
+    setPincodeChecked(true);
+      });
+    }
+  };
 
-  // ADD TO CART FUNCTION
-  const handleAddToCart = () => {
+  const handleReset = () => {
+    dispatch(resetPincodeState());
+    setPincode("");
+    setPincodeChecked(false);
+  };
+
+   // ADD TO CART FUNCTION (restricted until pincode check success)
+   const handleAddToCart = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       setShowLoginPrompt(true);
       return;
     }
-    // if (!selectedSize) {
-    //   toast.warning("Please select a size");
-    //   return;
-    // }
+
+    if (!pincodeChecked || !pincodeset.pinset?.is_active) {
+      toast.error("Please check delivery availability before adding to cart", {
+        style: {
+          background: "#1f1f1f",
+          color: "#fff",
+          borderRadius: "0px",
+          padding: "12px 16px",
+          fontSize: "14px",
+          zIndex:999999
+        },
+        hideProgressBar: true,
+        closeButton: false,
+        icon: true,
+      });
+      return;
+    }
+
     dispatch(addToCart({ product_id: productId, quantity }))
       .unwrap()
       .then(() => {
@@ -120,8 +152,6 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
           closeButton: false,
           icon: true,
         });
-
-        // onHide();
       })
       .catch((error) => {
         toast.error("Failed to add to cart");
@@ -129,44 +159,53 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       });
   };
 
+  
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
+  
+    // 🔑 check login first
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setShowLoginPrompt(true);
+      return;
+    }
+  
     const isInWishlist = wishlist.productIds.includes(product.id);
-
+  
     try {
-         if (isInWishlist) {
-         const wishlistItem = wishlist.items.find(
+      if (isInWishlist) {
+        const wishlistItem = wishlist.items.find(
           (item) => item.product_id === product.id
         );
-          if (wishlistItem?.id) {
+        if (wishlistItem?.id) {
           await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
           toast.success("Removed from wishlist", {
-              style: {
+            style: {
               border: "1px solid #713200",
               padding: "16px",
               color: "#713200",
             },
-              iconTheme: {
+            iconTheme: {
               primary: "#713200",
               secondary: "#FFFAEE",
             },
           });
-            dispatch(fetchWishlist());
+          dispatch(fetchWishlist());
         }
       } else {
         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
         toast.success("Added to wishlist", {
-            style: {
+          style: {
             border: "1px solid #713200",
             padding: "16px",
             color: "#713200",
           },
-            iconTheme: {
+          iconTheme: {
             primary: "#713200",
             secondary: "#FFFAEE",
           },
         });
-        setAnimatedWish(product.id); 
+        setAnimatedWish(product.id);
         dispatch(fetchWishlist());
         setTimeout(() => setAnimatedWish(null), 1500);
       }
@@ -174,7 +213,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       toast.error("Something went wrong");
     }
   };
-
+  
 //   useEffect(() => {
 //     dispatch(fetchWishlist());
 //  }, [dispatch]);
@@ -287,7 +326,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
               </p>
 
               {/* Size Selector */}
-              <div className="size-selector">
+              {/* <div className="size-selector">
                 {loading ? (
                     <>
                     <p>
@@ -362,7 +401,87 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     ))}
                   </div>
                 )}
+              </div> */}
+
+              {/* Size Selector */}
+          <div className="size-selector">
+            {loading ? (
+              <>
+                <p>
+                  <Skeleton width={150} />
+                </p>
+                <div style={{ display: "flex", gap: 10 }}>
+                  {Array(3)
+                    .fill(0)
+                    .map((_, i) => (
+                      <Skeleton key={i} width={60} height={60} />
+                    ))}
+                </div>
+              </>
+            ) : (
+              data?.product_sizes?.length > 0 && (
+                <>
+                  <p className="selected-size-label">
+                    CHOOSE A SIZE:
+                    {selectedSize && <strong>{selectedSize.size}</strong>}
+                  </p>
+
+                  <div className="size-options">
+                    {data.product_sizes.map((size) => (
+                      <div
+                        key={size.id}
+                        className={`size-btn ${
+                          selectedSize?.id === size.id ? "active-size" : ""
+                        }`}
+                        onClick={() => setSelectedSize(size)}
+                      >
+                        <div className="set_btn_trcak">
+                          <img
+                            src="https://i.ibb.co/x86bSjV6/Frame-7.png"
+                            className="size-image"
+                            alt={size.size}
+                          />
+                        </div>
+                        <div className="lbl-track">{size.size}</div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )
+            )}
+          </div>
+
+          <div className="color-selector">
+            {loading ? (
+              <div style={{ display: "flex", gap: "10px" }}>
+                {Array(5)
+                  .fill(0)
+                  .map((_, idx) => (
+                    <Skeleton key={idx} square height={30} width={30} />
+                  ))}
               </div>
+            ) : (
+              <>
+                <div>
+                  <p>CHOOSE A COLOR:</p>
+                </div>
+                <div className="color-options">
+                  {selectedSize?.product_colors?.map((color,idx) =>
+                      <div className="selected-color" key={idx}>
+                        <div className="color-circle">
+                          <img
+                            src={color.color_media}
+                            alt={color.color}
+                            height={60}
+                            width={60}
+                          />
+                        </div>
+                      </div>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
 
               {/* Quantity Selector */}
               <div className="quantity-selector">
@@ -378,20 +497,39 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 </div>
               </div>
 
-              {/* Pincode Check */}
-              <div className="pincode-check">
+             {/* Pincode Check */}
+             <div className="pincode-check">
                 <p className="check-heading">CHECK AVAILABILITY</p>
                 <div className="input-wrapper">
                   <input
                     className="checkup_track_txt"
                     type="text"
                     placeholder="Enter Delivery Pincode"
+                    value={pincode}
+                    onChange={(e) => setPincode(e.target.value)}
                   />
-                  <button className="check-btn">Check</button>
+                  <button onClick={handleCheck} className="check-btn">
+                    Check
+                  </button>
+                  {pincodeChecked && (
+                    <button onClick={handleReset} className="check-btn">
+                      Reset
+                    </button>
+                  )}
                 </div>
-                <p className="delivery-info">
-                  Available PAN India. We deliver wherever you call home.
-                </p>
+
+                {/* Show pincode info */}
+                {pincodeset.loading && <p>Checking...</p>}
+                {pincodeset.error && (
+                  <p style={{ color: "red",marginTop:"15px" }}>Not serviceable for your area</p>
+                )}
+                {pincodeset.pinset?.pincode && pincodeset.pinset?.is_active && (
+                  <p style={{ color: "green",marginTop:"15px" }}>
+                    ✅ Delivery available at{" "}
+                    {pincodeset.pinset.city}, {pincodeset.pinset.state} (
+                    {pincodeset.pinset.delivery_tat})
+                  </p>
+                )}
               </div>
 
               {/* Cart & Wishlist */}

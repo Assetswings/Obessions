@@ -47,13 +47,15 @@ const OtherTopnav = () => {
     }
   };
 
-  const handleWishlistClick = () => {
+
+    const handleWishlistClick = () => {
     if (isLoggedIn) {
-      setShowWishlist(true);
+    setShowWishlist(true);
     } else {
-      setShowLoginPrompt(true);
+    setShowLoginPrompt(true);
     }
   };
+
 
   const handleLogout = () => {
     localStorage.removeItem("token");

@@ -1,85 +1,162 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCarpetFinder } from "./carpetFinderSlice";
+import { useNavigate } from "react-router-dom";
 import "./CarpetFinder.css";
+import { toast } from "react-hot-toast";
 
-
-     const steps = [
-      {
-      title: "Where will your new floor covering be placed?",
-      options: [
-        { label: "Living Room", image: "https://i.ibb.co/C5DrsJrn/image-5.jpg" },
-        { label: "Bedroom", image: "https://i.ibb.co/N2rMCqk4/image.jpg" },
-        { label: "Kitchen", image: "https://i.ibb.co/fVQ8XzHJ/image-1.jpg" },
-        { label: "Bathroom", image: "https://i.ibb.co/x8Y6dYDZ/image-2.jpg" },
-        { label: "Hallway", image: "https://i.ibb.co/1fVJ2gD4/image-3.jpg" },
-        { label: "Children's Room", image: "https://i.ibb.co/yc2KCBQZ/image-4.jpg" },
-      ],
-    },
-    {
-      title: "Which Size or Shape fits your Space?",
-      options: [
-        { label: "Small", image: "https://i.ibb.co/CKZ8Rbst/Objects-1.png" },
-        { label: "Medium", image: "https://i.ibb.co/RpqvnbJW/Objects.png" },
-        { label: "Large", image: "https://i.ibb.co/DgWQfJQc/Objects-2.png" }, 
-        { label: "Runner", image: "https://i.ibb.co/yB6FjFVg/Objects-3.png" },
-        { label: "Rounded", image: "https://i.ibb.co/zVBpGcnq/Objects-4.png" },
-        { label: "All Options", image: "https://i.ibb.co/JRL7YzBJ/Objects-5.png" },
-      ],
-    },
-    {
-      title: "Which Colors complement your Space?",
-      options: [
-        { label: "Grays", image: "https://i.ibb.co/R49xX5BQ/1.jpg" },
-        { label: "Neutrals", image: "https://i.ibb.co/yFQPkWPF/2.jpg"},
-        { label: "Warm", image: "https://i.ibb.co/Zp6VbDPp/3.jpg" },
-        { label: "Pastels", image: "https://i.ibb.co/Hfyk1Y0G/4.jpg" },
-        { label: "Blues", image: "https://i.ibb.co/tpZzRmLp/5.jpg" },
-        { label: "Bold", image: "https://i.ibb.co/6R51LCpG/6.jpg" },
-      ],
-    },
-    {
-      title: "What Style suits your Space best?",
-      options: [
-        { label: "Classical", image: "https://i.ibb.co/G4DbZryF/Rectangle-58.jpg" },
-        { label: "Minimal", image: "https://i.ibb.co/QvtHZD6n/Rectangle-52.jpg" },
-        { label: "Tropical", image: "https://i.ibb.co/jPjqZxRf/Rectangle-53.jpg" },
-        { label: "Geometric", image: "https://i.ibb.co/rKK1H4S9/Rectangle-60.jpg" },
-        { label: "Bohemian", image: "https://i.ibb.co/wZHtgjyT/Rectangle-59.jpg" },
-        { label: "Modern Contemporary", image: "https://i.ibb.co/r2GxgQs4/Rectangle-54.jpg" },
-      ],
-    },
-  ];
 const CarpetFinder = () => {
+  const dispatch = useDispatch();
+  const { data, loading, error } = useSelector((state) => state.carpetFinder);
   const [currentStep, setCurrentStep] = useState(0);
   const [selections, setSelections] = useState({});
+  const [steps, setSteps] = useState([]);
+  const navigate = useNavigate();
 
-   // toggle opptions 
-    const toggleOption = (stepIndex, label) => {
+  console.log("filter_the_object-------->", selections);
+
+  // Fetch data when mounted
+  useEffect(() => {
+    dispatch(fetchCarpetFinder());
+  }, [dispatch]);
+
+  // Build steps when data changes
+  useEffect(() => {
+    if (
+      Array.isArray(data?.data?.carpet_finders) &&
+      data.data.carpet_finders.length > 0
+    ) {
+      const carpet = data.data.carpet_finders[0];
+      setSteps([
+        {
+          title: "Where will your new floor covering be placed?",
+          options:
+            carpet.room_list?.map((item) => ({
+              label: item?.title || "Untitled Room",
+              image: item?.media || "",
+              key: item?.room_filter,
+            })) || [],
+        },
+        {
+          title: "Which Size or Shape fits your Space?",
+          options:
+            carpet.sizes?.map((item) => ({
+              label: item?.size || "Unknown Size",
+              image: item?.media || "",
+              key: item?.size_filter,
+            })) || [],
+        },
+        {
+          title: "Which Colors complement your Space?",
+          options:
+            carpet.colors?.map((item) => ({
+              label: item?.color || "Unknown Color",
+              image: item?.media || "",
+              key: item?.color_filter,
+            })) || [],
+        },
+        {
+          title: "What Style suits your Space best?",
+          options:
+            carpet.patterns?.map((item) => ({
+              label: item?.pattern || "Unknown Pattern",
+              image: item?.media || "",
+              key: item?.pattern_filter,
+            })) || [],
+        },
+      ]);
+    }
+  }, [data]);
+
+  const toggleOption = (stepIndex, label, key) => {
     const current = selections[stepIndex] || [];
-    const exists = current.includes(label);
-    
-    const updated = exists ? current.filter((l) => l !== label) : [...current, label];
-    setSelections({ ...selections, [stepIndex]: updated });
+    const exists = current.some((item) => item.label === label);
+
+    const updated = exists
+      ? current.filter((item) => item.label !== label)
+      : [...current, { label, key }];
+
+    const newSelections = { ...selections, [stepIndex]: updated };
+    setSelections(newSelections);
+
+    console.log("Updated selections:", newSelections);
   };
 
-    // sector track
-    const isSelected = (stepIndex, label) => {
-    return selections[stepIndex]?.includes(label);
-     };
+  const handelseeresult = () => {
+    // Validate all steps before proceeding
+    if (steps.some((_, index) => !selections[index]?.length)) {
+      toast.error("Please make a selection in all steps before continuing.");
+      return;
+    }
 
+    let filterReq = {
+      room_filter: selections[0][0].key,
+      size_filter: selections[1][0].key,
+      color_filter: selections[2][0].key,
+      pattern_filter: selections[3][0].key,
+    };
+
+    console.log("====================================");
+    console.log(filterReq);
+    console.log("====================================");
+
+    navigate("/carpetfinderserch", {
+      state: filterReq,
+    });
+  };
+
+  const isSelected = (stepIndex, label) =>
+    selections[stepIndex]?.some((item) => item.label === label);
+
+  // Loading state
+  if (loading) {
     return (
+      <div className="finder-wrapper">
+        <p>Loading Carpet Finder...</p>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="finder-wrapper">
+        <p style={{ color: "red" }}>Error: {error}</p>
+      </div>
+    );
+  }
+
+  // No data
+  if (!steps.length) {
+    return (
+      <div className="finder-wrapper">
+        <p>No carpet finder data available.</p>
+      </div>
+    );
+  }
+
+  return (
     <div className="finder-wrapper">
       <div className="finder-main">
-        <h2 className="finder-title">{steps[currentStep].title}</h2>
+        <h2 className="finder-title">{steps[currentStep]?.title}</h2>
         <div className="finder-grid">
-          {steps[currentStep].options.map(({ label, image }) => (
+          {steps[currentStep]?.options.map(({ label, image, key }) => (
             <div
               key={label}
-              className={`finder-card ${isSelected(currentStep, label) ? "selected" : ""}`}
-              onClick={() => toggleOption(currentStep, label)}
+              className={`finder-card ${
+                isSelected(currentStep, label) ? "selected" : ""
+              }`}
+              onClick={() => toggleOption(currentStep, label, key)}
             >
-              <img src={image} alt={label} />
+              {image ? (
+                <img src={image} alt={label} />
+              ) : (
+                <div className="img-placeholder">No Image</div>
+              )}
               <span className="card-label">{label}</span>
-              {isSelected(currentStep, label) && <div className="checkmark">✔</div>}
+              {isSelected(currentStep, label) && (
+                <div className="checkmark">✔</div>
+              )}
             </div>
           ))}
         </div>
@@ -91,9 +168,21 @@ const CarpetFinder = () => {
             Back ↑
           </button>
           {currentStep < steps.length - 1 ? (
-            <button onClick={() => setCurrentStep((prev) => prev + 1)}>Next ↓</button>
+            <button
+              onClick={() => {
+                if (!selections[currentStep]?.length) {
+                  toast.error("Please select at least one option to proceed.");
+                  return;
+                }
+                setCurrentStep((prev) => prev + 1);
+              }}
+            >
+              Next ↓
+            </button>
           ) : (
-            <button className="submit-btn">See Results</button>
+            <button className="submit-btn" onClick={handelseeresult}>
+              See Results
+            </button>
           )}
         </div>
       </div>
@@ -102,7 +191,9 @@ const CarpetFinder = () => {
         {steps.map((_, index) => (
           <div key={index} className="stepper-line-wrapper">
             <div
-              className={`stepper-circle ${index === currentStep ? "active" : ""}`}
+              className={`stepper-circle ${
+                index === currentStep ? "active" : ""
+              }`}
             >
               {index + 1}
             </div>

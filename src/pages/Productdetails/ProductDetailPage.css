@@ -200,11 +200,14 @@ font-family: "Playfair Display", serif; */
 
 .selected-color {
   border: 2px solid #bdbdbd;
-  padding: 5px;
+  /* padding: 5px; */
 }
 .color-circle {
-  width: 32px;
-  height: 32px;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* border-radius: 50%; */
 }
 
@@ -259,9 +262,9 @@ font-family: "Playfair Display", serif; */
   text-decoration: underline;
 }
 
-.checkup_track_txt {
+/* .checkup_track_txt {
   background-color: #f7f7f7;
-}
+} */
 .delivery-info {
   font-size: 13px;
   color: #777;

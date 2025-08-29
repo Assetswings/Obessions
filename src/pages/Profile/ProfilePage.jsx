@@ -5,11 +5,16 @@ import { SquareCheck, SquarePen } from "lucide-react";
 import Footer from "../../components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile, updateUserProfile } from "./profileSlice";
+import OrderHistoryPage from "../Orderhistory/OrderHistoryPage";
+import API from "../../app/api";
+import { Toaster, toast } from "react-hot-toast";
+import axios from "axios";
 import {
   getAddress,
   createAddress,
   deleteAddress,
   editAddress,
+  makeDefaultAddress,
 } from "./addressSlice";
 
 const ProfilePage = () => {
@@ -18,6 +23,9 @@ const ProfilePage = () => {
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
   const [showEditAddressModal, setShowEditAddressModal] = useState(false);
   const [editAddressData, setEditAddressData] = useState(null);
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [otpSession, setOtpSession] = useState(null); 
 
   const [newAddress, setNewAddress] = useState({
     first_name: "",
@@ -37,7 +45,6 @@ const ProfilePage = () => {
     } else {
       document.body.style.overflow = "auto";
     }
-
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -70,6 +77,66 @@ const ProfilePage = () => {
   });
 
   const [dob, setDob] = useState("");
+
+  // Send OTP API
+  const handleSendOtp = async () => {
+    try {
+      const res = await API.post("/email/send-otp", {
+        email: profileData?.email,
+      });
+
+      if (res.data.status === "success") {
+        setOtpSession(res.data.data); // save otp_requested_id + temp_id
+        toast.success("OTP sent successfully!");
+        setShowOtpModal(true); // open modal
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to send OTP");
+    }
+  };
+
+  // Verify OTP API
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await API.post("/email/verify-otp", {
+        otp,
+        otp_requested_id: otpSession?.otp_requested_id,
+        temp_id: otpSession?.temp_id,
+      });
+
+      if (res.data.success) {
+        toast.success(res.data.msg || "Verified successfully!", {
+
+          style: {
+            border: "1px solid black",
+            padding: "16px",
+            color: "black",
+          },
+          iconTheme: {
+            primary: "black",
+            secondary: "white",
+          },
+        });
+        setShowOtpModal(false);
+        setOtp("");
+        dispatch(fetchUserProfile());
+      }
+    } catch (err) {
+      console.log(err,'error');
+      toast.error(err.response?.msg || "OTP verification failed", {
+        style: {
+          border: "1px solid #FF0000",
+          padding: "16px",
+          color: "#FF0000",
+        },
+        iconTheme: {
+          primary: "#FF0000",
+          secondary: "#FFFAEE",
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     if (showEditModal && profileData) {
@@ -137,14 +204,17 @@ const ProfilePage = () => {
   };
 
   const deteteAddress = (id) => {
-    console.log("====================================");
-    console.log("is--->", id);
-    console.log("====================================");
     dispatch(deleteAddress(id));
+  };
+
+  const mkdaddress = (id) => {
+    dispatch(makeDefaultAddress(id));
+    dispatch(getAddress());
   };
 
   return (
     <>
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="profile-container">
         <div className="tabs">
           <div className="button_group_tracker">
@@ -190,7 +260,17 @@ const ProfilePage = () => {
               </div>
               <div>
                 <strong>Email</strong>
-                <div>{profileData?.email}</div>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                >
+                  {profileData?.email}
+                  { 
+                    profileData?.email_verified === 0 ?  <button className="verify-btn" onClick={handleSendOtp}>
+                    Verify
+                  </button> : <span> ✅ email veryfied </span>  
+                  }
+                 
+                </div>
               </div>
               <div>
                 <strong>Phone</strong>
@@ -250,6 +330,13 @@ const ProfilePage = () => {
                         Edit
                       </span>
                       <span onClick={() => deteteAddress(item.id)}>Remove</span>
+                      {item?.is_default === true ? (
+                        <span> </span>
+                      ) : (
+                        <span onClick={() => mkdaddress(item.id)}>
+                          Make Default
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -259,7 +346,7 @@ const ProfilePage = () => {
 
           {activeTab === "orders" && (
             <div className="orders-section">
-              <div>No orders found.</div>
+              <OrderHistoryPage />
             </div>
           )}
         </div>
@@ -385,6 +472,7 @@ const ProfilePage = () => {
                   Mobile Number
                   <input
                     name="mobile"
+                    maxLength={10}
                     value={newAddress.mobile}
                     onChange={handleNewAddressChange}
                     required
@@ -448,13 +536,8 @@ const ProfilePage = () => {
           </div>
         )}
         {showEditAddressModal && (
-          <div
-            className="modal-overlay"
-            onClick={(e) =>
-              handleModalClick(e, () => setShowEditAddressModal(false))
-            }
-          >
-            <div className="side-modal">
+          <div className="modal-overlay">
+            <div className="side-modal" onClick={(e) => e.stopPropagation()}>
               <button
                 className="close-btn"
                 onClick={() => setShowEditAddressModal(false)}
@@ -500,6 +583,7 @@ const ProfilePage = () => {
                   Mobile Number
                   <input
                     name="mobile"
+                    maxLength={10}
                     value={editAddressData?.mobile || ""}
                     onChange={handleEditAddressChange}
                   />
@@ -558,6 +642,29 @@ const ProfilePage = () => {
           </div>
         )}
       </div>
+      {showOtpModal && (
+        <div className="modal-overlay" onClick={() => setShowOtpModal(false)}>
+          <div className="side-modal" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="close-btn"
+              onClick={() => setShowOtpModal(false)}
+            >
+              <IoMdClose />
+            </button>
+            <h3>Enter OTP</h3>
+            <form onSubmit={handleVerifyOtp}>
+              <input
+                type="text"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                placeholder="Enter OTP"
+                required
+              />
+              <button type="submit">Verify OTP</button>
+            </form>
+          </div>
+        </div>
+      )}
       <Footer />
     </>
   );

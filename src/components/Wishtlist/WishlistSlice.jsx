@@ -90,7 +90,7 @@ const wishlistSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Fetch Wishlist
+    
       .addCase(fetchWishlist.pending, (state) => {
         state.loading = true;
       })

@@ -19,10 +19,13 @@ import Faq from "../pages/Faq/Faq";
 import BlogPost from "../components/Blogpage/BlogPost";
 import ScrollToTop from "./ScrollToTop";
 import ScrollToTopWrapper from "./ScrollToTopWrapper";
+import Carpetfinderserch from "../pages/Carpetfinder/Carpetfinderserch";
+import Successpage from "../pages/Payment/Successpage";
+import Searchlist from "../pages/Searchlist/Searchlist";
+
 
   const AppRoutes = () => {
   return (
-
       <ScrollToTopWrapper>
       <Routes>
       <Route path="/" element={<MainLayout />}>
@@ -38,7 +41,10 @@ import ScrollToTopWrapper from "./ScrollToTopWrapper";
         <Route path="OrderTrackingPage" element={<OrderTrackingPage />} />
         <Route path="ProfilePage" element={<ProfilePage />} />
         <Route path="paymentgetway" element={<PaymentPage />} />
+        <Route path="ordersuccess" element={<Successpage />} />
         <Route path="carpetfinder" element={<CarpetFinder />} />
+        <Route path="searchlist" element={<Searchlist />} />
+        <Route path="carpetfinderserch" element={<Carpetfinderserch/>} />
         <Route path="aboutpage" element={<AboutPage />} />
         <Route path="contactus" element={<ContactUs />} />
         <Route path="faq" element={<Faq/>} />

@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./AboutPage.css";
 import { FaGem } from "react-icons/fa";
 import { FaAward } from "react-icons/fa";
 import Footer from "../../components/Footer/Footer";
+import { fetchAboutUs } from "./aboutSlice";
 const AboutPage = () => {
+  const dispatch = useDispatch();
+  const { data } = useSelector((state) => state.about);
+  console.log(data,'about us data');
+  useEffect(() => {
+    dispatch(fetchAboutUs());
+  }, [dispatch]);
   return (
     <>
       <div className="about-wrapper">
         {/* Hero Section */}
-        <section className="about-hero">
+        <section className="about-hero" style={{backgroundImage: `url(${data?.bg_media})`,}}>
           <div className="hero-overlay">
             <h1>
               Our <span className="italic">passion</span> lies in <br />
@@ -17,7 +25,6 @@ const AboutPage = () => {
             </h1>
           </div>
         </section>
-
         {/* Text Content Section */}
         {/* Styled Text Section */}
         <section className="about-text-section">
@@ -26,12 +33,9 @@ const AboutPage = () => {
               alt="Philosophy Detail"
               className="top-left-icon"
             />
-        
-          <div className="about-text-content">
+            <div className="about-text-content">
             <p>
-              A well-styled space isn’t about trends. It’s about <br /> how it
-              makes you feel. We’re here to help you build <br />a home that
-              feels like home.
+              {data?.description}
             </p>
           </div>
           <img
@@ -48,20 +52,17 @@ const AboutPage = () => {
               <strong>Our Philosophy</strong>
             </h2>
             <img
-              src="https://i.ibb.co/dstH3HSs/image-10.png"
+              src={data.our_philosophy?.left}
               alt="Philosophy Detail"
               className="philosophy-subimage"
             />
             <p>
-              We believe true luxury isn’t loud, it’s felt in the details. It’s
-              in the smooth glide of a soap dispenser, the plush comfort
-              underfoot, or the way a table setting quietly transforms a meal
-              into a memory.
+              {data.our_philosophy?.description}
             </p>
           </div>
           <div className="philosophy-right">
             <img
-              src="https://i.ibb.co/5XwVsBTH/image-9.png"
+              src={data.our_philosophy?.right}
               alt="Craftsman Weaving"
             />
           </div>

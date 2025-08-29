@@ -5,16 +5,19 @@ import BestsellersSlider from "../../components/slider/BestsellersSlider";
 import VideoSection from "../../components/InstaVideo/VideoSection";
 import Footer from "../../components/Footer/Footer";
 import { useNavigate } from "react-router-dom";
-import { search } from "lucide-react";
+// import { search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHomeData } from "./homeSlice";
+import { fetchSearchResults, clearSearchResults } from "./searchSlice";
+import emtyimage from "../../assets/images/empty.jpg";
+import ProductQuickViewModal from "../Products/ProductQuickViewModal";
 
 /* ─── Hero + Collection assets ─── */
 import image1 from "../../assets/images/Maskgroup-1.png";
 import image2 from "../../assets/images/Maskgroup-2.png";
 import image3 from "../../assets/images/Maskgroup-3.png";
 import image4 from "../../assets/images/Maskgroup.png";
-import logo from "../../assets/icons/Obslogo.png"; 
+import logo from "../../assets/icons/Obslogo.png";
 import livingroomLeft from "../../assets/images/livingroomLeft.png";
 import livingroomRight from "../../assets/images/livingroomRight.png";
 
@@ -27,21 +30,6 @@ import shopThumb5 from "../../assets/images/shopthump.png";
 import shopThumb6 from "../../assets/images/shopthump.png";
 import Tableimage from "../../assets/images/Kitchen1.png";
 
-// image for table_flat_overview
-import flat1 from "../../assets/images/Table_image1.png";
-import flat2 from "../../assets/images/Table_image2.png";
-import flat3 from "../../assets/images/Table_image3.png";
-
-//Carpet_teack
-import carpet1 from "../../assets/images/carpet1.png";
-import carpet2 from "../../assets/images/carpet2.png";
-import carpet3 from "../../assets/images/carpet3.png";
-import carpet4 from "../../assets/images/carpet4.png";
-import carpet5 from "../../assets/images/carpet5.png";
-import carpet6 from "../../assets/images/carpet6.png";
-import carpet7 from "../../assets/images/carpet7.png";
-import carpet8 from "../../assets/images/carpet8.png";
-
 //image for floorsection
 import FloorDesign1 from "../../assets/images/FloorDesign1.png";
 import FloorDesign2 from "../../assets/images/FloorDesign2.png";
@@ -50,21 +38,9 @@ import FloorDesign4 from "../../assets/images/FloorDesign4.png";
 import FloorDesign5 from "../../assets/images/FloorDesign5.png";
 import FloorDesign6 from "../../assets/images/FloorDesign6.png";
 
-// image of Obsessed
-import obsimage1 from "../../assets/images/Obsessed1.png";
-import obsimage2 from "../../assets/images/Obsessed2.png";
-import obsimage3 from "../../assets/images/Obsessed3.png";
-import obsimage4 from "../../assets/images/Obsessed4.png";
-import obsimage5 from "../../assets/images/Obsessed5.png";
-import obsimage6 from "../../assets/images/Obsessed6.png";
-import obsimage7 from "../../assets/images/Obsessed7.png";
-import obsimage8 from "../../assets/images/Obsessed8.png";
-
 // video section
 import videoimage from "../../assets/images/videoimage.png";
 import { Search } from "lucide-react";
-
-
 
 const shopByItems = [
   {
@@ -88,7 +64,7 @@ const shopByItems = [
   },
 ];
 
-  const floatingImages = [
+const floatingImages = [
   { id: 1, src: FloorDesign1, className: "imgf1" },
   { id: 2, src: FloorDesign2, className: "imgf2" },
   { id: 3, src: FloorDesign3, className: "imgf3" },
@@ -99,26 +75,55 @@ const shopByItems = [
 
 
 const HomePage = () => {
-
-   const token = localStorage.getItem('token');
-    console.log("token----->",token); 
-    
+  const token = localStorage.getItem("token");
+  // console.log("token----->", token);
   const [active, setActive] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [query, setQuery] = useState("");
+  const [quickViewProduct, setQuickViewProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
+  // console.log("query---->", query);
   // 🏠 Home Data Fetching
-  const { data, loading, error } = useSelector((state) => state.home);
+  const { data } = useSelector((state) => state.home);
+  
+  const searchState = useSelector((state) => state.search || {});
+  const { results = [], loading, error } = searchState;
+
+  // console.log("🔥fffffff::::::::", results);
+
+      useEffect(() => {
+      if (!query.trim()) {
+      dispatch(clearSearchResults());
+      return;
+    }
+      const timeoutId = setTimeout(() => {
+      dispatch(fetchSearchResults(query));
+    },400);
+
+      return () => clearTimeout(timeoutId);
+  }, [query, dispatch]);
+
   useEffect(() => {
     dispatch(fetchHomeData());
   }, [dispatch]);
-  
+
+  const handleSearch = () => {
+    if (query.trim()) {
+      dispatch(fetchSearchResults(query));
+    } else {
+      dispatch(clearSearchResults());
+    }
+  };
+
   useEffect(() => {
     if (data) {
-      console.log("📦 Full Home Data:", data);
-      console.log("🎯 Hero Banners:", data.hero_banner_categories);
-      console.log("🖼️ Banner Sections:", data.banners);
-      console.log("🔥 Best Sellers:", data.bestSellers);
+      // console.log("📦 Full Home Data:", data);
+      // console.log("🎯 Hero Banners:", data.hero_banner_categories);
+      // console.log("🖼️ Banner Sections:", data.banners);
+      // console.log("🔥 Best Sellers:", data.bestSellers);
     }
   }, [data]);
 
@@ -127,10 +132,10 @@ const HomePage = () => {
     navigate("/collection");
   };
 
-         const handleCategoryClick = (categorySlug) => {
-         navigate("/products", { state: { category: categorySlug } });
-    };
-   
+  const handleCategoryClick = (categorySlug) => {
+    navigate("/products", { state: { category: categorySlug } });
+  };
+
   //🖼️ Image fetcing for LIVE_THE_ART_OF_HOME
   const images_live_art = data?.banners?.LIVE_THE_ART_OF_HOME || [];
   const leftImage = images_live_art.find((img) => img.sequence === 1)?.media;
@@ -142,24 +147,31 @@ const HomePage = () => {
   const promoData = saleTableData.slice(1);
 
   // Carpet BY SECTION
-    const carpetCategories = data?.banners?.CARPET_FOR_EVERY_SPOT?.map((item) => ({
-    id: item.id,
-    title: item.name,
-    image: item.media,
-    link: item.action_url,
-  })) || [];
+  const carpetCategories =
+    data?.banners?.CARPET_FOR_EVERY_SPOT?.map((item) => ({
+      id: item.id,
+      title: item.name,
+      image: item.media,
+      link: item.action_url,
+    })) || [];
 
-   //OBSESSED_RIGHT_NOW section 
-    const obsessedItems = data?.banners?.OBSESSED_RIGHT_NOW?.map((item) => ({
-    id: item.id,
-    src: item.media,
-    title: item.name || "", 
-  })) || [];
+  //OBSESSED_RIGHT_NOW section
+  const obsessedItems =
+    data?.banners?.OBSESSED_RIGHT_NOW?.map((item) => ({
+      id: item.id,
+      src: item.media,
+      title: item.name || "",
+      url : item.action_url
+    })) || [];
 
+    const handleQuickView = (product) => {
+      setQuickViewProduct(product);
+      setShowModal(true);
+    }
 
   return (
     <>
-        {/* ───────────────────── HERO ───────────────────── */}
+      {/* ───────────────────── HERO ───────────────────── */}
       <div className="homepage container-fluid position-relative p-5">
         <img src={image4} className="floating-img img-left" alt="" />
         <img src={logo} className="floating-img img-left-logo" alt="" />
@@ -167,28 +179,20 @@ const HomePage = () => {
           obsessions
         </h1>
 
-
         {/* Floating Images */}
         <img src={image3} className="floating-img img-top" alt="" />
         <img src={image1} className="floating-img img-center" alt="" />
         <img src={image2} className="floating-img img-right" alt="" />
 
-        {/* Category List */}
-        {/* <ul
-          onClick={handleNavigateto}
-          className="list-unstyled position-absolute category-list text-uppercase small">
+        <ul className="list-unstyled position-absolute category-list text-uppercase small">
           {data?.hero_banner_categories?.map((item) => (
-            <li key={item.id}>{item.name}</li>
+              <li
+              key={item.id}
+              onClick={() => handleCategoryClick(item.action_url)}>
+              {item.name}
+            </li>
           ))}
-        </ul> */}
-
-<ul className="list-unstyled position-absolute category-list text-uppercase small">
-      {data?.hero_banner_categories?.map((item) => (
-        <li key={item.id} onClick={() => handleCategoryClick(item.action_url)}>
-          {item.name}
-        </li>
-      ))}
-    </ul>
+        </ul>
         {/* Description */}
         <div className="position-absolute description text-secondary">
           <p>
@@ -198,20 +202,106 @@ const HomePage = () => {
           </p>
         </div>
 
-        {/* Search */}
-        <div className="position-absolute search-wrapper d-flex bg-white rounded shadow">
-          {/* <select className="form-select border-0 rounded-5 sltfector">
-            <option>CATEGORY</option>
-          </select> */}
-          <input
-            type="text"
-            className="form-control border-0 rounded-5 input_home"
-            placeholder="WHAT ARE YOU LOOKING FOR?"
-          />
-          <button className="btn btn-dark rounded-5 button_search">
-            <Search strokeWidth={1.25} />
-          </button>
+        <div
+          className={`search-wrapper bg-white rounded shadow ${
+            isSearchActive ? "active" : ""
+          }`}>
+          <div className="d-flex">
+            <input
+              type="text"
+              className="form-control border-0 rounded-5 input_home"
+              placeholder="WHAT ARE YOU LOOKING FOR?"
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setIsSearchActive(true)}
+              value={query}
+            />
+            <button
+              className="btn btn-dark rounded-5 button_search"
+              onClick={() =>
+                navigate("/searchlist", {
+                  state: { query: query },
+                })
+              }
+            >
+              <Search strokeWidth={1.25} />
+            </button>
+          </div>
+
+          {/* Dropdown results */}
+          {/* {isSearchActive && Array.isArray(results) && results.length > 0 && (
+            <ul className="search-results list-unstyled">
+              {results.map((item, index) => (
+                <li
+                  key={index}
+                  onClick={() => {
+                    setQuery(item.name);
+                    setIsSearchActive(false);
+                  }}
+                >
+                  <span className="result-title">{item.name}</span>
+                  <span className="result-url">{item.action_url}</span>
+                </li>
+              ))}
+            </ul>
+          )} */}
+
+          {/* Search Results Grid */}
+          {isSearchActive && Array.isArray(results) && results.length > 0 && (
+            <>
+              <div className="search-results-grid">
+                {results.slice(0, 8).map((item, index) => (
+                  <div
+                    key={index}
+                    className="search-card"
+                    onClick={(e) => {
+                        navigate("/productsdetails", {
+                          state: { product: item.action_url },
+                        });
+                      }
+                    }
+                  >
+                    <img
+                      src={item.media}
+                      alt={item.media}
+                      className="search-card-img"
+                    />
+                    <div className="search-card-body">
+                      {/* <h6 className="search-card-title">
+        {item.name.split(" ").slice(0,2).join(" ")} */}
+                      {/* </h6> */}
+                      <h6 className="search-card-title">
+                        {" "}
+                        {item.name.split(" ").slice(0, 5).join(" ")}
+                      </h6>
+                      {/* <p className="search-card-price">₹{item.price}</p> */}
+                    </div>
+                  </div>
+                ))}
+                {/* {results.length > 20 && (
+                  <div className="button_track_more">
+                    <p
+                      onClick={() =>
+                        navigate("/searchlist", {
+                          state: { query: query },
+                        })
+                      }
+                    >
+                      {" "}
+                      View More
+                    </p>
+                  </div>
+                )} */}
+              </div>
+            </>
+          )}
         </div>
+        {/* Overlay */}
+        {isSearchActive && (
+          <div
+            className="search-overlay"
+            onClick={() => setIsSearchActive(false)}
+          />
+        )}
 
         {/* Footer */}
         <div className="txt_dynamic_betlt">
@@ -282,7 +372,9 @@ const HomePage = () => {
       </section>
       {/* ────────────────── 🥀💎💎 🐉 BestsellersSlider BY SECTION 🐉 💎💎🥀 ────────────────── */}
       <section className="bestsellersSlider">
-        <BestsellersSlider />
+        <BestsellersSlider
+        onQuickView={handleQuickView}
+        />
       </section>
       {/* ────────────────── 🥀💎💎 🐉 Tablesection BY SECTION 🐉 💎💎🥀 ────────────────── */}
       <section className="tabletop">
@@ -307,35 +399,35 @@ const HomePage = () => {
       </section>
 
       {/* ────────────────── 🥀💎💎 🐉 flat_overview BY SECTION 🐉 💎💎🥀 ────────────────── */}
-      <section className="flat_overview"> 
-  <div className="promo-section">
-    {promoData.map((item) => (
-      <div className="promo-card" key={item.id}>
-        <img src={item.media} alt={item.name} className="promo-image" />
-        <p className="promo-title">{item.name}</p>
-      </div>
-    ))}
-  </div>
-</section>
+      <section className="flat_overview">
+        <div className="promo-section">
+          {promoData.map((item) => (
+            <div className="promo-card" key={item.id}>
+              <img src={item.media} alt={item.name} className="promo-image" />
+              <p className="promo-title">{item.name}</p>
+            </div>
+          ))}
+        </div>
+      </section>
       {/* ────────────────── 🥀💎💎 🐉 Carpet BY SECTION 🐉 💎💎🥀 ────────────────── */}
       <section>
-  <div className="carpet-section">
-    <h2 className="carpet-heading">
-      Carpet for <em>Every Spot</em>
-    </h2>
-    <div className="carpet-grid">
-      {carpetCategories.map((item) => (
-        <div
-          key={item.id}
-          className="carpet-tile"
-          style={{ backgroundImage: `url(${item.image})` }}
-        >
-          <div className="carpet-label">{item.title}</div>
+        <div className="carpet-section">
+          <h2 className="carpet-heading">
+            Carpet for <em>Every Spot</em>
+          </h2>
+          <div className="carpet-grid">
+            {carpetCategories.map((item) => (
+              <div
+                key={item.id}
+                className="carpet-tile"
+                style={{ backgroundImage: `url(${item.image})` }}
+              >
+                <div className="carpet-label">{item.title}</div>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+      </section>
 
       {/* ────────────────── 🥀💎💎 🐉 Floor BY SECTION 🐉 💎💎🥀 ────────────────── */}
       <section className="floor-matcher">
@@ -366,7 +458,13 @@ const HomePage = () => {
         </h2>
         <div className="obsessed-grid">
           {obsessedItems.map((item, idx) => (
-            <div className="obsessed-card" key={idx}>
+           <div
+           className="obsessed-card"
+           key={idx}
+           onClick={() =>
+             navigate("/products", { state: { category: item.url } })
+           }
+         >
               <img src={item.src} alt={item.title} />
               <p>{item.title}</p>
             </div>
@@ -410,8 +508,15 @@ const HomePage = () => {
         </div>
       </section>
 
+   
       {/* Footer setction  */}
       <Footer />
+
+      <ProductQuickViewModal
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          product={quickViewProduct}
+        />
     </>
   );
 };

@@ -1,10 +1,3 @@
-// import axios from 'axios';
-// const API = axios.create({
-//   baseURL: 'https://apis-staging.obsessions.co.in/v1',
-// });
-// // https://b2c.obsessionsgroup.com/api
-// export default API; 
-// src/app/api.js
 
 import axios from 'axios';
 const API = axios.create({
@@ -24,6 +17,27 @@ const API = axios.create({
     return config;
    },
   (error) => Promise.reject(error)
+);
+
+// 🔹 Response Interceptor → Handle 401 errors
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+         (
+        error.response.data?.status === "Token is Expired" ||
+        error.response.data?.status === "Token is Invalid" ||
+        error.response.data?.status === "User is Blocked." ||
+        error.response.data?.status === "Authorization Token not found"
+        )
+    ) {
+      localStorage.clear(); 
+      window.location.href = "/"; 
+    }
+    return Promise.reject(error);
+  }
 );
 
 export default API;

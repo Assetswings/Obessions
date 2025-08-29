@@ -12,7 +12,7 @@
     width: 100vw;
     height: 100vh;
     pointer-events: none; /* allow clicks to go through by default */
-    z-index: 998;
+    z-index: 999999;
      }
   
   .mega-backdrop {

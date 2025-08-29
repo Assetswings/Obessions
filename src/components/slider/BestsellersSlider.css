@@ -63,12 +63,16 @@
   transition: opacity 0.2s ease;
   pointer-events: none;
   text-align: center;
-   font-family: 'Helvetica Neue', sans-serif;
-   font-weight: 400;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
 }
 
+/* ✅ FIX: show quick-view on hover of bestseller-card */
 .bestseller-card:hover .quick-view {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .fav-icon {
@@ -86,7 +90,6 @@
   align-items: center;
 }
 
-/* 🟡 Updated Title + Price Styling */
 .product-info,
 .product-info-card {
   padding: 0.5rem 0.75rem;
@@ -104,17 +107,16 @@
   color: #111;
   width: 180px !important;
   display: -webkit-box;
-  -webkit-line-clamp: 2;            /* 👈 Limit to 2 lines */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 2.6em;                    /* 👈 Adjusted for 2 lines of 150% line-height */
+  height: 2.6em;
 }
-
 
 .product-info .price,
 .product-info-card .price {
-  font-size:14px;
+  font-size: 14px;
   color: #666;
   font-weight: 400;
   font-family: 'Helvetica Neue', sans-serif;
@@ -143,6 +145,9 @@
   gap: 1rem;
   margin-top: 1rem;
 }
+.order_view_btn{
+  display: flex;
+}
 
 .arrow-controls button {
   background: none;
@@ -162,16 +167,16 @@
 /* Responsive */
 @media (max-width: 768px) {
   .bestseller-slider {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   .slider-strip {
-      justify-content: center;
+    justify-content: center;
   }
 
   .bestseller-fixed-card {
-      order: -1;
-      margin-bottom: 1rem;
+    order: -1;
+    margin-bottom: 1rem;
   }
 }

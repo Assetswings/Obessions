@@ -115,8 +115,10 @@
   padding-left: 10px;
   padding-right: 10px;
   /* padding: inherit; */
-  top: 15px;
-  right: 15px;
+  /* top: 15px;
+  right: 15px; */
+  top:10%;
+  right: 10%;
   border: none;
   background: #fff;
   /* border-radius: 50%; */
@@ -170,11 +172,64 @@
 
 /* top picks section */
 
+
 .top-picks-section {
-  padding: 60px 40px;
+  padding: 62px 2px 56px 30px;
   text-align: center;
   background-color: none;
 }
+
+.top-picks-heading {
+  font-size: 56px;
+  font-weight: 300;
+  margin-bottom: 40px;
+  font-family: "Canela Trial", sans-serif;
+}
+
+.top-picks-grid {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto; /* allow horizontal scroll */
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding-bottom: 10px; /* space for scrollbar */
+  scroll-behavior: smooth; /* smooth scrolling */
+}
+
+.top-picks-grid::-webkit-scrollbar {
+  height: 8px;
+}
+
+.top-picks-grid::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.top-pick-card {
+  width: 180px;
+  flex: 0 0 auto; /* prevent shrinking, keep side by side */
+  display: flex;
+  flex-direction: column;
+}
+
+.top-pick-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+}
+
+.top-pick-title {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Canela Trial", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: start;
+}
+
+
+
 .qucick_dv {
   display: flex;
   justify-content: center;
@@ -200,43 +255,6 @@
   opacity: 1;
 }
 
-
-.top-picks-heading {
-  font-size: 56px;
-  font-weight: 300;
-  margin-bottom: 40px;
-  font-family: "Canela Trial", sans-serif;
-}
-
-.top-picks-grid {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-
-.top-pick-card {
-  width: 180px;
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-}
-
-.top-pick-image {
-  width: 100%;
-  aspect-ratio: 3/4;
-  object-fit: cover;
-}
-
-.top-pick-title {
-  margin-top: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: "Canela Trial", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: start;
-}
 
 /* Responsive Layout products*/
 @media (max-width: 1024px) {

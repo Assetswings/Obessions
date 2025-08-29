@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "./BestsellersSlider.css";
-// import { FaChevronLeft, FaChevronRight, FaHeart } from "react-icons/fa";
 import { Expand, Heart } from "lucide-react";
 import arrowleft from "../../assets/icons/ArrowLeft.png";
 import arrowright from "../../assets/icons/ArrowRight.png";
 
-const BestsellersSlider = () => {
+const BestsellersSlider = ({ onQuickView }) => {
   const { data } = useSelector((state) => state.home);
   const bestsellers = data?.bestSellers || [];
   const [startIndex, setStartIndex] = useState(0);
+
   const handlePrev = () => {
-  setStartIndex((prev) => Math.max(prev - 1, 0));
+    setStartIndex((prev) => Math.max(prev - 1, 0));
   };
+
   const handleNext = () => {
-  setStartIndex((prev) => Math.min(prev + 1, bestsellers.length - 3));
+    setStartIndex((prev) =>
+      Math.min(prev + 1, bestsellers.length - 3)
+    );
+  };
+
+  const LogsIcon = (data) => {
+    if (onQuickView) onQuickView(data); 
   };
 
   return (
@@ -26,9 +33,18 @@ const BestsellersSlider = () => {
             <div className="bestseller-card" key={item.id}>
               <div className="image-wrapper">
                 <img src={item.media} alt={item.name} />
-                <span className="quick-view">Quick View &nbsp;<span><Expand color="#000000" size={15} strokeWidth={1.25} /></span></span>
+                     <div className="order_view_btn"> 
+                     <button
+                  className="quick-view"
+                  onClick={() => LogsIcon(item)}>
+                  Quick View &nbsp;
+                  <span>
+                    <Expand color="#000000" size={15} strokeWidth={1.25} />
+                  </span>
+                </button>
+                </div>  
+               
                 <span className="fav-icon">
-                  {/* <FaHeart /> */}
                   <Heart color="#000000" size={20} strokeWidth={2} />
                 </span>
               </div>
@@ -61,13 +77,19 @@ const BestsellersSlider = () => {
             <div className="bestseller-card" key={item.id}>
               <div className="image-wrapper">
                 <img src={item.media} alt={item.name} />
-                <span className="quick-view">Quick View &nbsp;<span><Expand color="#000000" size={15} strokeWidth={1.25} /></span></span>
+                <button
+                  className="quick-view"
+                  onClick={() => LogsIcon(item)}>
+                  Quick View &nbsp;
+                  <span>
+                    <Expand color="#000000" size={15} strokeWidth={1.25} />
+                  </span>
+                </button>
                 <span className="fav-icon">
-                  {/* <FaHeart /> */}
                   <Heart color="#000000" size={20} strokeWidth={2} />
                 </span>
               </div>
-              <div className="product-info">
+                <div className="product-info">
                 <p className="title">{item.name}</p>
                 <p className="price">₹{item.selling_price}</p>
               </div>

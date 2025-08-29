@@ -10,9 +10,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { addToCart } from "../cart/cartSlice";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
-import {  fetchWishlist, addToWishlist, removeFromWishlist } from "../../components/Wishtlist/WishlistSlice";
+import {
+  fetchWishlist,
+  addToWishlist,
+  removeFromWishlist,
+} from "../../components/Wishtlist/WishlistSlice";
 import { Player } from "@lottiefiles/react-lottie-player";
-import heartAnimation from "../../assets/icons/Heart.json"; 
+import heartAnimation from "../../assets/icons/Heart.json";
+import { checkPincode, resetPincodeState } from "./pincodeSlice";
+
 
 const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
@@ -21,7 +27,9 @@ const ProductDetailPage = () => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [localLoading, setLocalLoading] = useState(true);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const [animatedWish, setAnimatedWish] = useState(null); 
+  const [animatedWish, setAnimatedWish] = useState(null);
+  const [pincode, setPincode] = useState("");
+  const [pincodeChecked, setPincodeChecked] = useState(false);
 
   const dispatch = useDispatch();
   const sectionsRef = useRef({});
@@ -30,15 +38,16 @@ const ProductDetailPage = () => {
 
   const productSlug = location.state?.product;
   const { data, loading, error } = useSelector((state) => state.productDetail);
-   const wishlist = useSelector((state) => state.wishlist);
-  
+  const wishlist = useSelector((state) => state.wishlist);
+  const pincodeset = useSelector((state) => state.pincode);
+
   // Scroll instantly to top before anything renders
-    useLayoutEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [productSlug]);
 
   // Fetch product on slug change
-     useEffect(() => {
+  useEffect(() => {
     if (productSlug) {
       setLocalLoading(true);
       setSelectedImage(null);
@@ -56,6 +65,9 @@ const ProductDetailPage = () => {
     if (data?.product_images?.length > 0) {
       setSelectedImage(data.product_images[0].media);
       setLocalLoading(false);
+    }
+    if(data?.product_sizes.length > 0){
+      setSelectedSize(data?.product_sizes[0])
     }
   }, [data]);
 
@@ -78,89 +90,134 @@ const ProductDetailPage = () => {
   }, []);
 
   // add To cart
-  const handleAddToCart = () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setShowLoginPrompt(true);
-      return;
-    }
+  // const handleAddToCart = () => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     setShowLoginPrompt(true);
+  //     return;
+  //   }
 
-    // if (!selectedSize) {
-    //   toast.warning("Please select a size");
-    //   return;
-    // }
+  //   dispatch(addToCart({ product_id: productId, quantity }))
+  //     .unwrap()
+  //     .then(() => {
+  //       toast.success("Product added to cart successfully!", {
+  //         style: {
+  //           background: "#1f1f1f",
+  //           color: "#fff",
+  //           borderRadius: "0px",
+  //           padding: "12px 16px",
+  //           fontSize: "14px",
+  //         },
+  //         hideProgressBar: true,
+  //         closeButton: false,
+  //         icon: true,
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       toast.error("Failed to add to cart");
+  //       console.error(error);
+  //     });
+  // };
 
-       dispatch(addToCart({ product_id: productId, quantity }))
-      .unwrap()
-      .then(() => {
-        toast.success("Product added to cart successfully!", {
+     // ADD TO CART FUNCTION (restricted until pincode check success)
+     const handleAddToCart = () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setShowLoginPrompt(true);
+        return;
+      }
+  
+      if (!pincodeChecked || !pincodeset.pinset?.is_active) {
+        toast.error("Please check delivery availability before adding to cart", {
           style: {
             background: "#1f1f1f",
             color: "#fff",
-            borderRadius: "0px", // or "4px", "8px" for slight rounding
+            borderRadius: "0px",
             padding: "12px 16px",
             fontSize: "14px",
           },
-          hideProgressBar: true, // optional, removes bottom progress line
-          closeButton: false, // optional, hides the 'X' close icon
+          hideProgressBar: true,
+          closeButton: false,
           icon: true,
         });
-      })
-      .catch((error) => {
-        toast.error("Failed to add to cart");
-        console.error(error);
-      });
-  };
-
+        return;
+      }
+  
+        dispatch(addToCart({ product_id: productId, quantity }))
+        .unwrap()
+        .then(() => {
+          toast.success("Product added to cart successfully!", {
+            style: {
+              background: "#1f1f1f",
+              color: "#fff",
+              borderRadius: "0px",
+              padding: "12px 16px",
+              fontSize: "14px",
+            },
+            hideProgressBar: true,
+            closeButton: false,
+            icon: true,
+          });
+        })
+        .catch((error) => {
+          toast.error("Failed to add to cart");
+          console.error(error);
+        });
+    };
+  
   // Price dynamics solution
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
   const productId = data?.id || productSlug;
   console.log("Current Product ID:------->", productId);
 
   // ping the wishlist
-  const handleSimilarProductClick = (slug) => {
+    const handleSimilarProductClick = (slug) => {
     navigate("/productsdetails", { state: { product: slug } });
   };
 
-
+    
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setShowLoginPrompt(true); 
+      return;
+    }
     const isInWishlist = wishlist.productIds.includes(product.id);
-
     try {
-         if (isInWishlist) {
-         const wishlistItem = wishlist.items.find(
+      if (isInWishlist) {
+        const wishlistItem = wishlist.items.find(
           (item) => item.product_id === product.id
         );
-          if (wishlistItem?.id) {
+        if (wishlistItem?.id) {
           await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
           toast.success("Removed from wishlist", {
-              style: {
+            style: {
               border: "1px solid #713200",
               padding: "16px",
               color: "#713200",
             },
-              iconTheme: {
+            iconTheme: {
               primary: "#713200",
               secondary: "#FFFAEE",
             },
           });
-            dispatch(fetchWishlist());
+          dispatch(fetchWishlist());
         }
       } else {
         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
         toast.success("Added to wishlist", {
-            style: {
+          style: {
             border: "1px solid #713200",
             padding: "16px",
             color: "#713200",
           },
-            iconTheme: {
+          iconTheme: {
             primary: "#713200",
             secondary: "#FFFAEE",
           },
         });
-        setAnimatedWish(product.id); 
+        setAnimatedWish(product.id);
         dispatch(fetchWishlist());
         setTimeout(() => setAnimatedWish(null), 1500);
       }
@@ -169,14 +226,29 @@ const ProductDetailPage = () => {
     }
   };
 
-
   useEffect(() => {
     dispatch(fetchWishlist());
- }, [dispatch]);
+  }, [dispatch]);
 
- if (error) {
+  if (error) {
   return <div className="error">Error: {error}</div>;
-}
+  }
+
+  const handleCheck = () => {
+    if (pincode.trim()) {
+      dispatch(checkPincode(pincode)).then(() => {
+        setPincodeChecked(true);
+      });
+    }
+  };
+
+  const handleReset = () => {
+    dispatch(resetPincodeState());
+    setPincode("");
+    setPincodeChecked(false);
+  };
+
+
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
@@ -334,15 +406,17 @@ const ProductDetailPage = () => {
                   <p>CHOOSE A COLOR:</p>
                 </div>
                 <div className="color-options">
-                  {["#3d3d3d", "#2f4f4f", "#8b0000", "#5f4b8b", "#5e412f"].map(
-                    (color, idx) => (
+                  {selectedSize?.product_colors?.map((color,idx) =>
                       <div className="selected-color" key={idx}>
-                        <div
-                          className="color-circle"
-                          style={{ backgroundColor: color }}
-                        ></div>
+                        <div className="color-circle">
+                          <img
+                            src={color.color_media}
+                            alt={color.color}
+                            height={60}
+                            width={60}
+                          />
+                        </div>
                       </div>
-                    )
                   )}
                 </div>
               </>
@@ -362,7 +436,7 @@ const ProductDetailPage = () => {
           </div>
 
           {/* Pincode Check */}
-          <div className="pincode-check">
+          {/* <div className="pincode-check">
             <p className="check-heading">CHECK AVAILABILITY</p>
             <div className="input-wrapper">
               <input
@@ -375,30 +449,70 @@ const ProductDetailPage = () => {
             <p className="delivery-info">
               Available PAN India. We deliver wherever you call home.
             </p>
-          </div>
+          </div> */}
+           
+             {/* Pincode Check */}
+             <div className="pincode-check">
+                <p className="check-heading">CHECK AVAILABILITY</p>
+                <div className="input-wrapper">
+                  <input
+                    className="checkup_track_txt"
+                    type="text"
+                    placeholder="Enter Delivery Pincode"
+                    value={pincode}
+                    onChange={(e) => setPincode(e.target.value)}
+                  />
+                  <button onClick={handleCheck} className="check-btn">
+                    Check
+                  </button>
+                  {pincodeChecked && (
+                    <button onClick={handleReset} className="check-btn">
+                      Reset
+                    </button>
+                  )}
+                </div>
+
+                {/* Show pincode info */}
+                {pincodeset.loading && <p>Checking...</p>}
+                {pincodeset.error && (
+                  <p style={{ color: "red",marginTop:"15px" }}>Not serviceable for your area</p>
+                )}
+                {pincodeset.pinset?.pincode && pincodeset.pinset?.is_active && (
+                  <p style={{ color: "green",marginTop:"15px" }}>
+                    ✅ Delivery available at{" "}
+                    {pincodeset.pinset.city}, {pincodeset.pinset.state} (
+                    {pincodeset.pinset.delivery_tat})
+                  </p>
+                )}
+              </div>
+
 
           {/* Cart & Wishlist */}
-      <div className="add-cart-section">
+          <div className="add-cart-section">
             <button className="add-to-cart-btn" onClick={handleAddToCart}>
               ADD TO CART
             </button>
             <div className="wst_box" onClick={(e) => toggleWishlist(e, data)}>
-  {animatedWish === data?.id ? (
-    <Player
-      autoplay
-      keepLastFrame
-      src={heartAnimation}
-      style={{ width: 102, height: 102 }}
-    />
-  ) : (
-    <Heart
-      size={27}
-      color={wishlist.productIds.includes(data?.id) ? "#FF0000" : "#000"}
-      fill={wishlist.productIds.includes(data?.id) ? "#FF0000" : "none"}
-    />
-  )}
-</div>
-  </div>
+              {animatedWish === data?.id ? (
+                <Player
+                  autoplay
+                  keepLastFrame
+                  src={heartAnimation}
+                  style={{ width: 102, height: 102 }}
+                />
+              ) : (
+                <Heart
+                  size={27}
+                  color={
+                    wishlist.productIds.includes(data?.id) ? "#FF0000" : "#000"
+                  }
+                  fill={
+                    wishlist.productIds.includes(data?.id) ? "#FF0000" : "none"
+                  }
+                />
+              )}
+            </div>
+          </div>
 
           {/* Return Info */}
           <div className="root_return_details">
@@ -467,70 +581,70 @@ const ProductDetailPage = () => {
           </div>
         ) : (
           <div className="product-grid">
-          {data?.discover_similar_styles?.map((item) => {
-            const isWishlisted = wishlist.productIds.includes(item.id);
-        
-            return (
-              <div
-                className="product-card-dtl"
-                key={item.id}
-                onClick={() => handleSimilarProductClick(item.action_url)}
-              >
-                <div className="product-img-box">
-                  <img src={item.media} alt={item.name} />
-        
-                  {/* wishlist button */}
-                  <button
-                    className="wishlist-btn_products"
-                    onClick={(e) => toggleWishlist(e, item)}
-                  >
-                    {animatedWish === item.id ? (
-                      <div
-                        style={{
-                          width: 20,
-                          height: 24,
-                          overflow: "hidden",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Player
-                          autoplay
-                          keepLastFrame
-                          src={heartAnimation}
+            {data?.discover_similar_styles?.map((item) => {
+              const isWishlisted = wishlist.productIds.includes(item.id);
+
+              return (
+                <div
+                  className="product-card-dtl"
+                  key={item.id}
+                  onClick={() => handleSimilarProductClick(item.action_url)}
+                >
+                  <div className="product-img-box">
+                    <img src={item.media} alt={item.name} />
+
+                    {/* wishlist button */}
+                    <button
+                      className="wishlist-btn_products"
+                      onClick={(e) => toggleWishlist(e, item)}
+                    >
+                      {animatedWish === item.id ? (
+                        <div
                           style={{
-                            width: 139,
-                            height: 139,
-                            transform: "scale(0.5)",
-                            transformOrigin: "center",
+                            width: 20,
+                            height: 24,
+                            overflow: "hidden",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                           }}
+                        >
+                          <Player
+                            autoplay
+                            keepLastFrame
+                            src={heartAnimation}
+                            style={{
+                              width: 139,
+                              height: 139,
+                              transform: "scale(0.5)",
+                              transformOrigin: "center",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <Heart
+                          color={isWishlisted ? "#FF0000" : "#000"}
+                          fill={isWishlisted ? "#FF0000" : "none"}
+                          size={20}
+                          strokeWidth={2}
                         />
-                      </div>
-                    ) : (
-                      <Heart
-                        color={isWishlisted ? "#FF0000" : "#000"}
-                        fill={isWishlisted ? "#FF0000" : "none"}
-                        size={20}
-                        strokeWidth={2}
-                      />
+                      )}
+                    </button>
+                  </div>
+                  <p className="product-title">{item.name}</p>
+                  <div className="product-price">
+                    <span>₹{item.selling_price}</span>
+                    {item.mrp && item.mrp !== item.selling_price && (
+                      <>
+                        <span className="original">₹{item.mrp}</span>
+                        <span className="discount">({item.discount}% OFF)</span>
+                      </>
                     )}
-                  </button>
+                  </div>
                 </div>
-                <p className="product-title">{item.name}</p>
-                <div className="product-price">
-                  <span>₹{item.selling_price}</span>
-                  {item.mrp && item.mrp !== item.selling_price && (
-                    <>
-                      <span className="original">₹{item.mrp}</span>
-                      <span className="discount">({item.discount}% OFF)</span>
-                    </>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
         )}
       </div>
 
@@ -551,71 +665,70 @@ const ProductDetailPage = () => {
           </div>
         ) : (
           <div className="product-grid">
-  {data?.dont_miss_these_matching_finds?.map((item) => {
-    const isWishlisted = wishlist.productIds.includes(item.id);
+            {data?.dont_miss_these_matching_finds?.map((item) => {
+              const isWishlisted = wishlist.productIds.includes(item.id);
 
-    return (
-      <div
-        className="product-card-dtl"
-        key={item.id}
-        // onClick={() => handleSimilarProductClick(item.action_url)}
-      >
-        <div className="product-img-box">
-          <img src={item.media} alt={item.name} />
-          {/* wishlist button */}
-          <button
-            className="wishlist-btn_products"
-            onClick={(e) => toggleWishlist(e, item)}
-          >
-            {animatedWish === item.id ? (
-              <div
-                style={{
-                  width: 20,
-                  height: 24,
-                  overflow: "hidden",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Player
-                  autoplay
-                  keepLastFrame
-                  src={heartAnimation}
-                  style={{
-                    width: 139,
-                    height: 139,
-                    transform: "scale(0.5)",
-                    transformOrigin: "center",
-                  }}
-                />
-              </div>
-            ) : (
-              <Heart
-                color={isWishlisted ? "#FF0000" : "#000"}
-                fill={isWishlisted ? "#FF0000" : "none"}
-                size={20}
-                strokeWidth={2}
-              />
-            )}
-          </button>
-        </div>
+              return (
+                <div
+                  className="product-card-dtl"
+                  key={item.id}
+                  onClick={() => handleSimilarProductClick(item.action_url)}
+                >
+                  <div className="product-img-box">
+                    <img src={item.media} alt={item.name} />
+                    {/* wishlist button */}
+                    <button
+                      className="wishlist-btn_products"
+                      onClick={(e) => toggleWishlist(e, item)}
+                    >
+                      {animatedWish === item.id ? (
+                        <div
+                          style={{
+                            width: 20,
+                            height: 24,
+                            overflow: "hidden",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Player
+                            autoplay
+                            keepLastFrame
+                            src={heartAnimation}
+                            style={{
+                              width: 139,
+                              height: 139,
+                              transform: "scale(0.5)",
+                              transformOrigin: "center",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <Heart
+                          color={isWishlisted ? "#FF0000" : "#000"}
+                          fill={isWishlisted ? "#FF0000" : "none"}
+                          size={20}
+                          strokeWidth={2}
+                        />
+                      )}
+                    </button>
+                  </div>
 
-        <p className="product-title">{item.name}</p>
-        <div className="product-price">
-          <span>₹{item.selling_price}</span>
-          {item.mrp && item.mrp !== item.selling_price && (
-            <>
-              <span className="original">₹{item.mrp}</span>
-              <span className="discount">({item.discount}% OFF)</span>
-            </>
-          )}
-        </div>
-      </div>
-    );
-  })}
-</div>
-
+                  <p className="product-title">{item.name}</p>
+                  <div className="product-price">
+                    <span>₹{item.selling_price}</span>
+                    {item.mrp && item.mrp !== item.selling_price && (
+                      <>
+                        <span className="original">₹{item.mrp}</span>
+                        <span className="discount">({item.discount}% OFF)</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         )}
       </div>
 

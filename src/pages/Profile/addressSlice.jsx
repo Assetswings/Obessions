@@ -15,7 +15,7 @@ export const createAddress = createAsyncThunk(
 );
 
 // 👉 GET: Fetch All Addresses
-   export const getAddress = createAsyncThunk(
+export const getAddress = createAsyncThunk(
   'address/getAddress',
   async (_, { rejectWithValue }) => {
     try {
@@ -33,6 +33,19 @@ export const deleteAddress = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const res = await API.delete(`/account/address/${id}/delete`);
+      return { id, message: res.data.message };
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+// 👉 Default: Address
+export const makeDefaultAddress = createAsyncThunk(
+  'address/makeDefaultAddress',
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await API.put(`/account/address/${id}/markedAsDefault`);
       return { id, message: res.data.message };
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || err.message);
@@ -94,7 +107,10 @@ const addressSlice = createSlice({
       })
       .addCase(getAddress.fulfilled, (state, action) => {
         state.fetching = false;
-        state.data = action.payload;
+        // ✅ sort so default address is always first
+        state.data = action.payload.sort((a, b) =>
+          b.is_default - a.is_default
+        );
       })
       .addCase(getAddress.rejected, (state, action) => {
         state.fetching = false;
@@ -110,6 +126,25 @@ const addressSlice = createSlice({
         state.data = state.data.filter((address) => address.id !== action.payload.id);
       })
       .addCase(deleteAddress.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+
+      // MARK DEFAULT
+      .addCase(makeDefaultAddress.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(makeDefaultAddress.fulfilled, (state, action) => {
+        state.success = action.payload.message;
+        // ✅ update state so only one default exists
+        state.data = state.data.map((addr) =>
+          addr.id === action.payload.id
+            ? { ...addr, is_default: true }
+            : { ...addr, is_default: false }
+        );
+        // sort again so default is on top
+        state.data = state.data.sort((a, b) => b.is_default - a.is_default);
+      })
+      .addCase(makeDefaultAddress.rejected, (state, action) => {
         state.error = action.payload;
       })
 

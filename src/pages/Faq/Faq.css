@@ -107,15 +107,14 @@
   }
   
   .faq-tab-buttons {
-    display: flex;
-    gap: 2rem;
-    overflow-x: auto;
-    background: #f7f7f7;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    padding: 1rem 0;
-    border-bottom: 2px solid #eee;
+       display: flex;
+        gap: 2rem;
+        overflow-x: auto;
+        background: #ffffff;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 1rem 0;
   }
   
   .faq-tab-buttons button {
@@ -175,10 +174,10 @@
   }
   
   .faq-item p {
-    margin-top: 0.5rem;
+    margin-top: 1.5rem;
     font-size: 0.9rem;
     color: #555;
-    padding-left: 1rem;
+ 
   }
   
   @media (max-width: 600px) {

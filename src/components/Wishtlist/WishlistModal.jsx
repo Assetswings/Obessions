@@ -5,33 +5,34 @@ import "./WishlistModal.css";
 import { X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishlist, removeFromWishlist, moveToCart } from "./WishlistSlice";
+import imgbag from "../../assets/images/empty_bag.png";
 
-   const WishlistModal = ({ onClose }) => {
+const WishlistModal = ({ onClose }) => {
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.wishlist);
 
-     useEffect(() => {
-     dispatch(fetchWishlist());
+  useEffect(() => {
+    dispatch(fetchWishlist());
     document.body.style.overflow = "hidden";
     return () => {
-    document.body.style.overflow = "auto";
-      };
-    }, [dispatch]);
+      document.body.style.overflow = "auto";
+    };
+  }, [dispatch]);
 
-     const handleRemove = (wishlistId) => {
-     dispatch(removeFromWishlist(wishlistId))
+  const handleRemove = (wishlistId) => {
+    dispatch(removeFromWishlist(wishlistId))
       .unwrap()
       .then(() => {
         dispatch(fetchWishlist());
       });
-      };
+  };
 
-    const handleMoveToCart = (productId,wishlistId) => {
-    dispatch(moveToCart({ product_id: productId, quantity: 1 }))
+  const handleMoveToCart = (productId, wishlistId) => {
+    dispatch(moveToCart({ product_id: productId, quantity: 1 }));
     dispatch(removeFromWishlist(wishlistId))
       .unwrap()
       .then(() => {
-      dispatch(fetchWishlist());
+        dispatch(fetchWishlist());
       });
   };
 
@@ -40,8 +41,7 @@ import { fetchWishlist, removeFromWishlist, moveToCart } from "./WishlistSlice";
       <div className="wishlist-modal">
         <div className="wishlist-header">
           <h3>
-            Wishlist{" "}
-            {!loading && <span>({items.length})</span>}
+            Wishlist {!loading && <span>({items.length})</span>}
             {loading && <Skeleton width={30} height={20} />}
           </h3>
           <X onClick={onClose} className="close-icon-whst" />
@@ -127,7 +127,22 @@ import { fetchWishlist, removeFromWishlist, moveToCart } from "./WishlistSlice";
 
           {/* Empty wishlist */}
           {!loading && items.length === 0 && (
-            <p>Your wishlist is empty.</p>
+            <div className="box_wishlist">
+              <div className="track_fest_box_image">
+                <img src={imgbag} />
+              </div>
+
+               <div className="text_sections">
+                <h2 className="txt_title_one">Show your list some love!</h2>
+                <p className="sub_title_whistlist">
+                  Love something? Hit the heart to add it to your favourites.
+                </p>
+
+                 <button className="empty-cart-btn">
+                  Explore Bestsellers →
+                </button>
+              </div>
+            </div>
           )}
           {/* Wishlist items */}
           {!loading &&
@@ -156,10 +171,15 @@ import { fetchWishlist, removeFromWishlist, moveToCart } from "./WishlistSlice";
                       <p>{product.name}</p>
                       <span>₹{product.selling_price}</span>
                     </div>
-                    <div className="wishlist-actions" style={{ marginTop: "8px" }}>
+                    <div
+                      className="wishlist-actions"
+                      style={{ marginTop: "8px" }}
+                    >
                       <button
                         className="move-to-cart"
-                        onClick={() => handleMoveToCart(product.id, wishlistItem.id)}
+                        onClick={() =>
+                          handleMoveToCart(product.id, wishlistItem.id)
+                        }
                       >
                         MOVE TO CART
                       </button>

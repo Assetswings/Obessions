@@ -5,12 +5,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCartDetails, removeCartItem, updateCartItem } from "./cartSlice";
 import { addToWishlist } from "../../components/Wishtlist/WishlistSlice";
 import Footer from "../../components/Footer/Footer";
+import { useNavigate } from "react-router-dom";
+import blankcart from "../../assets/images/blank-cart.png";
+import { fetchAddOns } from "../Products/otherproductSlice";
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const [token] = useState(localStorage.getItem("token"));
   const { cartItems, loading, error } = useSelector((state) => state.cart);
   const [updatingId, setUpdatingId] = useState(null);
+  const navigate = useNavigate();
+
+  const { addOns } = useSelector((state) => state.toppick);
+  console.log("====================================");
+  console.log("Top_picks cart page---->", addOns);
+  console.log("====================================");
+
+  useEffect(() => {
+    dispatch(fetchAddOns());
+  }, [dispatch]);
 
   useEffect(() => {
     if (token) {
@@ -45,6 +58,10 @@ const CartPage = () => {
     );
   }
 
+  const handleCheckout = () => {
+    navigate("/checkout");
+  };
+
   if (loading) return <p>Loading cart...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -57,7 +74,26 @@ const CartPage = () => {
       <div className="cart-container">
         <div className="cart-left">
           {items.length === 0 ? (
-            <p>Your cart is empty.</p>
+            <div className="empty-cart">
+              <img
+                src={blankcart} // ✅ replace with your rug+box image path
+                alt="Empty cart"
+                className="empty-cart-image"
+              />
+              <h3 className="empty-cart-title">
+                Your cart is feeling a little empty
+              </h3>
+              <p className="empty-cart-subtitle">
+                Discover our curated collection of premium rugs that transform
+                any space into a sanctuary of elegance and comfort.
+              </p>
+              <button
+                className="empty-cart-btn"
+                onClick={() => navigate("/")} // ✅ send user back to home/shop
+              >
+                EXPLORE →
+              </button>
+            </div>
           ) : (
             items.map((item) => (
               <div className="cart-item" key={item.id}>
@@ -137,31 +173,50 @@ const CartPage = () => {
             ))
           )}
         </div>
+        {items.length > 0 && (
+          <div className="cart-right sticky-summary">
+            <div className="summary">
+              <div className="summary-row total">
+                <span>ORDER TOTAL</span>
+                <span>₹{total}</span>
+              </div>
 
-        <div className="cart-right sticky-summary">
-          <div className="summary">
-            <div className="summary-row total">
-              <span>ORDER TOTAL</span>
-              <span>₹{total}</span>
+              <p className="terms-text">
+                Before proceed further you can review{" "}
+                <a href="#" className="tc_1">
+                  Terms & Conditions of Sale
+                </a>{" "}
+                and{" "}
+                <a href="#" className="tc_2">
+                  Privacy Policy
+                </a>
+              </p>
+
+              <button onClick={handleCheckout} className="checkout">
+                CHECKOUT
+              </button>
+              <button className="continue_shoping">CONTINUE SHOPPING</button>
             </div>
-
-            <p className="terms-text">
-              Before proceed further you can review{" "}
-              <a href="#" className="tc_1">
-                Terms & Conditions of Sale
-              </a>{" "}
-              and{" "}
-              <a href="#" className="tc_2">
-                Privacy Policy
-              </a>
-            </p>
-
-            <button className="checkout">CHECKOUT</button>
-            <button className="continue_shoping">CONTINUE SHOPPING</button>
           </div>
-        </div>
+        )}
       </div>
-
+      {items.length === 0 && (
+        <section className="top-picks-section">
+          <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
+          <div className="top-picks-grid">
+            {addOns?.map((item) => (
+              <div key={item.id} className="top-pick-card">
+                <img
+                  src={item.media}
+                  alt={item.name}
+                  className="top-pick-image"
+                />
+                <p className="top-pick-title">{item.name}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
       <Footer />
     </>
   );

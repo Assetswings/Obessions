@@ -18,8 +18,8 @@ const TopAnnouncementBar = () => {
     useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
-  }, [location.pathname]);
-
+    }, [location.pathname]);
+    
      useEffect(() => {
      const handleClickOutside = (event) => {
         if (

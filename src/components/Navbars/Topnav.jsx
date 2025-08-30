@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import "./HorizontalNavBar.css";
 import MegaMenu from "./MegaMenu";
+import { useNavigate } from "react-router-dom";
 
 const Topnav = () => {
 const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const navigate = useNavigate();
+   const handelcarpet =()=>{
+    navigate("/carpetfinder")
+   }
 return (
         <>
         <nav className="horizontal-nav-bar">
@@ -15,7 +20,7 @@ return (
         <div className="nav-item">NEW ARRIVALS</div>
         <div className="nav-item">BESTSELLERS</div>
         <div className="nav-item">OFFERS SPOT</div>
-        <div className="nav-item">FLOOR MATCHER</div>
+        <div className="nav-item" onClick={handelcarpet}>FLOOR MATCHER</div> 
       </nav>
       {showMegaMenu && <MegaMenu closeMenu={() => setShowMegaMenu(false)} />}
     </>

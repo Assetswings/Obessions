@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import "./Terms.css";
 import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
 
-export default function TermsAndConditions() {
+export default function FeesPaymentsPolicy() {
   const [data, setData] = useState("");
 
-  const handleTerms = async () => {
+  const handleFees = async () => {
     try {
-      const res = await API.get("/policy/terms-conditions");
- 
+      const res = await API.get("/policy/fees-payments-policy");
       if (res.data.status === 200) {
         setData(res.data?.data);
       }
@@ -19,15 +17,14 @@ export default function TermsAndConditions() {
     }
   };
 
-    useEffect(() => {
-    handleTerms();
+  useEffect(() => {
+    handleFees();
   }, []);
-
 
   return (
     <>
       <div className="terms-container">
-      <div dangerouslySetInnerHTML={{ __html: data.content }} />
+        <div dangerouslySetInnerHTML={{ __html: data.content }} />
       </div>
       <Footer />
     </>

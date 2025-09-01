@@ -41,7 +41,7 @@ const OrderHistoryPage = () => {
   };
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
+  if (error) return <p style={{ color: "red" }}>Error: {error.msg}</p>;
 
   return (
     <div className="order-history">
@@ -54,7 +54,7 @@ const OrderHistoryPage = () => {
           {STATUS_OPTIONS.map((status) => (
             <label key={status.key}>
               <input
-                type="checkbox" // ✅ now checkboxes, not radios
+                type="checkbox" 
                 checked={selectedStatus === status.key}
                 onChange={() => handleStatusChange(status.key)}
               />

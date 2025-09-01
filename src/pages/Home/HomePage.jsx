@@ -217,8 +217,7 @@ const HomePage = () => {
         <div
           className={`search-wrapper bg-white rounded shadow ${
             isSearchActive ? "active" : ""
-          }`}
-        >
+          }`}>        
           <div className="d-flex">
             <input
               type="text"
@@ -234,8 +233,7 @@ const HomePage = () => {
                 navigate("/searchlist", {
                   state: { query: query },
                 })
-              }
-            >
+              }>
               <Search strokeWidth={1.25} />
             </button>
           </div>
@@ -522,7 +520,7 @@ const HomePage = () => {
               chosen with care, designed to make your home feel more personal,
               more inspired, and more you.
             </p>
-            <button className="matcher-btn" onClick={() =>navigate("/aboutpage")}>MORE ABOUT US</button>
+            <button className="matcher-btn" onClick={() =>navigate("/about-us")}>MORE ABOUT US</button>
           </div>
         </div>
       </section>

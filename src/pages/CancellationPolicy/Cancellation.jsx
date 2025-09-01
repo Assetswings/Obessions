@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import "./Terms.css";
 import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
 
-export default function TermsAndConditions() {
+export default function Cancellation() {
   const [data, setData] = useState("");
 
-  const handleTerms = async () => {
+  const handleCancel = async () => {
     try {
-      const res = await API.get("/policy/terms-conditions");
- 
+      const res = await API.get("/policy/cancellation-policy");
       if (res.data.status === 200) {
         setData(res.data?.data);
       }
@@ -20,9 +18,12 @@ export default function TermsAndConditions() {
   };
 
     useEffect(() => {
-    handleTerms();
+     handleCancel();
   }, []);
 
+  console.log("====================================");
+  console.log("the terms and condition data ----->", data);
+  console.log("====================================");
 
   return (
     <>

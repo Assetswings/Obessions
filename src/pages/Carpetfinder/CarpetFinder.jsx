@@ -89,12 +89,12 @@ const CarpetFinder = () => {
       return;
     }
 
-    let filterReq = {
+      let filterReq = {
       room_filter: selections[0][0].key,
       size_filter: selections[1][0].key,
       color_filter: selections[2][0].key,
       pattern_filter: selections[3][0].key,
-    };
+      };
 
     console.log("====================================");
     console.log(filterReq);

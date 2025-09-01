@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaSearch } from "react-icons/fa";
-import { Heart, CircleUser, ShoppingCart, User, LogOut, Navigation } from "lucide-react";
+import { Heart, CircleUser, ShoppingCart, User, LogOut, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import MegaMenu from "./MegaMenu";
 import WishlistModal from "../Wishtlist/WishlistModal";
@@ -8,19 +8,19 @@ import "./OtherTopnav.css";
 import logo from "../../assets/icons/Obslogo.png";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
 
-const OtherTopnav = () => {
+  const OtherTopnav = () => {
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-
+  const [showSearch, setShowSearch] = useState(false); 
   const navigate = useNavigate();
   const userWrapperRef = useRef(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
+     useEffect(() => {
+     const token = localStorage.getItem("token");
+     setIsLoggedIn(!!token);
   }, []);
 
   useEffect(() => {
@@ -38,7 +38,6 @@ const OtherTopnav = () => {
   }, []);
 
   const handleLogoClick = () => navigate("/");
-
   const handleCartClick = () => {
     if (isLoggedIn) {
       navigate("/cart");
@@ -47,21 +46,20 @@ const OtherTopnav = () => {
     }
   };
 
-
-    const handleWishlistClick = () => {
+  const handleWishlistClick = () => {
     if (isLoggedIn) {
-    setShowWishlist(true);
+      setShowWishlist(true);
     } else {
-    setShowLoginPrompt(true);
+      setShowLoginPrompt(true);
     }
   };
-
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     setShowUserPopup(false);
     alert("Logout successful");
+     navigate("/");
   };
 
   const handleProfile = () => {
@@ -77,9 +75,9 @@ const OtherTopnav = () => {
     }
   };
 
-   const handelcarpet =()=>{
-    navigate("/carpetfinder")
-   }
+  const handelcarpet = () => {
+    navigate("/carpetfinder");
+  };
 
   return (
     <>
@@ -102,8 +100,7 @@ const OtherTopnav = () => {
 
         <div className="nav-actions">
           <div className="search-bar">
-            <input type="text" placeholder="Search" />
-            <button>
+            <button onClick={() => setShowSearch(true)}>
               <FaSearch />
             </button>
           </div>
@@ -127,7 +124,7 @@ const OtherTopnav = () => {
                 <div className="popup-triangle"></div>
                 <div className="user-popup">
                   <div className="popup-item" onClick={handleProfile}>
-                  <User size={22} style={{ marginRight: 8 }}/>
+                    <User size={22} style={{ marginRight: 8 }} />
                     <span>Profile</span>
                   </div>
                   <div className="popup-item" onClick={handleLogout}>
@@ -138,7 +135,7 @@ const OtherTopnav = () => {
                         marginRight: 8,
                       }}
                     >
-                     <LogOut size={22} />
+                      <LogOut size={22} />
                     </span>
                     <span>Logout</span>
                   </div>
@@ -171,6 +168,36 @@ const OtherTopnav = () => {
       {showWishlist && <WishlistModal onClose={() => setShowWishlist(false)} />}
       {showLoginPrompt && (
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
+      )}
+
+      {/* 🔹 Fullscreen Search Modal */}
+      {showSearch && (
+        <div className="search-overlay" onClick={() => setShowSearch(false)}>
+          <div
+            className="search-modal"
+            onClick={(e) => e.stopPropagation()} // prevent closing on modal click
+          >
+          
+            <div className="d-flex">
+            <input
+              type="text"
+              className="form-control border-0 rounded-5 input_global"
+              placeholder="WHAT ARE YOU LOOKING FOR?"
+              // value={query}
+            />
+            <button
+              className="btn btn-dark rounded-5 button_search"
+              // onClick={() =>
+              //   navigate("/searchlist", {
+              //     state: { query: query },
+              //   })
+              // }
+            >
+              <Search strokeWidth={1.25} />
+            </button>
+          </div>
+          </div>
+        </div>
       )}
     </>
   );

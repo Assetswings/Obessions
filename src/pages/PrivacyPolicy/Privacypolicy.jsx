@@ -1,33 +1,30 @@
 import React, { useState, useEffect } from "react";
-import "./Terms.css";
 import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
 
-export default function TermsAndConditions() {
+export default function Privacypolicy() {
   const [data, setData] = useState("");
 
-  const handleTerms = async () => {
+  const handlePrivacy = async () => {
     try {
-      const res = await API.get("/policy/terms-conditions");
- 
+      const res = await API.get("policy/privacy-policy");
       if (res.data.status === 200) {
         setData(res.data?.data);
       }
     } catch (err) {
-      // toast.error(err.response?.data?.message || "Failed to send OTP");
+      //toast.error(err.response?.data?.message || "Failed to send OTP");
       console.log(err);
     }
   };
 
-    useEffect(() => {
-    handleTerms();
+  useEffect(() => {
+    handlePrivacy();
   }, []);
-
 
   return (
     <>
       <div className="terms-container">
-      <div dangerouslySetInnerHTML={{ __html: data.content }} />
+        <div dangerouslySetInnerHTML={{ __html: data.content }} />
       </div>
       <Footer />
     </>

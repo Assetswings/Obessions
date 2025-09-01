@@ -9,6 +9,7 @@ import OrderHistoryPage from "../Orderhistory/OrderHistoryPage";
 import API from "../../app/api";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
+
 import {
   getAddress,
   createAddress,
@@ -413,12 +414,11 @@ const ProfilePage = () => {
           </div>
         )}
         {showAddAddressModal && (
-          <div
+             <div
             className="modal-overlay"
             onClick={(e) =>
-              handleModalClick(e, () => setShowAddAddressModal(false))
-            }
-          >
+            handleModalClick(e, () => setShowAddAddressModal(false))
+            }>
             <div className="side-modal">
               <button
                 className="close-btn"

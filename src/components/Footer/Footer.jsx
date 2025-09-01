@@ -1,11 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Footer.css";
 import marstrcards from "../../assets/images/Footer_image_track.png";
 import { RiFacebookCircleFill } from "react-icons/ri";
 import { BsYoutube } from "react-icons/bs";
 import { RiInstagramLine } from "react-icons/ri";
+import API from "../../app/api";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const subscription = async () => {
+    if (!email) {
+      setMessage("⚠️ Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      const res = await API.post("/forms/newsletter-subscribe", { email });
+
+      if (res.data.success) {
+        setMessage("✅ Subscribed successfully!");
+        setEmail(""); // clear input
+      } else {
+        setMessage(`⚠️ ${res.data.msg || "Subscription failed"}`);
+      }
+    } catch (err) {
+      setMessage(
+        `❌ ${
+          err.response?.data?.msg ||
+          err.response?.data?.message ||
+          "Something went wrong"
+        }`
+      );
+    }
+  };
+
+  const socialLinks = [
+    {
+      name: "Facebook",
+      icon: <RiFacebookCircleFill size={24} />,
+      url: "https://www.facebook.com/yourpage",
+      color: "#1877F2", // optional
+    },
+    {
+      name: "YouTube",
+      icon: <BsYoutube size={24} />,
+      url: "https://www.youtube.com/yourchannel",
+      color: "#FF0000",
+    },
+    {
+      name: "Instagram",
+      icon: <RiInstagramLine size={24} />,
+      url: "https://www.instagram.com/yourprofile",
+      color: "#E4405F",
+    },
+  ];
+
   return (
     <footer className="footer">
       <div className="newsletter">
@@ -17,9 +68,15 @@ const Footer = () => {
           you'll love.
         </p>
         <div className="email-signup">
-          <input type="email" placeholder="ENTER EMAIL ADDRESS" />
-          <button>SIGN UP →</button>
+          <input
+            type="email"
+            placeholder="ENTER EMAIL ADDRESS"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <button onClick={subscription}>SIGN UP →</button>
         </div>
+        {message && <p className="subscription-message">{message}</p>}
         <p className="terms_footer">
           By signing up you agree with our <a href="#">Terms & Conditions</a>.
         </p>
@@ -87,21 +144,23 @@ const Footer = () => {
           </div>
 
           <div className="social-icons">
-              <div className="sub-icon"> 
-              <RiFacebookCircleFill 
-                size={24}
-                color="#BDBDBD"
-              />
-            <BsYoutube
-                  size={24}
-                  color="#BDBDBD"
-             />
-            <RiInstagramLine 
-                    size={24}
-                    color="#BDBDBD"
-            />
-              </div>
-         
+            <div className="sub-icon">
+              {/* <RiFacebookCircleFill size={24} color="#BDBDBD" />
+              <BsYoutube size={24} color="#BDBDBD" />
+              <RiInstagramLine size={24} color="#BDBDBD" /> */}
+              {socialLinks.map((item, index) => (
+                <a
+                  key={index}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.name}
+                  style={{ color: item.color || "#BDBDBD", marginRight: "10px" }}
+                >
+                  {item.icon}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>

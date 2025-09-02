@@ -68,7 +68,7 @@ const ProfilePage = () => {
     dispatch(getAddress());
   }, [dispatch]);
 
-  console.log("DATA_FROM_ADDRESS--->", addressdata);
+  // console.log("DATA_FROM_ADDRESS--->", addressdata);
   const [editForm, setEditForm] = useState({
     first_name: "",
     last_name: "",

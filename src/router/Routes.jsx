@@ -28,6 +28,8 @@ import Cancellation from "../pages/CancellationPolicy/Cancellation";
 import Returnrefund from "../pages/ReturnRefundPolicy/Returnrefund";
 import FeesPaymentsPolicy from "../pages/FeesPaymentsPolicy/FeesPaymentsPolicy";
 import Privacypolicy from "../pages/PrivacyPolicy/Privacypolicy";
+import CancelOrder from "../pages/CancelOrder/Cancelorder";
+import ReturnExchange from "../pages/ReturnExchange/Returnexchange";
 
 const AppRoutes = () => {
   return (
@@ -35,7 +37,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="collection" element={<CollectionPage />} />
+          <Route path="collections" element={<CollectionPage />} />
           <Route path="products" element={<ProductsPage />} />
           <Route path="productsdetails" element={<ProductDetailPage />} />
           <Route path="cart" element={<CartPage />} />
@@ -47,7 +49,9 @@ const AppRoutes = () => {
           <Route path="ProfilePage" element={<ProfilePage />} />
           <Route path="paymentgetway" element={<PaymentPage />} />
           <Route path="ordersuccess" element={<Successpage />} />
-          <Route path="carpetfinder" element={<CarpetFinder />} />
+          <Route path="cancelorder" element={<CancelOrder/>} />
+          <Route path="returnexchange" element={<ReturnExchange/>} />
+          <Route path="carpet-finder" element={<CarpetFinder />} />
           <Route path="searchlist" element={<Searchlist />} />
           <Route path="carpetfinderserch" element={<Carpetfinderserch />} />
           <Route path="about-us" element={<AboutPage />} />
@@ -55,9 +59,9 @@ const AppRoutes = () => {
           <Route path="faq" element={<Faq />} />
           <Route path="blog" element={<BlogPost />} />
           <Route path="blogmain" element={<Blog />} />
-          <Route path="terms-conditions" element={<TermsAndConditions />} />
-          <Route path="cancellation-policy" element={<Cancellation />} />
-          <Route path="return-refund-policy" element={<Returnrefund />} />
+          <Route path="tc-of-sale" element={<TermsAndConditions />} />
+          <Route path="cancellation-return-refund-policy" element={<Cancellation />} />
+          <Route path="terms-of-use" element={<Returnrefund />} />
           <Route path="fees-payments-policy" element={<FeesPaymentsPolicy />} />
           <Route path="privacy-policy" element={<Privacypolicy/>} />
         </Route>

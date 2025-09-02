@@ -83,6 +83,7 @@ const HomePage = () => {
   const [query, setQuery] = useState("");
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [shopByItems, setShopByItems] = useState([]);
 
   // console.log("query---->", query);
   // 🏠 Home Data Fetching
@@ -119,16 +120,29 @@ const HomePage = () => {
 
   useEffect(() => {
     if (data) {
-      // console.log("📦 Full Home Data:", data);
-      // console.log("🎯 Hero Banners:", data.hero_banner_categories);
-      // console.log("🖼️ Banner Sections:", data.banners);
-      // console.log("🔥 Best Sellers:", data.bestSellers);
+      if (data.shop_by) {
+        const formattedItems = Object.entries(data.shop_by).map(
+          ([key, value]) => {
+            return {
+              label: formatLabel(key),
+              thumbs: value.map((v) => v.media),
+              url: value[0]?.action_url ? `${value[0].action_url}` : null,
+              sale: key.toLowerCase().includes("sale"),
+            };
+          }
+        );        
+        setShopByItems(formattedItems);
+      }
     }
   }, [data]);
 
+  function formatLabel(key) {
+    return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+
   // 🧭 Navigation Page
   const handleNavigate = () => {
-    navigate("/collection");
+    navigate("/collections");
   };
 
   const handleCategoryClick = (categorySlug) => {
@@ -169,15 +183,38 @@ const HomePage = () => {
   };
 
   const handelpdp = (categorySlug) => {
-    navigate("/products", {
-      state: {
-        category: categorySlug,
-      },
-    });
+    if(categorySlug){
+      navigate("/products", {
+        state: {
+          category: categorySlug,
+        },
+      });
+    }
+  };
+
+  const handelcollectionDetails = (categorySlug) => {
+    if (!categorySlug) return;
+
+    // remove leading slash just in case
+    const cleanSlug = categorySlug.startsWith("/") 
+      ? categorySlug.slice(1) 
+      : categorySlug;
+
+    if (cleanSlug === "collections") {
+      // case: only /collections
+      navigate("/collections");
+    } else if (cleanSlug.startsWith("collections/")) {
+      // case: /collections/some-slug
+      const slug = cleanSlug.split("/")[1];
+      navigate("/collections", { state: { slug: slug } });
+    } else {
+      // fallback if anything unexpected
+      navigate("/collections");
+    }
   };
 
   const handelcarpet = () => {
-    navigate("/carpetfinder");
+    navigate("/carpet-finder");
   };
 
   return (
@@ -217,7 +254,8 @@ const HomePage = () => {
         <div
           className={`search-wrapper bg-white rounded shadow ${
             isSearchActive ? "active" : ""
-          }`}>        
+          }`}
+        >
           <div className="d-flex">
             <input
               type="text"
@@ -233,7 +271,8 @@ const HomePage = () => {
                 navigate("/searchlist", {
                   state: { query: query },
                 })
-              }>
+              }
+            >
               <Search strokeWidth={1.25} />
             </button>
           </div>
@@ -350,7 +389,7 @@ const HomePage = () => {
       </section>
 
       {/* ────────────────── 🥀💎💎 🐉 SHOP BY SECTION 🐉 💎💎🥀 ────────────────── */}
-      <section className="shopby py-5">
+      {/* <section className="shopby py-5">
         <p className="shopby-title text-uppercase mb-4 txt_shopby">Shop by</p>
 
         <ul className="shopby-list">
@@ -366,6 +405,33 @@ const HomePage = () => {
               onMouseLeave={() => setActive(null)}
               onClick={() => item.url && (window.location.href = item.url)}
             >
+              <div className="thumb-bar">
+                {item.thumbs.map((src, idx) => (
+                  <img src={src} alt="" key={idx} />
+                ))}
+              </div>
+              <span className="shopby-label">{item.label}</span>
+              <span className="view-tag">View</span>
+            </li>
+          ))}
+        </ul>
+      </section> */}
+      <section className="shopby py-5">
+        <p className="shopby-title text-uppercase mb-4 txt_shopby">Shop by</p>
+
+        <ul className="shopby-list">
+          {shopByItems?.map((item, i) => (
+            <li
+              key={item.label}
+              className={`
+                shopby-item
+                ${item.sale ? "sale" : ""}
+                ${active === i ? "is-active" : ""}
+              `}
+              onMouseEnter={() => setActive(i)}
+              onMouseLeave={() => setActive(null)}
+              onClick={() => handelcollectionDetails(item.url)}
+            >
               {/* Thumbnails */}
               <div className="thumb-bar">
                 {item.thumbs.map((src, idx) => (
@@ -375,7 +441,7 @@ const HomePage = () => {
               {/* Text label */}
               <span className="shopby-label">{item.label}</span>
               {/* VIEW tag */}
-              <span className="view-tag">View</span>
+              <span className="view-tag" onClick={() => handelcollectionDetails(item.url)}>View</span>
             </li>
           ))}
         </ul>
@@ -392,9 +458,16 @@ const HomePage = () => {
             <p>
               Stylish tabletop finds now discounted for meals & special moments.
             </p>
-            <button className="hero-button" onClick={() =>
-                navigate("/products", { state: { category: tableSectionImage?.action_url } })
-              }>ELEVATE YOUR TABLETOP</button>
+            <button
+              className="hero-button"
+              onClick={() =>
+                navigate("/products", {
+                  state: { category: tableSectionImage?.action_url },
+                })
+              }
+            >
+              ELEVATE YOUR TABLETOP
+            </button>
           </div>
 
           <div className="hero-image">
@@ -520,7 +593,12 @@ const HomePage = () => {
               chosen with care, designed to make your home feel more personal,
               more inspired, and more you.
             </p>
-            <button className="matcher-btn" onClick={() =>navigate("/about-us")}>MORE ABOUT US</button>
+            <button
+              className="matcher-btn"
+              onClick={() => navigate("/about-us")}
+            >
+              MORE ABOUT US
+            </button>
           </div>
         </div>
       </section>

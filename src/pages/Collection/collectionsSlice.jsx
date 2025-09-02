@@ -4,10 +4,10 @@ import API from "../../app/api"; // make sure your API instance has baseURL & he
 // 🔹 Thunk to fetch all collections
 export const fetchCollections = createAsyncThunk(
   "collections/fetchCollections",
-  async (_, { rejectWithValue }) => {
+  async (slug = null, { rejectWithValue }) => {
     try {
-      const response = await API.get("/collections"); // GET /collections
-      console.log("---------> collections response", response);
+      const endpoint = slug ? `/collections/${slug}` : "/collections";
+      const response = await API.get(endpoint); // GET /collections
       return response.data?.data; // your API returns { success, status, message, data }
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || err.message);

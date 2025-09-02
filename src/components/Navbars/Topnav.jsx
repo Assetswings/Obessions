@@ -7,7 +7,7 @@ const Topnav = () => {
 const [showMegaMenu, setShowMegaMenu] = useState(false);
   const navigate = useNavigate();
    const handelcarpet =()=>{
-    navigate("/carpetfinder")
+    navigate("/carpet-finder")
    }
 return (
         <>

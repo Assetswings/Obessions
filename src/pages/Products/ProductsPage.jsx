@@ -42,10 +42,6 @@ const ProductsPage = () => {
 
   const { items } = useSelector((state) => state.toppick);
 
-  console.log("====================================");
-  console.log("Top_picks---->", items);
-  console.log("====================================");
-
   useEffect(() => {
     dispatch(fetchTopPicks()); //
   }, [dispatch]);

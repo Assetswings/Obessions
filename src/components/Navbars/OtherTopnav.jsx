@@ -76,7 +76,7 @@ import LoginPromptModal from "../LoginModal/LoginPromptModal";
   };
 
   const handelcarpet = () => {
-    navigate("/carpetfinder");
+    navigate("/carpet-finder");
   };
 
   return (

@@ -1,26 +1,28 @@
 import React, { useEffect } from "react";
 import "./CollectionPage.css";
 import Footer from "../../components/Footer/Footer";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCollections } from "./collectionsSlice";
 
 const CollectionPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {
-    items: collections,
-    loading,
-    error,
-  } = useSelector((state) => state.collections);
+    const location = useLocation();
+    const slug = location.state?.slug;
+  const {items: collections,loading,error,} = useSelector((state) => state.collections);
   useEffect(() => {
-    dispatch(fetchCollections());
-  }, [dispatch]);
+    console.log(slug);
+    
+    if(slug){
+      dispatch(fetchCollections(slug));
+    }else{
+      dispatch(fetchCollections());
+    }
+  }, [dispatch,slug]);
+  
   const handleCategoryClick = (categorySlug) => {
-    console.log('====================================');
-    console.log("slug----->",collections);
-    console.log('====================================');
-  navigate("/products", { state: { category: categorySlug } });
+    navigate("/products", { state: { category: categorySlug } });
   };
 
   if (loading) return <p>Loading collections...</p>;
@@ -31,24 +33,24 @@ const CollectionPage = () => {
         <aside className="sidebar">
           <h3>COLLECTIONS</h3>
           {collections?.categories?.map((cat, idx) => (
-            <div key={idx} className="category-group">
+            <div key={idx} className="category-group" onClick={() => handleCategoryClick(cat.action_url)}>
               <h4>{cat.name}</h4>
               <ul>
-  {cat.subcategories.map((item, i) => (
-    <li
-      key={item.id || i}  
-      onClick={() => handleCategoryClick(item.action_url)}>
-      {item.name}
-    </li>
-  ))}
-</ul>
-      </div>
+                {cat.subcategories?.map((item, i) => (
+                  <li
+                    key={item.id || i}
+                    onClick={() => handleCategoryClick(item.action_url)}
+                  >
+                    {item.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
         </aside>
         <main className="products-grid">
           {collections?.collections?.map((product, index) => (
-            <div className="product-card" key={index}>
-               
+            <div className="product-card" key={index} onClick={() => handleCategoryClick(product.action_url)}>
               <img src={product.uploaded_media} alt={product.name} />
               <p>{product.name}</p>
             </div>

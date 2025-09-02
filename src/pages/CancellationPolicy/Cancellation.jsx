@@ -7,7 +7,7 @@ export default function Cancellation() {
 
   const handleCancel = async () => {
     try {
-      const res = await API.get("/policy/cancellation-policy");
+      const res = await API.get("/policy/cancellation-return-refund-policy");
       if (res.data.status === 200) {
         setData(res.data?.data);
       }

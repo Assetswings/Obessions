@@ -8,7 +8,7 @@ export default function TermsAndConditions() {
 
   const handleTerms = async () => {
     try {
-      const res = await API.get("/policy/terms-conditions");
+      const res = await API.get("/policy/tc-of-sale");
  
       if (res.data.status === 200) {
         setData(res.data?.data);

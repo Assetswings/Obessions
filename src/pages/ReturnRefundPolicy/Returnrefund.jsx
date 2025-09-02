@@ -7,7 +7,7 @@ export default function Returnrefund() {
 
   const Returnrefund = async () => {
     try {
-      const res = await API.get("/policy/return-refund-policy");
+      const res = await API.get("/policy/terms-of-use");
       if (res.data.status === 200) {
         setData(res.data?.data);
       }

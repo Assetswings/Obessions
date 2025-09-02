@@ -1,25 +1,107 @@
 import React, { useState } from "react";
 import "./ReturnExchange.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import API from "../../app/api";
 
-  const ReturnExchange = () => {
+const ReturnExchange = () => {
   const [option, setOption] = useState("return");
   const [reason, setReason] = useState("");
   const [comments, setComments] = useState("");
   const { state } = useLocation();
   const navigate = useNavigate();
-  const item = state?.item; 
+  const item = state?.item;
+  const orderNo = state?.orderNo;
 
-
-  console.log('====================================');
-  console.log("The track from return--->",item);
-  console.log('====================================');
- 
-
-    const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Option:", option, "Reason:", reason, "Comments:", comments);
-    alert("Return/Exchange request submitted!");
+    if(option == "return"){  // Return API Call
+      try {
+        const res = await API.put(
+          `/orders/${orderNo}/return`,
+          {
+            item_ids: [item.itemId],     // e.g. ["item123", "item456"]
+            reason_id: reason,   // e.g. 123
+            remarks: comments || "return items",
+          }
+        );
+
+        if (res.data.success) {
+          toast.success("Order Returned successfully!", {
+            style: {
+              border: "1px solid black",
+              padding: "16px",
+              color: "black",
+            },
+            iconTheme: {
+              primary: "black",
+              secondary: "white",
+            },
+          });
+          navigate("/orderhistory");
+        }
+      } catch (err) {
+        console.error("Cancel error:", err);
+        toast.error(
+          err.response?.data?.msg || "Order Return failed!",
+          {
+            style: {
+              border: "1px solid #FF0000",
+              padding: "16px",
+              color: "#FF0000",
+            },
+            iconTheme: {
+              primary: "#FF0000",
+              secondary: "#FFFAEE",
+            },
+          }
+        );
+        navigate("/orderhistory");
+      }
+    }else{   // Exchange API Call
+      try {
+        const res = await API.put(
+          `/orders/${orderNo}/exchange`,
+          {
+            item_ids: [item.itemId],     // e.g. ["item123", "item456"]
+            reason_id: reason,   // e.g. 123
+            remarks: comments || "exchange items",
+          }
+        );
+
+        if (res.data.success) {
+          toast.success("Order Exchanged successfully!", {
+            style: {
+              border: "1px solid black",
+              padding: "16px",
+              color: "black",
+            },
+            iconTheme: {
+              primary: "black",
+              secondary: "white",
+            },
+          });
+          navigate("/orderhistory");
+        }
+      } catch (err) {
+        console.error("Cancel error:", err);
+        toast.error(
+          err.response?.data?.msg || "Order Exchange failed!",
+          {
+            style: {
+              border: "1px solid #FF0000",
+              padding: "16px",
+              color: "#FF0000",
+            },
+            iconTheme: {
+              primary: "#FF0000",
+              secondary: "#FFFAEE",
+            },
+          }
+        );
+        navigate("/orderhistory");
+      }
+    }
   };
 
   return (
@@ -40,29 +122,33 @@ import { useLocation, useNavigate } from "react-router-dom";
 
         <form onSubmit={handleSubmit}>
           {/* Radio Buttons */}
-       <div className="radio-options">
-               <label>
-              <input
-                 type="radio"
-                 value="return"
-                 checked={option === "return"}
-                 onChange={(e) => setOption(e.target.value)}
-              />
-             &nbsp; Return
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="exchange"
-                checked={option === "exchange"}
-                onChange={(e) => setOption(e.target.value)}
-              />
-              &nbsp; Exchange
-            </label>
+          <div className="radio-options">
+            {item.allow_return && (
+              <label>
+                <input
+                  type="radio"
+                  value="return"
+                  checked={option === "return"}
+                  onChange={(e) => setOption(e.target.value)}
+                />
+                &nbsp; Return
+              </label>
+            )}
+            {item.allow_exchange  && (
+              <label>
+                <input
+                  type="radio"
+                  value="exchange"
+                  checked={option === "exchange"}
+                  onChange={(e) => setOption(e.target.value)}
+                />
+                &nbsp; Exchange
+              </label>
+            )}
           </div>
 
           <label>
-            Reason for return <span className="required">*</span>
+            Reason for Exchange <span className="required">*</span>
           </label>
           <select
             value={reason}
@@ -70,10 +156,10 @@ import { useLocation, useNavigate } from "react-router-dom";
             required
           >
             <option value="">Select Reason</option>
-            <option value="not_needed">No longer needed</option>
-            <option value="defective">Received defective product</option>
-            <option value="wrong_item">Wrong item received</option>
-            <option value="other">Other</option>
+            <option value="1">No longer needed</option>
+            <option value="2">Received defective product</option>
+            <option value="3">Wrong item received</option>
+            <option value="4">Other</option>
           </select>
 
           <label>
@@ -95,13 +181,13 @@ import { useLocation, useNavigate } from "react-router-dom";
           </div>
 
           <button type="submit" className="return-btn">
-            Return Order
+            {option} Order
           </button>
         </form>
       </div>
 
-     {/* Right Section */}
-     <div className="cancel-order-details">
+      {/* Right Section */}
+      <div className="cancel-order-details">
         <h3>Order Details</h3>
         {item ? (
           <div className="order-box">
@@ -110,12 +196,14 @@ import { useLocation, useNavigate } from "react-router-dom";
               <p>Qty : {item.qty}</p>
               <p className="order-price">₹{item.price}</p>
             </div>
-            <img 
-            className="img_cancel"
-            src={item.product_media} alt={item.product_name} />
+            <img
+              className="img_cancel"
+              src={item.product_media}
+              alt={item.product_name}
+            />
           </div>
         ) : (
-    <p>No item details found.</p>
+          <p>No item details found.</p>
         )}
       </div>
     </div>

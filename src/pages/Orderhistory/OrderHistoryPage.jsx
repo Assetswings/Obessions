@@ -25,6 +25,7 @@ const OrderHistoryPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showcnModal, setShowcnModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     dispatch(fetchMoreLike());
@@ -61,14 +62,14 @@ const OrderHistoryPage = () => {
   const handleProceed = () => {
     setShowModal(false);
      if(selectedItem){
-      navigate("/returnexchange", { state: { item: selectedItem } });
+      navigate("/returnexchange", { state: { item: selectedItem, orderNo:selectedOrder } });
      }
   };
 
   const handleProceedcn = () => {
     setShowcnModal(false);
     if (selectedItem) {
-      navigate("/cancelorder", { state: { item: selectedItem } });
+      navigate("/cancelorder", { state: { item: selectedItem, orderNo:selectedOrder } });
     }
   };
 
@@ -134,43 +135,53 @@ const OrderHistoryPage = () => {
                   <img src={item.product_media} alt={item.product_name} />
                   <div className="item-info">
                     <p>{item.product_name}</p>
-                    <div
-                      className="link-btn"
-                      onClick={() => {
-                        setSelectedItem({
-                          product_name: item.product_name,
-                          product_media: item.product_media,
-                          price: item.mrp,
-                          qty: item.quantity,
-                          order_no: order.order_no,
-                        });
-                        setShowcnModal(true);
-                      }}
-                    >
-                      <p className="cancel-order">Cancel Order</p>
-                    </div>
-                    <div className="actions">
-                      <button type="button" className="link-btn">
-                        <p className="cancel-order">Buy Again</p>
-                      </button>
-                      <button
-                        type="button"
+                    {item.allow_cancellation && (
+                      <div
                         className="link-btn"
-                    
                         onClick={() => {
                           setSelectedItem({
+                            itemId: item.id,
                             product_name: item.product_name,
                             product_media: item.product_media,
                             price: item.mrp,
                             qty: item.quantity,
                             order_no: order.order_no,
                           });
-                          setShowModal(true)
+                          setSelectedOrder(order.order_no);
+                          setShowcnModal(true);
                         }}
                       >
-                        <p className="cancel-order">Return / Exchange</p>
-                      </button>
-                    </div>
+                        <p className="cancel-order">Cancel Order</p>
+                      </div>
+                    )}
+                    {(item.allow_exchange || item.allow_return) && (
+                      <div className="actions">
+                        <button type="button" className="link-btn">
+                          <p className="cancel-order">Buy Again</p>
+                        </button>
+                        <button
+                          type="button"
+                          className="link-btn"
+                      
+                          onClick={() => {
+                            setSelectedItem({
+                              itemId: item.id,
+                              product_name: item.product_name,
+                              product_media: item.product_media,
+                              price: item.mrp,
+                              qty: item.quantity,
+                              order_no: order.order_no,
+                              allow_exchange: item.allow_exchange,
+                              allow_return: item.allow_return
+                            });
+                            setSelectedOrder(order.order_no);
+                            setShowModal(true);
+                          }}
+                        >
+                          <p className="cancel-order">Return / Exchange</p>
+                        </button>
+                      </div>
+                    )}
                   </div>
                   <div className="arrow">
                     <ChevronRight size={24} />
@@ -189,7 +200,7 @@ const OrderHistoryPage = () => {
             <h3>Return / Exchange Order</h3>
           <p>Are you sure you want to return/cancel this order?</p>
           <div className="modal-actions">
-            <button className="go-back" onClick={() => setShowModal(false)}>
+            <button className="go-back" onClick={() => {setShowModal(false); setSelectedItem(null);}}>
               GO BACK
             </button>
             <button className="proceed" onClick={handleProceed}>
@@ -207,7 +218,7 @@ const OrderHistoryPage = () => {
           <h3>Cancel Order</h3>
           <p>Are you sure you want to cancel this order?</p>
           <div className="modal-actions">
-            <button className="go-back" onClick={() => setShowcnModal(false)}>
+            <button className="go-back" onClick={() => {setShowcnModal(false); setSelectedItem(null);}}>
               DON'T CANCEL
             </button>
             <button className="proceed" onClick={handleProceedcn}>

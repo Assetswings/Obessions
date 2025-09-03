@@ -5,8 +5,11 @@ import { Info } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { initiatePayment, verifyPayment } from "./paymentService";
 import { useNavigate } from "react-router-dom";
+import phonepayimage from "../../assets/images/phonepe.png";
+import razorpay from "../../assets/images/Razorpay.png";
 
-const PaymentPage = () => {
+
+   const PaymentPage = () => {
    const navigate = useNavigate(); 
   const location = useLocation();
   const { orderResponse, orderPayload, checkoutData } = location.state || {};
@@ -212,7 +215,7 @@ const PaymentPage = () => {
 
           <div className="section">
             <h6>SELECT A PAYMENT METHOD</h6>
-            <div className="payment-options">
+            {/* <div className="payment-options">
               {orderResponse?.data?.payment_gateways?.map((pg, idx) => (
                 <label key={idx}>
                   <input
@@ -225,15 +228,35 @@ const PaymentPage = () => {
                   <span style={{ marginLeft: "8px" }}>{pg.provider}</span>
                 </label>
               ))}
-            </div>
+            </div> */}
+            <div className="payment-options">
+  {orderResponse?.data?.payment_gateways?.map((pg, idx) => (
+    <label key={idx} className="payment-option">
+      <input
+        type="radio"
+        name="payment"
+        value={pg.provider}
+        checked={selectedPayment === pg.provider}
+        onChange={() => setSelectedPayment(pg.provider)}
+      />
+      <span style={{ marginLeft: "8px", display: "flex", alignItems: "center" }}>
+        {pg.provider === "RAZORPAY" && (
+          <img src={razorpay} alt="Razorpay" className="payment-logo" />
+        )}
+        {pg.provider === "PHONEPE" && (
+          <img src={phonepayimage} alt="PhonePe" className="payment-logo" />
+        )}
+        {/* <span style={{ marginLeft: "8px" }}>{pg.provider}</span> */}
+      </span>
+    </label>
+  ))}
+</div>
           </div>
-
           <p className="terms">
             Before proceed further you can review{" "}
             <a href="#">Terms & Conditions of Sale</a> and{" "}
             <a href="#">Privacy Policy</a>
           </p>
-
           <div className="root_track">
             <button onClick={startPayment} className="payment-btn">
               CONTINUE TO PAYMENT

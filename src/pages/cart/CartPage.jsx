@@ -39,7 +39,6 @@ const CartPage = () => {
     if (newQty < 1) return;
     setUpdatingId(product_id);
     await dispatch(updateCartItem({ product_id, quantity: newQty }));
-    
     setUpdatingId(null);
   };
 

@@ -18,6 +18,7 @@ import collectionsReducer from "../pages/Collection/collectionsSlice";
 import contactReducer from "../pages/Contactus/contactUsSlice";
 import aboutReducer from "../pages/Aboutpage/aboutSlice";
 import faqReducer from "../pages/Faq/faqSlice"; 
+import  otherproductReducer from "../pages/Otherproductlist/Otherpageslice";
 
 export const store = configureStore({
   reducer: {
@@ -40,6 +41,7 @@ export const store = configureStore({
     contact: contactReducer,
     about: aboutReducer,
     faq : faqReducer,
+    otherproduct : otherproductReducer
   },
   });
 

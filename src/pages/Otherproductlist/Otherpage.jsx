@@ -1,37 +1,28 @@
 import React, { useEffect, useState } from "react";
-import "./ProductsPage.css";
+import "../Products/ProductsPage.css";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "./productsSlice";
+import { fetchOtherProducts } from "./Otherpageslice";
 import { Expand, Heart } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import ProductQuickViewModal from "./ProductQuickViewModal";
-import {
-  addToWishlist,
-  fetchWishlist,
-  removeFromWishlist,
-} from "../../components/Wishtlist/WishlistSlice";
+import ProductQuickViewModal from "../Products/ProductQuickViewModal";
+import {addToWishlist,fetchWishlist,removeFromWishlist} from "../../components/Wishtlist/WishlistSlice";
 import { toast } from "react-hot-toast";
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
-import { fetchTopPicks } from "./otherproductSlice";
+import { fetchTopPicks } from "../Products/otherproductSlice";
 
 const Otherpage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const category = location.state?.category;
-  const subcategory = location.state?.subcategory;
-
-  const {
-    data: products,
-    filters,
-    loading,
-  } = useSelector((state) => state.products);
-
+  const path = location.pathname.split("/").filter(Boolean).pop();
+  const slug = path == "new-arrivals" ? 'new-arrivals' : path == "bestseller" ? 'bestsellers' : path == 'offer-spot' ? 'offer-spots' : "" ;
+  
+  const {data: otherproduct,filters,loading,} = useSelector((state) => state.otherproduct);
   const wishlist = useSelector((state) => state.wishlist);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -39,11 +30,10 @@ const Otherpage = () => {
   const [animatedWish, setAnimatedWish] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-
   const { items } = useSelector((state) => state.toppick);
 
-     useEffect(() => {
-     dispatch(fetchTopPicks()); //
+  useEffect(() => {
+    dispatch(fetchTopPicks()); 
   }, [dispatch]);
 
   useEffect(() => {
@@ -52,24 +42,15 @@ const Otherpage = () => {
   }, []);
 
   useEffect(() => {
-    if (category) {
-      dispatch(fetchProducts({ category, subcategory, page: 1, limit: 20 }));
+    if (slug) {
+      dispatch(fetchOtherProducts({
+        slug,
+        page: 1,
+        limit: 20,
+        filters: selectedFilters,
+      }));
     }
-  }, [dispatch, category, subcategory]);
-
-  useEffect(() => {
-    if (category) {
-      dispatch(
-        fetchProducts({
-          category,
-          subcategory,
-          page: 1,
-          limit: 20,
-          filters: selectedFilters,
-        })
-      );
-    }
-  }, [selectedFilters]);
+  }, [dispatch, slug, selectedFilters]);
 
   useEffect(() => {
     dispatch(fetchWishlist());
@@ -84,52 +65,6 @@ const Otherpage = () => {
       return { ...prev, [filterKey]: updated };
     });
   };
-
-  //     const toggleWishlist = async (e, product) => {
-  //     e.stopPropagation();
-  //     const isInWishlist = wishlist.productIds.includes(product.id);
-  //     console.log("prodcut______page--->",product);
-  //     try {
-  //     if (isInWishlist) {
-  //         const wishlistItem = wishlist.items.find(
-  //         (item) => item.product_id === product.id
-  //            );
-  //         if (wishlistItem?.id) {
-  //           await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
-  //           toast.success("Removed from wishlist", {
-  //             style: {
-  //               border: "1px solid #713200",
-  //               padding: "16px",
-  //               color: "#713200",
-  //             },
-  //             iconTheme: {
-  //               primary: "#713200",
-  //               secondary: "#FFFAEE",
-  //             },
-  //           });
-  //           dispatch(fetchWishlist());
-  //         }
-  //       } else {
-  //         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
-  //         toast.success("Added to wishlist", {
-  //           style: {
-  //             border: "1px solid #713200",
-  //             padding: "16px",
-  //             color: "#713200",
-  //           },
-  //           iconTheme: {
-  //             primary: "#713200",
-  //             secondary: "#FFFAEE",
-  //           },
-  //         });
-  //         setAnimatedWish(product.id);
-  //         dispatch(fetchWishlist());
-  //         setTimeout(() => setAnimatedWish(null), 1500);
-  //       }
-  //     } catch (err) {
-  //       toast.error("Something went wrong");
-  //     }
-  //
 
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
@@ -181,12 +116,8 @@ const Otherpage = () => {
     }
   };
 
-  const formatTitle = (text) =>
-    text
-      .replace(/-/g, " ")
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
+  const formatTitle = (text) => text.replace(/-/g, " ").split(" ")
+  .map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 
   const renderFilterGroup = (title, options, key) => (
     <div className="custom-filter-group" key={key}>
@@ -204,50 +135,12 @@ const Otherpage = () => {
     </div>
   );
 
-  const picks = [
-    {
-      id: 1,
-      title: "TABLE ORGANISERS",
-      image: "https://i.ibb.co/2Ykt2Kdk/image-139.png",
-    },
-    {
-      id: 2,
-      title: "YOGA MATS",
-      image: "https://i.ibb.co/DfsTXR7F/image-141.png",
-    },
-    {
-      id: 3,
-      title: "WINE OPENERS",
-      image: "https://i.ibb.co/jY5FnhK/image-146.png",
-    },
-    {
-      id: 4,
-      title: "CARPETS & RUNNERS",
-      image: "https://i.ibb.co/SDwYzWXH/image-150.png",
-    },
-    {
-      id: 5,
-      title: "TABLE ORGANISERS",
-      image: "https://i.ibb.co/2Ykt2Kdk/image-139.png",
-    },
-    {
-      id: 6,
-      title: "WINE OPENERS",
-      image: "https://i.ibb.co/jY5FnhK/image-146.png",
-    },
-    {
-      id: 7,
-      title: "CARPETS & RUNNERS",
-      image: "https://i.ibb.co/SDwYzWXH/image-150.png",
-    },
-  ];
-
   return (
     <>
       <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">
-            {subcategory ? formatTitle(subcategory) : formatTitle(category)}
+            {slug ? formatTitle(slug) : ""}
           </h2>
           <div className="root_devider_flt">
             <h2>Filters</h2>
@@ -278,7 +171,7 @@ const Otherpage = () => {
           ) : (
             filters &&
             Object.entries(filters).map(([filterKey, values]) =>
-              renderFilterGroup(filterKey.replace(/_/g, " "), values, filterKey)
+              renderFilterGroup(filterKey?.replace(/_/g, " "), values, filterKey)
             )
           )}
         </aside>
@@ -299,7 +192,7 @@ const Otherpage = () => {
                     </p>
                   </div>
                 ))
-              : products.map((item) => {
+              : otherproduct.map((item) => {
                   const isWishlisted = wishlist.productIds.includes(item.id);
                   return (
                     <div

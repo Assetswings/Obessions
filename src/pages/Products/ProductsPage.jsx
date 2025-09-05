@@ -7,12 +7,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProductQuickViewModal from "./ProductQuickViewModal";
-import {
-  addToWishlist,
-  fetchWishlist,
-  removeFromWishlist,
-} from "../../components/Wishtlist/WishlistSlice";
-import { toast } from "react-hot-toast";
+import {addToWishlist,fetchWishlist,removeFromWishlist,} from "../../components/Wishtlist/WishlistSlice";
+import { ToastContainer, toast } from "react-toastify";
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
@@ -26,11 +22,9 @@ const ProductsPage = () => {
   const category = location.state?.category;
   const subcategory = location.state?.subcategory;
 
-  const {
-    data: products,
-    filters,
-    loading,
-  } = useSelector((state) => state.products);
+  // const { data: products,filters,loading} = useSelector((state) => state.products);
+  const { data, filters, loading } = useSelector((state) => state.products);
+  const products = Array.isArray(data) ? data : [];
 
   const wishlist = useSelector((state) => state.wishlist);
   const [selectedFilters, setSelectedFilters] = useState({});
@@ -41,6 +35,9 @@ const ProductsPage = () => {
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   const { items } = useSelector((state) => state.toppick);
+
+  console.log('product>>>>>',products);
+    console.log('filter>>>>>',filters);
 
   useEffect(() => {
     dispatch(fetchTopPicks()); //
@@ -85,52 +82,6 @@ const ProductsPage = () => {
     });
   };
 
-  //     const toggleWishlist = async (e, product) => {
-  //     e.stopPropagation();
-  //     const isInWishlist = wishlist.productIds.includes(product.id);
-  //     console.log("prodcut______page--->",product);
-  //     try {
-  //     if (isInWishlist) {
-  //         const wishlistItem = wishlist.items.find(
-  //         (item) => item.product_id === product.id
-  //            );
-  //         if (wishlistItem?.id) {
-  //           await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
-  //           toast.success("Removed from wishlist", {
-  //             style: {
-  //               border: "1px solid #713200",
-  //               padding: "16px",
-  //               color: "#713200",
-  //             },
-  //             iconTheme: {
-  //               primary: "#713200",
-  //               secondary: "#FFFAEE",
-  //             },
-  //           });
-  //           dispatch(fetchWishlist());
-  //         }
-  //       } else {
-  //         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
-  //         toast.success("Added to wishlist", {
-  //           style: {
-  //             border: "1px solid #713200",
-  //             padding: "16px",
-  //             color: "#713200",
-  //           },
-  //           iconTheme: {
-  //             primary: "#713200",
-  //             secondary: "#FFFAEE",
-  //           },
-  //         });
-  //         setAnimatedWish(product.id);
-  //         dispatch(fetchWishlist());
-  //         setTimeout(() => setAnimatedWish(null), 1500);
-  //       }
-  //     } catch (err) {
-  //       toast.error("Something went wrong");
-  //     }
-  //
-
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
     if (!isLoggedIn) {
@@ -156,6 +107,9 @@ const ProductsPage = () => {
               primary: "#713200",
               secondary: "#FFFAEE",
             },
+            hideProgressBar: true,
+            closeButton: true,
+            icon: true,
           });
           dispatch(fetchWishlist());
         }
@@ -171,8 +125,11 @@ const ProductsPage = () => {
             primary: "#713200",
             secondary: "#FFFAEE",
           },
+          hideProgressBar: true,
+          closeButton: true,
+          icon: true,
         });
-        setAnimatedWish(product.id);
+        setAnimatedWish(product.id);        
         dispatch(fetchWishlist());
         setTimeout(() => setAnimatedWish(null), 1500);
       }
@@ -244,6 +201,7 @@ const ProductsPage = () => {
 
   return (
     <>
+    <ToastContainer position="top-right" autoClose={3000} />
       <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">
@@ -299,11 +257,11 @@ const ProductsPage = () => {
                     </p>
                   </div>
                 ))
-              : products.map((item) => {
+              : products?.map((item,index) => {
                   const isWishlisted = wishlist.productIds.includes(item.id);
                   return (
                     <div
-                      key={item.id}
+                      key={item.index}
                       className="custom-product-card"
                       onClick={(e) => {
                         const isQuickView = e.target.closest(".qucick_dv");

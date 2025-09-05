@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaSearch } from "react-icons/fa";
-import { Heart, CircleUser, ShoppingCart, User, LogOut, Search } from "lucide-react";
+import {
+  Heart,
+  CircleUser,
+  ShoppingCart,
+  User,
+  LogOut,
+  Search,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import MegaMenu from "./MegaMenu";
 import WishlistModal from "../Wishtlist/WishlistModal";
@@ -8,19 +15,19 @@ import "./OtherTopnav.css";
 import logo from "../../assets/icons/Obslogo.png";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
 
-  const OtherTopnav = () => {
+const OtherTopnav = () => {
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const [showSearch, setShowSearch] = useState(false); 
+  const [showSearch, setShowSearch] = useState(false);
   const navigate = useNavigate();
   const userWrapperRef = useRef(null);
 
-     useEffect(() => {
-     const token = localStorage.getItem("token");
-     setIsLoggedIn(!!token);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
   }, []);
 
   useEffect(() => {
@@ -59,7 +66,7 @@ import LoginPromptModal from "../LoginModal/LoginPromptModal";
     setIsLoggedIn(false);
     setShowUserPopup(false);
     alert("Logout successful");
-     navigate("/");
+    navigate("/");
   };
 
   const handleProfile = () => {
@@ -75,8 +82,8 @@ import LoginPromptModal from "../LoginModal/LoginPromptModal";
     }
   };
 
-  const handelcarpet = () => {
-    navigate("/carpet-finder");
+  const handelroute = (route) => {
+    navigate(route);
   };
 
   return (
@@ -92,10 +99,10 @@ import LoginPromptModal from "../LoginModal/LoginPromptModal";
 
         <ul className="nav-links">
           <li onClick={() => setShowMegaMenu((prev) => !prev)}>SHOP</li>
-          <li>NEW ARRIVALS</li>
-          <li>BEST SELLERS</li>
-          <li>OFFERS SPOT</li>
-          <li onClick={handelcarpet}>CARPET FINDER</li>
+          <li onClick={() => handelroute("/new-arrivals")}>NEW ARRIVALS</li>
+          <li onClick={() => handelroute("/bestseller")}>BEST SELLERS</li>
+          <li onClick={() => handelroute("/offer-spot")}>OFFERS SPOT</li>
+          <li onClick={() => handelroute("/carpet-finder")}>CARPET FINDER</li>
         </ul>
 
         <div className="nav-actions">
@@ -177,25 +184,24 @@ import LoginPromptModal from "../LoginModal/LoginPromptModal";
             className="search-modal"
             onClick={(e) => e.stopPropagation()} // prevent closing on modal click
           >
-          
             <div className="d-flex">
-            <input
-              type="text"
-              className="form-control border-0 rounded-5 input_global"
-              placeholder="WHAT ARE YOU LOOKING FOR?"
-              // value={query}
-            />
-            <button
-              className="btn btn-dark rounded-5 button_search"
-              // onClick={() =>
-              //   navigate("/searchlist", {
-              //     state: { query: query },
-              //   })
-              // }
-            >
-              <Search strokeWidth={1.25} />
-            </button>
-          </div>
+              <input
+                type="text"
+                className="form-control border-0 rounded-5 input_global"
+                placeholder="WHAT ARE YOU LOOKING FOR?"
+                // value={query}
+              />
+              <button
+                className="btn btn-dark rounded-5 button_search"
+                // onClick={() =>
+                //   navigate("/searchlist", {
+                //     state: { query: query },
+                //   })
+                // }
+              >
+                <Search strokeWidth={1.25} />
+              </button>
+            </div>
           </div>
         </div>
       )}

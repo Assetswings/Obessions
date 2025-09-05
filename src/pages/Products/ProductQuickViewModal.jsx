@@ -11,27 +11,34 @@ import { Heart } from "lucide-react";
 import { addToCart } from "../cart/cartSlice";
 import { ToastContainer, toast } from "react-toastify";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
-import { fetchWishlist, addToWishlist, removeFromWishlist,} from "../../components/Wishtlist/WishlistSlice";
+import {
+  fetchWishlist,
+  addToWishlist,
+  removeFromWishlist,
+} from "../../components/Wishtlist/WishlistSlice";
 import { Player } from "@lottiefiles/react-lottie-player";
-import heartAnimation from "../../assets/icons/Heart.json"; 
-import { checkPincode, resetPincodeState} from "../Productdetails/pincodeSlice";
-
+import heartAnimation from "../../assets/icons/Heart.json";
+import {
+  checkPincode,
+  resetPincodeState,
+} from "../Productdetails/pincodeSlice";
 
 const ProductQuickViewModal = ({ show, product, onHide }) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
   const [localLoading, setLocalLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("highlights");
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const [animatedWish, setAnimatedWish] = useState(null); 
-  const [pincode, setPincode] = useState('');
+  const [animatedWish, setAnimatedWish] = useState(null);
+  const [pincode, setPincode] = useState("");
   const [pincodeChecked, setPincodeChecked] = useState(false);
 
   const modalRef = useRef();
   const sectionsRef = useRef({});
   const dispatch = useDispatch();
-  const actionurl = product?.action_url ? product?.action_url  : product?.slug;
+  const actionurl = product?.action_url ? product?.action_url : product?.slug;
   const { data, loading, error } = useSelector((state) => state.productDetail);
   const pincodeset = useSelector((state) => state.pincode);
   const wishlist = useSelector((state) => state.wishlist);
@@ -46,13 +53,14 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
     }
   }, [dispatch, actionurl]);
   // Set image when data loads
-    useEffect(() => {
+  useEffect(() => {
     if (data?.product_images?.length > 0) {
       setSelectedImage(data.product_images[0].media);
       setLocalLoading(false);
     }
-    if(data?.product_sizes.length > 0){
-      setSelectedSize(data?.product_sizes[0])
+    if (data?.product_sizes.length > 0) {
+      setSelectedSize(data?.product_sizes[0]);
+      setSelectedColor(data.product_sizes[0].product_colors[0]);
     }
   }, [data]);
 
@@ -84,7 +92,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
     } else {
       document.body.style.overflow = "auto";
     }
-      return () => {
+    return () => {
       document.body.style.overflow = "auto";
     };
   }, [show]);
@@ -92,7 +100,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   // Close when clicking outside modal
   const handleOutsideClick = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
-    onHide();
+      onHide();
     }
   };
 
@@ -100,8 +108,8 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   if (!show || !product) return null;
   const handleCheck = () => {
     if (pincode.trim()) {
-    dispatch(checkPincode(pincode)).then(() => {
-    setPincodeChecked(true);
+      dispatch(checkPincode(pincode)).then(() => {
+        setPincodeChecked(true);
       });
     }
   };
@@ -112,8 +120,8 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
     setPincodeChecked(false);
   };
 
-   // ADD TO CART FUNCTION (restricted until pincode check success)
-   const handleAddToCart = () => {
+  // ADD TO CART FUNCTION (restricted until pincode check success)
+  const handleAddToCart = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       setShowLoginPrompt(true);
@@ -128,7 +136,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
           borderRadius: "0px",
           padding: "12px 16px",
           fontSize: "14px",
-          zIndex:999999
+          zIndex: 999999,
         },
         hideProgressBar: true,
         closeButton: false,
@@ -159,19 +167,18 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       });
   };
 
-  
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
-  
+
     // 🔑 check login first
     const token = localStorage.getItem("token");
     if (!token) {
       setShowLoginPrompt(true);
       return;
     }
-  
+
     const isInWishlist = wishlist.productIds.includes(product.id);
-  
+
     try {
       if (isInWishlist) {
         const wishlistItem = wishlist.items.find(
@@ -213,16 +220,22 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       toast.error("Something went wrong");
     }
   };
-  
-//   useEffect(() => {
-//     dispatch(fetchWishlist());
-//  }, [dispatch]);
-//    if (error) {
-//   return <div className="error">Error: {error}</div>;
-// }
+
+  const selectionColor = (color) => {
+    setSelectedColor(color);
+    setLocalLoading(true);
+    setSelectedImage(null);
+    setSelectedSize(null);
+    dispatch(clearProductDetail());
+    dispatch(fetchProductDetail(color.action_url));
+  }
   return (
     <>
-       <ToastContainer position="top-right" style={{ zIndex: 99999 }} autoClose={3000} />
+      <ToastContainer
+        position="top-right"
+        style={{ zIndex: 99999 }}
+        autoClose={3000}
+      />
       <div className="quickview-modal-overlay" onClick={handleOutsideClick}>
         <div className="quickview-modal" ref={modalRef}>
           <div className="quickview-header">
@@ -232,13 +245,14 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
             </div>
           </div>
 
-           <div className="product-page">
+          <div className="product-page">
             {/* Main Product Image */}
             <div className="product-gallery">
               <div className="sector_quick">
                 <div
                   className="image_track_quick"
-                  style={{ width: "100%", minHeight: "536px" }}>
+                  style={{ width: "100%", minHeight: "536px" }}
+                >
                   {loading || !selectedImage ? (
                     <div style={{ width: "100%", height: "100%" }}>
                       <Skeleton
@@ -324,11 +338,9 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
               <p className="id_tracker">
                 {loading ? <Skeleton width={100} /> : `SKU: ${data?.sku}`}
               </p>
-
-              {/* Size Selector */}
-              {/* <div className="size-selector">
+              <div className="size-selector">
                 {loading ? (
-                    <>
+                  <>
                     <p>
                       <Skeleton width={150} />
                     </p>
@@ -343,11 +355,11 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 ) : (
                   data?.product_sizes?.length > 0 && (
                     <>
-                      {selectedSize && (
-                        <p className="selected-size-label">
-                          CHOOSE A SIZE: <strong>{selectedSize.size}</strong>
-                        </p>
-                      )}
+                      <p className="selected-size-label">
+                        CHOOSE A SIZE:
+                        {selectedSize && <strong>{selectedSize.size}</strong>}
+                      </p>
+
                       <div className="size-options">
                         {data.product_sizes.map((size) => (
                           <div
@@ -374,7 +386,6 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
               </div>
 
               <div className="color-selector">
-                <p>CHOOSE A COLOR:</p>
                 {loading ? (
                   <div style={{ display: "flex", gap: "10px" }}>
                     {Array(5)
@@ -384,104 +395,32 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                       ))}
                   </div>
                 ) : (
-                  <div className="color-options">
-                    {[
-                      "#3d3d3d",
-                      "#2f4f4f",
-                      "#8b0000",
-                      "#5f4b8b",
-                      "#5e412f",
-                    ].map((color, idx) => (
-                      <div className="selected-color" key={idx}>
-                        <div
-                          className="color-circle"
-                          style={{ backgroundColor: color }}
-                        ></div>
-                      </div>
-                    ))}
-                  </div>
+                  <>
+                    <div>
+                      <p>CHOOSE A COLOR:</p>
+                    </div>
+                    <div className="color-options">
+                      {selectedSize?.product_colors?.map((color, idx) => (
+                        <div className={`selected-color ${
+                            selectedColor?.id === color.id ? "active-size" : ""
+                          }`}
+                          key={idx}
+                          onClick={() => selectionColor(color)}
+                        >
+                          <div className="color-circle">
+                            <img
+                              src={color.color_media}
+                              alt={color.color}
+                              height={60}
+                              width={60}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
                 )}
-              </div> */}
-
-              {/* Size Selector */}
-          <div className="size-selector">
-            {loading ? (
-              <>
-                <p>
-                  <Skeleton width={150} />
-                </p>
-                <div style={{ display: "flex", gap: 10 }}>
-                  {Array(3)
-                    .fill(0)
-                    .map((_, i) => (
-                      <Skeleton key={i} width={60} height={60} />
-                    ))}
-                </div>
-              </>
-            ) : (
-              data?.product_sizes?.length > 0 && (
-                <>
-                  <p className="selected-size-label">
-                    CHOOSE A SIZE:
-                    {selectedSize && <strong>{selectedSize.size}</strong>}
-                  </p>
-
-                  <div className="size-options">
-                    {data.product_sizes.map((size) => (
-                      <div
-                        key={size.id}
-                        className={`size-btn ${
-                          selectedSize?.id === size.id ? "active-size" : ""
-                        }`}
-                        onClick={() => setSelectedSize(size)}
-                      >
-                        <div className="set_btn_trcak">
-                          <img
-                            src="https://i.ibb.co/x86bSjV6/Frame-7.png"
-                            className="size-image"
-                            alt={size.size}
-                          />
-                        </div>
-                        <div className="lbl-track">{size.size}</div>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )
-            )}
-          </div>
-
-          <div className="color-selector">
-            {loading ? (
-              <div style={{ display: "flex", gap: "10px" }}>
-                {Array(5)
-                  .fill(0)
-                  .map((_, idx) => (
-                    <Skeleton key={idx} square height={30} width={30} />
-                  ))}
               </div>
-            ) : (
-              <>
-                <div>
-                  <p>CHOOSE A COLOR:</p>
-                </div>
-                <div className="color-options">
-                  {selectedSize?.product_colors?.map((color,idx) =>
-                      <div className="selected-color" key={idx}>
-                        <div className="color-circle">
-                          <img
-                            src={color.color_media}
-                            alt={color.color}
-                            height={60}
-                            width={60}
-                          />
-                        </div>
-                      </div>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
 
               {/* Quantity Selector */}
               <div className="quantity-selector">
@@ -497,8 +436,8 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 </div>
               </div>
 
-             {/* Pincode Check */}
-             <div className="pincode-check">
+              {/* Pincode Check */}
+              <div className="pincode-check">
                 <p className="check-heading">CHECK AVAILABILITY</p>
                 <div className="input-wrapper">
                   <input
@@ -521,39 +460,54 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 {/* Show pincode info */}
                 {pincodeset.loading && <p>Checking...</p>}
                 {pincodeset.error && (
-                  <p style={{ color: "red",marginTop:"15px" }}>Not serviceable for your area</p>
+                  <p style={{ color: "red", marginTop: "15px" }}>
+                    Not serviceable for your area
+                  </p>
                 )}
                 {pincodeset.pinset?.pincode && pincodeset.pinset?.is_active && (
-                  <p style={{ color: "green",marginTop:"15px" }}>
-                    ✅ Delivery available at{" "}
-                    {pincodeset.pinset.city}, {pincodeset.pinset.state} (
-                    {pincodeset.pinset.delivery_tat})
+                  <p style={{ color: "green", marginTop: "15px" }}>
+                    ✅ Delivery available at {pincodeset.pinset.city},{" "}
+                    {pincodeset.pinset.state} ({pincodeset.pinset.delivery_tat})
                   </p>
                 )}
               </div>
 
               {/* Cart & Wishlist */}
               <div className="add-cart-section">
-            <button className="add-to-cart-btn_qucick" onClick={handleAddToCart}>
-              ADD TO CART
-            </button>
-            <div className="wst_box_quick" onClick={(e) => toggleWishlist(e, data)}>
-  {animatedWish === data?.id ? (
-    <Player
-      autoplay
-      keepLastFrame
-      src={heartAnimation}
-      style={{ width: 102, height: 102 }}
-    />
-  ) : (
-    <Heart
-      size={27}
-      color={wishlist.productIds.includes(data?.id) ? "#FF0000" : "#000"}
-      fill={wishlist.productIds.includes(data?.id) ? "#FF0000" : "none"}
-    />
-  )}
-</div>
-  </div>
+                <button
+                  className="add-to-cart-btn_qucick"
+                  onClick={handleAddToCart}
+                >
+                  ADD TO CART
+                </button>
+                <div
+                  className="wst_box_quick"
+                  onClick={(e) => toggleWishlist(e, data)}
+                >
+                  {animatedWish === data?.id ? (
+                    <Player
+                      autoplay
+                      keepLastFrame
+                      src={heartAnimation}
+                      style={{ width: 102, height: 102 }}
+                    />
+                  ) : (
+                    <Heart
+                      size={27}
+                      color={
+                        wishlist.productIds.includes(data?.id)
+                          ? "#FF0000"
+                          : "#000"
+                      }
+                      fill={
+                        wishlist.productIds.includes(data?.id)
+                          ? "#FF0000"
+                          : "none"
+                      }
+                    />
+                  )}
+                </div>
+              </div>
 
               {/* Return Info */}
               <div className="root_return_details">

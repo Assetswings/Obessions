@@ -202,6 +202,10 @@ font-family: "Playfair Display", serif; */
   border: 2px solid #bdbdbd;
   /* padding: 5px; */
 }
+
+.selected-color.active-size {
+  border: 1.6px solid #000; 
+}
 .color-circle {
   width: 80px;
   height: 80px;

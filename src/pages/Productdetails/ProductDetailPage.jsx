@@ -25,6 +25,7 @@ const ProductDetailPage = () => {
   const [activeTab, setActiveTab] = useState("highlights");
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
   const [localLoading, setLocalLoading] = useState(true);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [animatedWish, setAnimatedWish] = useState(null);
@@ -67,7 +68,8 @@ const ProductDetailPage = () => {
       setLocalLoading(false);
     }
     if(data?.product_sizes.length > 0){
-      setSelectedSize(data?.product_sizes[0])
+      setSelectedSize(data?.product_sizes[0]);
+      setSelectedColor(data.product_sizes[0].product_colors[0]);
     }
   }, [data]);
 
@@ -119,56 +121,55 @@ const ProductDetailPage = () => {
   //     });
   // };
 
-     // ADD TO CART FUNCTION (restricted until pincode check success)
-     const handleAddToCart = () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setShowLoginPrompt(true);
-        return;
-      }
-  
-      if (!pincodeChecked || !pincodeset.pinset?.is_active) {
-        toast.error("Please check delivery availability before adding to cart", {
-          style: {
-            background: "#1f1f1f",
-            color: "#fff",
-            borderRadius: "0px",
-            padding: "12px 16px",
-            fontSize: "14px",
-          },
-          hideProgressBar: true,
-          closeButton: false,
-          icon: true,
-        });
-        return;
-      }
-  
-        dispatch(addToCart({ product_id: productId, quantity }))
-        .unwrap()
-        .then(() => {
-          toast.success("Product added to cart successfully!", {
-            style: {
-              background: "#1f1f1f",
-              color: "#fff",
-              borderRadius: "0px",
-              padding: "12px 16px",
-              fontSize: "14px",
-            },
-            hideProgressBar: true,
-            closeButton: false,
-            icon: true,
-          });
-        })
-        .catch((error) => {
-          toast.error("Failed to add to cart");
-          console.error(error);
-        });
-    };
+  // ADD TO CART FUNCTION (restricted until pincode check success)
+  const handleAddToCart = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
+    if (!pincodeChecked || !pincodeset.pinset?.is_active) {
+      toast.error("Please check delivery availability before adding to cart", {
+        style: {
+          background: "#1f1f1f",
+          color: "#fff",
+          borderRadius: "0px",
+          padding: "12px 16px",
+          fontSize: "14px",
+        },
+        hideProgressBar: true,
+        closeButton: false,
+        icon: true,
+      });
+      return;
+    }
+
+    dispatch(addToCart({ product_id: productId, quantity }))
+    .unwrap()
+    .then(() => {
+      toast.success("Product added to cart successfully!", {
+        style: {
+          background: "#1f1f1f",
+          color: "#fff",
+          borderRadius: "0px",
+          padding: "12px 16px",
+          fontSize: "14px",
+        },
+        hideProgressBar: true,
+        closeButton: false,
+        icon: true,
+      });
+    })
+    .catch((error) => {
+      toast.error("Failed to add to cart");
+      console.error(error);
+    });
+  };
   
   // Price dynamics solution
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
   const productId = data?.id || productSlug;
-  console.log("Current Product ID:------->", productId);
 
   // ping the wishlist
     const handleSimilarProductClick = (slug) => {
@@ -248,6 +249,14 @@ const ProductDetailPage = () => {
     setPincodeChecked(false);
   };
 
+  const selectionColor = (color) => {
+    setSelectedColor(color);
+    setLocalLoading(true);
+    setSelectedImage(null);
+    setSelectedSize(null);
+    dispatch(clearProductDetail());
+    dispatch(fetchProductDetail(color.action_url));
+  }
 
   return (
     <>
@@ -407,7 +416,10 @@ const ProductDetailPage = () => {
                 </div>
                 <div className="color-options">
                   {selectedSize?.product_colors?.map((color,idx) =>
-                      <div className="selected-color" key={idx}>
+                      <div className={`selected-color ${
+                          selectedColor?.id === color.id ? "active-size" : ""
+                        }`} key={idx}
+                        onClick={() => selectionColor(color)}>
                         <div className="color-circle">
                           <img
                             src={color.color_media}

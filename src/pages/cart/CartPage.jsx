@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./CartPage.css";
 import { Minus, Plus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import Footer from "../../components/Footer/Footer";
 import { useNavigate } from "react-router-dom";
 import blankcart from "../../assets/images/blank-cart.png";
 import { fetchAddOns } from "../Products/otherproductSlice";
+import { ToastContainer, toast } from "react-toastify";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -15,11 +16,9 @@ const CartPage = () => {
   const { cartItems, loading, error } = useSelector((state) => state.cart);
   const [updatingId, setUpdatingId] = useState(null);
   const navigate = useNavigate();
-
   const { addOns } = useSelector((state) => state.toppick);
-  console.log("====================================");
-  console.log("Top_picks cart page---->", addOns);
-  console.log("====================================");
+
+  const lastErrorRef = useRef(null);
 
   useEffect(() => {
     dispatch(fetchAddOns());
@@ -30,6 +29,31 @@ const CartPage = () => {
       dispatch(fetchCartDetails());
     }
   }, [dispatch, token]);
+
+  // 🔹 Show toast on error only once
+  useEffect(() => {
+    if (error && error !== lastErrorRef.current) {
+      const msg =
+        typeof error === "string"
+          ? error
+          : error.error || error.error || "Something went wrong";
+
+      toast.error(msg, {
+        style: {
+          background: "#1f1f1f",
+          color: "#fff",
+          borderRadius: "0px",
+          padding: "12px 16px",
+          fontSize: "14px",
+        },
+        hideProgressBar: true,
+        closeButton: true,
+        icon: true,
+      });
+
+      lastErrorRef.current = error; // ✅ remember last error
+    }
+  }, [error]);
 
   const handleRemoveItem = async (cartId) => {
     await dispatch(removeCartItem(cartId));
@@ -47,6 +71,10 @@ const CartPage = () => {
     await dispatch(removeCartItem(item.id));
   };
 
+  const handleCheckout = () => {
+    navigate("/checkout");
+  };
+
   const items = cartItems?.items ?? [];
   const total = cartItems?.total ?? 0;
 
@@ -58,15 +86,11 @@ const CartPage = () => {
     );
   }
 
-  const handleCheckout = () => {
-    navigate("/checkout");
-  };
-
   if (loading) return <p>Loading cart...</p>;
-  if (error) return <p>Error: {error}</p>;
 
   return (
     <>
+    <ToastContainer position="top-right" autoClose={3000} />
       <div className="root-title-chk">
         <h2 className="title_chk">My Cart</h2>
       </div>

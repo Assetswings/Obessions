@@ -35,7 +35,9 @@ const Carpetfinderserch = () => {
   const { filteredData, loading, error } = useSelector((state) => state.carpetFinder);
 
   useEffect(() => {
-    dispatch(filterCarpet(filtercarpetdata));
+    if(filtercarpetdata){
+      dispatch(filterCarpet(filtercarpetdata));
+    }
   }, [dispatch]);
 
   //     useEffect(() => {

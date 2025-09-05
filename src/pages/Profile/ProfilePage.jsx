@@ -19,6 +19,7 @@ import {
 } from "./addressSlice";
 
 const ProfilePage = () => {
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("profile");
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
@@ -26,7 +27,11 @@ const ProfilePage = () => {
   const [editAddressData, setEditAddressData] = useState(null);
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [otp, setOtp] = useState("");
-  const [otpSession, setOtpSession] = useState(null); 
+  const [otpSession, setOtpSession] = useState(null);
+  const [dob, setDob] = useState("");
+
+  const [errors, setErrors] = useState({});
+
 
   const [newAddress, setNewAddress] = useState({
     first_name: "",
@@ -40,6 +45,14 @@ const ProfilePage = () => {
     pincode: "",
   });
 
+  const [editForm, setEditForm] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    mobile: "",
+    dob: "",
+  });
+
   useEffect(() => {
     if (showEditModal || showAddAddressModal || showEditAddressModal) {
       document.body.style.overflow = "hidden";
@@ -51,12 +64,7 @@ const ProfilePage = () => {
     };
   }, [showEditModal, showAddAddressModal, showEditAddressModal]);
 
-  const dispatch = useDispatch();
-  const {
-    data: profileData,
-    // loading,
-    // error,
-  } = useSelector((state) => state.profile);
+  const { data: profileData } = useSelector((state) => state.profile);
 
   useEffect(() => {
     dispatch(fetchUserProfile());
@@ -67,17 +75,6 @@ const ProfilePage = () => {
   useEffect(() => {
     dispatch(getAddress());
   }, [dispatch]);
-
-  // console.log("DATA_FROM_ADDRESS--->", addressdata);
-  const [editForm, setEditForm] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    mobile: "",
-    dob: "",
-  });
-
-  const [dob, setDob] = useState("");
 
   // Send OTP API
   const handleSendOtp = async () => {
@@ -108,7 +105,6 @@ const ProfilePage = () => {
 
       if (res.data.success) {
         toast.success(res.data.msg || "Verified successfully!", {
-
           style: {
             border: "1px solid black",
             padding: "16px",
@@ -124,7 +120,7 @@ const ProfilePage = () => {
         dispatch(fetchUserProfile());
       }
     } catch (err) {
-      console.log(err,'error');
+      console.log(err, "error");
       toast.error(err.response?.msg || "OTP verification failed", {
         style: {
           border: "1px solid #FF0000",
@@ -171,8 +167,40 @@ const ProfilePage = () => {
     }
   };
 
+  const validateProfileEditForm = () => {
+    let formErrors = {};
+
+    if (!editForm.first_name.trim()) {
+      formErrors.first_name = "First name is required";
+    } else if (!/^[A-Za-z]+$/.test(editForm.first_name)) {
+      formErrors.first_name = "Only alphabets are allowed";
+    }
+    if (!editForm.last_name.trim()) {
+      formErrors.last_name = "Last name is required";
+    } else if (!/^[A-Za-z]+$/.test(editForm.last_name)) {
+      formErrors.last_name = "Only alphabets are allowed";
+    }
+    if (!editForm.email.trim()) {
+      formErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(editForm.email)) {
+      formErrors.email = "Enter a valid email address";
+    }
+    if (!editForm.mobile.trim()) {
+      formErrors.mobile = "Phone number is required";
+    } else if (!/^\d{10}$/.test(editForm.mobile)) {
+      formErrors.mobile = "Enter a valid 10-digit number";
+    }
+    if (!editForm.dob) {
+      formErrors.dob = "Date of birth is required";
+    }
+
+    setErrors(formErrors);
+    return Object.keys(formErrors).length === 0; // true if no errors
+  };
+
   const handleSubmitEditForm = (e) => {
     e.preventDefault();
+    if (!validateProfileEditForm()) return; // stop if errors
     const updatedData = { ...editForm, dob };
 
     dispatch(
@@ -180,7 +208,7 @@ const ProfilePage = () => {
         id: profileData?.billingAddress?.id,
         data: updatedData,
       })
-    ).then(() => setShowEditModal(false));
+    ).then(() => {setShowEditModal(false); setErrors({}); } );
 
     dispatch(fetchUserProfile());
   };
@@ -265,12 +293,13 @@ const ProfilePage = () => {
                   style={{ display: "flex", alignItems: "center", gap: "10px" }}
                 >
                   {profileData?.email}
-                  { 
-                    profileData?.email_verified === 0 ?  <button className="verify-btn" onClick={handleSendOtp}>
-                    Verify
-                  </button> : <span> ✅ email veryfied </span>  
-                  }
-                 
+                  {profileData?.email_verified === 0 ? (
+                    <button className="verify-btn" onClick={handleSendOtp}>
+                      Verify
+                    </button>
+                  ) : (
+                    <span> ✅ email veryfied </span>
+                  )}
                 </div>
               </div>
               <div>
@@ -361,7 +390,7 @@ const ProfilePage = () => {
             <div className="side-modal">
               <button
                 className="close-btn"
-                onClick={() => setShowEditModal(false)}
+                onClick={() => {setShowEditModal(false); setErrors({}); } }
               >
                 <IoMdClose />
               </button>
@@ -374,6 +403,7 @@ const ProfilePage = () => {
                     value={editForm.first_name}
                     onChange={handleEditChange}
                   />
+                  {errors.first_name && <p className="error">{errors.first_name}</p>}
                 </label>
                 <label>
                   Last Name
@@ -382,6 +412,7 @@ const ProfilePage = () => {
                     value={editForm.last_name}
                     onChange={handleEditChange}
                   />
+                  {errors.last_name && <p className="error">{errors.last_name}</p>}
                 </label>
                 <label>
                   Email
@@ -390,6 +421,7 @@ const ProfilePage = () => {
                     value={editForm.email}
                     onChange={handleEditChange}
                   />
+                  {errors.email && <p className="error">{errors.email}</p>}
                 </label>
                 <label>
                   Phone
@@ -398,6 +430,7 @@ const ProfilePage = () => {
                     value={editForm.mobile}
                     onChange={handleEditChange}
                   />
+                  {errors.mobile && <p className="error">{errors.mobile}</p>}
                 </label>
                 <label>
                   Date of Birth
@@ -407,6 +440,7 @@ const ProfilePage = () => {
                     value={dob}
                     onChange={handleEditChange}
                   />
+                  {errors.dob && <p className="error">{errors.dob}</p>}
                 </label>
                 <button type="submit">Save Changes</button>
               </form>
@@ -414,11 +448,12 @@ const ProfilePage = () => {
           </div>
         )}
         {showAddAddressModal && (
-             <div
+          <div
             className="modal-overlay"
             onClick={(e) =>
-            handleModalClick(e, () => setShowAddAddressModal(false))
-            }>
+              handleModalClick(e, () => setShowAddAddressModal(false))
+            }
+          >
             <div className="side-modal">
               <button
                 className="close-btn"

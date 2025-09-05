@@ -18,10 +18,9 @@ export const fetchCarpetFinder = createAsyncThunk(
 export const filterCarpet = createAsyncThunk(
   "carpetFinder/filterCarpet",
   async (filters, { rejectWithValue }) => {
-    console.log("filter-----{}{}{}{}{}data>", filters);
     try {
       const response = await API.get(
-        `/carpet-finder/floor-covering?room_filter=${filters.filterReq.room_filter}&size_filter=${filters.filterReq.size_filter}&color_filter=${filters.filterReq.color_filter}&pattern_filter=${filters.filterReq.pattern_filter}`
+        `/carpet-finder/floor-covering?room_filter=${filters.room_filter}&size_filter=${filters.size_filter}&color_filter=${filters.color_filter}&pattern_filter=${filters.pattern_filter}`
       );
 
       return response.data;

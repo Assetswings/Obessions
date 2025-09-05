@@ -30,6 +30,7 @@ import FeesPaymentsPolicy from "../pages/FeesPaymentsPolicy/FeesPaymentsPolicy";
 import Privacypolicy from "../pages/PrivacyPolicy/Privacypolicy";
 import CancelOrder from "../pages/CancelOrder/Cancelorder";
 import ReturnExchange from "../pages/ReturnExchange/Returnexchange";
+import Otherpage from "../pages/Otherproductlist/Otherpage";
 
 const AppRoutes = () => {
   return (
@@ -64,6 +65,9 @@ const AppRoutes = () => {
           <Route path="terms-of-use" element={<Returnrefund />} />
           <Route path="fees-payments-policy" element={<FeesPaymentsPolicy />} />
           <Route path="privacy-policy" element={<Privacypolicy/>} />
+          <Route path="new-arrivals" element={<Otherpage/>} />
+          <Route path="bestseller" element={<Otherpage/>} />
+          <Route path="offer-spot" element={<Otherpage/>} />
         </Route>
       </Routes>
     </ScrollToTopWrapper>

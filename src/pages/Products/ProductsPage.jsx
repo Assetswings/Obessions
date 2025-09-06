@@ -25,8 +25,6 @@ const ProductsPage = () => {
   // const { data: products,filters,loading} = useSelector((state) => state.products);
   const { data, filters, loading } = useSelector((state) => state.products);
   const products = Array.isArray(data) ? data : [];
-
-  const wishlist = useSelector((state) => state.wishlist);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -68,10 +66,6 @@ const ProductsPage = () => {
     }
   }, [selectedFilters]);
 
-  useEffect(() => {
-    dispatch(fetchWishlist());
-  }, [dispatch]);
-
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
       const current = prev[filterKey] || [];
@@ -88,15 +82,12 @@ const ProductsPage = () => {
       setShowLoginPrompt(true);
       return;
     }
-
-    const isInWishlist = wishlist.productIds.includes(product.id);
+    const isInWishlist =product.is_wishlisted;
     try {
       if (isInWishlist) {
-        const wishlistItem = wishlist.items.find(
-          (item) => item.product_id === product.id
-        );
-        if (wishlistItem?.id) {
-          await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
+        const wishlistItem = product.wishlist[0].wishlist_id;
+        if (wishlistItem) {
+          await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
             style: {
               border: "1px solid #713200",
@@ -111,7 +102,7 @@ const ProductsPage = () => {
             closeButton: true,
             icon: true,
           });
-          dispatch(fetchWishlist());
+          dispatch(fetchProducts({ category, subcategory, page: 1, limit: 20 }));
         }
       } else {
         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
@@ -130,7 +121,7 @@ const ProductsPage = () => {
           icon: true,
         });
         setAnimatedWish(product.id);        
-        dispatch(fetchWishlist());
+        dispatch(fetchProducts({ category, subcategory, page: 1, limit: 20 }));
         setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {
@@ -258,7 +249,7 @@ const ProductsPage = () => {
                   </div>
                 ))
               : products?.map((item,index) => {
-                  const isWishlisted = wishlist.productIds.includes(item.id);
+                  const isWishlisted = item.is_wishlisted;
                   return (
                     <div
                       key={item.index}

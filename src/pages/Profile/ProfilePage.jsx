@@ -32,7 +32,6 @@ const ProfilePage = () => {
 
   const [errors, setErrors] = useState({});
 
-
   const [newAddress, setNewAddress] = useState({
     first_name: "",
     last_name: "",
@@ -198,6 +197,53 @@ const ProfilePage = () => {
     return Object.keys(formErrors).length === 0; // true if no errors
   };
 
+  const validateAddressForm = (form) => {
+    let formErrors = {};
+
+    if (!form.first_name.trim()) {
+      formErrors.first_name = "First name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(form.first_name)) {
+      formErrors.first_name = "Only alphabets are allowed";
+    }
+
+    if (!form.last_name.trim()) {
+      formErrors.last_name = "Last name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(form.last_name)) {
+      formErrors.last_name = "Only alphabets are allowed";
+    }
+
+    if (!form.mobile.trim()) {
+      formErrors.mobile = "Mobile number is required";
+    } else if (!/^\d{10}$/.test(form.mobile)) {
+      formErrors.mobile = "Enter a valid 10-digit number";
+    }
+
+    if (!form.address.trim()) {
+      formErrors.address = "Address is required";
+    }
+
+    if (!form.city.trim()) {
+      formErrors.city = "City is required";
+    } else if (!/^[A-Za-z\s]+$/.test(form.city)) {
+      formErrors.city = "City must contain only letters";
+    }
+
+    if (!form.state.trim()) {
+      formErrors.state = "State is required";
+    } else if (!/^[A-Za-z\s]+$/.test(form.state)) {
+      formErrors.state = "State must contain only letters";
+    }
+
+    if (!form.pincode.trim()) {
+      formErrors.pincode = "Pincode is required";
+    } else if (!/^\d{6}$/.test(form.pincode)) {
+      formErrors.pincode = "Enter a valid 6-digit pincode";
+    }
+
+    setErrors(formErrors);
+    return Object.keys(formErrors).length === 0; // ✅ valid if no errors
+  };
+
   const handleSubmitEditForm = (e) => {
     e.preventDefault();
     if (!validateProfileEditForm()) return; // stop if errors
@@ -208,7 +254,10 @@ const ProfilePage = () => {
         id: profileData?.billingAddress?.id,
         data: updatedData,
       })
-    ).then(() => {setShowEditModal(false); setErrors({}); } );
+    ).then(() => {
+      setShowEditModal(false);
+      setErrors({});
+    });
 
     dispatch(fetchUserProfile());
   };
@@ -390,7 +439,10 @@ const ProfilePage = () => {
             <div className="side-modal">
               <button
                 className="close-btn"
-                onClick={() => {setShowEditModal(false); setErrors({}); } }
+                onClick={() => {
+                  setShowEditModal(false);
+                  setErrors({});
+                }}
               >
                 <IoMdClose />
               </button>
@@ -403,7 +455,9 @@ const ProfilePage = () => {
                     value={editForm.first_name}
                     onChange={handleEditChange}
                   />
-                  {errors.first_name && <p className="error">{errors.first_name}</p>}
+                  {errors.first_name && (
+                    <p className="error">{errors.first_name}</p>
+                  )}
                 </label>
                 <label>
                   Last Name
@@ -412,7 +466,9 @@ const ProfilePage = () => {
                     value={editForm.last_name}
                     onChange={handleEditChange}
                   />
-                  {errors.last_name && <p className="error">{errors.last_name}</p>}
+                  {errors.last_name && (
+                    <p className="error">{errors.last_name}</p>
+                  )}
                 </label>
                 <label>
                   Email
@@ -457,7 +513,10 @@ const ProfilePage = () => {
             <div className="side-modal">
               <button
                 className="close-btn"
-                onClick={() => setShowAddAddressModal(false)}
+                onClick={() => {
+                  setShowAddAddressModal(false);
+                  setErrors({});
+                }}
               >
                 <IoMdClose />
               </button>
@@ -465,6 +524,7 @@ const ProfilePage = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+                  if (!validateAddressForm(newAddress)) return; // stop if validation fails
                   dispatch(createAddress(newAddress)).then((res) => {
                     if (res.meta.requestStatus === "fulfilled") {
                       dispatch(getAddress());
@@ -480,6 +540,7 @@ const ProfilePage = () => {
                         pincode: "",
                       });
                       setShowAddAddressModal(false);
+                      setErrors({}); // clear errors on success
                     }
                   });
                 }}
@@ -492,6 +553,9 @@ const ProfilePage = () => {
                     onChange={handleNewAddressChange}
                     required
                   />
+                  {errors.first_name && (
+                    <p className="error">{errors.first_name}</p>
+                  )}
                 </label>
 
                 <label>
@@ -502,6 +566,9 @@ const ProfilePage = () => {
                     onChange={handleNewAddressChange}
                     required
                   />
+                  {errors.last_name && (
+                    <p className="error">{errors.last_name}</p>
+                  )}
                 </label>
                 <label>
                   Mobile Number
@@ -512,6 +579,7 @@ const ProfilePage = () => {
                     onChange={handleNewAddressChange}
                     required
                   />
+                  {errors.mobile && <p className="error">{errors.mobile}</p>}
                 </label>
                 <label>
                   PIN Code
@@ -521,6 +589,7 @@ const ProfilePage = () => {
                     onChange={handleNewAddressChange}
                     required
                   />
+                  {errors.pincode && <p className="error">{errors.pincode}</p>}
                 </label>
                 <label>
                   State
@@ -530,6 +599,7 @@ const ProfilePage = () => {
                     onChange={handleNewAddressChange}
                     required
                   />
+                  {errors.state && <p className="error">{errors.state}</p>}
                 </label>
                 <label>
                   City
@@ -539,6 +609,7 @@ const ProfilePage = () => {
                     onChange={handleNewAddressChange}
                     required
                   />
+                  {errors.city && <p className="error">{errors.city}</p>}
                 </label>
                 <label>
                   Street Address 1
@@ -548,6 +619,7 @@ const ProfilePage = () => {
                     onChange={handleNewAddressChange}
                     required
                   />
+                  {errors.address && <p className="error">{errors.address}</p>}
                 </label>
                 <label>
                   Street Address 2
@@ -556,6 +628,9 @@ const ProfilePage = () => {
                     value={newAddress.address2}
                     onChange={handleNewAddressChange}
                   />
+                  {errors.address2 && (
+                    <p className="error">{errors.address2}</p>
+                  )}
                 </label>
                 <label>
                   Landmark
@@ -564,6 +639,9 @@ const ProfilePage = () => {
                     value={newAddress.landmark}
                     onChange={handleNewAddressChange}
                   />
+                  {errors.landmark && (
+                    <p className="error">{errors.landmark}</p>
+                  )}
                 </label>
                 <button type="submit">Add Address</button>
               </form>
@@ -575,7 +653,10 @@ const ProfilePage = () => {
             <div className="side-modal" onClick={(e) => e.stopPropagation()}>
               <button
                 className="close-btn"
-                onClick={() => setShowEditAddressModal(false)}
+                onClick={() => {
+                  setShowEditAddressModal(false);
+                  setErrors({});
+                }}
               >
                 <IoMdClose />
               </button>
@@ -584,6 +665,7 @@ const ProfilePage = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+                  if (!validateAddressForm(editAddressData)) return; // stop if validation fails
                   dispatch(
                     editAddress({
                       id: editAddressData.id,
@@ -594,6 +676,7 @@ const ProfilePage = () => {
                       dispatch(getAddress());
                       setShowEditAddressModal(false);
                       setEditAddressData(null);
+                      setErrors({});
                     }
                   });
                 }}
@@ -605,6 +688,9 @@ const ProfilePage = () => {
                     value={editAddressData?.first_name || ""}
                     onChange={handleEditAddressChange}
                   />
+                  {errors.first_name && (
+                    <p className="error">{errors.first_name}</p>
+                  )}
                 </label>
                 <label>
                   Last Name
@@ -613,6 +699,9 @@ const ProfilePage = () => {
                     value={editAddressData?.last_name || ""}
                     onChange={handleEditAddressChange}
                   />
+                  {errors.last_name && (
+                    <p className="error">{errors.last_name}</p>
+                  )}
                 </label>
                 <label>
                   Mobile Number
@@ -622,6 +711,7 @@ const ProfilePage = () => {
                     value={editAddressData?.mobile || ""}
                     onChange={handleEditAddressChange}
                   />
+                  {errors.mobile && <p className="error">{errors.mobile}</p>}
                 </label>
                 <label>
                   PIN Code
@@ -630,6 +720,7 @@ const ProfilePage = () => {
                     value={editAddressData?.pincode || ""}
                     onChange={handleEditAddressChange}
                   />
+                  {errors.pincode && <p className="error">{errors.pincode}</p>}
                 </label>
                 <label>
                   State
@@ -638,6 +729,7 @@ const ProfilePage = () => {
                     value={editAddressData?.state || ""}
                     onChange={handleEditAddressChange}
                   />
+                  {errors.state && <p className="error">{errors.state}</p>}
                 </label>
                 <label>
                   City
@@ -646,6 +738,7 @@ const ProfilePage = () => {
                     value={editAddressData?.city || ""}
                     onChange={handleEditAddressChange}
                   />
+                  {errors.city && <p className="error">{errors.city}</p>}
                 </label>
                 <label>
                   Street Address 1
@@ -654,6 +747,7 @@ const ProfilePage = () => {
                     value={editAddressData?.address || ""}
                     onChange={handleEditAddressChange}
                   />
+                  {errors.address && <p className="error">{errors.address}</p>}
                 </label>
                 <label>
                   Street Address 2
@@ -662,6 +756,9 @@ const ProfilePage = () => {
                     value={editAddressData?.address2 || ""}
                     onChange={handleEditAddressChange}
                   />
+                  {errors.address2 && (
+                    <p className="error">{errors.address2}</p>
+                  )}
                 </label>
                 <label>
                   Landmark
@@ -670,6 +767,9 @@ const ProfilePage = () => {
                     value={editAddressData?.landmark || ""}
                     onChange={handleEditAddressChange}
                   />
+                  {errors.landmark && (
+                    <p className="error">{errors.landmark}</p>
+                  )}
                 </label>
                 <button type="submit">Update Address</button>
               </form>

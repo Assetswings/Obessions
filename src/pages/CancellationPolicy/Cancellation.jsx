@@ -17,18 +17,14 @@ export default function Cancellation() {
     }
   };
 
-    useEffect(() => {
-     handleCancel();
+  useEffect(() => {
+    handleCancel();
   }, []);
-
-  console.log("====================================");
-  console.log("the terms and condition data ----->", data);
-  console.log("====================================");
 
   return (
     <>
       <div className="terms-container">
-      <div dangerouslySetInnerHTML={{ __html: data.content }} />
+        <div dangerouslySetInnerHTML={{ __html: data.content }} />
       </div>
       <Footer />
     </>

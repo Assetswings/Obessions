@@ -250,7 +250,7 @@ const ProductDetailPage = () => {
   };
 
   const selectionColor = (color) => {
-    setSelectedColor(color);
+    // setSelectedColor(color);
     setLocalLoading(true);
     setSelectedImage(null);
     setSelectedSize(null);
@@ -271,7 +271,7 @@ const ProductDetailPage = () => {
             {loading || !selectedImage ? (
               <div style={{ width: "100%", height: "100%" }}>
                 <Skeleton
-                  height={620}
+                  height="100%"
                   width="100%"
                   baseColor="#e0e0e0"
                   highlightColor="#f5f5f5"
@@ -334,13 +334,9 @@ const ProductDetailPage = () => {
                 ₹{currentPrice}{" "}
                 {data?.mrp && (
                   <span className="sub-1">
-                    <del>₹{data?.mrp}</del> &nbsp;
+                    <del>₹{selectedSize?.mrp}</del> &nbsp;
                     <span className="dis-sub">
-                      (
-                      {Math.round(
-                        ((data?.mrp - currentPrice) / data?.mrp) * 100
-                      )}
-                      % OFF)
+                      {selectedSize?.discount}% OFF
                     </span>{" "}
                     (Inclusive of all taxes)
                   </span>
@@ -382,7 +378,7 @@ const ProductDetailPage = () => {
                         className={`size-btn ${
                           selectedSize?.id === size.id ? "active-size" : ""
                         }`}
-                        onClick={() => setSelectedSize(size)}
+                        onClick={() => {setSelectedSize(size); selectionColor(size);}}
                       >
                         <div className="set_btn_trcak">
                           <img
@@ -516,10 +512,10 @@ const ProductDetailPage = () => {
                 <Heart
                   size={27}
                   color={
-                    wishlist.productIds.includes(data?.id) ? "#FF0000" : "#000"
+                    data?.is_wishlisted ? "#FF0000" : "#000"
                   }
                   fill={
-                    wishlist.productIds.includes(data?.id) ? "#FF0000" : "none"
+                    data?.is_wishlisted ? "#FF0000" : "none"
                   }
                 />
               )}
@@ -593,7 +589,7 @@ const ProductDetailPage = () => {
           </div>
         ) : (
           <div className="product-grid">
-            {data?.discover_similar_styles?.map((item) => {
+            {data?.discover_similar_styles?.slice(0, 10).map((item) => {
               const isWishlisted = wishlist.productIds.includes(item.id);
 
               return (
@@ -677,7 +673,7 @@ const ProductDetailPage = () => {
           </div>
         ) : (
           <div className="product-grid">
-            {data?.dont_miss_these_matching_finds?.map((item) => {
+            {data?.dont_miss_these_matching_finds?.slice(0, 10).map((item) => {
               const isWishlisted = wishlist.productIds.includes(item.id);
 
               return (

@@ -3,7 +3,7 @@ import "./CheckoutPage.css";
 import Footer from "../../components/Footer/Footer";
 import { IoMdClose } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCheckout , processCheckout} from "./checkoutSlice";
+import { fetchCheckout, processCheckout } from "./checkoutSlice";
 import {
   getAddress,
   createAddress,
@@ -17,13 +17,12 @@ import { Info } from "lucide-react";
 const CheckoutPage = () => {
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
   const dispatch = useDispatch();
-   const navigate = useNavigate(); 
-
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
   const [newAddress, setNewAddress] = useState({
     state: "",
     city: "",
     landmark: "",
-   
   });
 
   // GSTIN State
@@ -36,21 +35,13 @@ const CheckoutPage = () => {
   const [defuktAddr, setDefultAddr] = useState();
 
   const { checkoutData, loading } = useSelector((state) => state.checkout);
-  console.log("checkout_data----->", checkoutData);
-
   const { orderResponse } = useSelector((state) => state.checkout);
-  console.log("responce_data--->", orderResponse )
 
-     useEffect(() => {
-     dispatch(fetchCheckout());
+  useEffect(() => {
+    dispatch(fetchCheckout());
   }, [dispatch]);
 
-  const {
-    data: profileData,
-    // loading,
-    // error,
-  } = useSelector((state) => state.profile);
-  console.log("prifile_data---->", profileData);
+  const { data: profileData } = useSelector((state) => state.profile);
   // Run when profileData changes
 
   useEffect(() => {
@@ -64,13 +55,12 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     if (addressdata && addressdata.length > 0) {
-    const defAddr = addressdata.find((addr) => addr.is_default === true);
-    if (defAddr) {
-    setDefultAddr(defAddr);
+      const defAddr = addressdata.find((addr) => addr.is_default === true);
+      if (defAddr) {
+        setDefultAddr(defAddr);
       }
     }
   }, [addressdata]);
-    console.log("Defult Address---->", defuktAddr);
   useEffect(() => {
     document.body.style.overflow = showAddAddressModal ? "hidden" : "auto";
     return () => {
@@ -94,54 +84,14 @@ const CheckoutPage = () => {
     setGstinData((prev) => ({ ...prev, [name]: value }));
   };
 
-    const handleGstinToggle = () => {
+  const handleGstinToggle = () => {
     setGstinEnabled((prev) => !prev);
     if (gstinEnabled) {
-    // Clear data when disabled
-    setGstinData({ registrationNumber: "", companyAddress: "" });
+      // Clear data when disabled
+      setGstinData({ registrationNumber: "", companyAddress: "" });
     }
-    };
+  };
   const displayedAddresses = expanded ? addressdata : addressdata.slice(0, 2);
-
-  // const handlePlaceOrder = () => {
-  //   if(defuktAddr){
-  //     const orderPayload = {
-  //       billing_first_name: defuktAddr.first_name,
-  //       billing_last_name: defuktAddr.last_name,
-  //       billing_mobile: defuktAddr.mobile,
-  //       billing_address: defuktAddr.address,
-  //       billing_address2: defuktAddr.address2,
-  //       billing_landmark: defuktAddr.landmark,
-  //       billing_city: defuktAddr.city,
-  //       billing_state: defuktAddr.state,
-  //       billing_pincode: defuktAddr.pincode,
-  //       shipping_first_name: defuktAddr.first_name,
-  //       shipping_last_name: defuktAddr.last_name,
-  //       shipping_mobile: defuktAddr.mobile,
-  //       shipping_address: defuktAddr.address,
-  //       shipping_address2: defuktAddr.address2,
-  //       shipping_landmark: defuktAddr.landmark,
-  //       shipping_city: defuktAddr.city,
-  //       shipping_state: defuktAddr.state,
-  //       shipping_pincode: defuktAddr.pincode,
-  //       business_details: [
-  //       { company_name: gstinData.companyAddress, gst_number: gstinData.registrationNumber }
-  //     ]
-  //     };
-  
-  //     dispatch(processCheckout(orderPayload));
-  //     console.log("paylod_data",orderPayload); 
-  //  if (checkoutData.status === 200){
-  //   navigate("/paymentgetway", {
-  //     state: { checkoutData:checkoutData ,orderPayload}
-  //   });
-  //  } else{
-  //   alert(`${checkoutData.message}`)
-  //        }
-  //   } else{
-  //     alert("Please Add address before continue payment")
-  //   }
-  //   };
 
   const handlePlaceOrder = () => {
     if (defuktAddr) {
@@ -171,16 +121,16 @@ const CheckoutPage = () => {
           },
         ],
       };
-  
-        dispatch(processCheckout(orderPayload))
+
+      dispatch(processCheckout(orderPayload))
         .unwrap()
         .then((res) => {
           if (res.status === 200) {
             navigate("/paymentgetway", {
               state: {
-                orderResponse: res,      
-                orderPayload,           
-                checkoutData,         
+                orderResponse: res,
+                orderPayload,
+                checkoutData,
               },
             });
           } else {
@@ -193,6 +143,53 @@ const CheckoutPage = () => {
     } else {
       alert("Please Add address before continue payment");
     }
+  };
+
+  const validateAddressForm = (form) => {
+    let formErrors = {};
+
+    if (!form.first_name.trim()) {
+      formErrors.first_name = "First name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(form.first_name)) {
+      formErrors.first_name = "Only alphabets are allowed";
+    }
+
+    if (!form.last_name.trim()) {
+      formErrors.last_name = "Last name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(form.last_name)) {
+      formErrors.last_name = "Only alphabets are allowed";
+    }
+
+    if (!form.mobile.trim()) {
+      formErrors.mobile = "Mobile number is required";
+    } else if (!/^\d{10}$/.test(form.mobile)) {
+      formErrors.mobile = "Enter a valid 10-digit number";
+    }
+
+    if (!form.address.trim()) {
+      formErrors.address = "Address is required";
+    }
+
+    if (!form.city.trim()) {
+      formErrors.city = "City is required";
+    } else if (!/^[A-Za-z\s]+$/.test(form.city)) {
+      formErrors.city = "City must contain only letters";
+    }
+
+    if (!form.state.trim()) {
+      formErrors.state = "State is required";
+    } else if (!/^[A-Za-z\s]+$/.test(form.state)) {
+      formErrors.state = "State must contain only letters";
+    }
+
+    if (!form.pincode.trim()) {
+      formErrors.pincode = "Pincode is required";
+    } else if (!/^\d{6}$/.test(form.pincode)) {
+      formErrors.pincode = "Enter a valid 6-digit pincode";
+    }
+
+    setErrors(formErrors);
+    return Object.keys(formErrors).length === 0; // ✅ valid if no errors
   };
 
   return (
@@ -238,7 +235,7 @@ const CheckoutPage = () => {
           ))}
         </div>
 
-          <div className="checkout-left_ck">
+        <div className="checkout-left_ck">
           <div className="section">
             {/* calculation */}
             <div className="price-summary">
@@ -272,7 +269,7 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            <br/>
+            <br />
             <h4 className="title_roolt_checkout">Personal Information</h4>
             <div className="root_track">
               <div className="row">
@@ -357,7 +354,7 @@ const CheckoutPage = () => {
           <div className="shipping-info-section">
             <div className="shipping-track">
               <div className="ship_info">
-                <h4 >SHIPPING INFORMATION</h4>
+                <h4>SHIPPING INFORMATION</h4>
               </div>
               <div>
                 <button
@@ -379,9 +376,7 @@ const CheckoutPage = () => {
                 />
                 <div className="address-details">
                   <div className="address-header">
-                 
-                      {addr.first_name} {addr.last_name}
-               
+                    {addr.first_name} {addr.last_name}
                     <span className="address-type">{addr.address_type}</span>
                   </div>
                   <div className="address-body">
@@ -405,17 +400,20 @@ const CheckoutPage = () => {
           </div>
 
           <div className="root_track">
-            <button
-              onClick={handlePlaceOrder}
-             className="payment-btn">CONTINUE TO PAYMENT</button>
+            <button onClick={handlePlaceOrder} className="payment-btn">
+              CONTINUE TO PAYMENT
+            </button>
           </div>
           <div className="root_track">
-          <p className="info-note">
-            <span><Info
-              size={18}
-            /></span> &nbsp;If a product doesn’t meet your expectations, we’re happy to offer a refund for the product value. <br />
-            Please note, a 5% deduction will be made from the total invoice value to cover partial freight and packaging costs.
-          </p>
+            <p className="info-note">
+              <span>
+                <Info size={18} />
+              </span>{" "}
+              &nbsp;If a product doesn’t meet your expectations, we’re happy to
+              offer a refund for the product value. <br />
+              Please note, a 5% deduction will be made from the total invoice
+              value to cover partial freight and packaging costs.
+            </p>
           </div>
         </div>
       </div>
@@ -431,51 +429,115 @@ const CheckoutPage = () => {
           <div className="side-modal">
             <button
               className="close-btn"
-              onClick={() => setShowAddAddressModal(false)}
+              onClick={() => {setShowAddAddressModal(false); setErrors({});} }
             >
               <IoMdClose />
             </button>
             <h3>Add New Address</h3>
-            {/* <form>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!validateAddressForm(newAddress)) return; // stop if validation fails
+                dispatch(createAddress(newAddress)).then((res) => {
+                  if (res.meta.requestStatus === "fulfilled") {
+                    dispatch(getAddress());
+                    setNewAddress({
+                      first_name: "",
+                      last_name: "",
+                      mobile: "",
+                      address: "",
+                      address2: "",
+                      landmark: "",
+                      city: "",
+                      state: "",
+                      pincode: "",
+                    });
+                    setShowAddAddressModal(false);
+                    setErrors({});
+                  }
+                });
+              }}
+            >
               <label>
-                PIN Code*
+                First Name
                 <input
-                  name="pin"
-                  value={newAddress.pin}
+                  name="first_name"
+                  value={newAddress.first_name}
                   onChange={handleNewAddressChange}
+                  required
                 />
+                {errors.first_name && <p className="error">{errors.first_name}</p>}
+              </label>
+
+              <label>
+                Last Name
+                <input
+                  name="last_name"
+                  value={newAddress.last_name}
+                  onChange={handleNewAddressChange}
+                  required
+                />
+                {errors.last_name && <p className="error">{errors.last_name}</p>}
               </label>
               <label>
-                State*
+                Mobile Number
+                <input
+                  name="mobile"
+                  maxLength={10}
+                  value={newAddress.mobile}
+                  onChange={handleNewAddressChange}
+                  required
+                />
+                {errors.mobile && <p className="error">{errors.mobile}</p>}
+              </label>
+              <label>
+                PIN Code
+                <input
+                  name="pincode"
+                  value={newAddress.pincode}
+                  onChange={handleNewAddressChange}
+                  required
+                />
+                {errors.pincode && <p className="error">{errors.pincode}</p>}
+              </label>
+              <label>
+                State
                 <input
                   name="state"
                   value={newAddress.state}
                   onChange={handleNewAddressChange}
+                  required
                 />
+                {errors.state && <p className="error">{errors.state}</p>}
               </label>
               <label>
-                City*
+                City
                 <input
                   name="city"
                   value={newAddress.city}
                   onChange={handleNewAddressChange}
+                  required
                 />
+                {errors.city && <p className="error">{errors.city}</p>}
               </label>
               <label>
-                Flat Number*
+                Street Address 1
                 <input
-                  name="flat"
-                  value={newAddress.flat}
+                  name="address"
+                  value={newAddress.address}
                   onChange={handleNewAddressChange}
+                  required
                 />
+                {errors.address && <p className="error">{errors.address}</p>}
               </label>
               <label>
-                Street Address*
+                Street Address 2
                 <input
-                  name="street"
-                  value={newAddress.street}
+                  name="address2"
+                  value={newAddress.address2}
                   onChange={handleNewAddressChange}
                 />
+                {errors.address2 && <p className="error">{errors.address2}</p>}
               </label>
               <label>
                 Landmark
@@ -484,122 +546,10 @@ const CheckoutPage = () => {
                   value={newAddress.landmark}
                   onChange={handleNewAddressChange}
                 />
-              </label>
-              <label>
-                LABEL THIS ADDRESS
-                <input
-                  name="lableaddresss"
-                  value={newAddress.lableaddresss}
-                  onChange={handleNewAddressChange}
-                />
+                {errors.landmark && <p className="error">{errors.landmark}</p>}
               </label>
               <button type="submit">Add Address</button>
-            </form> */}
-            <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  dispatch(createAddress(newAddress)).then((res) => {
-                    if (res.meta.requestStatus === "fulfilled") {
-                      dispatch(getAddress());
-                      setNewAddress({
-                        first_name: "",
-                        last_name: "",
-                        mobile: "",
-                        address: "",
-                        address2: "",
-                        landmark: "",
-                        city: "",
-                        state: "",
-                        pincode: "",
-                      });
-                      setShowAddAddressModal(false);
-                    }
-                  });
-                }}
-              >
-                <label>
-                  First Name
-                  <input
-                    name="first_name"
-                    value={newAddress.first_name}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                </label>
-
-                <label>
-                  Last Name
-                  <input
-                    name="last_name"
-                    value={newAddress.last_name}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                </label>
-                <label>
-                  Mobile Number
-                  <input
-                    name="mobile"
-                    maxLength={10}
-                    value={newAddress.mobile}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                </label>
-                <label>
-                  PIN Code
-                  <input
-                    name="pincode"
-                    value={newAddress.pincode}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                </label>
-                <label>
-                  State
-                  <input
-                    name="state"
-                    value={newAddress.state}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                </label>
-                <label>
-                  City
-                  <input
-                    name="city"
-                    value={newAddress.city}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                </label>
-                <label>
-                  Street Address 1
-                  <input
-                    name="address"
-                    value={newAddress.address}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                </label>
-                <label>
-                  Street Address 2
-                  <input
-                    name="address2"
-                    value={newAddress.address2}
-                    onChange={handleNewAddressChange}
-                  />
-                </label>
-                <label>
-                  Landmark
-                  <input
-                    name="landmark"
-                    value={newAddress.landmark}
-                    onChange={handleNewAddressChange}
-                  />
-                </label>
-                <button type="submit">Add Address</button>
-              </form>
+            </form>
           </div>
         </div>
       )}

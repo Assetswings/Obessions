@@ -20,6 +20,22 @@
     max-height: 90vh;
   }
   
+  .input-wrapper-quick {
+    display: flex;
+    align-items: center;
+    border: 1px solid #aaa;
+    padding: 10px 12px;
+    max-width:71%;
+  }
+  
+  .input-wrapper-quick input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+  }
+  
   .quickview-header {
     display: flex;
     justify-content: space-between;

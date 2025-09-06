@@ -256,7 +256,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                   {loading || !selectedImage ? (
                     <div style={{ width: "100%", height: "100%" }}>
                       <Skeleton
-                        height={620}
+                        height={630}
                         width="100%"
                         baseColor="#e0e0e0"
                         highlightColor="#f5f5f5"
@@ -268,7 +268,6 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                       alt="Main Product"
                       className="main-image"
                       style={{
-                        width: "100%",
                         height: "auto",
                         mixBlendMode: "darken",
                         objectFit: "cover",
@@ -439,7 +438,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
               {/* Pincode Check */}
               <div className="pincode-check">
                 <p className="check-heading">CHECK AVAILABILITY</p>
-                <div className="input-wrapper">
+                <div className="input-wrapper-quick">
                   <input
                     className="checkup_track_txt"
                     type="text"

@@ -31,7 +31,7 @@ import Privacypolicy from "../pages/PrivacyPolicy/Privacypolicy";
 import CancelOrder from "../pages/CancelOrder/Cancelorder";
 import ReturnExchange from "../pages/ReturnExchange/Returnexchange";
 import Otherpage from "../pages/Otherproductlist/Otherpage";
-
+import VideoGallery from "../pages/VideoGallery/VideoGallery";
 const AppRoutes = () => {
   return (
     <ScrollToTopWrapper>
@@ -68,6 +68,7 @@ const AppRoutes = () => {
           <Route path="new-arrivals" element={<Otherpage/>} />
           <Route path="bestseller" element={<Otherpage/>} />
           <Route path="offer-spot" element={<Otherpage/>} />
+          <Route path="videogallery" element={<VideoGallery/>} />
         </Route>
       </Routes>
     </ScrollToTopWrapper>

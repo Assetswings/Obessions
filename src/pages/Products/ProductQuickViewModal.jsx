@@ -54,13 +54,15 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   }, [dispatch, actionurl]);
   // Set image when data loads
   useEffect(() => {
-    if (data?.product_images?.length > 0) {
-      setSelectedImage(data.product_images[0].media);
-      setLocalLoading(false);
-    }
+    // if (data?.product_images?.length > 0) {
+    //   setSelectedImage(data.product_images[0].media);
+    //   setLocalLoading(false);
+    // }
     if (data?.product_sizes.length > 0) {
       setSelectedSize(data?.product_sizes[0]);
       setSelectedColor(data.product_sizes[0].product_colors[0]);
+      setSelectedImage(data?.product_sizes[0].product_colors[0].product_media[0]?.media);
+      setLocalLoading(false);
     }
   }, [data]);
 
@@ -290,7 +292,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                             style={{ marginRight: 10 }}
                           />
                         ))
-                    : data?.product_images?.map((img, index) => (
+                    : selectedColor?.product_media?.map((img, index) => (
                         <img
                           key={index}
                           src={img.media}
@@ -366,7 +368,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                             className={`size-btn ${
                               selectedSize?.id === size.id ? "active-size" : ""
                             }`}
-                            onClick={() => setSelectedSize(size)}
+                            onClick={() => {setSelectedSize(size); selectionColor(size)}}
                           >
                             <div className="set_btn_trcak">
                               <img

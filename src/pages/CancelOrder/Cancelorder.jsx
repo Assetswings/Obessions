@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CancelOrder.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import API from "../../app/api";
@@ -6,59 +6,99 @@ import toast from "react-hot-toast";
 
 const CancelOrder = () => {
   const [reason, setReason] = useState("");
+  const [reasonList, setReasonList] = useState([]);
   const [comments, setComments] = useState("");
   const { state } = useLocation();
   const navigate = useNavigate();
   const item = state?.item;
   const orderNo = state?.orderNo;
 
+  useEffect(() => {
+    gerReason();
+  }, []);
+  const gerReason = async () => {
+    try {
+      const res = await API.get("/reasons/cancellation");
+      if (res.data.status === 200) {
+        setReasonList(res.data?.data);
+      }
+    } catch (err) {
+      // toast.error(err.response?.data?.message || "Failed to send OTP");
+      setReasonList([]);
+      console.log(err);
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Reason:", reason, "Comments:", comments, "Item:", item,"orderNo", orderNo);
-    // alert("Order cancellation request submitted!");
-    // navigate("/orderhistory");
-      try {
-        const res = await API.put(
-          `/orders/${orderNo}/cancel`,
-          {
-            item_ids: [item.itemId],     // e.g. ["item123", "item456"]
-            reason_id: reason,   // e.g. 123
-            remarks: comments || "Cancel items",
-          }
-        );
+    // Validation errors
+    const errors = {};
 
-        if (res.data.success) {
-          toast.success("Order cancelled successfully!", {
-            style: {
-              border: "1px solid black",
-              padding: "16px",
-              color: "black",
-            },
-            iconTheme: {
-              primary: "black",
-              secondary: "white",
-            },
-          });
-          navigate("/orderhistory");
-        }
-      } catch (err) {
-        console.error("Cancel error:", err);
-        toast.error(
-          err.response?.data?.msg || "Order cancellation failed!",
-          {
-            style: {
-              border: "1px solid #FF0000",
-              padding: "16px",
-              color: "#FF0000",
-            },
-            iconTheme: {
-              primary: "#FF0000",
-              secondary: "#FFFAEE",
-            },
-          }
-        );
+    if (!item?.itemId) {
+      errors.itemId = "Item is required";
+    }
+
+    if (!reason) {
+      errors.reason = "Please select a reason";
+    }
+
+    if (!comments?.trim()) {
+      errors.comments = "Comments are required";
+    } else if (comments.length < 5) {
+      errors.comments = "Comments should be at least 5 characters long";
+    }
+
+    // If there are validation errors, stop execution
+    if (Object.keys(errors).length > 0) {
+      console.log("Validation Errors:", errors);
+      toast.error(errors || "Order Return failed!", {
+        style: {
+          border: "1px solid #FF0000",
+          padding: "16px",
+          color: "#FF0000",
+        },
+        iconTheme: {
+          primary: "#FF0000",
+          secondary: "#FFFAEE",
+        },
+      });
+      return;
+    }
+    try {
+      const res = await API.put(`/orders/${orderNo}/cancel`, {
+        item_ids: [item.itemId], // e.g. ["item123", "item456"]
+        reason_id: reason, // e.g. 123
+        remarks: comments || "Cancel items",
+      });
+
+      if (res.data.success) {
+        toast.success("Order cancelled successfully!", {
+          style: {
+            border: "1px solid black",
+            padding: "16px",
+            color: "black",
+          },
+          iconTheme: {
+            primary: "black",
+            secondary: "white",
+          },
+        });
         navigate("/orderhistory");
       }
+    } catch (err) {
+      console.error("Cancel error:", err);
+      toast.error(err.response?.data?.msg || "Order cancellation failed!", {
+        style: {
+          border: "1px solid #FF0000",
+          padding: "16px",
+          color: "#FF0000",
+        },
+        iconTheme: {
+          primary: "#FF0000",
+          secondary: "#FFFAEE",
+        },
+      });
+      navigate("/orderhistory");
+    }
   };
 
   return (
@@ -80,10 +120,11 @@ const CancelOrder = () => {
             required
           >
             <option value="">Select Reason</option>
-            <option value="1">No longer needed</option>
-            <option value="2">Found cheaper elsewhere</option>
-            <option value="3">Delivery taking too long</option>
-            <option value="4">Ordered wrong item</option>
+            {reasonList.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.reason}
+              </option>
+            ))}
           </select>
 
           <label>

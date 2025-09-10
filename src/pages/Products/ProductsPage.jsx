@@ -7,7 +7,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProductQuickViewModal from "./ProductQuickViewModal";
-import {addToWishlist,fetchWishlist,removeFromWishlist,} from "../../components/Wishtlist/WishlistSlice";
+import {
+  addToWishlist,
+  fetchWishlist,
+  removeFromWishlist,
+} from "../../components/Wishtlist/WishlistSlice";
 import { ToastContainer, toast } from "react-toastify";
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
@@ -81,7 +85,7 @@ import { fetchTopPicks } from "./otherproductSlice";
       setShowLoginPrompt(true);
       return;
     }
-    const isInWishlist =product.is_wishlisted;
+    const isInWishlist = product.is_wishlisted;
     try {
       if (isInWishlist) {
         const wishlistItem = product.wishlist[0].wishlist_id;
@@ -101,7 +105,9 @@ import { fetchTopPicks } from "./otherproductSlice";
             closeButton: true,
             icon: true,
           });
-          dispatch(fetchProducts({ category, subcategory, page: 1, limit: 20 }));
+          dispatch(
+            fetchProducts({ category, subcategory, page: 1, limit: 20 })
+          );
         }
       } else {
         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
@@ -119,7 +125,7 @@ import { fetchTopPicks } from "./otherproductSlice";
           closeButton: true,
           icon: true,
         });
-        setAnimatedWish(product.id);        
+        setAnimatedWish(product.id);
         dispatch(fetchProducts({ category, subcategory, page: 1, limit: 20 }));
         setTimeout(() => setAnimatedWish(null), 1500);
       }
@@ -189,9 +195,20 @@ import { fetchTopPicks } from "./otherproductSlice";
     },
   ];
 
+  const handleProductClick = (slug) => {
+    if (slug) {
+      navigate("/products", {
+        state: {
+          category: slug,
+        },
+      });
+    }
+    window.scrollTo({ top: 0, behavior: "auto" });
+  };
+
   return (
     <>
-    <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">
@@ -247,7 +264,7 @@ import { fetchTopPicks } from "./otherproductSlice";
                     </p>
                   </div>
                 ))
-              : products?.map((item,index) => {
+              : products?.map((item, index) => {
                   const isWishlisted = item.is_wishlisted;
                   return (
                     <div
@@ -360,13 +377,18 @@ import { fetchTopPicks } from "./otherproductSlice";
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
         <div className="top-picks-grid">
           {items.map((item) => (
-            <div key={item.id} className="top-pick-card">
+            <div key={item.id} className="top-pick-card" onClick={() => handleProductClick(item.action_url)}>
               <img
                 src={item.media}
                 alt={item.name}
                 className="top-pick-image"
               />
-              <p className="top-pick-title">{item.name}</p>
+              <p
+                className="top-pick-title"
+                
+              >
+                {item.name}
+              </p>
             </div>
           ))}
         </div>

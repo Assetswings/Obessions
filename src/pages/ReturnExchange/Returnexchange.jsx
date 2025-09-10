@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ReturnExchange.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -8,23 +8,83 @@ const ReturnExchange = () => {
   const [option, setOption] = useState("return");
   const [reason, setReason] = useState("");
   const [comments, setComments] = useState("");
+  const [reasonList, setReasonList] = useState([]);
   const { state } = useLocation();
   const navigate = useNavigate();
   const item = state?.item;
   const orderNo = state?.orderNo;
 
+  useEffect(() => {
+    getReason("return");
+  }, []);
+  const getReason = async (option) => {
+    if (option == "return") {
+      try {
+        const res = await API.get("/reasons/return");
+        if (res.data.status === 200) {
+          setReasonList(res.data?.data);
+        }
+      } catch (err) {
+        // toast.error(err.response?.data?.message || "Failed to send OTP");
+        setReasonList([]);
+        console.log(err);
+      }
+    } else {
+      try {
+        const res = await API.get("/reasons/exchange");
+        if (res.data.status === 200) {
+          setReasonList(res.data?.data);
+        }
+      } catch (err) {
+        // toast.error(err.response?.data?.message || "Failed to send OTP");
+        setReasonList([]);
+        console.log(err);
+      }
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(option == "return"){  // Return API Call
+    // Validation errors
+    const errors = {};
+
+    if (!item?.itemId) {
+      errors.itemId = "Item is required";
+    }
+
+    if (!reason) {
+      errors.reason = "Please select a reason";
+    }
+
+    if (!comments?.trim()) {
+      errors.comments = "Comments are required";
+    } else if (comments.length < 5) {
+      errors.comments = "Comments should be at least 5 characters long";
+    }
+
+    // If there are validation errors, stop execution
+    if (Object.keys(errors).length > 0) {
+      console.log("Validation Errors:", errors);
+      toast.error(errors || "Order Return failed!", {
+        style: {
+          border: "1px solid #FF0000",
+          padding: "16px",
+          color: "#FF0000",
+        },
+        iconTheme: {
+          primary: "#FF0000",
+          secondary: "#FFFAEE",
+        },
+      });
+      return;
+    }
+    if (option == "return") {
+      // Return API Call
       try {
-        const res = await API.put(
-          `/orders/${orderNo}/return`,
-          {
-            item_ids: [item.itemId],     // e.g. ["item123", "item456"]
-            reason_id: reason,   // e.g. 123
-            remarks: comments || "return items",
-          }
-        );
+        const res = await API.put(`/orders/${orderNo}/return`, {
+          item_ids: [item.itemId], // e.g. ["item123", "item456"]
+          reason_id: reason, // e.g. 123
+          remarks: comments || "return items",
+        });
 
         if (res.data.success) {
           toast.success("Order Returned successfully!", {
@@ -42,32 +102,27 @@ const ReturnExchange = () => {
         }
       } catch (err) {
         console.error("Cancel error:", err);
-        toast.error(
-          err.response?.data?.msg || "Order Return failed!",
-          {
-            style: {
-              border: "1px solid #FF0000",
-              padding: "16px",
-              color: "#FF0000",
-            },
-            iconTheme: {
-              primary: "#FF0000",
-              secondary: "#FFFAEE",
-            },
-          }
-        );
+        toast.error(err.response?.data?.msg || "Order Return failed!", {
+          style: {
+            border: "1px solid #FF0000",
+            padding: "16px",
+            color: "#FF0000",
+          },
+          iconTheme: {
+            primary: "#FF0000",
+            secondary: "#FFFAEE",
+          },
+        });
         navigate("/orderhistory");
       }
-    }else{   // Exchange API Call
+    } else {
+      // Exchange API Call
       try {
-        const res = await API.put(
-          `/orders/${orderNo}/exchange`,
-          {
-            item_ids: [item.itemId],     // e.g. ["item123", "item456"]
-            reason_id: reason,   // e.g. 123
-            remarks: comments || "exchange items",
-          }
-        );
+        const res = await API.put(`/orders/${orderNo}/exchange`, {
+          item_ids: [item.itemId], // e.g. ["item123", "item456"]
+          reason_id: reason, // e.g. 123
+          remarks: comments || "exchange items",
+        });
 
         if (res.data.success) {
           toast.success("Order Exchanged successfully!", {
@@ -85,20 +140,17 @@ const ReturnExchange = () => {
         }
       } catch (err) {
         console.error("Cancel error:", err);
-        toast.error(
-          err.response?.data?.msg || "Order Exchange failed!",
-          {
-            style: {
-              border: "1px solid #FF0000",
-              padding: "16px",
-              color: "#FF0000",
-            },
-            iconTheme: {
-              primary: "#FF0000",
-              secondary: "#FFFAEE",
-            },
-          }
-        );
+        toast.error(err.response?.data?.msg || "Order Exchange failed!", {
+          style: {
+            border: "1px solid #FF0000",
+            padding: "16px",
+            color: "#FF0000",
+          },
+          iconTheme: {
+            primary: "#FF0000",
+            secondary: "#FFFAEE",
+          },
+        });
         navigate("/orderhistory");
       }
     }
@@ -129,18 +181,24 @@ const ReturnExchange = () => {
                   type="radio"
                   value="return"
                   checked={option === "return"}
-                  onChange={(e) => setOption(e.target.value)}
+                  onChange={(e) => {
+                    setOption(e.target.value);
+                    getReason(e.target.value);
+                  }}
                 />
                 &nbsp; Return
               </label>
             )}
-            {item.allow_exchange  && (
+            {item.allow_exchange && (
               <label>
                 <input
                   type="radio"
                   value="exchange"
                   checked={option === "exchange"}
-                  onChange={(e) => setOption(e.target.value)}
+                  onChange={(e) => {
+                    setOption(e.target.value);
+                    getReason(e.target.value);
+                  }}
                 />
                 &nbsp; Exchange
               </label>
@@ -156,10 +214,11 @@ const ReturnExchange = () => {
             required
           >
             <option value="">Select Reason</option>
-            <option value="1">No longer needed</option>
-            <option value="2">Received defective product</option>
-            <option value="3">Wrong item received</option>
-            <option value="4">Other</option>
+            {reasonList.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.reason}
+              </option>
+            ))}
           </select>
 
           <label>

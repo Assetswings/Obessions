@@ -15,7 +15,7 @@ import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "./otherproductSlice";
 
-const ProductsPage = () => {
+  const ProductsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,17 +31,16 @@ const ProductsPage = () => {
   const [animatedWish, setAnimatedWish] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-
   const { items } = useSelector((state) => state.toppick);
 
   console.log('product>>>>>',products);
-    console.log('filter>>>>>',filters);
+  console.log('filter>>>>>',filters);
 
-  useEffect(() => {
+    useEffect(() => {
     dispatch(fetchTopPicks()); //
-  }, [dispatch]);
+  },[dispatch]);
 
-  useEffect(() => {
+    useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);
@@ -315,8 +314,7 @@ const ProductsPage = () => {
                               e.stopPropagation();
                               setQuickViewProduct(item);
                               setShowModal(true);
-                            }}
-                          >
+                            }}>
                             Quick View &nbsp;
                             <Expand
                               color="#000000"

@@ -19,7 +19,6 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
 import { checkPincode, resetPincodeState } from "./pincodeSlice";
 
-
 const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("highlights");
@@ -63,13 +62,13 @@ const ProductDetailPage = () => {
 
   // Set image when data loads
   useEffect(() => {
-    if (data?.product_images?.length > 0) {
-      setSelectedImage(data.product_images[0].media);
-      setLocalLoading(false);
-    }
-    if(data?.product_sizes.length > 0){
+    if (data?.product_sizes.length > 0) {
       setSelectedSize(data?.product_sizes[0]);
-      setSelectedColor(data.product_sizes[0].product_colors[0]);
+      setSelectedColor(data?.product_sizes[0].product_colors[0]);
+      setSelectedImage(
+        data?.product_sizes[0].product_colors[0].product_media[0]?.media
+      );
+      setLocalLoading(false);
     }
   }, [data]);
 
@@ -120,8 +119,8 @@ const ProductDetailPage = () => {
   //       console.error(error);
   //     });
   // };
+  // ADD TO CART FUNCTION (restricted until pincode check success);
 
-  // ADD TO CART FUNCTION (restricted until pincode check success)
   const handleAddToCart = () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -146,42 +145,41 @@ const ProductDetailPage = () => {
     }
 
     dispatch(addToCart({ product_id: productId, quantity }))
-    .unwrap()
-    .then(() => {
-      toast.success("Product added to cart successfully!", {
-        style: {
-          background: "#1f1f1f",
-          color: "#fff",
-          borderRadius: "0px",
-          padding: "12px 16px",
-          fontSize: "14px",
-        },
-        hideProgressBar: true,
-        closeButton: false,
-        icon: true,
+      .unwrap()
+      .then(() => {
+        toast.success("Product added to cart successfully!", {
+          style: {
+            background: "#1f1f1f",
+            color: "#fff",
+            borderRadius: "0px",
+            padding: "12px 16px",
+            fontSize: "14px",
+          },
+          hideProgressBar: true,
+          closeButton: false,
+          icon: true,
+        });
+      })
+      .catch((error) => {
+        toast.error("Failed to add to cart");
+        console.error(error);
       });
-    })
-    .catch((error) => {
-      toast.error("Failed to add to cart");
-      console.error(error);
-    });
   };
-  
+
   // Price dynamics solution
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
   const productId = data?.id || productSlug;
 
   // ping the wishlist
-    const handleSimilarProductClick = (slug) => {
+  const handleSimilarProductClick = (slug) => {
     navigate("/productsdetails", { state: { product: slug } });
   };
 
-    
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
     const token = localStorage.getItem("token");
     if (!token) {
-      setShowLoginPrompt(true); 
+      setShowLoginPrompt(true);
       return;
     }
     const isInWishlist = wishlist.productIds.includes(product.id);
@@ -232,7 +230,7 @@ const ProductDetailPage = () => {
   }, [dispatch]);
 
   if (error) {
-  return <div className="error">Error: {error}</div>;
+    return <div className="error">Error: {error}</div>;
   }
 
   const handleCheck = () => {
@@ -256,7 +254,7 @@ const ProductDetailPage = () => {
     setSelectedSize(null);
     dispatch(clearProductDetail());
     dispatch(fetchProductDetail(color.action_url));
-  }
+  };
 
   return (
     <>
@@ -287,7 +285,6 @@ const ProductDetailPage = () => {
                   height: "auto",
                   mixBlendMode: "darken",
                   objectFit: "cover",
-                  // transition: "opacity 0.3s ease-in-out",
                 }}
               />
             )}
@@ -306,7 +303,7 @@ const ProductDetailPage = () => {
                       style={{ marginRight: 10 }}
                     />
                   ))
-              : data?.product_images?.map((img, index) => (
+              : selectedColor?.product_media?.map((img, index) => (
                   <img
                     key={index}
                     src={img.media}
@@ -378,7 +375,10 @@ const ProductDetailPage = () => {
                         className={`size-btn ${
                           selectedSize?.id === size.id ? "active-size" : ""
                         }`}
-                        onClick={() => {setSelectedSize(size); selectionColor(size);}}
+                        onClick={() => {
+                          setSelectedSize(size);
+                          selectionColor(size);
+                        }}
                       >
                         <div className="set_btn_trcak">
                           <img
@@ -411,21 +411,24 @@ const ProductDetailPage = () => {
                   <p>CHOOSE A COLOR:</p>
                 </div>
                 <div className="color-options">
-                  {selectedSize?.product_colors?.map((color,idx) =>
-                      <div className={`selected-color ${
-                          selectedColor?.id === color.id ? "active-size" : ""
-                        }`} key={idx}
-                        onClick={() => selectionColor(color)}>
-                        <div className="color-circle">
-                          <img
-                            src={color.color_media}
-                            alt={color.color}
-                            height={60}
-                            width={60}
-                          />
-                        </div>
+                  {selectedSize?.product_colors?.map((color, idx) => (
+                    <div
+                      className={`selected-color ${
+                        selectedColor?.id === color.id ? "active-size" : ""
+                      }`}
+                      key={idx}
+                      onClick={() => selectionColor(color)}
+                    >
+                      <div className="color-circle">
+                        <img
+                          src={color.color_media}
+                          alt={color.color}
+                          height={60}
+                          width={60}
+                        />
                       </div>
-                  )}
+                    </div>
+                  ))}
                 </div>
               </>
             )}
@@ -444,56 +447,40 @@ const ProductDetailPage = () => {
           </div>
 
           {/* Pincode Check */}
-          {/* <div className="pincode-check">
+          <div className="pincode-check">
             <p className="check-heading">CHECK AVAILABILITY</p>
             <div className="input-wrapper">
               <input
                 className="checkup_track_txt"
                 type="text"
                 placeholder="Enter Delivery Pincode"
+                value={pincode}
+                onChange={(e) => setPincode(e.target.value)}
               />
-              <button className="check-btn">Check</button>
+              <button onClick={handleCheck} className="check-btn">
+                Check
+              </button>
+              {pincodeChecked && (
+                <button onClick={handleReset} className="check-btn">
+                  Reset
+                </button>
+              )}
             </div>
-            <p className="delivery-info">
-              Available PAN India. We deliver wherever you call home.
-            </p>
-          </div> */}
-           
-             {/* Pincode Check */}
-             <div className="pincode-check">
-                <p className="check-heading">CHECK AVAILABILITY</p>
-                <div className="input-wrapper">
-                  <input
-                    className="checkup_track_txt"
-                    type="text"
-                    placeholder="Enter Delivery Pincode"
-                    value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
-                  />
-                  <button onClick={handleCheck} className="check-btn">
-                    Check
-                  </button>
-                  {pincodeChecked && (
-                    <button onClick={handleReset} className="check-btn">
-                      Reset
-                    </button>
-                  )}
-                </div>
 
-                {/* Show pincode info */}
-                {pincodeset.loading && <p>Checking...</p>}
-                {pincodeset.error && (
-                  <p style={{ color: "red",marginTop:"15px" }}>Not serviceable for your area</p>
-                )}
-                {pincodeset.pinset?.pincode && pincodeset.pinset?.is_active && (
-                  <p style={{ color: "green",marginTop:"15px" }}>
-                    ✅ Delivery available at{" "}
-                    {pincodeset.pinset.city}, {pincodeset.pinset.state} (
-                    {pincodeset.pinset.delivery_tat})
-                  </p>
-                )}
-              </div>
-
+            {/* Show pincode info */}
+            {pincodeset.loading && <p>Checking...</p>}
+            {pincodeset.error && (
+              <p style={{ color: "red", marginTop: "15px" }}>
+                Not serviceable for your area
+              </p>
+            )}
+            {pincodeset.pinset?.pincode && pincodeset.pinset?.is_active && (
+              <p style={{ color: "green", marginTop: "15px" }}>
+                ✅ Delivery available at {pincodeset.pinset.city},{" "}
+                {pincodeset.pinset.state} ({pincodeset.pinset.delivery_tat})
+              </p>
+            )}
+          </div>
 
           {/* Cart & Wishlist */}
           <div className="add-cart-section">
@@ -511,12 +498,8 @@ const ProductDetailPage = () => {
               ) : (
                 <Heart
                   size={27}
-                  color={
-                    data?.is_wishlisted ? "#FF0000" : "#000"
-                  }
-                  fill={
-                    data?.is_wishlisted ? "#FF0000" : "none"
-                  }
+                  color={data?.is_wishlisted ? "#FF0000" : "#000"}
+                  fill={data?.is_wishlisted ? "#FF0000" : "none"}
                 />
               )}
             </div>
@@ -600,8 +583,6 @@ const ProductDetailPage = () => {
                 >
                   <div className="product-img-box">
                     <img src={item.media} alt={item.name} />
-
-                    {/* wishlist button */}
                     <button
                       className="wishlist-btn_products"
                       onClick={(e) => toggleWishlist(e, item)}
@@ -656,7 +637,7 @@ const ProductDetailPage = () => {
         )}
       </div>
 
-      {/* Similar Products */}
+      {/* Don’t Miss the product */}
       <div className="similar-styles-section">
         <h2>Don’t Miss These Matching Finds</h2>
         {loading ? (
@@ -675,7 +656,6 @@ const ProductDetailPage = () => {
           <div className="product-grid">
             {data?.dont_miss_these_matching_finds?.slice(0, 10).map((item) => {
               const isWishlisted = wishlist.productIds.includes(item.id);
-
               return (
                 <div
                   className="product-card-dtl"
@@ -684,7 +664,7 @@ const ProductDetailPage = () => {
                 >
                   <div className="product-img-box">
                     <img src={item.media} alt={item.name} />
-                    {/* wishlist button */}
+
                     <button
                       className="wishlist-btn_products"
                       onClick={(e) => toggleWishlist(e, item)}

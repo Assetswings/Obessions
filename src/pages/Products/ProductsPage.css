@@ -229,7 +229,6 @@
 }
 
 
-
 .qucick_dv {
   display: flex;
   justify-content: center;
@@ -286,8 +285,11 @@
 }
 
 @media (max-width: 480px) {
-  .custom-products-grid {
-    grid-template-columns: 1fr;
+    .custom-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .qucick_dv{
+    display: none;
   }
 }
 

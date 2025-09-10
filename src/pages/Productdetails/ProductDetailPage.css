@@ -32,12 +32,41 @@ font-family: "Playfair Display", serif; */
   overflow: hidden;
 }
 
+/* .thumbnail-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  margin-top: 10px;
+} */
+
 .thumbnail-row {
   display: flex;
   overflow-x: auto;
   gap: 10px;
   margin-top: 10px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  max-width: 100%;   /* ✅ prevent overflowing screen */
+  box-sizing: border-box; /* padding won't push it outside */
 }
+
+.thumbnail-row::-webkit-scrollbar {
+  display: none;
+}
+
+.thumbnail {
+  flex: 0 0 auto; 
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.selected-thumb {
+  border: 2px solid #000;
+}
+
 
 .product-info .title {
   font-size: 15px;
@@ -67,6 +96,7 @@ font-family: "Playfair Display", serif; */
   font-size: 28px;
   font-weight: bold;
 }
+
 .sub-1 {
   font-size: 14px;
   color: #625e55;
@@ -253,6 +283,7 @@ font-family: "Playfair Display", serif; */
   flex: 1;
   font-size: 14px;
   color: #333;
+  max-width: 70%;
 }
 
 .check-btn {
@@ -533,7 +564,7 @@ font-family: "Playfair Display", serif; */
 }
 
 .similar-styles-section {
-  padding: 40px 20px;
+  /* padding: 40px 20px; */
   background: #fdfdfd;
   text-align: center;
 }
@@ -548,7 +579,7 @@ font-family: "Playfair Display", serif; */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 20px;
+  gap: 0px;
 }
 
 .product-card-dtl {
@@ -564,10 +595,12 @@ font-family: "Playfair Display", serif; */
   background: #f2f2f2;
   /* padding: 50px; */
   /* border-radius: 6px; */
+
 }
 
 .product-img-box img {
   width: 100%;
+  
 }
 
 .wishlist-btn {
@@ -628,14 +661,17 @@ font-family: "Playfair Display", serif; */
 @media (min-width: 1200px) {
   .product-grid {
     grid-template-columns: repeat(5, 1fr);
+  
   }
 }
 
 @media (max-width: 768px) {
-  .product-title {
-    min-height: auto;
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0px;
   }
 }
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -653,5 +689,98 @@ font-family: "Playfair Display", serif; */
 
   .tab-section {
     padding: 30px 10px;
+  }
+
+  .size-options {
+    flex-wrap: nowrap;    
+    overflow-x: auto;        
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: none;   
+    max-width: 330px;
+    box-sizing: border-box;
+    padding-bottom: 6px;    
+  }
+
+  .size-options::-webkit-scrollbar {
+    display: none;        
+  }
+
+  .size-btn {
+    flex: 0 0 auto;          
+  }
+
+  .color-options {
+    flex-wrap: nowrap;        
+    overflow-x: auto;         
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: none;  
+    max-width: 330px;
+    box-sizing: border-box;
+    padding-bottom: 6px;
+  }
+
+  .color-options::-webkit-scrollbar {
+    display: none;          
+  }
+
+  .selected-color {
+    flex: 0 0 auto;          
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .thumbnail {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title_details {
+    font-size: 18px; 
+    width: 250px;
+  }
+  /* .image_track{
+    display: none;
+      } */
+  .thumbnail {
+    width: 50px;
+    height: 50px;
+  }
+  .thumbnail-row {
+    width: 330px;
+    gap: 6px;
+    padding: 0 10px;  
+  }
+  .add-to-cart-btn{
+    width:70%;
+  } 
+  
+   .input-wrapper input {
+    width:100px;
+   }
+  .product-description  p {
+    color: #625e55;
+    font-size: 14px;  
+    width: 100%;
+  }
+  .txt-Carpet-Finder{
+    width: 80%;
+  }
+  .product-title{
+  font-size: 12px;
+  }
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0px;
+  }
+
+  .product-card-dtl {
+    background: #fff;
+    border-radius: 8px;
+    text-align: left;
+    padding: 15px;
+    position: relative;
   }
 }

@@ -342,12 +342,12 @@ const Footer = () => {
       </div>
 
       {/* Footer Bottom */}
-      <div className="footer-bottom">
+      {/* <div className="footer-bottom">
         <p>© 2025 obsessions.co.in | All Rights Reserved</p>
         <div className="payments">
           <img src={marstrcards} alt="Visa" />
         </div>
-      </div>
+      </div> */}
     </footer>
   );
 };

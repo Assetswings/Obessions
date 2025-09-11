@@ -609,7 +609,7 @@ const ProductDetailPage = () => {
                   onClick={() => handleSimilarProductClick(item.action_url)}
                 >
                   <div className="product-img-box">
-                    <img src={item.media} alt={item.name} />
+                    <img src={item?.media_list?.main?.file} alt={item.name} />
                     <button
                       className="wishlist-btn_products"
                       onClick={(e) => toggleWishlist(e, item)}
@@ -690,8 +690,7 @@ const ProductDetailPage = () => {
                   onClick={() => handleSimilarProductClick(item.action_url)}
                 >
                   <div className="product-img-box">
-                    <img src={item.media} alt={item.name} />
-
+                    <img src={item?.media_list?.main?.file} alt={item.name} />
                     <button
                       className="wishlist-btn_products"
                       onClick={(e) => toggleWishlist(e, item)}

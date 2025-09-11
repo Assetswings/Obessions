@@ -19,8 +19,7 @@ import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "./otherproductSlice";
 
-
-  const ProductsPage = () => {
+const ProductsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,14 +37,14 @@ import { fetchTopPicks } from "./otherproductSlice";
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { items } = useSelector((state) => state.toppick);
 
-  console.log('product>>>>>',products);
-  console.log('filter>>>>>',filters);
+  console.log("product>>>>>", products);
+  console.log("filter>>>>>", filters);
 
-    useEffect(() => {
+  useEffect(() => {
     dispatch(fetchTopPicks()); //
-  },[dispatch]);
+  }, [dispatch]);
 
-    useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);
@@ -88,17 +87,17 @@ import { fetchTopPicks } from "./otherproductSlice";
     }
     const isInWishlist = product.is_wishlisted;
     try {
-        if (isInWishlist) {
+      if (isInWishlist) {
         const wishlistItem = product.wishlist[0].wishlist_id;
         if (wishlistItem) {
-        await dispatch(removeFromWishlist(wishlistItem)).unwrap();
-        toast.success("Removed from wishlist", {
-              style: {
+          await dispatch(removeFromWishlist(wishlistItem)).unwrap();
+          toast.success("Removed from wishlist", {
+            style: {
               border: "1px solid #713200",
               padding: "16px",
               color: "#713200",
             },
-              iconTheme: {
+            iconTheme: {
               primary: "#713200",
               secondary: "#FFFAEE",
             },
@@ -247,7 +246,10 @@ import { fetchTopPicks } from "./otherproductSlice";
                       style={{ cursor: "pointer" }}
                     >
                       <div className="custom-product-image">
-                        <img src={item.media_list?.main?.file} alt={item.name} />
+                        <img
+                          src={item.media_list?.main?.file}
+                          alt={item.name}
+                        />
 
                         {/* wishliat_track */}
                         <button
@@ -294,7 +296,8 @@ import { fetchTopPicks } from "./otherproductSlice";
                               e.stopPropagation();
                               setQuickViewProduct(item);
                               setShowModal(true);
-                            }}>
+                            }}
+                          >
                             Quick View &nbsp;
                             <Expand
                               color="#000000"
@@ -340,18 +343,17 @@ import { fetchTopPicks } from "./otherproductSlice";
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
         <div className="top-picks-grid">
           {items.map((item) => (
-            <div key={item.id} className="top-pick-card" onClick={() => handleProductClick(item.action_url)}>
+            <div
+              key={item.id}
+              className="top-pick-card"
+              onClick={() => handleProductClick(item.action_url)}
+            >
               <img
                 src={item.media}
                 alt={item.name}
                 className="top-pick-image"
               />
-              <p
-                className="top-pick-title"
-                
-              >
-                {item.name}
-              </p>
+              <p className="top-pick-title">{item.name}</p>
             </div>
           ))}
         </div>

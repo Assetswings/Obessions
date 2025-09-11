@@ -603,14 +603,13 @@ font-family: "Playfair Display", serif; */
 .product-img-box {
   position: relative;
   background: #f2f2f2;
-  /* padding: 50px; */
-  /* border-radius: 6px; */
-
+  background: #f2f2f2;
+  padding: 13px;
 }
 
 .product-img-box img {
   width: 100%;
-  
+  mix-blend-mode: darken;
 }
 
 .wishlist-btn {

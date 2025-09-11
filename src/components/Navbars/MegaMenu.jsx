@@ -15,14 +15,14 @@ import { useNavigate } from "react-router-dom";
   const menuList = Array.isArray(data) ? data : [];
   const activeSection = menuList[activeSectionIndex];
 
-    useEffect(() => {
-    dispatch(fetchMegamenuData());
-  },[dispatch]);
+     useEffect(() => {
+     dispatch(fetchMegamenuData());
+  }, [dispatch]);
 
-  useEffect(() => {
+    useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "auto";
+    document.body.style.overflow = "auto";
     };
   }, []);
 
@@ -40,33 +40,29 @@ import { useNavigate } from "react-router-dom";
   const handleCategoryClick = (categorySlug) => {
     navigate("/products", {
       state: {
-        category: categorySlug,
-      },
-    });
-    closeMenu(); // Close the mega menu
+      category: categorySlug,
+        },
+        });
+    closeMenu(); 
   };
-
   if (loading || menuList.length === 0) {
     return <div className="mega-modal"></div>;
   }
-
   if (error) {
     return <div className="mega-modal">Error: {error}</div>;
   }
-
   return (
     <div className="mega-modal">
       <div className="mega-backdrop" onClick={closeMenu}></div>
       <div className="mega-menu-content">
         {/* LEFT: Main Categories */}
         <div className="mega-menu-left">
-          <ul className="menu-categories">
-            {menuList.map((section, index) => (
+        <ul className="menu-categories">
+        {menuList.map((section, index) => (
               <li
                 key={section.id}
                 className={index === activeSectionIndex ? "active" : ""}
-                onClick={() => setActiveSectionIndex(index)}
-              >
+                onClick={() => setActiveSectionIndex(index)}>
                 <span>{section.name}</span>
                 <span className="icon_arrow_section">
                   <IoIosArrowForward />

@@ -85,10 +85,10 @@ const ProductDetailPage = () => {
       { threshold: 0.4 }
     );
     Object.values(sectionsRef.current).forEach((section) =>
-      observer.observe(section)
+    observer.observe(section)
     );
     return () => observer.disconnect();
-  }, []);
+    }, []);
 
   // add To cart
   // const handleAddToCart = () => {
@@ -246,23 +246,22 @@ const ProductDetailPage = () => {
     setPincode("");
     setPincodeChecked(false);
   };
-
   const selectionColor = (color) => {
     // setSelectedColor(color);
-    setLocalLoading(true);
-    setSelectedImage(null);
-    setSelectedSize(null);
-    dispatch(clearProductDetail());
-    dispatch(fetchProductDetail(color.action_url));
+    setSelectedImage(color?.product_media[0]?.media);
   };
-
+  const sizeSelection = (size) => {
+    setSelectedColor(size?.product_colors[0]);
+    setSelectedImage(size?.product_colors[0]?.product_media[0]?.media);
+  };
+ 
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">
-          <div
+        <div
             className="image_track"
             style={{ width: "100%", minHeight: "750px" }}
           >
@@ -288,8 +287,33 @@ const ProductDetailPage = () => {
                 }}
               />
             )}
+        </div>
+          <div
+            className="image_track_mobile"
+            style={{ width: "100%", minHeight: "250px" }}>
+            {loading || !selectedImage ? (
+              <div style={{ width: "100%", height: "100%" }}>
+                <Skeleton
+                  height="100%"
+                  width="100%"
+                  baseColor="#e0e0e0"
+                  highlightColor="#f5f5f5"
+                />
+              </div>
+            ) : (
+              <img
+                src={selectedImage}
+                alt="Main Product"
+                className="main-image"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  mixBlendMode: "darken",
+                  objectFit: "cover",
+                }}
+              />
+            )}
           </div>
-
           {/* Thumbnails */}
           <div className="thumbnail-row">
             {localLoading
@@ -361,7 +385,7 @@ const ProductDetailPage = () => {
                 </div>
               </>
             ) : (
-              data?.product_sizes?.length > 0 && (
+                 data?.product_sizes?.length > 0 && (
                 <>
                   <p className="selected-size-label">
                     CHOOSE A SIZE:
@@ -377,11 +401,11 @@ const ProductDetailPage = () => {
                         }`}
                         onClick={() => {
                           setSelectedSize(size);
-                          selectionColor(size);
-                        }}
-                      >
-                        <div className="set_btn_trcak">
-                          <img
+                          sizeSelection(size);
+                        }
+                        }>
+                            <div className="set_btn_trcak">
+                            <img
                             src="https://i.ibb.co/x86bSjV6/Frame-7.png"
                             className="size-image"
                             alt={size.size}
@@ -417,7 +441,10 @@ const ProductDetailPage = () => {
                         selectedColor?.id === color.id ? "active-size" : ""
                       }`}
                       key={idx}
-                      onClick={() => selectionColor(color)}
+                      onClick={() => {
+                        setSelectedColor(color);
+                        selectionColor(color);
+                      }}
                     >
                       <div className="color-circle">
                         <img
@@ -639,7 +666,7 @@ const ProductDetailPage = () => {
 
       {/* Don’t Miss the product */}
       <div className="similar-styles-section">
-        <h2>Don’t Miss These Matching Finds</h2>
+        <h2 className="txt_head_list">Don’t Miss These Matching Finds</h2>
         {loading ? (
           <div className="product-grid">
             {Array(4)

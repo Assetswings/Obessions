@@ -19,6 +19,7 @@ import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "./otherproductSlice";
 
+
   const ProductsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -87,17 +88,17 @@ import { fetchTopPicks } from "./otherproductSlice";
     }
     const isInWishlist = product.is_wishlisted;
     try {
-      if (isInWishlist) {
+        if (isInWishlist) {
         const wishlistItem = product.wishlist[0].wishlist_id;
         if (wishlistItem) {
-          await dispatch(removeFromWishlist(wishlistItem)).unwrap();
-          toast.success("Removed from wishlist", {
-            style: {
+        await dispatch(removeFromWishlist(wishlistItem)).unwrap();
+        toast.success("Removed from wishlist", {
+              style: {
               border: "1px solid #713200",
               padding: "16px",
               color: "#713200",
             },
-            iconTheme: {
+              iconTheme: {
               primary: "#713200",
               secondary: "#FFFAEE",
             },
@@ -156,44 +157,6 @@ import { fetchTopPicks } from "./otherproductSlice";
       ))}
     </div>
   );
-
-  const picks = [
-    {
-      id: 1,
-      title: "TABLE ORGANISERS",
-      image: "https://i.ibb.co/2Ykt2Kdk/image-139.png",
-    },
-    {
-      id: 2,
-      title: "YOGA MATS",
-      image: "https://i.ibb.co/DfsTXR7F/image-141.png",
-    },
-    {
-      id: 3,
-      title: "WINE OPENERS",
-      image: "https://i.ibb.co/jY5FnhK/image-146.png",
-    },
-    {
-      id: 4,
-      title: "CARPETS & RUNNERS",
-      image: "https://i.ibb.co/SDwYzWXH/image-150.png",
-    },
-    {
-      id: 5,
-      title: "TABLE ORGANISERS",
-      image: "https://i.ibb.co/2Ykt2Kdk/image-139.png",
-    },
-    {
-      id: 6,
-      title: "WINE OPENERS",
-      image: "https://i.ibb.co/jY5FnhK/image-146.png",
-    },
-    {
-      id: 7,
-      title: "CARPETS & RUNNERS",
-      image: "https://i.ibb.co/SDwYzWXH/image-150.png",
-    },
-  ];
 
   const handleProductClick = (slug) => {
     if (slug) {
@@ -284,7 +247,7 @@ import { fetchTopPicks } from "./otherproductSlice";
                       style={{ cursor: "pointer" }}
                     >
                       <div className="custom-product-image">
-                        <img src={item.media} alt={item.name} />
+                        <img src={item.media_list?.main?.file} alt={item.name} />
 
                         {/* wishliat_track */}
                         <button

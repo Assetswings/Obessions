@@ -32,6 +32,16 @@ font-family: "Playfair Display", serif; */
   overflow: hidden;
 }
 
+.image_track_mobile{
+  background-color: #f2f2f2;
+  height: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  display: none;
+}
+
 /* .thumbnail-row {
   display: flex;
   overflow-x: auto;
@@ -741,9 +751,12 @@ font-family: "Playfair Display", serif; */
     font-size: 18px; 
     width: 250px;
   }
-  /* .image_track{
+  .image_track{
     display: none;
-      } */
+      }
+      .image_track_mobile{
+        display: block;
+      }
   .thumbnail {
     width: 50px;
     height: 50px;
@@ -782,5 +795,9 @@ font-family: "Playfair Display", serif; */
     text-align: left;
     padding: 15px;
     position: relative;
+  }
+  .similar-styles-section h2 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
   }
 }

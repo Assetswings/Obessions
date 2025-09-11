@@ -10,7 +10,7 @@ import { fetchHomeData } from "./homeSlice";
 import { fetchSearchResults, clearSearchResults } from "./searchSlice";
 import emtyimage from "../../assets/images/empty.jpg";
 import ProductQuickViewModal from "../Products/ProductQuickViewModal";
- import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 /* ─── Hero + Collection assets ─── */
 import image1 from "../../assets/images/Maskgroup-1.png";
@@ -73,7 +73,7 @@ const floatingImages = [
   { id: 6, src: FloorDesign6, className: "imgf6" },
 ];
 
-  const HomePage = () => {
+const HomePage = () => {
   const token = localStorage.getItem("token");
   // console.log("token----->", token);
   const [active, setActive] = useState(null);
@@ -89,7 +89,7 @@ const floatingImages = [
   const [currentSet, setCurrentSet] = useState(null);
   const [nextSet, setNextSet] = useState(null);
   const [setIndex, setSetIndex] = useState(null);
-     console.log("mmmmmm---->",setIndex );
+  console.log("mmmmmm---->", setIndex);
   // console.log("query---->", query);
   // 🏠 Home Data Fetching
   const { data } = useSelector((state) => state.home);
@@ -98,8 +98,6 @@ const floatingImages = [
 
   // console.log("🔥fffffff::::::::", results);
   // Pick random hero set whenever HomePage mounts
-
-
 
   useEffect(() => {
     if (!query.trim()) {
@@ -125,7 +123,7 @@ const floatingImages = [
     }
   };
 
-   useEffect(() => {
+  useEffect(() => {
     if (data) {
       if (data.shop_by) {
         const formattedItems = Object.entries(data.shop_by).map(
@@ -137,7 +135,7 @@ const floatingImages = [
               sale: key.toLowerCase().includes("sale"),
             };
           }
-        );        
+        );
         setShopByItems(formattedItems);
       }
     }
@@ -190,7 +188,7 @@ const floatingImages = [
   };
 
   const handelpdp = (categorySlug) => {
-    if(categorySlug){
+    if (categorySlug) {
       navigate("/products", {
         state: {
           category: categorySlug,
@@ -199,11 +197,11 @@ const floatingImages = [
     }
   };
 
-       const handelcollectionDetails = (categorySlug) => {
-       if (!categorySlug) return;
-      // remove leading slash just in case
-       const cleanSlug = categorySlug.startsWith("/") 
-      ? categorySlug.slice(1) 
+  const handelcollectionDetails = (categorySlug) => {
+    if (!categorySlug) return;
+    // remove leading slash just in case
+    const cleanSlug = categorySlug.startsWith("/")
+      ? categorySlug.slice(1)
       : categorySlug;
 
     if (cleanSlug === "collections") {
@@ -228,67 +226,91 @@ const floatingImages = [
       const sets = Object.values(data.hero_banners);
       const randomIndex = Math.floor(Math.random() * sets.length);
       const chosenSet = sets[randomIndex];
-      
+
       setSetIndex(randomIndex);
       setNextSet(chosenSet); // load into nextSet
-  
+
       const timer = setTimeout(() => {
         setCurrentSet(chosenSet);
         setNextSet(null);
       }, 600); // must match CSS animation time
-  
+
       return () => clearTimeout(timer);
     }
   }, [data, location.pathname]); // runs when data loads or you come back
 
-   const renderImages = (set, extraClass = "") => {
-  if (!set) return null;
+  const renderImages = (set, extraClass = "") => {
+    if (!set) return null;
 
-  const centerImg = set.find((img) => img.sequence === 1)?.media;
-  const leftImg   = set.find((img) => img.sequence === 2)?.media;
-  const rightImg  = set.find((img) => img.sequence === 3)?.media;
-  const topImg    = set.find((img) => img.sequence === 4)?.media;
+    const centerImg = set.find((img) => img.sequence === 1)?.media;
+    const leftImg = set.find((img) => img.sequence === 2)?.media;
+    const rightImg = set.find((img) => img.sequence === 3)?.media;
+    const topImg = set.find((img) => img.sequence === 4)?.media;
 
+    return (
+      <>
+        {centerImg && (
+          <img
+            src={centerImg}
+            className={`floating-img img-center ${extraClass}`}
+            alt="center"
+          />
+        )}
+        {leftImg && (
+          <img
+            src={leftImg}
+            className={`floating-img img-left ${extraClass}`}
+            alt="left"
+          />
+        )}
+        {rightImg && (
+          <img
+            src={rightImg}
+            className={`floating-img img-right ${extraClass}`}
+            alt="right"
+          />
+        )}
+        {topImg && (
+          <img
+            src={topImg}
+            className={`floating-img img-top ${extraClass}`}
+            alt="top"
+          />
+        )}
+      </>
+    );
+  };
   return (
     <>
-      {centerImg && <img src={centerImg} className={`floating-img img-center ${extraClass}`} alt="center" />}
-      {leftImg   && <img src={leftImg}   className={`floating-img img-left ${extraClass}`} alt="left" />}
-      {rightImg  && <img src={rightImg}  className={`floating-img img-right ${extraClass}`} alt="right" />}
-      {topImg    && <img src={topImg}    className={`floating-img img-top ${extraClass}`} alt="top" />}
-    </>
-  );
-};
-   return (
-   <>
-         {/* ───────────────────── HERO ───────────────────── */}
-        <div className="homepage container-fluid position-relative p-5">
+      {/* ───────────────────── HERO ───────────────────── */}
+      <div className="homepage container-fluid position-relative p-5">
         <img src={logo} className="floating-img img-left-logo" alt="" />
         <h1 className="display-1 bold position-absolute obsessions-text">
-        obsessions
+          obsessions
         </h1>
-      
-          {/* Floating Images from API */}
+
+        {/* Floating Images from API */}
         {/* {centerImg && <img src={centerImg} className="floating-img img-center" alt="center" />}
         {leftImg   && <img src={leftImg} className="floating-img img-left" alt="left" />}
         {rightImg  && <img src={rightImg} className="floating-img img-right" alt="right" />}
         {topImg    && <img src={topImg} className="floating-img img-top" alt="top" />} */}
 
-
-          {/* Current visible set */}
-  <div className={`${setIndex !== null ? `set-${setIndex}` : ""}`}>
-  {renderImages(currentSet, "fade-in")}
-  {renderImages(nextSet, "fade-out")}
-</div>
-{/* 
+        {/* Current visible set */}
+        <div className={`${setIndex !== null ? `set-${setIndex}` : ""}`}>
+          {renderImages(currentSet, "fade-in")}
+          {renderImages(nextSet, "fade-out")}
+        </div>
+        {/* 
   {renderImages(currentSet, "fade-in")}
 {renderImages(nextSet, "fade-out")} */}
 
-          <ul className="list-unstyled position-absolute category-list text-uppercase small">
+        <ul className="list-unstyled position-absolute category-list text-uppercase small">
           {data?.hero_banner_categories?.map((item) => (
             <li
-            key={item.id}
-            onClick={() => handleCategoryClick(item.action_url)}>
-            {item.name}
+              key={item.id}
+              onClick={() => handleCategoryClick(item.action_url)}
+            >
+              {item.name}
             </li>
           ))}
         </ul>
@@ -328,22 +350,6 @@ const floatingImages = [
           </div>
 
           {/* Dropdown results */}
-          {isSearchActive && Array.isArray(results) && results.length > 0 && (
-            <ul className="search-results list-unstyled">
-              {results.map((item, index) => (
-                <li
-                  key={index}
-                  onClick={() => {
-                    setQuery(item.name);
-                    setIsSearchActive(false);
-                  }}
-                >
-                  <span className="result-title">{item.name}</span>
-                  <span className="result-url">{item.action_url}</span>
-                </li>
-              ))}
-            </ul>
-          )}
 
           {/* Search Results Grid */}
           {isSearchActive && Array.isArray(results) && results.length > 0 && (
@@ -360,36 +366,18 @@ const floatingImages = [
                     }}
                   >
                     <img
-                      src={item.media}
-                      alt={item.media}
+                      src={item.media_list?.main?.file}
+                      alt={item.name}
                       className="search-card-img"
                     />
                     <div className="search-card-body">
-                      {/* <h6 className="search-card-title">
-        {item.name.split(" ").slice(0,2).join(" ")} */}
-                      {/* </h6> */}
                       <h6 className="search-card-title">
                         {" "}
                         {item.name.split(" ").slice(0, 5).join(" ")}
                       </h6>
-                      {/* <p className="search-card-price">₹{item.price}</p> */}
                     </div>
                   </div>
                 ))}
-                {/* {results.length > 20 && (
-                  <div className="button_track_more">
-                    <p
-                      onClick={() =>
-                        navigate("/searchlist", {
-                          state: { query: query },
-                        })
-                      }
-                    >
-                      {" "}
-                      View More
-                    </p>
-                  </div>
-                )} */}
               </div>
             </>
           )}
@@ -491,7 +479,12 @@ const floatingImages = [
               {/* Text label */}
               <span className="shopby-label">{item.label}</span>
               {/* VIEW tag */}
-              <span className="view-tag" onClick={() => handelcollectionDetails(item.url)}>View</span>
+              <span
+                className="view-tag"
+                onClick={() => handelcollectionDetails(item.url)}
+              >
+                View
+              </span>
             </li>
           ))}
         </ul>

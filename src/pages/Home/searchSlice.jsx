@@ -11,10 +11,10 @@ export const fetchSearchResults = createAsyncThunk(
       console.log("====================================");
       console.log("ddd--carpet--->", response?.data?.data?.products);
       console.log("====================================");
-      return response?.data?.data?.products;
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.data?.products || error.message
+        error.response?.data?.data || error.message
       );
     }
   }
@@ -23,7 +23,8 @@ export const fetchSearchResults = createAsyncThunk(
 const searchSlice = createSlice({
   name: "search",
   initialState: {
-    results: null,
+    results: [],
+    filters: {},
     loading: false,
     error: null,
   },
@@ -41,7 +42,10 @@ const searchSlice = createSlice({
       })
       .addCase(fetchSearchResults.fulfilled, (state, action) => {
         state.loading = false;
-        state.results = action.payload;
+        // state.results = action.payload.products;
+        // state.filters = action.payload || {};
+        state.results = action.payload.products;
+        state.filters = action.payload.filters.product_filter || {};
       })
       .addCase(fetchSearchResults.rejected, (state, action) => {
         state.loading = false;

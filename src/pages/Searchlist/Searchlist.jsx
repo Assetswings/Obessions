@@ -30,18 +30,8 @@ const Searchlist = () => {
   const subcategory = location.state?.subcategory;
   console.log("the query come from---->", query);
 
-  // const {
-  //   data: products,
- 
-  // } = useSelector((state) => state.products);
-
-  const wishlist = useSelector((state) => state.wishlist);
   const searchState = useSelector((state) => state.search || {});
-  // const { results = [] ,filters,loading,} = searchState;
-    const { results = [],loading,} = searchState;
-  console.log("result---->", results)
-
-
+  const { results = [], filters, loading } = searchState;
   const [selectedFilters, setSelectedFilters] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -91,10 +81,6 @@ const Searchlist = () => {
     }
   }, [selectedFilters]);
 
-  useEffect(() => {
-    dispatch(fetchWishlist());
-  }, [dispatch]);
-
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
       const current = prev[filterKey] || [];
@@ -104,68 +90,18 @@ const Searchlist = () => {
       return { ...prev, [filterKey]: updated };
     });
   };
-
-  //     const toggleWishlist = async (e, product) => {
-  //     e.stopPropagation();
-  //     const isInWishlist = wishlist.productIds.includes(product.id);
-  //     console.log("prodcut______page--->",product);
-  //     try {
-  //     if (isInWishlist) {
-  //         const wishlistItem = wishlist.items.find(
-  //         (item) => item.product_id === product.id
-  //            );
-  //         if (wishlistItem?.id) {
-  //           await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
-  //           toast.success("Removed from wishlist", {
-  //             style: {
-  //               border: "1px solid #713200",
-  //               padding: "16px",
-  //               color: "#713200",
-  //             },
-  //             iconTheme: {
-  //               primary: "#713200",
-  //               secondary: "#FFFAEE",
-  //             },
-  //           });
-  //           dispatch(fetchWishlist());
-  //         }
-  //       } else {
-  //         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
-  //         toast.success("Added to wishlist", {
-  //           style: {
-  //             border: "1px solid #713200",
-  //             padding: "16px",
-  //             color: "#713200",
-  //           },
-  //           iconTheme: {
-  //             primary: "#713200",
-  //             secondary: "#FFFAEE",
-  //           },
-  //         });
-  //         setAnimatedWish(product.id);
-  //         dispatch(fetchWishlist());
-  //         setTimeout(() => setAnimatedWish(null), 1500);
-  //       }
-  //     } catch (err) {
-  //       toast.error("Something went wrong");
-  //     }
-  //
-
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
     if (!isLoggedIn) {
       setShowLoginPrompt(true);
       return;
     }
-
-    const isInWishlist = wishlist.productIds.includes(product.id);
+    const isInWishlist = product.is_wishlisted;
     try {
       if (isInWishlist) {
-        const wishlistItem = wishlist.items.find(
-          (item) => item.product_id === product.id
-        );
-        if (wishlistItem?.id) {
-          await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
+        const wishlistItem = product.wishlist[0].wishlist_id;
+        if (wishlistItem) {
+          await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
             style: {
               border: "1px solid #713200",
@@ -176,8 +112,13 @@ const Searchlist = () => {
               primary: "#713200",
               secondary: "#FFFAEE",
             },
+            hideProgressBar: true,
+            closeButton: true,
+            icon: true,
           });
-          dispatch(fetchWishlist());
+          dispatch(
+            fetchProducts({ category, subcategory, page: 1, limit: 20 })
+          );
         }
       } else {
         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
@@ -191,9 +132,12 @@ const Searchlist = () => {
             primary: "#713200",
             secondary: "#FFFAEE",
           },
+          hideProgressBar: true,
+          closeButton: true,
+          icon: true,
         });
         setAnimatedWish(product.id);
-        dispatch(fetchWishlist());
+        dispatch(fetchProducts({ category, subcategory, page: 1, limit: 20 }));
         setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {
@@ -224,204 +168,181 @@ const Searchlist = () => {
     </div>
   );
 
-  const picks = [
-    {
-      id: 1,
-      title: "TABLE ORGANISERS",
-      image: "https://i.ibb.co/2Ykt2Kdk/image-139.png",
-    },
-    {
-      id: 2,
-      title: "YOGA MATS",
-      image: "https://i.ibb.co/DfsTXR7F/image-141.png",
-    },
-    {
-      id: 3,
-      title: "WINE OPENERS",
-      image: "https://i.ibb.co/jY5FnhK/image-146.png",
-    },
-    {
-      id: 4,
-      title: "CARPETS & RUNNERS",
-      image: "https://i.ibb.co/SDwYzWXH/image-150.png",
-    },
-    {
-      id: 5,
-      title: "TABLE ORGANISERS",
-      image: "https://i.ibb.co/2Ykt2Kdk/image-139.png",
-    },
-    {
-      id: 6,
-      title: "WINE OPENERS",
-      image: "https://i.ibb.co/jY5FnhK/image-146.png",
-    },
-    {
-      id: 7,
-      title: "CARPETS & RUNNERS",
-      image: "https://i.ibb.co/SDwYzWXH/image-150.png",
-    },
-  ];
-
   return (
     <>
       <div className="custom-products-page">
+        {(loading || results?.length > 0) && (
+          <aside className="custom-filters">
+            <h2 className="title_prd_roots">
+              {/* {subcategory ? formatTitle(subcategory) : formatTitle(category)} */}
+            </h2>
+            <div className="root_devider_flt">
+              <h2>Filters</h2>
+              <p className="clr-all" onClick={() => setSelectedFilters({})}>
+                clear all
+              </p>
+            </div>
 
-       {(loading || results?.length > 0) && (
-  <aside className="custom-filters">
-    <h2 className="title_prd_roots">
-      {/* {subcategory ? formatTitle(subcategory) : formatTitle(category)} */}
-    </h2>
-    <div className="root_devider_flt">
-      <h2>Filters</h2>
-      <p className="clr-all" onClick={() => setSelectedFilters({})}>
-        clear all
-      </p>
-    </div>
-
-    {loading ? (
-      <>
-        <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
-        {Array.from({ length: 3 }).map((_, i) => (
-          <div className="custom-filter-group" key={i}>
-            <Skeleton
-              height={14}
-              width={100}
-              style={{ marginBottom: 10 }}
-            />
-            <Skeleton
-              count={4}
-              height={16}
-              width={120}
-              style={{ marginBottom: 8 }}
-            />
-          </div>
-        ))}
-      </>
-    ) : (
-      // filters &&
-      // Object.entries(filters).map(([filterKey, values]) =>
-      //   renderFilterGroup(filterKey.replace(/_/g, " "), values, filterKey)
-      // )
-      <></>
-    )}
-  </aside>
-)}
-
-        <main className="custom-product-list">
-        {Array.isArray(results) && (
-  <div className="custom-products-grid">
-    {loading ? (
-      Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="custom-product-card">
-          <div className="custom-product-image">
-            <Skeleton height={250} width={230} />
-          </div>
-          <p className="custom-product-title">
-            <Skeleton width={180} height={16} />
-          </p>
-          <p className="custom-product-price">
-            <Skeleton width={100} height={16} />
-          </p>
-        </div>
-      ))
-    ) : results?.length === 0 ? (
-      <div className="no-results">
-        <p>No results found</p>
-      </div>
-    ) : (
-      results.map((item) => {
-        const isWishlisted = wishlist.productIds.includes(item.id);
-        return (
-          <div
-            key={item.id}
-            className="custom-product-card"
-            onClick={(e) => {
-              const isQuickView = e.target.closest(".qucick_dv");
-              const isWishlist = e.target.closest(".wishlist-btn_products");
-              if (!isQuickView && !isWishlist) {
-                navigate("/productsdetails", {
-                  state: { product: item.action_url },
-                });
-              }
-            }}
-            style={{ cursor: "pointer" }}
-          >
-            <div className="custom-product-image">
-              <img src={item.media} alt={item.name} />
-
-              {/* wishlist_track */}
-              <button
-                className="wishlist-btn_products"
-                onClick={(e) => toggleWishlist(e, item)}
-              >
-                {animatedWish === item.id ? (
-                  <div
-                    style={{
-                      width: 20,
-                      height: 24,
-                      overflow: "hidden",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Player
-                      autoplay
-                      keepLastFrame
-                      src={heartAnimation}
-                      style={{
-                        width: 139,
-                        height: 139,
-                        transform: "scale(0.5)",
-                        transformOrigin: "center",
-                      }}
+            {loading ? (
+              <>
+                <Skeleton
+                  height={24}
+                  width={140}
+                  style={{ marginBottom: 10 }}
+                />
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div className="custom-filter-group" key={i}>
+                    <Skeleton
+                      height={14}
+                      width={100}
+                      style={{ marginBottom: 10 }}
+                    />
+                    <Skeleton
+                      count={4}
+                      height={16}
+                      width={120}
+                      style={{ marginBottom: 8 }}
                     />
                   </div>
-                ) : (
-                  <Heart
-                    color={isWishlisted ? "#FF0000" : "#000"}
-                    fill={isWishlisted ? "#FF0000" : "none"}
-                    size={20}
-                    strokeWidth={2}
-                  />
-                )}
-              </button>
+                ))}
+              </>
+            ) : (
+              filters &&
+              Object.entries(filters).map(([filterKey, values]) =>
+                renderFilterGroup(
+                  filterKey.replace(/_/g, " "),
+                  values,
+                  filterKey
+                )
+              )
+            )}
+          </aside>
+        )}
 
-              <div className="qucick_dv">
-                <span
-                  className="quick-view_pd"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setQuickViewProduct(item);
-                    setShowModal(true);
-                  }}
-                >
-                  Quick View &nbsp;
-                  <Expand color="#000000" size={15} strokeWidth={1.25} />
-                </span>
-              </div>
-            </div>
-            <p className="custom-product-title">{item.name}</p>
-            <p className="custom-product-price">
-              ₹{item.selling_price}
-              {item.mrp && item.mrp !== item.selling_price && (
-                <>
-                  <span className="custom-old-price">₹{item.mrp}</span>
-                  <span className="custom-discount">
-                    (-{item.discount_percent}%)
-                  </span>
-                </>
+        <main className="custom-product-list">
+          {Array.isArray(results) && (
+            <div className="custom-products-grid">
+              {loading ? (
+                Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="custom-product-card">
+                    <div className="custom-product-image">
+                      <Skeleton height={250} width={230} />
+                    </div>
+                    <p className="custom-product-title">
+                      <Skeleton width={180} height={16} />
+                    </p>
+                    <p className="custom-product-price">
+                      <Skeleton width={100} height={16} />
+                    </p>
+                  </div>
+                ))
+              ) : results?.length === 0 ? (
+                <div className="no-results">
+                  <p>No results found</p>
+                </div>
+              ) : (
+                results.map((item) => {
+                  const isWishlisted = item.is_wishlisted;
+                  return (
+                    <div
+                      key={item.id}
+                      className="custom-product-card"
+                      onClick={(e) => {
+                        const isQuickView = e.target.closest(".qucick_dv");
+                        const isWishlist = e.target.closest(
+                          ".wishlist-btn_products"
+                        );
+                        if (!isQuickView && !isWishlist) {
+                          navigate("/productsdetails", {
+                            state: { product: item.action_url },
+                          });
+                        }
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="custom-product-image">
+                        <img
+                          src={item.media_list?.main?.file}
+                          alt={item.name}
+                        />
+
+                        {/* wishlist_track */}
+                        <button
+                          className="wishlist-btn_products"
+                          onClick={(e) => toggleWishlist(e, item)}
+                        >
+                          {animatedWish === item.id ? (
+                            <div
+                              style={{
+                                width: 20,
+                                height: 24,
+                                overflow: "hidden",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Player
+                                autoplay
+                                keepLastFrame
+                                src={heartAnimation}
+                                style={{
+                                  width: 139,
+                                  height: 139,
+                                  transform: "scale(0.5)",
+                                  transformOrigin: "center",
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <Heart
+                              color={isWishlisted ? "#FF0000" : "#000"}
+                              fill={isWishlisted ? "#FF0000" : "none"}
+                              size={20}
+                              strokeWidth={2}
+                            />
+                          )}
+                        </button>
+
+                        <div className="qucick_dv">
+                          <span
+                            className="quick-view_pd"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setQuickViewProduct(item);
+                              setShowModal(true);
+                            }}
+                          >
+                            Quick View &nbsp;
+                            <Expand
+                              color="#000000"
+                              size={15}
+                              strokeWidth={1.25}
+                            />
+                          </span>
+                        </div>
+                      </div>
+                      <p className="custom-product-title">{item.name}</p>
+                      <p className="custom-product-price">
+                        ₹{item.selling_price}
+                        {item.mrp && item.mrp !== item.selling_price && (
+                          <>
+                            <span className="custom-old-price">
+                              ₹{item.mrp}
+                            </span>
+                            <span className="custom-discount">
+                              (-{item.discount_percent}%)
+                            </span>
+                          </>
+                        )}
+                      </p>
+                    </div>
+                  );
+                })
               )}
-            </p>
-          </div>
-        );
-      })
-    )}
-  </div>
-)}
-
-</main>
-
+            </div>
+          )}
+        </main>
 
         <ProductQuickViewModal
           show={showModal}

@@ -20,10 +20,10 @@ export const filterCarpet = createAsyncThunk(
   async (filters, { rejectWithValue }) => {
     try {
       const response = await API.get(
-        `/carpet-finder/floor-covering?room_filter=${filters.room_filter}&size_filter=${filters.size_filter}&color_filter=${filters.color_filter}&pattern_filter=${filters.pattern_filter}`
+        `/carpet-finder/room_filter=${filters.room_filter}&size_filter=${filters.size_filter}&color_filter=${filters.color_filter}&pattern_filter=${filters.pattern_filter}`
       );
 
-      return response.data;
+      return response.data?.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -35,6 +35,7 @@ const carpetFinderSlice = createSlice({
   initialState: {
     data: null,
     filteredData: null,
+    filters:{},
     loading: false,
     filterLoading: false,
     error: null,
@@ -65,7 +66,8 @@ const carpetFinderSlice = createSlice({
       })
       .addCase(filterCarpet.fulfilled, (state, action) => {
         state.filterLoading = false;
-        state.filteredData = action.payload;
+        state.filteredData = action.payload.products;
+        state.filters = action.payload.filters.product_filter || {};
       })
       .addCase(filterCarpet.rejected, (state, action) => {
         state.filterLoading = false;

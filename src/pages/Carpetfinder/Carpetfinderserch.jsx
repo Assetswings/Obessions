@@ -19,45 +19,33 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
 import { fetchProducts } from "../Products/productsSlice";
 import { filterCarpet } from "./carpetFinderSlice";
+import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 
 const Carpetfinderserch = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
- 
-  const wishlist = useSelector((state) => state.wishlist);
+
   const [selectedFilters, setSelectedFilters] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [animatedWish, setAnimatedWish] = useState(null);
-   const filtercarpetdata = location.state;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const filtercarpetdata = location.state;
 
-  const { filteredData, loading, error } = useSelector((state) => state.carpetFinder);
-
+  const { filteredData, filters, loading, error } = useSelector(
+    (state) => state.carpetFinder
+  );
   useEffect(() => {
-    if(filtercarpetdata){
+    if (filtercarpetdata) {
       dispatch(filterCarpet(filtercarpetdata));
     }
   }, [dispatch]);
-
-  //     useEffect(() => {
-  //     if (category) {
-  //       dispatch(
-  //         fetchProducts({
-  //           category,
-  //           subcategory,
-  //           page: 1,
-  //           limit: 20,
-  //           filters: selectedFilters,
-  //         })
-  //       );
-  //     }
-  //   }, [selectedFilters]);
-
   useEffect(() => {
-    dispatch(fetchWishlist());
-  }, [dispatch]);
-
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
       const current = prev[filterKey] || [];
@@ -70,15 +58,16 @@ const Carpetfinderserch = () => {
 
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
-    const isInWishlist = wishlist.productIds.includes(product.id);
-    console.log("prodcut______page--->", product);
+    if (!isLoggedIn) {
+      setShowLoginPrompt(true);
+      return;
+    }
+    const isInWishlist = product.is_wishlisted;
     try {
       if (isInWishlist) {
-        const wishlistItem = wishlist.items.find(
-          (item) => item.product_id === product.id
-        );
-        if (wishlistItem?.id) {
-          await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
+        const wishlistItem = product.wishlist[0].wishlist_id;
+        if (wishlistItem) {
+          await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
             style: {
               border: "1px solid #713200",
@@ -89,8 +78,14 @@ const Carpetfinderserch = () => {
               primary: "#713200",
               secondary: "#FFFAEE",
             },
+            hideProgressBar: true,
+            closeButton: true,
+            icon: true,
           });
-          dispatch(fetchWishlist());
+          // dispatch(
+          //   fetchProducts({ category, subcategory, page: 1, limit: 20 })
+          // );
+          dispatch(filterCarpet(filtercarpetdata));
         }
       } else {
         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
@@ -104,22 +99,18 @@ const Carpetfinderserch = () => {
             primary: "#713200",
             secondary: "#FFFAEE",
           },
+          hideProgressBar: true,
+          closeButton: true,
+          icon: true,
         });
         setAnimatedWish(product.id);
-        dispatch(fetchWishlist());
+        dispatch(filterCarpet(filtercarpetdata));
         setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {
       toast.error("Something went wrong");
     }
   };
-
-  //    const formatTitle = (text) =>
-  //     text
-  //       .replace(/-/g, " ")
-  //       .split(" ")
-  //       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-  //       .join(" ");
 
   const renderFilterGroup = (title, options, key) => (
     <div className="custom-filter-group" key={key}>
@@ -169,7 +160,12 @@ const Carpetfinderserch = () => {
               </div>
             ))}
           </>
-        ) : null}
+        ) : (
+          filters &&
+          Object.entries(filters).map(([filterKey, values]) =>
+            renderFilterGroup(filterKey?.replace(/_/g, " "), values, filterKey)
+          )
+        )}
       </aside>
 
       <main className="custom-product-list">
@@ -188,8 +184,8 @@ const Carpetfinderserch = () => {
                   </p>
                 </div>
               ))
-            : filteredData?.data?.products?.map((item) => {
-                const isWishlisted = wishlist.productIds.includes(item.id);
+            : filteredData?.map((item) => {
+                const isWishlisted = item.is_wishlisted;
                 return (
                   <div
                     key={item.id}
@@ -208,7 +204,7 @@ const Carpetfinderserch = () => {
                     style={{ cursor: "pointer" }}
                   >
                     <div className="custom-product-image">
-                      <img src={item.media} alt={item.name} />
+                      <img src={item.media_list?.main?.file} alt={item.name} />
 
                       {/* wishliat_track */}
                       <button
@@ -283,6 +279,11 @@ const Carpetfinderserch = () => {
               })}
         </div>
       </main>
+
+      {/* login modal */}
+      {showLoginPrompt && (
+        <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
+      )}
 
       <ProductQuickViewModal
         show={showModal}

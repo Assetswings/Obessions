@@ -7,7 +7,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProductQuickViewModal from "../Products/ProductQuickViewModal";
-import {addToWishlist,fetchWishlist,removeFromWishlist} from "../../components/Wishtlist/WishlistSlice";
+import {
+  addToWishlist,
+  fetchWishlist,
+  removeFromWishlist,
+} from "../../components/Wishtlist/WishlistSlice";
 import { toast } from "react-hot-toast";
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
@@ -20,10 +24,21 @@ const Otherpage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname.split("/").filter(Boolean).pop();
-  const slug = path == "new-arrivals" ? 'new-arrivals' : path == "bestseller" ? 'bestsellers' : path == 'offer-spot' ? 'offer-spots' : "" ;
-  
-  const {data: otherproduct,filters,loading,} = useSelector((state) => state.otherproduct);
-  const wishlist = useSelector((state) => state.wishlist);
+  const slug =
+    path == "new-arrivals"
+      ? "new-arrivals"
+      : path == "bestseller"
+      ? "bestsellers"
+      : path == "offer-spot"
+      ? "offer-spots"
+      : "";
+
+  const {
+    data: otherproduct,
+    filters,
+    loading,
+  } = useSelector((state) => state.otherproduct);
+  // const wishlist = useSelector((state) => state.wishlist);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -33,7 +48,7 @@ const Otherpage = () => {
   const { items } = useSelector((state) => state.toppick);
 
   useEffect(() => {
-    dispatch(fetchTopPicks()); 
+    dispatch(fetchTopPicks());
   }, [dispatch]);
 
   useEffect(() => {
@@ -43,18 +58,13 @@ const Otherpage = () => {
 
   useEffect(() => {
     if (slug) {
-      dispatch(fetchOtherProducts({
-        slug,
-        page: 1,
-        limit: 20,
-        filters: selectedFilters,
-      }));
+      dispatch( fetchOtherProducts({slug,page: 1,limit: 20,filters: selectedFilters}));
     }
   }, [dispatch, slug, selectedFilters]);
 
-  useEffect(() => {
-    dispatch(fetchWishlist());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchWishlist());
+  // }, [dispatch]);
 
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
@@ -72,15 +82,12 @@ const Otherpage = () => {
       setShowLoginPrompt(true);
       return;
     }
-
-    const isInWishlist = wishlist.productIds.includes(product.id);
+    const isInWishlist = product.is_wishlisted;
     try {
       if (isInWishlist) {
-        const wishlistItem = wishlist.items.find(
-          (item) => item.product_id === product.id
-        );
-        if (wishlistItem?.id) {
-          await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
+        const wishlistItem = product.wishlist[0].wishlist_id;
+        if (wishlistItem) {
+          await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
             style: {
               border: "1px solid #713200",
@@ -91,8 +98,11 @@ const Otherpage = () => {
               primary: "#713200",
               secondary: "#FFFAEE",
             },
+            hideProgressBar: true,
+            closeButton: true,
+            icon: true,
           });
-          dispatch(fetchWishlist());
+          dispatch( fetchOtherProducts({slug,page: 1,limit: 20,filters: selectedFilters}));
         }
       } else {
         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
@@ -106,9 +116,12 @@ const Otherpage = () => {
             primary: "#713200",
             secondary: "#FFFAEE",
           },
+          hideProgressBar: true,
+          closeButton: true,
+          icon: true,
         });
         setAnimatedWish(product.id);
-        dispatch(fetchWishlist());
+        dispatch( fetchOtherProducts({slug,page: 1,limit: 20,filters: selectedFilters}));
         setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {
@@ -116,8 +129,12 @@ const Otherpage = () => {
     }
   };
 
-  const formatTitle = (text) => text.replace(/-/g, " ").split(" ")
-  .map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+  const formatTitle = (text) =>
+    text
+      .replace(/-/g, " ")
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
 
   const renderFilterGroup = (title, options, key) => (
     <div className="custom-filter-group" key={key}>
@@ -139,9 +156,7 @@ const Otherpage = () => {
     <>
       <div className="custom-products-page">
         <aside className="custom-filters">
-          <h2 className="title_prd_roots">
-            {slug ? formatTitle(slug) : ""}
-          </h2>
+          <h2 className="title_prd_roots">{slug ? formatTitle(slug) : ""}</h2>
           <div className="root_devider_flt">
             <h2>Filters</h2>
             <p className="clr-all" onClick={() => setSelectedFilters({})}>
@@ -171,7 +186,11 @@ const Otherpage = () => {
           ) : (
             filters &&
             Object.entries(filters).map(([filterKey, values]) =>
-              renderFilterGroup(filterKey?.replace(/_/g, " "), values, filterKey)
+              renderFilterGroup(
+                filterKey?.replace(/_/g, " "),
+                values,
+                filterKey
+              )
             )
           )}
         </aside>
@@ -193,7 +212,7 @@ const Otherpage = () => {
                   </div>
                 ))
               : otherproduct.map((item) => {
-                  const isWishlisted = wishlist.productIds.includes(item.id);
+                  const isWishlisted = item.is_wishlisted;
                   return (
                     <div
                       key={item.id}
@@ -212,7 +231,7 @@ const Otherpage = () => {
                       style={{ cursor: "pointer" }}
                     >
                       <div className="custom-product-image">
-                        <img src={item.media} alt={item.name} />
+                        <img src={item.media_list?.main?.file} alt={item.name} />
 
                         {/* wishliat_track */}
                         <button

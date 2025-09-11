@@ -54,14 +54,12 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   }, [dispatch, actionurl]);
   // Set image when data loads
   useEffect(() => {
-    // if (data?.product_images?.length > 0) {
-    //   setSelectedImage(data.product_images[0].media);
-    //   setLocalLoading(false);
-    // }
     if (data?.product_sizes.length > 0) {
       setSelectedSize(data?.product_sizes[0]);
-      setSelectedColor(data.product_sizes[0].product_colors[0]);
-      setSelectedImage(data?.product_sizes[0].product_colors[0].product_media[0]?.media);
+      setSelectedColor(data?.product_sizes[0].product_colors[0]);
+      setSelectedImage(
+        data?.product_sizes[0].product_colors[0].product_media[0]?.media
+      );
       setLocalLoading(false);
     }
   }, [data]);
@@ -224,13 +222,13 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   };
 
   const selectionColor = (color) => {
-    setSelectedColor(color);
-    setLocalLoading(true);
-    setSelectedImage(null);
-    setSelectedSize(null);
-    dispatch(clearProductDetail());
-    dispatch(fetchProductDetail(color.action_url));
-  }
+    // setSelectedColor(color);
+    setSelectedImage(color?.product_media[0]?.media);
+  };
+  const sizeSelection = (size) => {
+    setSelectedColor(size?.product_colors[0]);
+    setSelectedImage(size?.product_colors[0]?.product_media[0]?.media);
+  };
   return (
     <>
       <ToastContainer
@@ -368,7 +366,10 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                             className={`size-btn ${
                               selectedSize?.id === size.id ? "active-size" : ""
                             }`}
-                            onClick={() => {setSelectedSize(size); selectionColor(size)}}
+                            onClick={() => {
+                              setSelectedSize(size);
+                              sizeSelection(size);
+                            }}
                           >
                             <div className="set_btn_trcak">
                               <img
@@ -402,11 +403,15 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     </div>
                     <div className="color-options">
                       {selectedSize?.product_colors?.map((color, idx) => (
-                        <div className={`selected-color ${
+                        <div
+                          className={`selected-color ${
                             selectedColor?.id === color.id ? "active-size" : ""
                           }`}
                           key={idx}
-                          onClick={() => selectionColor(color)}
+                          onClick={() => {
+                            setSelectedColor(color);
+                            selectionColor(color);
+                          }}
                         >
                           <div className="color-circle">
                             <img

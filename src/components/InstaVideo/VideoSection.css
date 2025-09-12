@@ -37,6 +37,7 @@
 .video-slider-wrapper {
   position: relative;
   margin-top: 30px;
+  padding-bottom: 35px;
 }
 
 .video-slider {
@@ -123,4 +124,15 @@
 .button_box img {
   width: 28px;
   height: 28px;
+}
+
+
+@media (max-width: 480px) {
+  .txt_sub_video_tag{
+  font-size: 15px;
+  width: 90%;
+  }
+  .video-heading{
+    font-size: 2rem;
+  }
 }

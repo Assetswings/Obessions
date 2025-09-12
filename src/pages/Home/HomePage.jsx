@@ -30,6 +30,7 @@ import shopThumb5 from "../../assets/images/shopthump.png";
 import shopThumb6 from "../../assets/images/shopthump.png";
 import Tableimage from "../../assets/images/Kitchen1.png";
 
+
 //image for floorsection
 import FloorDesign1 from "../../assets/images/FloorDesign1.png";
 import FloorDesign2 from "../../assets/images/FloorDesign2.png";
@@ -42,7 +43,7 @@ import FloorDesign6 from "../../assets/images/FloorDesign6.png";
 import videoimage from "../../assets/images/videoimage.png";
 import { Search } from "lucide-react";
 
-const shopByItems = [
+  const shopByItems = [
   {
     label: "Design",
     thumbs: [shopThumb1, shopThumb2, shopThumb3],
@@ -64,7 +65,7 @@ const shopByItems = [
   },
 ];
 
-const floatingImages = [
+  const floatingImages = [
   { id: 1, src: FloorDesign1, className: "imgf1" },
   { id: 2, src: FloorDesign2, className: "imgf2" },
   { id: 3, src: FloorDesign3, className: "imgf3" },
@@ -301,10 +302,10 @@ const HomePage = () => {
           {renderImages(nextSet, "fade-out")}
         </div>
         {/* 
-  {renderImages(currentSet, "fade-in")}
-{renderImages(nextSet, "fade-out")} */}
+   {renderImages(currentSet, "fade-in")}
+   {renderImages(nextSet, "fade-out")} */}
 
-        <ul className="list-unstyled position-absolute category-list text-uppercase small">
+        <ul className="list-unstyled position-absolute category-list text-uppercase">
           {data?.hero_banner_categories?.map((item) => (
             <li
               key={item.id}
@@ -314,6 +315,7 @@ const HomePage = () => {
             </li>
           ))}
         </ul>
+        
         {/* Description */}
         <div className="position-absolute description text-secondary">
           <p>
@@ -382,6 +384,8 @@ const HomePage = () => {
             </>
           )}
         </div>
+
+        
         {/* Overlay */}
         {isSearchActive && (
           <div
@@ -481,8 +485,7 @@ const HomePage = () => {
               {/* VIEW tag */}
               <span
                 className="view-tag"
-                onClick={() => handelcollectionDetails(item.url)}
-              >
+                onClick={() => handelcollectionDetails(item.url)}>
                 View
               </span>
             </li>
@@ -598,7 +601,7 @@ const HomePage = () => {
                 navigate("/products", { state: { category: item.url } })
               }
             >
-              <img src={item.src} alt={item.title} />
+              <img className="img_right_now" src={item.src} alt={item.title} />
               <p>{item.title}</p>
             </div>
           ))}
@@ -610,7 +613,7 @@ const HomePage = () => {
       </section>
 
       {/* ────────────────── 🥀💎💎 🐉 OUR OBSESSIONS BY SECTION 🐉 💎💎🥀 ────────────────── */}
-      <section className="obsession-section">
+    <section className="obsession-section">
         <h2 className="obsession-title">OUR OBSESSIONS</h2>
         <div className="obsession-content">
           <div className="obsession-image">
@@ -648,7 +651,6 @@ const HomePage = () => {
 
       {/* Footer setction  */}
       <Footer />
-
       <ProductQuickViewModal
         show={showModal}
         onHide={() => setShowModal(false)}

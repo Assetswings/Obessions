@@ -30,7 +30,7 @@ const VideoSection = () => {
     }
   };
 
-  return (
+    return (
     <section className="video-section">
       <div className="video-header">
         <h2 className="video-heading">

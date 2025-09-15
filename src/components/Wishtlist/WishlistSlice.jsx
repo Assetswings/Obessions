@@ -6,8 +6,8 @@ export const addToWishlist = createAsyncThunk(
   'wishlist/addToWishlist',
   async ({ product_id }, { rejectWithValue }) => {
     try {
-      await API.post('/wishlist/add-to-wishlist', { product_id });
-      return { product_id };
+       const response= await API.post('/wishlist/add-to-wishlist', { product_id });
+      return response.data.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message || 'Failed to add to wishlist');
     }

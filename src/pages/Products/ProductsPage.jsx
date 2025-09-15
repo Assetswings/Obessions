@@ -27,8 +27,7 @@ const ProductsPage = () => {
   const subcategory = location.state?.subcategory;
 
   // const { data: products,filters,loading} = useSelector((state) => state.products);
-  const { data, filters, loading } = useSelector((state) => state.products);
-  const products = Array.isArray(data) ? data : [];
+  const [products, setProducts] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -37,8 +36,12 @@ const ProductsPage = () => {
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { items } = useSelector((state) => state.toppick);
 
-  console.log("product>>>>>", products);
-  console.log("filter>>>>>", filters);
+  const { data, filters, loading } = useSelector((state) => state.products);
+
+  useEffect(() => {
+    setProducts(Array.isArray(data) ? data : []);
+  }, [data]);
+  // const products = Array.isArray(data) ? data : [];
 
   useEffect(() => {
     dispatch(fetchTopPicks()); //
@@ -85,6 +88,7 @@ const ProductsPage = () => {
       setShowLoginPrompt(true);
       return;
     }
+    
     const isInWishlist = product.is_wishlisted;
     try {
       if (isInWishlist) {
@@ -105,12 +109,17 @@ const ProductsPage = () => {
             closeButton: true,
             icon: true,
           });
-          dispatch(
-            fetchProducts({ category, subcategory, page: 1, limit: 20 })
+          setProducts((prev) =>
+            prev.map((p) =>
+              p.id === product.id
+                ? { ...p, is_wishlisted: false, wishlist: [] }
+                : p
+            )
           );
         }
       } else {
-        await dispatch(addToWishlist({ product_id: product.id })).unwrap();
+        // addToWishlist thunk should return the new wishlist item(s)
+        const addedWishlistItem = await dispatch(addToWishlist({ product_id: product.id })).unwrap();
         toast.success("Added to wishlist", {
           style: {
             border: "1px solid #713200",
@@ -126,7 +135,25 @@ const ProductsPage = () => {
           icon: true,
         });
         setAnimatedWish(product.id);
-        dispatch(fetchProducts({ category, subcategory, page: 1, limit: 20 }));
+
+        // If your API returns the whole wishlist array:
+        const wishlist = Array.isArray(addedWishlistItem)
+          ? addedWishlistItem.find((w) => w.product_id === product.id)
+          : addedWishlistItem;
+
+        // Update local state immutably
+        setProducts((prev) =>
+          prev.map((p) =>
+            p.id === product.id
+              ? {
+                  ...p,
+                  is_wishlisted: true,
+                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+                }
+              : p
+          )
+        );
+
         setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {

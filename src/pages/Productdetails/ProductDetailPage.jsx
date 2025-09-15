@@ -30,7 +30,9 @@ const ProductDetailPage = () => {
   const [animatedWish, setAnimatedWish] = useState(null);
   const [pincode, setPincode] = useState("");
   const [pincodeChecked, setPincodeChecked] = useState(false);
-
+  const [productDetails, setProductsDetails] = useState([]);
+  const [similarStyle, setSimilarStyle] = useState([]);
+  const [matchingFound, setMatchingFound] = useState([]);
   const dispatch = useDispatch();
   const sectionsRef = useRef({});
   const location = useLocation();
@@ -62,6 +64,9 @@ const ProductDetailPage = () => {
 
   // Set image when data loads
   useEffect(() => {
+    setProductsDetails(data);
+    setSimilarStyle(data?.discover_similar_styles?.slice(0, 10));
+    setMatchingFound(data?.dont_miss_these_matching_finds?.slice(0, 10));
     if (data?.product_sizes.length > 0) {
       setSelectedSize(data?.product_sizes[0]);
       setSelectedColor(data?.product_sizes[0].product_colors[0]);
@@ -69,6 +74,11 @@ const ProductDetailPage = () => {
         data?.product_sizes[0].product_colors[0].product_media[0]?.media
       );
       setLocalLoading(false);
+      setAnimatedWish(
+        data?.product_sizes[0]?.is_wishlisted
+          ? data?.product_sizes[0]?.id
+          : null
+      );
     }
   }, [data]);
 
@@ -85,10 +95,10 @@ const ProductDetailPage = () => {
       { threshold: 0.4 }
     );
     Object.values(sectionsRef.current).forEach((section) =>
-    observer.observe(section)
+      observer.observe(section)
     );
     return () => observer.disconnect();
-    }, []);
+  }, []);
 
   // add To cart
   // const handleAddToCart = () => {
@@ -201,7 +211,12 @@ const ProductDetailPage = () => {
               secondary: "#FFFAEE",
             },
           });
-          dispatch(fetchWishlist());
+          // dispatch(fetchWishlist());
+          setSelectedSize((prev) =>
+            prev.id === product.id
+              ? { ...prev, is_wishlisted: 0, wishlist: [] }
+              : prev
+          );
         }
       } else {
         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
@@ -217,7 +232,11 @@ const ProductDetailPage = () => {
           },
         });
         setAnimatedWish(product.id);
-        dispatch(fetchWishlist());
+        setSelectedSize((prev) =>
+          prev.id === product.id
+            ? { ...prev, is_wishlisted: 1, wishlist: [{ wishlist_id: wishlist.id }] }
+            : prev
+        );
         setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {
@@ -225,6 +244,111 @@ const ProductDetailPage = () => {
     }
   };
 
+  const toggleWishlistReleted = async (e, product, key) => {
+    e.stopPropagation();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
+    const isInWishlist = product.is_wishlisted;
+    try {
+      if (isInWishlist) {
+        const wishlistItem = product.wishlist[0].wishlist_id;
+        if (wishlistItem) {
+          await dispatch(removeFromWishlist(wishlistItem)).unwrap();
+          toast.success("Removed from wishlist", {
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+            iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+            hideProgressBar: true,
+            closeButton: true,
+            icon: true,
+          });
+          if (key === "smiliarstyle") {
+            setSimilarStyle((prev) =>
+              prev.map((p) =>
+                p.id === product.id
+                  ? { ...p, is_wishlisted: false, wishlist: [] }
+                  : p
+              )
+            );
+          } else {
+            setMatchingFound((prev) =>
+              prev.map((p) =>
+                p.id === product.id
+                  ? { ...p, is_wishlisted: false, wishlist: [] }
+                  : p
+              )
+            );
+          }
+        }
+      } else {
+        // addToWishlist thunk should return the new wishlist item(s)
+        const addedWishlistItem = await dispatch(
+          addToWishlist({ product_id: product.id })
+        ).unwrap();
+        toast.success("Added to wishlist", {
+          style: {
+            border: "1px solid #713200",
+            padding: "16px",
+            color: "#713200",
+          },
+          iconTheme: {
+            primary: "#713200",
+            secondary: "#FFFAEE",
+          },
+          hideProgressBar: true,
+          closeButton: true,
+          icon: true,
+        });
+        setAnimatedWish(product.id);
+
+        // If your API returns the whole wishlist array:
+        const wishlist = Array.isArray(addedWishlistItem)
+          ? addedWishlistItem.find((w) => w.product_id === product.id)
+          : addedWishlistItem;
+
+        // Update local state immutably
+        if (key === "smiliarstyle") {
+          setSimilarStyle((prev) =>
+            prev.map((p) =>
+              p.id === product.id
+                ? {
+                    ...p,
+                    is_wishlisted: true,
+                    wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+                  }
+                : p
+            )
+          );
+        } else {
+          setMatchingFound((prev) =>
+            prev.map((p) =>
+              p.id === product.id
+                ? {
+                    ...p,
+                    is_wishlisted: true,
+                    wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+                  }
+                : p
+            )
+          );
+        }
+
+        setTimeout(() => setAnimatedWish(null), 1500);
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
+  };
   useEffect(() => {
     dispatch(fetchWishlist());
   }, [dispatch]);
@@ -254,14 +378,14 @@ const ProductDetailPage = () => {
     setSelectedColor(size?.product_colors[0]);
     setSelectedImage(size?.product_colors[0]?.product_media[0]?.media);
   };
- 
+
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">
-        <div
+          <div
             className="image_track"
             style={{ width: "100%", minHeight: "750px" }}
           >
@@ -287,10 +411,11 @@ const ProductDetailPage = () => {
                 }}
               />
             )}
-        </div>
+          </div>
           <div
             className="image_track_mobile"
-            style={{ width: "100%", minHeight: "250px" }}>
+            style={{ width: "100%", minHeight: "250px" }}
+          >
             {loading || !selectedImage ? (
               <div style={{ width: "100%", height: "100%" }}>
                 <Skeleton
@@ -344,7 +469,7 @@ const ProductDetailPage = () => {
         {/* Product Info */}
         <div className="product-info">
           <h1 className="title_details">
-            {loading ? <Skeleton width={200} /> : data?.name}
+            {loading ? <Skeleton width={200} /> : selectedSize?.name}
           </h1>
 
           <p className="price_details">
@@ -353,7 +478,7 @@ const ProductDetailPage = () => {
             ) : (
               <>
                 ₹{currentPrice}{" "}
-                {data?.mrp && (
+                {selectedSize?.mrp && (
                   <span className="sub-1">
                     <del>₹{selectedSize?.mrp}</del> &nbsp;
                     <span className="dis-sub">
@@ -366,7 +491,7 @@ const ProductDetailPage = () => {
             )}
           </p>
           <p className="id_tracker">
-            {loading ? <Skeleton width={100} /> : `SKU: ${data?.sku}`}
+            {loading ? <Skeleton width={100} /> : `SKU: ${selectedSize?.sku}`}
           </p>
 
           {/* Size Selector */}
@@ -385,7 +510,7 @@ const ProductDetailPage = () => {
                 </div>
               </>
             ) : (
-                 data?.product_sizes?.length > 0 && (
+              data?.product_sizes?.length > 0 && (
                 <>
                   <p className="selected-size-label">
                     CHOOSE A SIZE:
@@ -402,10 +527,10 @@ const ProductDetailPage = () => {
                         onClick={() => {
                           setSelectedSize(size);
                           sizeSelection(size);
-                        }
-                        }>
-                            <div className="set_btn_trcak">
-                            <img
+                        }}
+                      >
+                        <div className="set_btn_trcak">
+                          <img
                             src="https://i.ibb.co/x86bSjV6/Frame-7.png"
                             className="size-image"
                             alt={size.size}
@@ -514,8 +639,11 @@ const ProductDetailPage = () => {
             <button className="add-to-cart-btn" onClick={handleAddToCart}>
               ADD TO CART
             </button>
-            <div className="wst_box" onClick={(e) => toggleWishlist(e, data)}>
-              {animatedWish === data?.id ? (
+            <div
+              className="wst_box"
+              onClick={(e) => toggleWishlist(e, selectedSize)}
+            >
+              {selectedSize?.is_wishlisted == 1 ? (
                 <Player
                   autoplay
                   keepLastFrame
@@ -525,8 +653,8 @@ const ProductDetailPage = () => {
               ) : (
                 <Heart
                   size={27}
-                  color={data?.is_wishlisted ? "#FF0000" : "#000"}
-                  fill={data?.is_wishlisted ? "#FF0000" : "none"}
+                  color={selectedSize?.is_wishlisted ? "#FF0000" : "#000"}
+                  fill={selectedSize?.is_wishlisted ? "#FF0000" : "none"}
                 />
               )}
             </div>
@@ -599,8 +727,8 @@ const ProductDetailPage = () => {
           </div>
         ) : (
           <div className="product-grid">
-            {data?.discover_similar_styles?.slice(0, 10).map((item) => {
-              const isWishlisted = wishlist.productIds.includes(item.id);
+            {similarStyle?.map((item) => {
+              const isWishlisted = item.is_wishlisted;
 
               return (
                 <div
@@ -612,7 +740,7 @@ const ProductDetailPage = () => {
                     <img src={item?.media_list?.main?.file} alt={item.name} />
                     <button
                       className="wishlist-btn_products"
-                      onClick={(e) => toggleWishlist(e, item)}
+                      onClick={(e) => toggleWishlistReleted(e, item, "smiliarstyle")}
                     >
                       {animatedWish === item.id ? (
                         <div
@@ -681,8 +809,8 @@ const ProductDetailPage = () => {
           </div>
         ) : (
           <div className="product-grid">
-            {data?.dont_miss_these_matching_finds?.slice(0, 10).map((item) => {
-              const isWishlisted = wishlist.productIds.includes(item.id);
+            {matchingFound?.map((item) => {
+              const isWishlisted = item.is_wishlisted;
               return (
                 <div
                   className="product-card-dtl"
@@ -693,9 +821,9 @@ const ProductDetailPage = () => {
                     <img src={item?.media_list?.main?.file} alt={item.name} />
                     <button
                       className="wishlist-btn_products"
-                      onClick={(e) => toggleWishlist(e, item)}
+                      onClick={(e) => toggleWishlistReleted(e, item, "matchingfound")}
                     >
-                      {animatedWish === item.id ? (
+                      {item.is_wishlisted ? (
                         <div
                           style={{
                             width: 20,

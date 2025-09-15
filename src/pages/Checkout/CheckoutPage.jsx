@@ -197,6 +197,9 @@ const CheckoutPage = () => {
       <div className="root-title-chk">
         <h2 className="title_chk">Checkout</h2>
       </div>
+      <div className="cart_mlb"> 
+    <span className="txt_mlb_my"> Checkout</span>
+  </div>
       <div className="checkout-container_chk">
         <div className="checkout-right_ck">
           {checkoutData?.data?.items.map((item) => (
@@ -237,7 +240,6 @@ const CheckoutPage = () => {
 
         <div className="checkout-left_ck">
           <div className="section">
-            {/* calculation */}
             <div className="price-summary">
               <div className="trackvel">
                 <div className="txt_title_cal">TOTAL MRP</div>
@@ -429,7 +431,10 @@ const CheckoutPage = () => {
           <div className="side-modal">
             <button
               className="close-btn"
-              onClick={() => {setShowAddAddressModal(false); setErrors({});} }
+              onClick={() => {
+                setShowAddAddressModal(false);
+                setErrors({});
+              }}
             >
               <IoMdClose />
             </button>
@@ -466,7 +471,9 @@ const CheckoutPage = () => {
                   onChange={handleNewAddressChange}
                   required
                 />
-                {errors.first_name && <p className="error">{errors.first_name}</p>}
+                {errors.first_name && (
+                  <p className="error">{errors.first_name}</p>
+                )}
               </label>
 
               <label>
@@ -477,7 +484,9 @@ const CheckoutPage = () => {
                   onChange={handleNewAddressChange}
                   required
                 />
-                {errors.last_name && <p className="error">{errors.last_name}</p>}
+                {errors.last_name && (
+                  <p className="error">{errors.last_name}</p>
+                )}
               </label>
               <label>
                 Mobile Number
@@ -553,7 +562,6 @@ const CheckoutPage = () => {
           </div>
         </div>
       )}
-
       <Footer />
     </>
   );

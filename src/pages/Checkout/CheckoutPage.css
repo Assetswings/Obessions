@@ -230,7 +230,7 @@ root_promo_sector {
 
 .root-title-chk {
   margin-top: 40px;
-  margin-left: 100px;
+  /* margin-left: 100px; */
 }
 .add_ads {
   font-size: 14px;
@@ -329,4 +329,35 @@ font-size: 15px;
   .price {
     margin: 0;
   }
+}
+
+@media (max-width: 480px) {
+  .checkout-right_ck
+ {
+  padding: 1.5rem;
+  /* border-radius: 8px; */
+  /* padding-left: 69px; */
+  border-right: 0px solid #cacfd2;
+  padding-top: 0px !important;
+}
+.checkout-container_chk {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+  font-family: sans-serif;
+  color: #222;
+  padding-top: 0px;
+  gap:0px;
+  padding-bottom: 90px;
+}
+
+.checkout-left_ck, .checkout-right_ck {
+  flex: 1 1;
+  min-width: 300px; 
+  padding: 0.5rem;
+}
+.price-summary
+ {
+  margin-top: -10px !important;
+}
 }

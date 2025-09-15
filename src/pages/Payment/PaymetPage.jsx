@@ -120,12 +120,14 @@ import razorpay from "../../assets/images/Razorpay.png";
       console.error("Payment error:", err);
     }
   };
-
   return (
     <>
       <div className="root-title-chk">
         <h2 className="title_chk">Payment</h2>
       </div>
+      <div className="cart_mlb"> 
+    <span className="txt_mlb_my"> Payment</span>
+  </div>
          <div className="checkout-container_chk">
         <div className="checkout-right_ck">
           {checkoutData?.data?.items.map((item) => (

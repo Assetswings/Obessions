@@ -51,7 +51,7 @@ const CartPage = () => {
         icon: true,
       });
 
-      lastErrorRef.current = error; // ✅ remember last error
+      lastErrorRef.current = error; 
     }
   }, [error]);
 
@@ -92,15 +92,18 @@ const CartPage = () => {
     <>
     <ToastContainer position="top-right" autoClose={3000} />
       <div className="root-title-chk">
-        <h2 className="title_chk">My Cart</h2>
+        <span className="title_chk">My Cart </span>
       </div>
 
+  <div className="cart_mlb"> 
+    <span className="txt_mlb_my"> My Cart {`(2)`}</span>
+  </div>
       <div className="cart-container">
         <div className="cart-left">
           {items.length === 0 ? (
             <div className="empty-cart">
               <img
-                src={blankcart} // ✅ replace with your rug+box image path
+                src={blankcart} 
                 alt="Empty cart"
                 className="empty-cart-image"
               />
@@ -131,7 +134,7 @@ const CartPage = () => {
 
                 <div className="item-details">
                   <h4 className="item-title">{item.product?.name}</h4>
-                  <p className="price_details">
+                  <span className="price_details_cart">
                     ₹{item.product?.selling_price}
                     <span className="sub-1">
                       <del>₹{item.product?.mrp}</del> &nbsp;
@@ -139,13 +142,16 @@ const CartPage = () => {
                         (-{item.product?.discount}%)
                       </span>
                     </span>
-                  </p>
+                  </span>
+                  <p> size  : <span>{item.product?.size}</span> </p>
+                  <p> color : <span> {item.product?.color}</span> </p>
 
                   <div className="root_qtn_cart">
                     <div className="subroot_sector_qtn">
                       <div>
                         <p>Quantity:</p>
                       </div>
+                       
                       <div className="quantity">
                         <button
                           className="tracker-btn"
@@ -192,6 +198,25 @@ const CartPage = () => {
                       </span>
                     </div>
                   </div>
+
+                  <div className="actions_mlb">
+                      <span
+                        style={{ color: "black", cursor: "pointer" }}
+                        onClick={() => handleRemoveItem(item.id)}
+                      >
+                        Remove
+                      </span>
+                      <span
+                        style={{
+                          marginLeft: "10px",
+                          cursor: "pointer",
+                          color: "black",
+                        }}
+                        onClick={() => handleMoveToWishlist(item)}
+                      >
+                        Move to Wishlist
+                      </span>
+                    </div>
                 </div>
               </div>
             ))
@@ -215,16 +240,15 @@ const CartPage = () => {
                   Privacy Policy
                 </a>
               </p>
-
-              <button onClick={handleCheckout} className="checkout">
+               <button onClick={handleCheckout} className="checkout">
                 CHECKOUT
-              </button>
+                </button>
               <button className="continue_shoping">CONTINUE SHOPPING</button>
             </div>
           </div>
         )}
       </div>
-      {items.length === 0 && (
+        {items.length === 0 && (
         <section className="top-picks-section">
           <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
           <div className="top-picks-grid">

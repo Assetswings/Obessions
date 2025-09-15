@@ -1,25 +1,57 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./MobileNav.css";
-import {
-  Heart,
-  CircleUser,
-  ShoppingCart,
-  ChevronRight,
-  ChevronLeft,
-  Plus,
-} from "lucide-react";
+import {Heart,CircleUser,ShoppingCart,ChevronRight,ChevronLeft,Plus,Minus,User,LogOut,} from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
 import mobilelogo from "../../assets/images/Logomobile.png";
+import { fetchMegamenuData } from "./megamenuSlice";
+import { useNavigate } from "react-router-dom";
+import WishlistModal from "../Wishtlist/WishlistModal";
+import LoginPromptModal from "../LoginModal/LoginPromptModal";
 
 const MobileNav = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("main");
   const [prevMenu, setPrevMenu] = useState(null);
-  const [direction, setDirection] = useState("forward"); // forward | back
+  const [direction, setDirection] = useState("forward");
+  const [currentSection, setCurrentSection] = useState(null); // selected section
+  const [openCategory, setOpenCategory] = useState(null); // expanded category
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showWishlist, setShowWishlist] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [showUserPopup, setShowUserPopup] = useState(false);
+  const userWrapperRef = useRef(null);
+  const dispatch = useDispatch();
+  const { data, loading, error } = useSelector((state) => state.megamenu);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (
+  //       userWrapperRef.current &&
+  //       !userWrapperRef.current.contains(event.target)
+  //     ) {
+  //       setShowUserPopup(false);
+  //     }
+  //   };
+
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => document.removeEventListener("mousedown", handleClickOutside);
+  // }, []);
+  useEffect(() => {
+    dispatch(fetchMegamenuData());
+  }, [dispatch]);
 
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
     setActiveMenu("main");
     setPrevMenu(null);
+    setCurrentSection(null);
+    setOpenCategory(null);
   };
 
   const navigateTo = (menu) => {
@@ -31,15 +63,21 @@ const MobileNav = () => {
 
   const goBack = () => {
     setDirection("back");
+
     if (activeMenu === "category") {
-      setPrevMenu("category");
       setActiveMenu("shop");
+      setCurrentSection(null);
+      setOpenCategory(null);
     } else if (activeMenu === "shop") {
-      setPrevMenu("shop");
       setActiveMenu("main");
     }
   };
 
+  const toggleCategory = (id) => {
+    setOpenCategory((prev) => (prev === id ? null : id));
+  };
+
+  // Disable scroll when drawer is open
   useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
@@ -64,6 +102,68 @@ const MobileNav = () => {
     };
   }, [isOpen]);
 
+  const handleSubcategoryClick = (categorySlug, subcategorySlug) => {
+    navigate("/products", {
+      state: {
+        category: categorySlug,
+        subcategory: subcategorySlug,
+      },
+    });
+    toggleDrawer();
+  };
+
+  const handelroute = (route) => {
+    navigate(route);
+  };
+
+  //  Wish List Modal
+  const handleWishlistClick = () => {
+    toggleDrawer();
+    if (isLoggedIn) {
+      setShowWishlist(true);
+    } else {
+      setShowLoginPrompt(true);
+    }
+  };
+
+  const handleWishlistClickHeader = () => {
+    if (isLoggedIn) {
+      setShowWishlist(true);
+    } else {
+      setShowLoginPrompt(true);
+    }
+  };
+
+  // User Accunt
+  const handleUserClick = () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    } else {
+      setShowUserPopup((prev) => !prev);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    setShowUserPopup(false);
+    alert("Logout successful");
+    navigate("/");
+  };
+
+  const handleProfile = () => {
+    setShowUserPopup(false);
+    navigate("/ProfilePage");
+  };
+
+  const handelAccountSidenav = () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    } else {
+      navigate("/ProfilePage");
+    }
+  };
+
   return (
     <>
       {/* Top bar */}
@@ -72,22 +172,27 @@ const MobileNav = () => {
           <span></span>
           <span></span>
         </div>
-        <div className="mobile_logo_track">
+        <div className="mobile_logo_track" onClick={() => handelroute("/")}>
           <img src={mobilelogo} width={120} alt="logo" />
         </div>
 
         <div className="icons">
           <CircleUser
+            ref={userWrapperRef}
             strokeWidth={1}
             color="#FFFFFF"
             size={25}
-            style={{ cursor: "pointer" }}
+            onClick={handleUserClick}
           />
-          <Heart strokeWidth={1} size={25} style={{ cursor: "pointer" }} />
+          <Heart
+            strokeWidth={1}
+            size={25}
+            onClick={handleWishlistClickHeader}
+          />
           <ShoppingCart
             strokeWidth={1}
             size={25}
-            style={{ cursor: "pointer" }}
+            onClick={() => handelroute("/cart")}
           />
         </div>
       </header>
@@ -107,140 +212,122 @@ const MobileNav = () => {
 
         <div className="menu-container">
           {/* Main Menu */}
-          <div
-            className={`menu ${activeMenu === "main" ? "active" : ""} ${
-              prevMenu === "main"
-                ? direction === "forward"
-                  ? "slide-left"
-                  : "slide-right"
-                : ""
-            }`}
-          >
+          <div className={`menu ${activeMenu === "main" ? "active" : ""}`}>
             <ul>
               <li onClick={() => navigateTo("shop")}>
                 <div className="iteam_main">
-                  <div> Shop </div>
+                  <div>Shop</div>
                   <div>
                     <ChevronRight />
                   </div>
                 </div>
               </li>
-              <li>New Arrivals</li>
-              <li>Best Sellers</li>
-              <li>Offers Spot</li>
-              <li>Floor Matcher</li>
+              <li onClick={() => handelroute("/new-arrivals")}>New Arrivals</li>
+              <li onClick={() => handelroute("/bestseller")}>Best Sellers</li>
+              <li onClick={() => handelroute("/offer-spot")}>Offers Spot</li>
+              <li onClick={() => handelroute("/carpet-finder")}>
+                Floor Matcher
+              </li>
             </ul>
             <ul>
-              <li>Wishlist</li>
-              <li>Cart</li>
-              <li>Account</li>
-            </ul>
-          </div>
-
-          {/* Shop Menu */}
-          <div
-            className={`menu ${activeMenu === "shop" ? "active" : ""} ${
-              prevMenu === "shop"
-                ? direction === "forward"
-                  ? "slide-left"
-                  : "slide-right"
-                : ""
-            }`}
-          >
-            <ul>
-              <li onClick={() => navigateTo("category")}>
-                <div className="iteam_main">
-                  <div> Category</div>
-                  <div>
-                    <ChevronRight />
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div className="iteam_main">
-                  <div>Room </div>
-                  <div>
-                    <ChevronRight />
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div className="iteam_main">
-                  <div>Lifestyle </div>
-                  <div>
-                    <ChevronRight />
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div className="iteam_main">
-                  <div>Utility</div>
-                  <div>
-                    <ChevronRight />
-                  </div>
-                </div>
-              </li>
+              <li onClick={handleWishlistClick}>Wishlist</li>
+              <li onClick={() => handelroute("/cart")}>Cart</li>
+              <li onClick={() => handelAccountSidenav()}>Account</li>
             </ul>
           </div>
 
-          {/* Category Menu */}
-          <div
-            className={`menu ${activeMenu === "category" ? "active" : ""} ${
-              prevMenu === "category"
-                ? direction === "forward"
-                  ? "slide-left"
-                  : "slide-right"
-                : ""
-            }`}>
+          {/* Shop → Sections */}
+          <div className={`menu ${activeMenu === "shop" ? "active" : ""}`}>
             <ul>
-              <li>
-              <div className="iteam_main">
-                  <div> Tableware</div> 
-                  <div><Plus /></div> 
-                  </div>
-                  </li>
-              <li>
-              <div className="iteam_main">
-                  <div>Kitchen</div> 
-                  <div><Plus /></div> 
-                  </div>
-                 </li>
-              <li>
-              <div className="iteam_main">
-                  <div> Bath Care</div> 
-                  <div><Plus /></div> 
-                  </div>
-                 </li>
-              <li>
+              {data?.map((section) => (
+                <li
+                  key={section.id}
+                  onClick={() => {
+                    setCurrentSection(section);
+                    navigateTo("category");
+                  }}
+                >
                   <div className="iteam_main">
-                  <div>  Yoga </div> 
-                  <div><Plus /></div> 
+                    <div>{section.name}</div>
+                    <div>
+                      <ChevronRight />
+                    </div>
                   </div>
-               </li>
-              <li>
-              <div className="iteam_main">
-                  <div>  Dustbin </div> 
-                  <div><Plus /></div> 
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Section → Categories (expandable) */}
+          <div className={`menu ${activeMenu === "category" ? "active" : ""}`}>
+            <ul>
+              {currentSection?.categories?.map((category) => (
+                <li key={category.id}>
+                  <div
+                    className="iteam_main"
+                    onClick={() => toggleCategory(category.id)}
+                  >
+                    <div>{category.name}</div>
+                    <div className="toggle-icon">
+                      {openCategory === category.id ? <Minus /> : <Plus />}
+                    </div>
                   </div>
-                 </li>
-              <li>
-              <div className="iteam_main">
-                  <div>Floor Covering</div> 
-                  <div><Plus /></div> 
-                  </div>
-                 </li>
-              <li>
-              <div className="iteam_main">
-                  <div>ORGANISER</div> 
-                  <div><Plus /></div> 
-                  </div>
-              </li>
+
+                  {/* Expanded Subcategories */}
+                  {openCategory === category.id && (
+                    <ul className="submenu">
+                      {category.subcategories.map((sub) => (
+                        <li
+                          key={sub.id}
+                          onClick={() =>
+                            handleSubcategoryClick(
+                              category.action_url,
+                              sub.action_url
+                            )
+                          }
+                        >
+                          {sub.name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
       </div>
 
       {isOpen && <div className="overlay" onClick={toggleDrawer}></div>}
+
+      {showWishlist && <WishlistModal onClose={() => setShowWishlist(false)} />}
+      {showLoginPrompt && (
+        <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
+      )}
+
+      {isLoggedIn && showUserPopup && (
+        <>
+          <div className="popup-triangle"></div>
+          <div className="user-popup">
+            <div className="popup-item" onClick={handleProfile}>
+              <User size={22} style={{ marginRight: 8 }} />
+              <span>Profile</span>
+            </div>
+            <div className="popup-item" onClick={handleLogout}>
+              <span
+                style={{
+                  transform: "rotate(180deg)",
+                  display: "inline-block",
+                  marginRight: 8,
+                }}
+              >
+                <LogOut size={22} />
+              </span>
+              <span>Logout</span>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

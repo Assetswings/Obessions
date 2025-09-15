@@ -12,7 +12,7 @@ return response.data.data;
   const megamenuSlice = createSlice({
   name: 'megamenu',
   initialState: {
-    data: {},
+    data: [],
     loading: false,
     error: null,
   },

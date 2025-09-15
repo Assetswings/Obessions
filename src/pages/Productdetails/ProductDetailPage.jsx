@@ -217,9 +217,21 @@ const ProductDetailPage = () => {
               ? { ...prev, is_wishlisted: 0, wishlist: [] }
               : prev
           );
+          setProductsDetails((prev) => ({
+            ...prev,
+            product_sizes: prev?.product_sizes?.map((p) =>
+              p.id === product.id
+                ? {
+                    ...p,
+                    is_wishlisted: 0,
+                    wishlist: [],
+                  }
+                : p
+            ),
+          }));
         }
       } else {
-        await dispatch(addToWishlist({ product_id: product.id })).unwrap();
+        const addedWishlistItem = await dispatch(addToWishlist({ product_id: product.id })).unwrap();
         toast.success("Added to wishlist", {
           style: {
             border: "1px solid #713200",
@@ -232,11 +244,31 @@ const ProductDetailPage = () => {
           },
         });
         setAnimatedWish(product.id);
+        const wishlist = Array.isArray(addedWishlistItem)
+          ? addedWishlistItem.find((w) => w.product_id === product.id)
+          : addedWishlistItem;
+
         setSelectedSize((prev) =>
           prev.id === product.id
-            ? { ...prev, is_wishlisted: 1, wishlist: [{ wishlist_id: wishlist.id }] }
+            ? {
+                ...prev,
+                is_wishlisted: 1,
+                wishlist: [{ wishlist_id: wishlist.id }],
+              }
             : prev
         );
+        setProductsDetails((prev) => ({
+          ...prev,
+          product_sizes: prev?.product_sizes?.map((p) =>
+            p.id === product.id
+              ? {
+                  ...p,
+                  is_wishlisted: 1,
+                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+                }
+              : p
+          ),
+        }));
         setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {
@@ -510,7 +542,7 @@ const ProductDetailPage = () => {
                 </div>
               </>
             ) : (
-              data?.product_sizes?.length > 0 && (
+              productDetails?.product_sizes?.length > 0 && (
                 <>
                   <p className="selected-size-label">
                     CHOOSE A SIZE:
@@ -518,7 +550,7 @@ const ProductDetailPage = () => {
                   </p>
 
                   <div className="size-options">
-                    {data.product_sizes.map((size) => (
+                    {productDetails.product_sizes.map((size) => (
                       <div
                         key={size.id}
                         className={`size-btn ${
@@ -740,7 +772,9 @@ const ProductDetailPage = () => {
                     <img src={item?.media_list?.main?.file} alt={item.name} />
                     <button
                       className="wishlist-btn_products"
-                      onClick={(e) => toggleWishlistReleted(e, item, "smiliarstyle")}
+                      onClick={(e) =>
+                        toggleWishlistReleted(e, item, "smiliarstyle")
+                      }
                     >
                       {animatedWish === item.id ? (
                         <div
@@ -821,7 +855,9 @@ const ProductDetailPage = () => {
                     <img src={item?.media_list?.main?.file} alt={item.name} />
                     <button
                       className="wishlist-btn_products"
-                      onClick={(e) => toggleWishlistReleted(e, item, "matchingfound")}
+                      onClick={(e) =>
+                        toggleWishlistReleted(e, item, "matchingfound")
+                      }
                     >
                       {item.is_wishlisted ? (
                         <div

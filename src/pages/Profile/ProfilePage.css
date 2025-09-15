@@ -110,7 +110,7 @@
   gap: 15px;
   margin-top: 10px;
   font-size: 14px;
-  color:#1B170E;
+  color: #1B170E;
   cursor: pointer;
   text-decoration: underline;
   font-weight: 400;
@@ -146,16 +146,18 @@
 .txt_head_add {
   text-align: center;
 }
+
 .set_box {
   display: flex;
   justify-content: space-between;
 }
- 
-.edit_text{
-text-decoration: underline;
-font-size: 14px;
+
+.edit_text {
+  text-decoration: underline;
+  font-size: 14px;
 }
-.address_title_text{
+
+.address_title_text {
   overflow-wrap: break-word;
 }
 
@@ -163,6 +165,7 @@ font-size: 14px;
   from {
     transform: translateX(100%);
   }
+
   to {
     transform: translateX(0%);
   }
@@ -221,3 +224,12 @@ font-size: 14px;
   margin-top: 4px;
 }
 
+@media (max-width: 480px) {
+  .tabs button.active {
+    width: 95px;
+  }
+
+  .button_group_tracker {
+    gap: 16px;
+  }
+}

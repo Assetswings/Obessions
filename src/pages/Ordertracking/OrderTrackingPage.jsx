@@ -1,58 +1,101 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./OrderTrackingPage.css";
 import { Check } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { fetchOrderHistory } from "../Orderhistory/orderhistorySlice";
+import API from "../../app/api";
 
-const trackingUpdates = [
-  { label: "Order Placed", time: null, status: "done", type: "major" },
-  { label: "Preparing Your Order", time: null, status: "done", type: "major" },
-  { label: "Shipped", time: null, status: "done", type: "major" },
-  {
-    label: "Pick-up Scheduled with the Courier",
-    time: "May 2, 2025 at 05:30 PM",
-    status: "done",
-    type: "minor",
-  },
-  {
-    label: "Package has left our facility",
-    time: "May 3, 2025 at 05:10 PM",
-    status: "done",
-    type: "minor",
-  },
-  {
-    label: "Package has reached the Carrier Location",
-    time: "May 3, 2025 at 08:30 PM",
-    status: "done",
-    type: "minor",
-  },
-  {
-    label: "Package left the shipper facility",
-    time: "May 4, 2025 at 04:10 AM",
-    status: "done",
-    type: "minor",
-  },
-  { label: "Out for Delivery", time: null, status: "pending", type: "major" },
-  { label: "Delivered", time: null, status: "pending", type: "major" },
-];
+// { label: "Shipped", time: null, status: "done", type: "major" },
+// {
+//   label: "Pick-up Scheduled with the Courier",
+//   time: "May 2, 2025 at 05:30 PM",
+//   status: "done",
+//   type: "minor",
+// },
+// {
+//   label: "Package has left our facility",
+//   time: "May 3, 2025 at 05:10 PM",
+//   status: "done",
+//   type: "minor",
+// },
+// {
+//   label: "Package has reached the Carrier Location",
+//   time: "May 3, 2025 at 08:30 PM",
+//   status: "done",
+//   type: "minor",
+// },
+// {
+//   label: "Package left the shipper facility",
+//   time: "May 4, 2025 at 04:10 AM",
+//   status: "done",
+//   type: "minor",
+// },
+// { label: "Out for Delivery", time: null, status: "pending", type: "major" },
+// { label: "Delivered", time: null, status: "pending", type: "major" },
 
 const OrderTrackingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [trackingData, setData] = useState([]);
 
   const { order_no } = location.state || {};
   const { results, loading, error } = useSelector((state) => state.orders);
 
   const order = results[0]; // ✅ take first order safely
-
+  const trackingUpdates = [
+    { label: "Order Placed", time: null, status: "done", type: "major" },
+    {
+      label: "Preparing Your Order",
+      time: null,
+      status: "done",
+      type: "major",
+    },
+  ];
   useEffect(() => {
     if (order_no) {
       console.log("calling useEffect with order_no:", order_no);
       dispatch(fetchOrderHistory({ order_no }));
+      setData(trackingUpdates);
+      getTrackingDetails(order_no);
     }
   }, [dispatch, order_no]);
+
+  const getTrackingDetails = async (order_no) => {
+    try {
+      const res = await API.get(`/orders/${order_no}/tracking`);
+      if (res.data.status === 200) {
+        const apiData =
+          JSON.parse(res.data?.data?.tracking_history[0].activities)?.data
+            ?.history ?? [];
+        console.log(
+          "apilog",
+          JSON.parse(res.data?.data?.tracking_history[0].activities)?.data
+            ?.history
+        );
+
+        const dynamicUpdates = apiData.map((element) => ({
+          label: `${element.message} ${element.location ?? ""}`,
+          time: new Date(element.event_time).toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }),
+          status: "done",
+          type: "minor",
+        }));
+
+        // Final merged array
+        const trackingUpdatesdata = [...trackingUpdates, ...dynamicUpdates];
+        setData(trackingUpdatesdata);
+        console.log("trackingUpdates >>>", trackingUpdatesdata);
+      }
+    } catch (err) {
+      // toast.error(err.response?.data?.message || "Failed to send OTP");
+      console.log(err);
+    }
+  };
 
   if (loading) return <p>Loading order details...</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
@@ -66,7 +109,14 @@ const OrderTrackingPage = () => {
 
         <div className="order-info">
           <p>
-            Order Placed : <strong>{order.order_placed_at}</strong>
+            Order Placed :{" "}
+            <strong>
+              {new Date(order.order_placed_at).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
+            </strong>
           </p>
           <p>
             Order ID : <strong>{order_no}</strong>
@@ -115,7 +165,7 @@ const OrderTrackingPage = () => {
       <div className="order-right">
         <h3>Updates :</h3>
         <div className="timeline">
-          {trackingUpdates.map((step, index) => (
+          {trackingData?.map((step, index) => (
             <div
               className={`timeline-step ${step.type} ${step.status}`}
               key={index}

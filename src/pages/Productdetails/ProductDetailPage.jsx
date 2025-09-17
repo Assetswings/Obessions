@@ -137,7 +137,7 @@ const ProductDetailPage = () => {
       setShowLoginPrompt(true);
       return;
     }
-
+    
     if (!pincodeChecked || !pincodeset.pinset?.is_active) {
       toast.error("Please check delivery availability before adding to cart", {
         style: {
@@ -154,7 +154,7 @@ const ProductDetailPage = () => {
       return;
     }
 
-    dispatch(addToCart({ product_id: productId, quantity }))
+    dispatch(addToCart({ product_id: selectedColor?.id, quantity }))
       .unwrap()
       .then(() => {
         toast.success("Product added to cart successfully!", {
@@ -192,14 +192,12 @@ const ProductDetailPage = () => {
       setShowLoginPrompt(true);
       return;
     }
-    const isInWishlist = wishlist.productIds.includes(product.id);
+    const isInWishlist = product.is_wishlisted;
     try {
       if (isInWishlist) {
-        const wishlistItem = wishlist.items.find(
-          (item) => item.product_id === product.id
-        );
-        if (wishlistItem?.id) {
-          await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
+        const wishlistItem = product.wishlist[0].wishlist_id;
+        if (wishlistItem) {
+          await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
             style: {
               border: "1px solid #713200",

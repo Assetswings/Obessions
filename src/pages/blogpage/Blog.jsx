@@ -1,29 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Blog.css";
 import Footer from "../../components/Footer/Footer";
+import API from "../../app/api";
+import { useNavigate } from "react-router-dom";
 
-  const Blog = () => {
-  const posts = [
-    {
-      img: "https://i.ibb.co/Q1Jdj72/image-23.png",
-      title: "How to Style Shelves Like a Pro",
-      date: "2 May",
-      readTime: "10min Read",
-    },
-    {
-      img: "https://i.ibb.co/Q1Jdj72/image-23.png",
-      title: "5 Luxurious Bathroom Accessories That Redefine…",
-      date: "2 May",
-      readTime: "5min Read",
-    },
-    {
-      img: "https://i.ibb.co/mVcf39xN/image-25.png",
-      title: "How the Right Carpet Transforms Any Room",
-      date: "2 May",
-      readTime: "6min Read",
-    },
-  ];
+const Blog = () => {
+  const [data, setData] = useState("");
+  const navigate = useNavigate();
+  const BlogList = async () => {
+    try {
+      const res = await API.get("/blogs");
+      if (res.data.status === 200) {
+        setData(res.data?.data);
+      }
+    } catch (err) {
+      // toast.error(err.response?.data?.message || "Failed to send OTP");
+      console.log(err);
+    }
+  };
 
+  useEffect(() => {
+    BlogList();
+  }, []);
+
+  const handleBlogClick = (slug) => {
+    navigate("/blog-details", { state: { blog: slug } });
+  };
   return (
     <>
       <div className="blog-container">
@@ -35,11 +37,8 @@ import Footer from "../../components/Footer/Footer";
 
         {/* FEATURED POST */}
         <section className="featured-post">
-          <div>
-            <img
-              src="https://i.ibb.co/ZR4HyPrb/room-decor-with-potted-monstera-plant-1.jpg"
-              alt="Featured"
-            />
+          <div onClick={() => handleBlogClick(data?.top_first?.slug)}>
+            <img src={data?.top_first?.media} alt="Featured" />
           </div>
 
           <div className="featured-info">
@@ -48,13 +47,21 @@ import Footer from "../../components/Footer/Footer";
                 <span className="read-time">3min Read</span>
               </div>
               <div>
-                <span className="post-date">Posted on 02 May 2025</span>
+                {/* <span className="post-date">Posted on {moment(data?.top_first?.created_at).format("DD MMM YYYY")}</span> */}
+                <span className="post-date">
+                  Posted on{" "}
+                  {new Date(data?.top_first?.created_at).toLocaleDateString(
+                    "en-GB",
+                    {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    }
+                  )}
+                </span>
               </div>
-              <div>
-                <h2>
-                  Natural Accents: Creating a Calming Corner with Earthy
-                  Elements
-                </h2>
+              <div onClick={() => handleBlogClick(data?.top_first?.slug)}>
+                <h2>{data?.top_first?.name}</h2>
               </div>
             </div>
           </div>
@@ -64,15 +71,25 @@ import Footer from "../../components/Footer/Footer";
         <section className="latest-posts">
           <h3>Latest Posts</h3>
           <div className="posts-grid">
-            {posts.concat(posts).map((post, index) => (
+            {data?.latest_blogs?.data.map((post, index) => (
               <div className="post-card" key={index}>
-                <img src={post.img} alt={post.title} />
+                <img src={post.media} alt={post.name} />
                 <div className="post-info">
                   <div className="post-meta">
-                    <span>Posted on {post.date}</span>
-                    <span>{post.readTime}</span>
+                    <span className="post-date">
+                      Posted on{" "}
+                      {new Date(post.created_at).toLocaleDateString(
+                        "en-GB",
+                        {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        }
+                      )}
+                    </span>
+                    <span>{post?.readTime}</span>
                   </div>
-                  <h4>{post.title}</h4>
+                  <h4 onClick={() => handleBlogClick(post?.action_url)}>{post.name}</h4>
                 </div>
               </div>
             ))}
@@ -81,7 +98,7 @@ import Footer from "../../components/Footer/Footer";
       </div>
 
       {/* Recommended Posts */}
-      <section className="recommended-posts">
+      {/* <section className="recommended-posts">
         <h2 className="recommended-title">Recommended Posts</h2>
         <div className="recommended-grid">
           <div className="recommended-card">
@@ -119,7 +136,7 @@ import Footer from "../../components/Footer/Footer";
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       <Footer />
     </>
   );

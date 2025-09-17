@@ -34,6 +34,9 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const [animatedWish, setAnimatedWish] = useState(null);
   const [pincode, setPincode] = useState("");
   const [pincodeChecked, setPincodeChecked] = useState(false);
+  const [productDetails, setProductsDetails] = useState([]);
+  const [similarStyle, setSimilarStyle] = useState([]);
+  const [matchingFound, setMatchingFound] = useState([]);
 
   const modalRef = useRef();
   const sectionsRef = useRef({});
@@ -54,6 +57,9 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   }, [dispatch, actionurl]);
   // Set image when data loads
   useEffect(() => {
+    setProductsDetails(data);
+    setSimilarStyle(data?.discover_similar_styles?.slice(0, 10));
+    setMatchingFound(data?.dont_miss_these_matching_finds?.slice(0, 10));
     if (data?.product_sizes.length > 0) {
       setSelectedSize(data?.product_sizes[0]);
       setSelectedColor(data?.product_sizes[0].product_colors[0]);
@@ -61,6 +67,11 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
         data?.product_sizes[0].product_colors[0].product_media[0]?.media
       );
       setLocalLoading(false);
+      setAnimatedWish(
+        data?.product_sizes[0]?.is_wishlisted
+          ? data?.product_sizes[0]?.id
+          : null
+      );
     }
   }, [data]);
 
@@ -145,7 +156,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       return;
     }
 
-    dispatch(addToCart({ product_id: productId, quantity }))
+    dispatch(addToCart({ product_id: selectedColor.id, quantity }))
       .unwrap()
       .then(() => {
         toast.success("Product added to cart successfully!", {
@@ -167,25 +178,72 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       });
   };
 
+  // const toggleWishlist = async (e, product) => {
+  //   e.stopPropagation();
+
+  //   // 🔑 check login first
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     setShowLoginPrompt(true);
+  //     return;
+  //   }
+
+  //   const isInWishlist = wishlist.productIds.includes(product.id);
+
+  //   try {
+  //     if (isInWishlist) {
+  //       const wishlistItem = wishlist.items.find(
+  //         (item) => item.product_id === product.id
+  //       );
+  //       if (wishlistItem?.id) {
+  //         await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
+  //         toast.success("Removed from wishlist", {
+  //           style: {
+  //             border: "1px solid #713200",
+  //             padding: "16px",
+  //             color: "#713200",
+  //           },
+  //           iconTheme: {
+  //             primary: "#713200",
+  //             secondary: "#FFFAEE",
+  //           },
+  //         });
+  //         dispatch(fetchWishlist());
+  //       }
+  //     } else {
+  //       await dispatch(addToWishlist({ product_id: product.id })).unwrap();
+  //       toast.success("Added to wishlist", {
+  //         style: {
+  //           border: "1px solid #713200",
+  //           padding: "16px",
+  //           color: "#713200",
+  //         },
+  //         iconTheme: {
+  //           primary: "#713200",
+  //           secondary: "#FFFAEE",
+  //         },
+  //       });
+  //       setAnimatedWish(product.id);
+  //       dispatch(fetchWishlist());
+  //       setTimeout(() => setAnimatedWish(null), 1500);
+  //     }
+  //   } catch (err) {
+  //     toast.error("Something went wrong");
+  //   }
+  // };
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
-
-    // 🔑 check login first
     const token = localStorage.getItem("token");
     if (!token) {
       setShowLoginPrompt(true);
       return;
     }
-
-    const isInWishlist = wishlist.productIds.includes(product.id);
-
+    const isInWishlist = product.is_wishlisted;
     try {
       if (isInWishlist) {
-        const wishlistItem = wishlist.items.find(
-          (item) => item.product_id === product.id
-        );
-        if (wishlistItem?.id) {
-          await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
+        const wishlistItem = product.wishlist[0].wishlist_id;
+        if (wishlistItem) {
+          await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
             style: {
               border: "1px solid #713200",
@@ -197,10 +255,29 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
               secondary: "#FFFAEE",
             },
           });
-          dispatch(fetchWishlist());
+          // dispatch(fetchWishlist());
+          setSelectedSize((prev) =>
+            prev.id === product.id
+              ? { ...prev, is_wishlisted: 0, wishlist: [] }
+              : prev
+          );
+          setProductsDetails((prev) => ({
+            ...prev,
+            product_sizes: prev?.product_sizes?.map((p) =>
+              p.id === product.id
+                ? {
+                    ...p,
+                    is_wishlisted: 0,
+                    wishlist: [],
+                  }
+                : p
+            ),
+          }));
         }
       } else {
-        await dispatch(addToWishlist({ product_id: product.id })).unwrap();
+        const addedWishlistItem = await dispatch(
+          addToWishlist({ product_id: product.id })
+        ).unwrap();
         toast.success("Added to wishlist", {
           style: {
             border: "1px solid #713200",
@@ -213,14 +290,37 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
           },
         });
         setAnimatedWish(product.id);
-        dispatch(fetchWishlist());
+        const wishlist = Array.isArray(addedWishlistItem)
+          ? addedWishlistItem.find((w) => w.product_id === product.id)
+          : addedWishlistItem;
+
+        setSelectedSize((prev) =>
+          prev.id === product.id
+            ? {
+                ...prev,
+                is_wishlisted: 1,
+                wishlist: [{ wishlist_id: wishlist.id }],
+              }
+            : prev
+        );
+        setProductsDetails((prev) => ({
+          ...prev,
+          product_sizes: prev?.product_sizes?.map((p) =>
+            p.id === product.id
+              ? {
+                  ...p,
+                  is_wishlisted: 1,
+                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+                }
+              : p
+          ),
+        }));
         setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {
       toast.error("Something went wrong");
     }
   };
-
   const selectionColor = (color) => {
     // setSelectedColor(color);
     setSelectedImage(color?.product_media[0]?.media);
@@ -308,7 +408,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
             {/* Product Info */}
             <div className="product-info">
               <h1 className="title_details">
-                {loading ? <Skeleton width={200} /> : data?.name}
+                {loading ? <Skeleton width={200} /> : selectedSize?.name}
               </h1>
 
               <p className="price_details">
@@ -317,13 +417,15 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 ) : (
                   <>
                     ₹{currentPrice}{" "}
-                    {data?.mrp && (
+                    {selectedSize?.mrp && (
                       <span className="sub-1">
-                        <del>₹{data?.mrp}</del> &nbsp;
+                        <del>₹{selectedSize?.mrp}</del> &nbsp;
                         <span className="dis-sub">
                           (
                           {Math.round(
-                            ((data?.mrp - currentPrice) / data?.mrp) * 100
+                            ((selectedSize?.mrp - currentPrice) /
+                              selectedSize?.mrp) *
+                              100
                           )}
                           % OFF)
                         </span>{" "}
@@ -335,7 +437,11 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
               </p>
 
               <p className="id_tracker">
-                {loading ? <Skeleton width={100} /> : `SKU: ${data?.sku}`}
+                {loading ? (
+                  <Skeleton width={100} />
+                ) : (
+                  `SKU: ${selectedSize?.sku}`
+                )}
               </p>
               <div className="size-selector">
                 {loading ? (
@@ -352,7 +458,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     </div>
                   </>
                 ) : (
-                  data?.product_sizes?.length > 0 && (
+                  productDetails?.product_sizes?.length > 0 && (
                     <>
                       <p className="selected-size-label">
                         CHOOSE A SIZE:
@@ -360,7 +466,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                       </p>
 
                       <div className="size-options">
-                        {data.product_sizes.map((size) => (
+                        {productDetails.product_sizes.map((size) => (
                           <div
                             key={size.id}
                             className={`size-btn ${
@@ -488,9 +594,9 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 </button>
                 <div
                   className="wst_box_quick"
-                  onClick={(e) => toggleWishlist(e, data)}
+                  onClick={(e) => toggleWishlist(e, selectedSize)}
                 >
-                  {animatedWish === data?.id ? (
+                  {selectedSize?.is_wishlisted == 1 ? (
                     <Player
                       autoplay
                       keepLastFrame
@@ -500,16 +606,8 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                   ) : (
                     <Heart
                       size={27}
-                      color={
-                        wishlist.productIds.includes(data?.id)
-                          ? "#FF0000"
-                          : "#000"
-                      }
-                      fill={
-                        wishlist.productIds.includes(data?.id)
-                          ? "#FF0000"
-                          : "none"
-                      }
+                      color={selectedSize?.is_wishlisted ? "#FF0000" : "#000"}
+                      fill={selectedSize?.is_wishlisted ? "#FF0000" : "none"}
                     />
                   )}
                 </div>

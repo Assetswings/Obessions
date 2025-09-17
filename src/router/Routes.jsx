@@ -46,7 +46,7 @@ const AppRoutes = () => {
           <Route path="orderhistory" element={<OrderHistoryPage />} />
           <Route path="OrderTrackingPage" element={<OrderTrackingPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="OrderTrackingPage" element={<OrderTrackingPage />} />
+          {/* <Route path="OrderTrackingPage" element={<OrderTrackingPage />} /> */}
           <Route path="ProfilePage" element={<ProfilePage />} />
           <Route path="paymentgetway" element={<PaymentPage />} />
           <Route path="ordersuccess" element={<Successpage />} />
@@ -58,8 +58,8 @@ const AppRoutes = () => {
           <Route path="about-us" element={<AboutPage />} />
           <Route path="contactus" element={<ContactUs />} />
           <Route path="faq" element={<Faq />} />
-          <Route path="blog" element={<BlogPost />} />
-          <Route path="blogmain" element={<Blog />} />
+          <Route path="blog" element={<Blog />} />
+          <Route path="blog-details" element={<BlogPost />} />
           <Route path="tc-of-sale" element={<TermsAndConditions />} />
           <Route path="cancellation-return-refund-policy" element={<Cancellation />} />
           <Route path="terms-of-use" element={<Returnrefund />} />

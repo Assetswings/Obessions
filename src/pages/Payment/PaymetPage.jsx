@@ -8,12 +8,11 @@ import { useNavigate } from "react-router-dom";
 import phonepayimage from "../../assets/images/phonepe.png";
 import razorpay from "../../assets/images/Razorpay.png";
 
-
-   const PaymentPage = () => {
-   const navigate = useNavigate(); 
+const PaymentPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { orderResponse, orderPayload, checkoutData } = location.state || {};
-  console.log("orderResponse--->", orderResponse)
+  console.log("orderResponse--->", orderResponse);
   const [selectedPayment, setSelectedPayment] = useState(null);
 
   // Default selection logic
@@ -90,13 +89,12 @@ import razorpay from "../../assets/images/Razorpay.png";
 
             console.log("Payment Verify Response:", verifyRes);
             // alert("Payment Verified: " + JSON.stringify(verifyRes));
-               if(verifyRes.status){
-                navigate("/ordersuccess",{
+            if (verifyRes.status) {
+              navigate("/ordersuccess", {
                 state: {
-                verifyResponse: verifyRes    
-              },
-            }
-              )
+                  verifyResponse: verifyRes,
+                },
+              });
             }
           },
           prefill: {
@@ -106,13 +104,21 @@ import razorpay from "../../assets/images/Razorpay.png";
               orderPayload.billing_last_name,
             contact: orderPayload.billing_mobile,
           },
-          theme: { color:"black" },
+          theme: { color: "black" },
         };
 
         const rzp = new window.Razorpay(options);
         rzp.open();
       } else if (gateway.provider === "PHONEPE") {
         // Handle PhonePe
+        console.log(orderData);
+        
+        if (orderData?.order) {
+          // Redirect user to PhonePe payment page
+          window.location.href = orderData.payment_url;
+        } else {
+          alert("Payment initiation failed");
+        }
         alert("Redirecting to PhonePe...");
         // window.location.href = orderData.redirect_url;
       }
@@ -125,10 +131,10 @@ import razorpay from "../../assets/images/Razorpay.png";
       <div className="root-title-chk">
         <h2 className="title_chk">Payment</h2>
       </div>
-      <div className="cart_mlb"> 
-    <span className="txt_mlb_my"> Payment</span>
-  </div>
-         <div className="checkout-container_chk">
+      <div className="cart_mlb">
+        <span className="txt_mlb_my"> Payment</span>
+      </div>
+      <div className="checkout-container_chk">
         <div className="checkout-right_ck">
           {checkoutData?.data?.items.map((item) => (
             <div className="cart-item" key={item.id}>
@@ -232,27 +238,41 @@ import razorpay from "../../assets/images/Razorpay.png";
               ))}
             </div> */}
             <div className="payment-options">
-  {orderResponse?.data?.payment_gateways?.map((pg, idx) => (
-    <label key={idx} className="payment-option">
-      <input
-        type="radio"
-        name="payment"
-        value={pg.provider}
-        checked={selectedPayment === pg.provider}
-        onChange={() => setSelectedPayment(pg.provider)}
-      />
-      <span style={{ marginLeft: "8px", display: "flex", alignItems: "center" }}>
-        {pg.provider === "RAZORPAY" && (
-          <img src={razorpay} alt="Razorpay" className="payment-logo" />
-        )}
-        {pg.provider === "PHONEPE" && (
-          <img src={phonepayimage} alt="PhonePe" className="payment-logo" />
-        )}
-        {/* <span style={{ marginLeft: "8px" }}>{pg.provider}</span> */}
-      </span>
-    </label>
-  ))}
-</div>
+              {orderResponse?.data?.payment_gateways?.map((pg, idx) => (
+                <label key={idx} className="payment-option">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value={pg.provider}
+                    checked={selectedPayment === pg.provider}
+                    onChange={() => setSelectedPayment(pg.provider)}
+                  />
+                  <span
+                    style={{
+                      marginLeft: "8px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {pg.provider === "RAZORPAY" && (
+                      <img
+                        src={razorpay}
+                        alt="Razorpay"
+                        className="payment-logo"
+                      />
+                    )}
+                    {pg.provider === "PHONEPE" && (
+                      <img
+                        src={phonepayimage}
+                        alt="PhonePe"
+                        className="payment-logo"
+                      />
+                    )}
+                    {/* <span style={{ marginLeft: "8px" }}>{pg.provider}</span> */}
+                  </span>
+                </label>
+              ))}
+            </div>
           </div>
           <p className="terms">
             Before proceed further you can review{" "}

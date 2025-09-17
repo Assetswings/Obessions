@@ -17,8 +17,8 @@ const Faq = () => {
     getBaner();
   }, [dispatch]);
 
-  useEffect(() => {
-    if (faqs && faqs.length > 0) {
+      useEffect(() => {
+      if (faqs && faqs.length > 0) {
       setActiveSection(faqs[0].title);
     }
   }, [faqs]);
@@ -44,7 +44,6 @@ const Faq = () => {
     }
   };
 
-
   if (loading) return <p>Loading FAQs...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -65,7 +64,7 @@ const Faq = () => {
             <input
               type="text"
               onChange={(e)=>{setSearchText(e.target.value)}}
-              placeholder='Search topics like "Return Policy" or "Shipping"'
+              placeholder='Search Topics'
             />
             <button onClick={faqSearch}>
               <FiSearch size={18} />

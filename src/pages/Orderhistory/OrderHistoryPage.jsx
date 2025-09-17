@@ -61,15 +61,19 @@ const OrderHistoryPage = () => {
 
   const handleProceed = () => {
     setShowModal(false);
-     if(selectedItem){
-      navigate("/returnexchange", { state: { item: selectedItem, orderNo:selectedOrder } });
-     }
+    if (selectedItem) {
+      navigate("/returnexchange", {
+        state: { item: selectedItem, orderNo: selectedOrder },
+      });
+    }
   };
 
   const handleProceedcn = () => {
     setShowcnModal(false);
     if (selectedItem) {
-      navigate("/cancelorder", { state: { item: selectedItem, orderNo:selectedOrder } });
+      navigate("/cancelorder", {
+        state: { item: selectedItem, orderNo: selectedOrder },
+      });
     }
   };
 
@@ -110,23 +114,35 @@ const OrderHistoryPage = () => {
             <div className="order-card" key={idx}>
               <div className="order-header">
                 <div>
-                  <strong>{order.status}</strong>
-                  <br />
-                  <span>{order.order_placed_at}</span>
-                </div>
-                <div>
-                  <span>Order ID: {order.order_no}</span>
-                  <div className="order-actions">
-                    <p
-                      onClick={() =>
-                        navigate("/OrderTrackingPage", {
-                          state: { order_no: order.order_no },
-                        })
-                      }>
-                      Track Order
-                     </p>
-                    <p>View Invoice</p>
+                  {/* <strong>{order.status}</strong> */}
+                  <div>
+                    <div> Estimated Delivery</div>
+                    <div>
+  {new Date(order.order_placed_at).toLocaleDateString("en-US", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    timeZone: "Asia/Kolkata",
+  })}
+</div>
                   </div>
+                </div>
+                <div className="trac">
+                  <div>
+                    <div>Order ID </div>
+                    {order.order_no}{" "}
+                  </div>
+                </div>
+                <div className="order-actions">
+                  <span
+                    onClick={() =>
+                      navigate("/OrderTrackingPage", {
+                      state: { order_no: order.order_no },
+                      })
+                    }>
+                    Track Order
+                  </span>
+                  <div><span>View Invoice</span></div>
                 </div>
               </div>
 
@@ -156,15 +172,13 @@ const OrderHistoryPage = () => {
                     )}
                     {(item.allow_exchange || item.allow_return) && (
                       <div className="actions">
-                        <button type="button" className="link-btn">
+                        <div className="link-btn">
                           <p className="cancel-order">Buy Again</p>
-                        </button>
-                        <button
-                          type="button"
-                          className="link-btn"
-                      
-                          onClick={() => {
-                            setSelectedItem({
+                        </div>
+                        <div
+                              className="link-btn"
+                              onClick={() => {
+                              setSelectedItem({
                               itemId: item.id,
                               product_name: item.product_name,
                               product_media: item.product_media,
@@ -172,14 +186,16 @@ const OrderHistoryPage = () => {
                               qty: item.quantity,
                               order_no: order.order_no,
                               allow_exchange: item.allow_exchange,
-                              allow_return: item.allow_return
+                              allow_return: item.allow_return,
                             });
                             setSelectedOrder(order.order_no);
                             setShowModal(true);
                           }}
                         >
-                          <p className="cancel-order">Return / Exchange</p>
-                        </button>
+                          <span className="cancel-order">
+                            Return / Exchange
+                          </span>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -198,38 +214,50 @@ const OrderHistoryPage = () => {
         <div className="modal-overlay-history">
           <div className="modal-box">
             <h3>Return / Exchange Order</h3>
-          <p>Are you sure you want to return/cancel this order?</p>
-          <div className="modal-actions">
-            <button className="go-back" onClick={() => {setShowModal(false); setSelectedItem(null);}}>
-              GO BACK
-            </button>
-            <button className="proceed" onClick={handleProceed}>
-              YES, PROCEED
-            </button>
+            <p>Are you sure you want to return/cancel this order?</p>
+            <div className="modal-actions">
+              <button
+                className="go-back"
+                onClick={() => {
+                  setShowModal(false);
+                  setSelectedItem(null);
+                }}
+              >
+                GO BACK
+              </button>
+              <button className="proceed" onClick={handleProceed}>
+                YES, PROCEED
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
 
-    {/*Cancel Modal */}
-    {showcnModal && (
-      <div className="modal-overlay-history">
-        <div className="modal-box">
-          <h3>Cancel Order</h3>
-          <p>Are you sure you want to cancel this order?</p>
-          <div className="modal-actions">
-            <button className="go-back" onClick={() => {setShowcnModal(false); setSelectedItem(null);}}>
-              DON'T CANCEL
-            </button>
-            <button className="proceed" onClick={handleProceedcn}>
-              CANCEL ORDER
-            </button>
+      {/*Cancel Modal */}
+      {showcnModal && (
+        <div className="modal-overlay-history">
+          <div className="modal-box">
+            <h3>Cancel Order</h3>
+            <p>Are you sure you want to cancel this order?</p>
+            <div className="modal-actions">
+              <button
+                className="go-back"
+                onClick={() => {
+                  setShowcnModal(false);
+                  setSelectedItem(null);
+                }}
+              >
+                DON'T CANCEL
+              </button>
+              <button className="proceed" onClick={handleProceedcn}>
+                CANCEL ORDER
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
 };
 
 export default OrderHistoryPage;

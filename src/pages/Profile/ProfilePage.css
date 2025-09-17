@@ -232,4 +232,15 @@
   .button_group_tracker {
     gap: 16px;
   }
+
+  .edit_text {
+    text-decoration: underline;
+   
+}
+.edit-btn{
+  width: 140px;
+  position: relative;
+  bottom: 10px;
+}
+
 }

@@ -88,12 +88,12 @@
     }
   
     .faq-search-bar {
-      flex-direction: column;
+      /* flex-direction: column; */
       border-radius: 4px;
     }
   
     .faq-search-bar button {
-      width: 100%;
+      width: 40%;
       padding: 0.8rem;
     }
   }
@@ -121,7 +121,7 @@
     background: none;
     border: none;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.70rem;
     color: #777;
     border-bottom: 2px solid transparent;
     padding-bottom: 0.5rem;

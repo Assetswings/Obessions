@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./ProductsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "./productsSlice";
-import { Expand, Heart } from "lucide-react";
+import { Expand, Heart, SlidersHorizontal, X } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -35,7 +35,7 @@ const ProductsPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { items } = useSelector((state) => state.toppick);
-
+  const [isFilterOpen, setIsFilterOpen] = useState(false); // NEW: mobile filter modal state
   const { data, filters, loading } = useSelector((state) => state.products);
 
   useEffect(() => {
@@ -80,6 +80,7 @@ const ProductsPage = () => {
         : [...current, value];
       return { ...prev, [filterKey]: updated };
     });
+    setIsFilterOpen(false); 
   };
 
   const toggleWishlist = async (e, product) => {
@@ -153,7 +154,6 @@ const ProductsPage = () => {
               : p
           )
         );
-
         setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {
@@ -198,7 +198,10 @@ const ProductsPage = () => {
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="custom-products-page">
+        {/* MOBILE FILTER BUTTON */}
+      
+
+        <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">
             {subcategory ? formatTitle(subcategory) : formatTitle(category)}
@@ -212,8 +215,8 @@ const ProductsPage = () => {
 
           {loading ? (
             <>
-              <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
-              {Array.from({ length: 3 }).map((_, i) => (
+               <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
+               {Array.from({ length: 3 }).map((_, i) => (
                 <div className="custom-filter-group" key={i}>
                   <Skeleton
                     height={14}
@@ -237,7 +240,12 @@ const ProductsPage = () => {
           )}
         </aside>
 
-        <main className="custom-product-list">
+          <main className="custom-product-list">
+           <div className="track_filter"> 
+           <button className="mobile-filter-btn" onClick={() => setIsFilterOpen(true)}>
+          <span> <SlidersHorizontal/></span> Filters
+         </button>
+           </div>
           <div className="custom-products-grid">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (
@@ -386,6 +394,21 @@ const ProductsPage = () => {
         </div>
       </section>
 
+       {/* SLIDE FILTER MODAL (Mobile) */}
+      <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>
+        <div className="mobile-filter-header">
+
+          <h3>Filters</h3>
+          <X size={20} onClick={() => setIsFilterOpen(false)} /> 
+        </div>
+
+        <div className="mobile-filter-body">
+          {filters &&
+            Object.entries(filters).map(([filterKey, values]) =>
+              renderFilterGroup(filterKey.replace(/_/g, " "), values, filterKey)
+            )}
+        </div>
+      </div>
       {/* Fotter section  */}
       <Footer />
     </>

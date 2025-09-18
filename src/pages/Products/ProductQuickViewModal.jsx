@@ -51,6 +51,10 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       setLocalLoading(true);
       setSelectedImage(null);
       setSelectedSize(null);
+      setSelectedColor([]);
+      setProductsDetails([]);
+      setSimilarStyle([]);
+      setMatchingFound([]);
       dispatch(clearProductDetail());
       dispatch(fetchProductDetail(actionurl));
     }

@@ -18,6 +18,7 @@ import heartAnimation from "../../assets/icons/Heart.json";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "../Products/otherproductSlice";
+import { ToastContainer } from "react-toastify";
 
 const Otherpage = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const Otherpage = () => {
     loading,
   } = useSelector((state) => state.otherproduct);
   // const wishlist = useSelector((state) => state.wishlist);
+  const [products, setProducts] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -46,6 +48,12 @@ const Otherpage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { items } = useSelector((state) => state.toppick);
+
+  useEffect(() => {
+    if (!loading) {
+      setProducts(Array.isArray(otherproduct) ? otherproduct : []);
+    }
+  }, [otherproduct, loading]);
 
   useEffect(() => {
     dispatch(fetchTopPicks());
@@ -58,7 +66,16 @@ const Otherpage = () => {
 
   useEffect(() => {
     if (slug) {
-      dispatch( fetchOtherProducts({slug,page: 1,limit: 20,filters: selectedFilters}));
+      dispatch({ type: "otherproduct/clear" });
+      setProducts([]);
+      dispatch(
+        fetchOtherProducts({
+          slug,
+          page: 1,
+          limit: 20,
+          filters: selectedFilters,
+        })
+      );
     }
   }, [dispatch, slug, selectedFilters]);
 
@@ -82,6 +99,7 @@ const Otherpage = () => {
       setShowLoginPrompt(true);
       return;
     }
+
     const isInWishlist = product.is_wishlisted;
     try {
       if (isInWishlist) {
@@ -102,10 +120,19 @@ const Otherpage = () => {
             closeButton: true,
             icon: true,
           });
-          dispatch( fetchOtherProducts({slug,page: 1,limit: 20,filters: selectedFilters}));
+          setProducts((prev) =>
+            prev.map((p) =>
+              p.id === product.id
+                ? { ...p, is_wishlisted: false, wishlist: [] }
+                : p
+            )
+          );
         }
       } else {
-        await dispatch(addToWishlist({ product_id: product.id })).unwrap();
+        // addToWishlist thunk should return the new wishlist item(s)
+        const addedWishlistItem = await dispatch(
+          addToWishlist({ product_id: product.id })
+        ).unwrap();
         toast.success("Added to wishlist", {
           style: {
             border: "1px solid #713200",
@@ -121,7 +148,24 @@ const Otherpage = () => {
           icon: true,
         });
         setAnimatedWish(product.id);
-        dispatch( fetchOtherProducts({slug,page: 1,limit: 20,filters: selectedFilters}));
+
+        // If your API returns the whole wishlist array:
+        const wishlist = Array.isArray(addedWishlistItem)
+          ? addedWishlistItem.find((w) => w.product_id === product.id)
+          : addedWishlistItem;
+
+        // Update local state immutably
+        setProducts((prev) =>
+          prev.map((p) =>
+            p.id === product.id
+              ? {
+                  ...p,
+                  is_wishlisted: true,
+                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+                }
+              : p
+          )
+        );
         setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {
@@ -154,6 +198,7 @@ const Otherpage = () => {
 
   return (
     <>
+    <ToastContainer position="top-right" autoClose={3000} />
       <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">{slug ? formatTitle(slug) : ""}</h2>
@@ -211,7 +256,7 @@ const Otherpage = () => {
                     </p>
                   </div>
                 ))
-              : otherproduct.map((item) => {
+              : products.map((item) => {
                   const isWishlisted = item.is_wishlisted;
                   return (
                     <div
@@ -231,7 +276,10 @@ const Otherpage = () => {
                       style={{ cursor: "pointer" }}
                     >
                       <div className="custom-product-image">
-                        <img src={item.media_list?.main?.file} alt={item.name} />
+                        <img
+                          src={item.media_list?.main?.file}
+                          alt={item.name}
+                        />
 
                         {/* wishliat_track */}
                         <button

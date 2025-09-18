@@ -45,6 +45,10 @@ const otherproductSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase("otherproduct/clear", (state) => {
+        state.data = [];
+        state.loading = true; // so skeletons show
+      })
       .addCase(fetchOtherProducts.pending, (state) => {
         state.loading = true;
         state.error = null;

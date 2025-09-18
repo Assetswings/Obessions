@@ -54,12 +54,14 @@ const ProductsPage = () => {
 
   useEffect(() => {
     if (category) {
+      setProducts([]);
       dispatch(fetchProducts({ category, subcategory, page: 1, limit: 20 }));
     }
   }, [dispatch, category, subcategory]);
 
   useEffect(() => {
     if (category) {
+      setProducts([]);
       dispatch(
         fetchProducts({
           category,

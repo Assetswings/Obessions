@@ -21,6 +21,7 @@ import ScrollToTop from "./ScrollToTop";
 import ScrollToTopWrapper from "./ScrollToTopWrapper";
 import Carpetfinderserch from "../pages/Carpetfinder/Carpetfinderserch";
 import Successpage from "../pages/Payment/Successpage";
+import PaymentCheck from "../pages/Payment/paymentcheck";
 import Searchlist from "../pages/Searchlist/Searchlist";
 import Blog from "../pages/blogpage/Blog";
 import TermsAndConditions from "../pages/Terms&Condition/TermsConditionPage";
@@ -50,6 +51,7 @@ const AppRoutes = () => {
           <Route path="ProfilePage" element={<ProfilePage />} />
           <Route path="paymentgetway" element={<PaymentPage />} />
           <Route path="ordersuccess" element={<Successpage />} />
+          <Route path="paymentcheck" element={<PaymentCheck />} />
           <Route path="cancelorder" element={<CancelOrder/>} />
           <Route path="returnexchange" element={<ReturnExchange/>} />
           <Route path="carpet-finder" element={<CarpetFinder />} />

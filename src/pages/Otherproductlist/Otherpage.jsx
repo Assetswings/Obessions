@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "../Products/ProductsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOtherProducts } from "./Otherpageslice";
-import { Expand, Heart } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -19,6 +18,7 @@ import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "../Products/otherproductSlice";
 import { ToastContainer } from "react-toastify";
+import { Expand, Heart, SlidersHorizontal, X } from "lucide-react";
 
 const Otherpage = () => {
   const dispatch = useDispatch();
@@ -48,6 +48,8 @@ const Otherpage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { items } = useSelector((state) => state.toppick);
+  const [isFilterOpen, setIsFilterOpen] = useState(false); // NEW: mobile filter modal state
+  const [tempMobileFilters, setTempMobileFilters] = useState({});
 
   useEffect(() => {
     if (!loading) {
@@ -91,6 +93,7 @@ const Otherpage = () => {
         : [...current, value];
       return { ...prev, [filterKey]: updated };
     });
+    setIsFilterOpen(false);
   };
 
   const toggleWishlist = async (e, product) => {
@@ -180,25 +183,42 @@ const Otherpage = () => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
 
-  const renderFilterGroup = (title, options, key) => (
+  const renderFilterGroup = (title, options, key, isMobile = false) => (
     <div className="custom-filter-group" key={key}>
       <h4>{title}</h4>
-      {options.map((opt, i) => (
-        <label key={i}>
-          <input
-            type="checkbox"
-            checked={selectedFilters[key]?.includes(opt) || false}
-            onChange={() => handleFilterChange(key, opt)}
-          />
-          <span className="txt_checkbox">{opt}</span>
-        </label>
-      ))}
+      {options.map((opt, i) => {
+        const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
+        return (
+          <label key={i}>
+            <input
+              type="checkbox"
+              checked={currentFilters[key]?.includes(opt) || false}
+              onChange={() =>
+                isMobile
+                  ? handleMobileFilterChange(key, opt)
+                  : handleFilterChange(key, opt)
+              }
+            />
+            <span className="txt_checkbox">{opt}</span>
+          </label>
+        );
+      })}
     </div>
   );
 
+  const handleMobileFilterChange = (filterKey, value) => {
+    setTempMobileFilters((prev) => {
+      const current = prev[filterKey] || [];
+      const updated = current.includes(value)
+        ? current.filter((v) => v !== value)
+        : [...current, value];
+      return { ...prev, [filterKey]: updated };
+    });
+  };
+
   return (
     <>
-    <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">{slug ? formatTitle(slug) : ""}</h2>
@@ -241,6 +261,18 @@ const Otherpage = () => {
         </aside>
 
         <main className="custom-product-list">
+          <div className="track_filter">
+            <button
+              className="mobile-filter-btn"
+              onClick={() => setIsFilterOpen(true)}
+            >
+              <span>
+                {" "}
+                <SlidersHorizontal />
+              </span>{" "}
+              Filters
+            </button>
+          </div>
           <div className="custom-products-grid">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (
@@ -384,7 +416,43 @@ const Otherpage = () => {
           ))}
         </div>
       </section>
+      {/* SLIDE FILTER MODAL (Mobile) */}
+      <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>
+        <div className="mobile-filter-header">
+          <h3>Filters</h3>
+          <X size={20} onClick={() => setIsFilterOpen(false)} />
+        </div>
 
+        <div className="mobile-filter-body">
+          <div className="track-lock">
+            <p className="clr-all" onClick={() => setTempMobileFilters({})}>
+              clear all
+            </p>
+          </div>
+
+          {filters &&
+            Object.entries(filters).map(([filterKey, values]) =>
+              renderFilterGroup(
+                filterKey.replace(/_/g, " "),
+                values,
+                filterKey,
+                true
+              )
+            )}
+        </div>
+        {/* ✅ Sticky Footer Apply Button */}
+        <div className="mobile-filter-footer">
+          <button
+            className="apply-filter-btn"
+            onClick={() => {
+              setSelectedFilters(tempMobileFilters);
+              setIsFilterOpen(false);
+            }}
+          >
+            APPLY
+          </button>
+        </div>
+      </div>
       {/* Fotter section  */}
       <Footer />
     </>

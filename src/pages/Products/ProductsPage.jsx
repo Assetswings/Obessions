@@ -36,6 +36,7 @@ const ProductsPage = () => {
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { items } = useSelector((state) => state.toppick);
   const [isFilterOpen, setIsFilterOpen] = useState(false); // NEW: mobile filter modal state
+  const [tempMobileFilters, setTempMobileFilters] = useState({});
   const { data, filters, loading } = useSelector((state) => state.products);
 
   useEffect(() => {
@@ -82,7 +83,6 @@ const ProductsPage = () => {
         : [...current, value];
       return { ...prev, [filterKey]: updated };
     });
-    setIsFilterOpen(false); 
   };
 
   const toggleWishlist = async (e, product) => {
@@ -91,7 +91,7 @@ const ProductsPage = () => {
       setShowLoginPrompt(true);
       return;
     }
-    
+
     const isInWishlist = product.is_wishlisted;
     try {
       if (isInWishlist) {
@@ -122,7 +122,9 @@ const ProductsPage = () => {
         }
       } else {
         // addToWishlist thunk should return the new wishlist item(s)
-        const addedWishlistItem = await dispatch(addToWishlist({ product_id: product.id })).unwrap();
+        const addedWishlistItem = await dispatch(
+          addToWishlist({ product_id: product.id })
+        ).unwrap();
         toast.success("Added to wishlist", {
           style: {
             border: "1px solid #713200",
@@ -170,21 +172,38 @@ const ProductsPage = () => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
 
-  const renderFilterGroup = (title, options, key) => (
+  const renderFilterGroup = (title, options, key, isMobile = false) => (
     <div className="custom-filter-group" key={key}>
       <h4>{title}</h4>
-      {options.map((opt, i) => (
-        <label key={i}>
-          <input
-            type="checkbox"
-            checked={selectedFilters[key]?.includes(opt) || false}
-            onChange={() => handleFilterChange(key, opt)}
-          />
-          <span className="txt_checkbox">{opt}</span>
-        </label>
-      ))}
+      {options.map((opt, i) => {
+        const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
+        return (
+          <label key={i}>
+            <input
+              type="checkbox"
+              checked={currentFilters[key]?.includes(opt) || false}
+              onChange={() =>
+                isMobile
+                  ? handleMobileFilterChange(key, opt)
+                  : handleFilterChange(key, opt)
+              }
+            />
+            <span className="txt_checkbox">{opt}</span>
+          </label>
+        );
+      })}
     </div>
   );
+
+  const handleMobileFilterChange = (filterKey, value) => {
+    setTempMobileFilters((prev) => {
+      const current = prev[filterKey] || [];
+      const updated = current.includes(value)
+        ? current.filter((v) => v !== value)
+        : [...current, value];
+      return { ...prev, [filterKey]: updated };
+    });
+  };
 
   const handleProductClick = (slug) => {
     if (slug) {
@@ -196,14 +215,19 @@ const ProductsPage = () => {
     }
     window.scrollTo({ top: 0, behavior: "auto" });
   };
-
+  useEffect(() => {
+    if (isFilterOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isFilterOpen]);
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
-        {/* MOBILE FILTER BUTTON */}
-      
+      {/* MOBILE FILTER BUTTON */}
 
-        <div className="custom-products-page">
+      <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">
             {subcategory ? formatTitle(subcategory) : formatTitle(category)}
@@ -217,8 +241,8 @@ const ProductsPage = () => {
 
           {loading ? (
             <>
-               <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
-               {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
+              {Array.from({ length: 3 }).map((_, i) => (
                 <div className="custom-filter-group" key={i}>
                   <Skeleton
                     height={14}
@@ -242,12 +266,19 @@ const ProductsPage = () => {
           )}
         </aside>
 
-          <main className="custom-product-list">
-           <div className="track_filter"> 
-           <button className="mobile-filter-btn" onClick={() => setIsFilterOpen(true)}>
-          <span> <SlidersHorizontal/></span> Filters
-         </button>
-           </div>
+        <main className="custom-product-list">
+          <div className="track_filter">
+            <button
+              className="mobile-filter-btn"
+              onClick={() => setIsFilterOpen(true)}
+            >
+              <span>
+                {" "}
+                <SlidersHorizontal />
+              </span>{" "}
+              Filters
+            </button>
+          </div>
           <div className="custom-products-grid">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (
@@ -395,20 +426,41 @@ const ProductsPage = () => {
           ))}
         </div>
       </section>
-
-       {/* SLIDE FILTER MODAL (Mobile) */}
+      {/* SLIDE FILTER MODAL (Mobile) */}
       <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>
         <div className="mobile-filter-header">
-
           <h3>Filters</h3>
-          <X size={20} onClick={() => setIsFilterOpen(false)} /> 
+          <X size={20} onClick={() => setIsFilterOpen(false)} />
         </div>
 
         <div className="mobile-filter-body">
+          <div className="track-lock">
+            <p className="clr-all" onClick={() => setTempMobileFilters({})}>
+              clear all
+            </p>
+          </div>
+
           {filters &&
             Object.entries(filters).map(([filterKey, values]) =>
-              renderFilterGroup(filterKey.replace(/_/g, " "), values, filterKey)
+              renderFilterGroup(
+                filterKey.replace(/_/g, " "),
+                values,
+                filterKey,
+                true
+              )
             )}
+        </div>
+        {/* ✅ Sticky Footer Apply Button */}
+        <div className="mobile-filter-footer">
+          <button
+            className="apply-filter-btn"
+            onClick={() => {
+              setSelectedFilters(tempMobileFilters);
+              setIsFilterOpen(false);
+            }}
+          >
+            APPLY
+          </button>
         </div>
       </div>
       {/* Fotter section  */}

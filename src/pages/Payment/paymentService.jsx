@@ -2,13 +2,9 @@
 import API from "../../app/api";
 
 // Initiate Razorpay Payment
-  export const initiatePayment = async (refId,provider,secret) => {
+  export const initiatePayment = async (payload) => {
   try {
-      const response = await API.post("/checkout/payment-initiate", {
-      ref_id: refId,
-      provider: provider,
-      secret: secret,
-    });
+      const response = await API.post("/checkout/payment-initiate", payload);
 
     // response.data.data.data contains { razorpay_key, order, callback_url }
     return response.data.data.data;
@@ -17,7 +13,6 @@ import API from "../../app/api";
     throw error;
   }
 };
-
 
 // Verify Payment via Callback
 export const verifyPayment = async (paymentId, orderId) => {

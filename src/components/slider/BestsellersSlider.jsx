@@ -15,13 +15,11 @@ const BestsellersSlider = ({ onQuickView }) => {
   };
 
   const handleNext = () => {
-    setStartIndex((prev) =>
-      Math.min(prev + 1, bestsellers.length - 3)
-    );
+    setStartIndex((prev) => Math.min(prev + 1, bestsellers.length - 3));
   };
 
   const LogsIcon = (data) => {
-    if (onQuickView) onQuickView(data); 
+    if (onQuickView) onQuickView(data);
   };
 
   return (
@@ -33,17 +31,15 @@ const BestsellersSlider = ({ onQuickView }) => {
             <div className="bestseller-card" key={item.id}>
               <div className="image-wrapper">
                 <img src={item.media} alt={item.name} />
-                     <div className="order_view_btn"> 
-                     <button
-                  className="quick-view"
-                  onClick={() => LogsIcon(item)}>
-                  Quick View &nbsp;
-                  <span>
-                    <Expand color="#000000" size={15} strokeWidth={1.25} />
-                  </span>
-                </button>
-                </div>  
-               
+                <div className="order_view_btn">
+                  <button className="quick-view" onClick={() => LogsIcon(item)}>
+                    Quick View &nbsp;
+                    <span>
+                      <Expand color="#000000" size={15} strokeWidth={1.25} />
+                    </span>
+                  </button>
+                </div>
+
                 <span className="fav-icon">
                   <Heart color="#000000" size={20} strokeWidth={2} />
                 </span>
@@ -77,9 +73,7 @@ const BestsellersSlider = ({ onQuickView }) => {
             <div className="bestseller-card" key={item.id}>
               <div className="image-wrapper">
                 <img src={item.media} alt={item.name} />
-                <button
-                  className="quick-view"
-                  onClick={() => LogsIcon(item)}>
+                <button className="quick-view" onClick={() => LogsIcon(item)}>
                   Quick View &nbsp;
                   <span>
                     <Expand color="#000000" size={15} strokeWidth={1.25} />
@@ -89,7 +83,7 @@ const BestsellersSlider = ({ onQuickView }) => {
                   <Heart color="#000000" size={20} strokeWidth={2} />
                 </span>
               </div>
-                <div className="product-info">
+              <div className="product-info">
                 <p className="title">{item.name}</p>
                 <p className="price">₹{item.selling_price}</p>
               </div>

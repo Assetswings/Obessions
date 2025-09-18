@@ -4,6 +4,7 @@ import { sendOtp, verifyOtp, registerUser } from "../auth/authSlice";
 import Footer from "../../components/Footer/Footer";
 import "./LoginPage.css";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -83,16 +84,36 @@ const LoginPage = () => {
       return;
     }
 
-    dispatch(verifyOtp({ otp: otp.trim(), otp_requested_id, temp_id })).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        alert("Login successful!");
-        navigate(-1); // go back to previous page
+    dispatch(verifyOtp({ otp: otp.trim(), otp_requested_id, temp_id })).then(
+      (res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          // alert("Login successful!");
+          toast.success("Login successful!", {
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+            iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+            hideProgressBar: true,
+            closeButton: true,
+            icon: true,
+          });
+          // navigate(-1); // go back to previous page
+          setTimeout(() => {
+            navigate(-1);
+          }, 2000); // wait 1s before redirect
+        }
       }
-    });
+    );
   };
 
   return (
     <>
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="login-container">
         <div className="login-box">
           {step === 1 && (
@@ -106,8 +127,8 @@ const LoginPage = () => {
                 placeholder="Phone Number"
                 inputMode="numeric"
                 value={localMobile}
-                onChange={(e) =>
-                  setLocalMobile(e.target.value.replace(/\D/g, "")) // only digits allowed
+                onChange={
+                  (e) => setLocalMobile(e.target.value.replace(/\D/g, "")) // only digits allowed
                 }
                 maxLength={10}
               />

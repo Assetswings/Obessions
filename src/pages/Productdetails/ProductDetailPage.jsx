@@ -104,37 +104,6 @@ const ProductDetailPage = () => {
     return () => observer.disconnect();
   }, []);
 
-  // add To cart
-  // const handleAddToCart = () => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) {
-  //     setShowLoginPrompt(true);
-  //     return;
-  //   }
-
-  //   dispatch(addToCart({ product_id: productId, quantity }))
-  //     .unwrap()
-  //     .then(() => {
-  //       toast.success("Product added to cart successfully!", {
-  //         style: {
-  //           background: "#1f1f1f",
-  //           color: "#fff",
-  //           borderRadius: "0px",
-  //           padding: "12px 16px",
-  //           fontSize: "14px",
-  //         },
-  //         hideProgressBar: true,
-  //         closeButton: false,
-  //         icon: true,
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       toast.error("Failed to add to cart");
-  //       console.error(error);
-  //     });
-  // };
-  // ADD TO CART FUNCTION (restricted until pincode check success);
-
   const handleAddToCart = () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -186,7 +155,7 @@ const ProductDetailPage = () => {
 
   // ping the wishlist
   const handleSimilarProductClick = (slug) => {
-    navigate("/productsdetails", { state: { product: slug } });
+    navigate("/productsdetails", { state: { product: slug } , replace:true});
   };
 
   const toggleWishlist = async (e, product) => {

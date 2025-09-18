@@ -30,7 +30,6 @@ import shopThumb5 from "../../assets/images/shopthump.png";
 import shopThumb6 from "../../assets/images/shopthump.png";
 import Tableimage from "../../assets/images/Kitchen1.png";
 
-
 //image for floorsection
 import FloorDesign1 from "../../assets/images/FloorDesign1.png";
 import FloorDesign2 from "../../assets/images/FloorDesign2.png";
@@ -43,7 +42,7 @@ import FloorDesign6 from "../../assets/images/FloorDesign6.png";
 import videoimage from "../../assets/images/videoimage.png";
 import { Search } from "lucide-react";
 
-  const shopByItems = [
+const shopByItems = [
   {
     label: "Design",
     thumbs: [shopThumb1, shopThumb2, shopThumb3],
@@ -65,7 +64,7 @@ import { Search } from "lucide-react";
   },
 ];
 
-  const floatingImages = [
+const floatingImages = [
   { id: 1, src: FloorDesign1, className: "imgf1" },
   { id: 2, src: FloorDesign2, className: "imgf2" },
   { id: 3, src: FloorDesign3, className: "imgf3" },
@@ -289,21 +288,11 @@ const HomePage = () => {
         <h1 className="display-1 bold position-absolute obsessions-text">
           obsessions
         </h1>
-
-        {/* Floating Images from API */}
-        {/* {centerImg && <img src={centerImg} className="floating-img img-center" alt="center" />}
-        {leftImg   && <img src={leftImg} className="floating-img img-left" alt="left" />}
-        {rightImg  && <img src={rightImg} className="floating-img img-right" alt="right" />}
-        {topImg    && <img src={topImg} className="floating-img img-top" alt="top" />} */}
-
         {/* Current visible set */}
         <div className={`${setIndex !== null ? `set-${setIndex}` : ""}`}>
           {renderImages(currentSet, "fade-in")}
           {renderImages(nextSet, "fade-out")}
         </div>
-        {/* 
-   {renderImages(currentSet, "fade-in")}
-   {renderImages(nextSet, "fade-out")} */}
 
         <ul className="list-unstyled position-absolute category-list text-uppercase">
           {data?.hero_banner_categories?.map((item) => (
@@ -315,7 +304,7 @@ const HomePage = () => {
             </li>
           ))}
         </ul>
-        
+
         {/* Description */}
         <div className="position-absolute description text-secondary">
           <p>
@@ -341,6 +330,7 @@ const HomePage = () => {
             />
             <button
               className="btn btn-dark rounded-5 button_search"
+              disabled={!query?.trim()}
               onClick={() =>
                 navigate("/searchlist", {
                   state: { query: query },
@@ -385,7 +375,6 @@ const HomePage = () => {
           )}
         </div>
 
-        
         {/* Overlay */}
         {isSearchActive && (
           <div
@@ -431,33 +420,6 @@ const HomePage = () => {
       </section>
 
       {/* ────────────────── 🥀💎💎 🐉 SHOP BY SECTION 🐉 💎💎🥀 ────────────────── */}
-      {/* <section className="shopby py-5">
-        <p className="shopby-title text-uppercase mb-4 txt_shopby">Shop by</p>
-
-        <ul className="shopby-list">
-          {shopByItems.map((item, i) => (
-            <li
-              key={item.label}
-              className={`
-                shopby-item
-                ${item.sale ? "sale" : ""}
-                ${active === i ? "is-active" : ""}
-              `}
-              onMouseEnter={() => setActive(i)}
-              onMouseLeave={() => setActive(null)}
-              onClick={() => item.url && (window.location.href = item.url)}
-            >
-              <div className="thumb-bar">
-                {item.thumbs.map((src, idx) => (
-                  <img src={src} alt="" key={idx} />
-                ))}
-              </div>
-              <span className="shopby-label">{item.label}</span>
-              <span className="view-tag">View</span>
-            </li>
-          ))}
-        </ul>
-      </section> */}
       <section className="shopby py-5">
         <p className="shopby-title text-uppercase mb-4 txt_shopby">Shop by</p>
 
@@ -485,7 +447,8 @@ const HomePage = () => {
               {/* VIEW tag */}
               <span
                 className="view-tag"
-                onClick={() => handelcollectionDetails(item.url)}>
+                onClick={() => handelcollectionDetails(item.url)}
+              >
                 View
               </span>
             </li>
@@ -613,7 +576,7 @@ const HomePage = () => {
       </section>
 
       {/* ────────────────── 🥀💎💎 🐉 OUR OBSESSIONS BY SECTION 🐉 💎💎🥀 ────────────────── */}
-    <section className="obsession-section">
+      <section className="obsession-section">
         <h2 className="obsession-title">OUR OBSESSIONS</h2>
         <div className="obsession-content">
           <div className="obsession-image">

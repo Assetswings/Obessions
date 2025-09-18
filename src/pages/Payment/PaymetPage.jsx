@@ -7,6 +7,7 @@ import { initiatePayment, verifyPayment } from "./paymentService";
 import { useNavigate } from "react-router-dom";
 import phonepayimage from "../../assets/images/phonepe.png";
 import razorpay from "../../assets/images/Razorpay.png";
+import { ToastContainer, toast } from "react-toastify";
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -59,12 +60,31 @@ const PaymentPage = () => {
       }
 
       // Step 1: Call initiate API
-      const orderData = await initiatePayment(
-        orderResponse?.data?.ref_id,
-        gateway.provider,
-        gateway.secret
-      );
+      let payload = {
+        ref_id: orderResponse?.data?.ref_id,
+        provider: gateway.provider,
+        secret: gateway.secret,
+      };
 
+      // only add redirect_url for PHONEPE
+      if (gateway.provider === "PHONEPE") {
+        payload.redirect_url = `${window.location.origin}/paymentcheck`;
+      }
+
+      const orderData = await initiatePayment(payload);
+      if (!orderData?.success) {
+        toast.error(orderData?.message, {
+          style: {
+            border: "1px solid #713200",
+            padding: "16px",
+            color: "#713200",
+          },
+          iconTheme: {
+            primary: "#713200",
+            secondary: "#FFFAEE",
+          },
+        });
+      }
       // Step 2: Razorpay Flow
       if (gateway.provider === "RAZORPAY") {
         const loaded = await loadRazorpayScript();
@@ -112,7 +132,7 @@ const PaymentPage = () => {
       } else if (gateway.provider === "PHONEPE") {
         // Handle PhonePe
         console.log(orderData);
-        
+
         if (orderData?.order) {
           // Redirect user to PhonePe payment page
           window.location.href = orderData.payment_url;
@@ -128,6 +148,7 @@ const PaymentPage = () => {
   };
   return (
     <>
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="root-title-chk">
         <h2 className="title_chk">Payment</h2>
       </div>

@@ -33,7 +33,7 @@ const CollectionPage = () => {
         <aside className="sidebar">
           <h3>COLLECTIONS</h3>
           {collections?.categories?.map((cat, idx) => (
-            <div key={idx} className="category-group" onClick={() => handleCategoryClick(cat.action_url)}>
+            <div key={idx} className="category-group pointer-crusser" onClick={() => handleCategoryClick(cat.action_url)}>
               <h4>{cat.name}</h4>
               <ul>
                 {cat.subcategories?.map((item, i) => (

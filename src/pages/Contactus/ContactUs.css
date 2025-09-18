@@ -179,6 +179,7 @@
   @media (max-width: 768px) {
     .contact-section {
       flex-direction: column;
+          padding: 1rem 1rem;
     }
   
     .form-row {
@@ -186,8 +187,8 @@
     }
   
     .guides-container {
-      flex-direction: column;
-      gap: 2rem;
+      /* flex-direction: column; */
+      gap: 1.5rem;
     }
   }
   

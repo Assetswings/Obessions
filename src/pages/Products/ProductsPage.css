@@ -29,7 +29,7 @@
   cursor: pointer;
 }
 .custom-filters {
-  width: 220px;
+  width: 250px;
   flex-shrink: 0;
   font-size: 14px;
 }
@@ -310,7 +310,6 @@
   /* position: fixed;
   bottom: 20px; */
   right: 20px;
-  
   background:white;
   color: black;
   padding: 10px 16px;
@@ -338,7 +337,7 @@
   position: fixed;
   top: 0;
   right: -100%;
-  width: 80%;
+  width: 100%;
   height: 100%;
   background: #fff;
   box-shadow: -2px 0 6px rgba(0, 0, 0, 0.2);
@@ -346,11 +345,11 @@
   z-index: 2000;
   display: flex;
   flex-direction: column;
-  padding: 20px;
 }
 
 .mobile-filter-modal.open {
   right: 0;
+  overflow: hidden; /* prevent background scroll */
 }
 
 .mobile-filter-header {
@@ -358,15 +357,45 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+  padding: 15px 20px;
 }
 
 .mobile-filter-body {
   flex: 1;
-  overflow-y: auto;
-  margin-top: 15px;
+  overflow-y: auto; /* only body scrolls */
+  padding: 20px;
 }
 
+/* Sticky footer */
+.mobile-filter-footer {
+  border-top: 1px solid #eee;
+  padding: 15px 20px;
+  background: #fff;
+  position: sticky;
+  bottom: 0;
+}
+
+.apply-filter-btn {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.apply-filter-btn:hover {
+  background: #333;
+}
+.track-lock{
+  display: flex;
+  justify-content: flex-end;
+  position: sticky ;
+  top: 10px ;
+}
 /* Show button only on mobile */
 @media (max-width: 768px) {
   .mobile-filter-btn {
@@ -380,4 +409,11 @@
     z-index: 1000;
    
    }
+  
+.top-picks-heading {
+  font-size: 30px !important;
+  font-weight: 300;
+  margin-bottom: 40px;
+  font-family: "Canela Trial", sans-serif;
+}
 }

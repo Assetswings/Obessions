@@ -7,7 +7,7 @@ import arrowright from "../../assets/icons/ArrowRight.png";
 
 const BestsellersSlider = ({ onQuickView }) => {
   const { data } = useSelector((state) => state.home);
-  const bestsellers = data?.bestSellers || [];
+  const bestsellers = data?.bestSellers?.products || [];
   const [startIndex, setStartIndex] = useState(0);
 
   const handlePrev = () => {
@@ -27,10 +27,10 @@ const BestsellersSlider = ({ onQuickView }) => {
       <div className="bestseller-slider">
         {/* Left Scrolling Card */}
         <div className="slider-strip">
-          {bestsellers.slice(startIndex, startIndex + 1).map((item) => (
+          {bestsellers?.slice(startIndex, startIndex + 1).map((item) => (
             <div className="bestseller-card" key={item.id}>
               <div className="image-wrapper">
-                <img src={item.media} alt={item.name} />
+                <img src={item?.media_list?.main?.file} alt={item.name} />
                 <div className="order_view_btn">
                   <button className="quick-view" onClick={() => LogsIcon(item)}>
                     Quick View &nbsp;
@@ -69,10 +69,10 @@ const BestsellersSlider = ({ onQuickView }) => {
 
         {/* Right Scrolling Cards */}
         <div className="slider-strip">
-          {bestsellers.slice(startIndex + 1, startIndex + 4).map((item) => (
+          {bestsellers?.slice(startIndex + 1, startIndex + 4).map((item) => (
             <div className="bestseller-card" key={item.id}>
               <div className="image-wrapper">
-                <img src={item.media} alt={item.name} />
+                <img src={item?.media_list?.main?.file} alt={item.name} />
                 <button className="quick-view" onClick={() => LogsIcon(item)}>
                   Quick View &nbsp;
                   <span>

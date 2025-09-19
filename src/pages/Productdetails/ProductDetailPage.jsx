@@ -35,6 +35,7 @@ const ProductDetailPage = () => {
   const [matchingFound, setMatchingFound] = useState([]);
   const dispatch = useDispatch();
   const sectionsRef = useRef({});
+  const prevSlugRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -43,48 +44,52 @@ const ProductDetailPage = () => {
   const wishlist = useSelector((state) => state.wishlist);
   const pincodeset = useSelector((state) => state.pincode);
 
-  // Scroll instantly to top before anything renders
-  useLayoutEffect(() => {
-    window.scrollTo({ top: 0, behavior: "auto" });
-  }, [productSlug]);
-
-  // Fetch product on slug change
   useEffect(() => {
-    if (productSlug) {
+    if (!productSlug) return;
+    // Only run when slug actually changes
+    if (prevSlugRef.current !== productSlug) {
+      prevSlugRef.current = productSlug;
+      // Reset only the main product state
       setLocalLoading(true);
       setSelectedImage(null);
       setSelectedSize(null);
-      setSelectedColor([]);
+      setSelectedColor(null);
       setProductsDetails([]);
-      setSimilarStyle([]);
-      setMatchingFound([]);
-      dispatch(clearProductDetail());
+      // Don’t clear similarStyle/matchingFound here 👈
       dispatch(fetchProductDetail(productSlug));
     }
+  
     return () => {
-      dispatch(clearProductDetail());
+      dispatch(clearProductDetail()); 
     };
   }, [dispatch, productSlug]);
 
-  // Set image when data loads
+
   useEffect(() => {
-    setProductsDetails(data);
-    setSimilarStyle(data?.discover_similar_styles?.slice(0, 10));
-    setMatchingFound(data?.dont_miss_these_matching_finds?.slice(0, 10));
-    if (data?.product_sizes.length > 0) {
-      setSelectedSize(data?.product_sizes[0]);
-      setSelectedColor(data?.product_sizes[0].product_colors[0]);
-      setSelectedImage(
-        data?.product_sizes[0].product_colors[0].product_media[0]?.media
-      );
-      setLocalLoading(false);
-      setAnimatedWish(
-        data?.product_sizes[0]?.is_wishlisted
-          ? data?.product_sizes[0]?.id
-          : null
-      );
+    if (!data?.id) return;
+    // check if product changed
+    if (prevSlugRef.current !== data.id) {
+      setProductsDetails(data);
+  
+      // reset with new product data
+      setSimilarStyle(data?.discover_similar_styles?.slice(0, 10) || []);
+      setMatchingFound(data?.dont_miss_these_matching_finds?.slice(0, 10) || []);
+  
+      if (data?.product_sizes?.length > 0) {
+        setSelectedSize(data.product_sizes[0]);
+        setSelectedColor(data.product_sizes[0].product_colors?.[0] || null);
+        setSelectedImage(
+          data.product_sizes[0].product_colors?.[0]?.product_media?.[0]?.media || null
+        );
+        setAnimatedWish(
+          data.product_sizes[0]?.is_wishlisted ? data.product_sizes[0].id : null
+        );
+      }
+      prevSlugRef.current = data.id; 
     }
+    setLocalLoading(false);
   }, [data]);
+  
 
   // Scroll tracking (for highlights/description tabs)
   useEffect(() => {
@@ -127,7 +132,7 @@ const ProductDetailPage = () => {
       return;
     }
 
-    dispatch(addToCart({ product_id: selectedColor?.id, quantity }))
+     dispatch(addToCart({ product_id: selectedColor?.id, quantity }))
       .unwrap()
       .then(() => {
         toast.success("Product added to cart successfully!", {
@@ -155,7 +160,7 @@ const ProductDetailPage = () => {
 
   // ping the wishlist
   const handleSimilarProductClick = (slug) => {
-    navigate("/productsdetails", { state: { product: slug } , replace:true});
+    navigate("/productsdetails", { state: { product: slug }});
   };
 
   const toggleWishlist = async (e, product) => {
@@ -254,7 +259,6 @@ const ProductDetailPage = () => {
       setShowLoginPrompt(true);
       return;
     }
-
     const isInWishlist = product.is_wishlisted;
     try {
       if (isInWishlist) {
@@ -472,11 +476,11 @@ const ProductDetailPage = () => {
         {/* Product Info */}
         <div className="product-info">
           <h1 className="title_details">
-            {loading ? <Skeleton width={200} /> : selectedSize?.name}
+            {localLoading ? <Skeleton width={200} /> : selectedSize?.name}
           </h1>
 
           <p className="price_details">
-            {loading ? (
+            {localLoading  ? (
               <Skeleton width={120} />
             ) : (
               <>
@@ -494,12 +498,12 @@ const ProductDetailPage = () => {
             )}
           </p>
           <p className="id_tracker">
-            {loading ? <Skeleton width={100} /> : `SKU: ${selectedSize?.sku}`}
+            {localLoading ? <Skeleton width={100} /> : `SKU: ${selectedSize?.sku}`}
           </p>
 
           {/* Size Selector */}
           <div className="size-selector">
-            {loading ? (
+            {localLoading ? (
               <>
                 <p>
                   <Skeleton width={150} />
@@ -716,7 +720,7 @@ const ProductDetailPage = () => {
       {/* Similar Products */}
       <div className="similar-styles-section">
         <h2>Discover Similar Styles</h2>
-        {loading ? (
+        {localLoading  ? (
           <div className="product-grid">
             {Array(4)
               .fill(0)
@@ -800,7 +804,7 @@ const ProductDetailPage = () => {
       {/* Don’t Miss the product */}
       <div className="similar-styles-section">
         <h2 className="txt_head_list">Don’t Miss These Matching Finds</h2>
-        {loading ? (
+        {localLoading ? (
           <div className="product-grid">
             {Array(4)
               .fill(0)

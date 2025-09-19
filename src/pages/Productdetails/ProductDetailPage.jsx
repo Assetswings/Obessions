@@ -11,7 +11,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { addToCart } from "../cart/cartSlice";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import {
-  fetchWishlist,
   addToWishlist,
   removeFromWishlist,
 } from "../../components/Wishtlist/WishlistSlice";
@@ -41,7 +40,6 @@ const ProductDetailPage = () => {
 
   const productSlug = location.state?.product;
   const { data, loading, error } = useSelector((state) => state.productDetail);
-  const wishlist = useSelector((state) => state.wishlist);
   const pincodeset = useSelector((state) => state.pincode);
 
   useEffect(() => {
@@ -160,6 +158,7 @@ const ProductDetailPage = () => {
 
   // ping the wishlist
   const handleSimilarProductClick = (slug) => {
+    window.scrollTo({ top: 0, behavior: "auto" });
     navigate("/productsdetails", { state: { product: slug }});
   };
 
@@ -356,9 +355,6 @@ const ProductDetailPage = () => {
       toast.error("Something went wrong");
     }
   };
-  useEffect(() => {
-    dispatch(fetchWishlist());
-  }, [dispatch]);
 
   if (error) {
     return <div className="error">Error: {error}</div>;
@@ -722,7 +718,7 @@ const ProductDetailPage = () => {
         <h2>Discover Similar Styles</h2>
         {localLoading  ? (
           <div className="product-grid">
-            {Array(4)
+            {Array(5)
               .fill(0)
               .map((_, idx) => (
                 <div className="product-card-dtl" key={idx}>
@@ -806,7 +802,7 @@ const ProductDetailPage = () => {
         <h2 className="txt_head_list">Don’t Miss These Matching Finds</h2>
         {localLoading ? (
           <div className="product-grid">
-            {Array(4)
+            {Array(5)
               .fill(0)
               .map((_, idx) => (
                 <div className="product-card-dtl" key={idx}>

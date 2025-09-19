@@ -6,7 +6,7 @@ const PaymentCheck = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [status, setStatus] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const orderId = searchParams.get("order_id");
   const transactionId = searchParams.get("transaction_id");
@@ -18,24 +18,23 @@ const PaymentCheck = () => {
   }, [orderId, transactionId]);
 
   const fetchPaymentDetails = async (orderId, transactionId) => {
-    setLoading(true);
     try {
       const res = await API.get(
-        `/checkout/phonepe/callback?order_id=${orderId}&transaction_id=${transactionId}`
+        `/checkout/payment/callback?payment_id=${transactionId}&order_id=${orderId}`
       );
-      setLoading(false);
-      if (res.data.status === 200) {
-        navigate("/ordersuccess", {
-          state: {
-            verifyResponse: res,
-          },
-        });
+      if (res.data.success) {
+        setTimeout(() => {
+          navigate("/ordersuccess", {
+            state: {
+              verifyResponse: res?.data,
+            },
+          });
+        }, 5000);
       } else {
         alert("paymentFailed");
       }
     } catch (err) {
-      console.log(err);
-      setLoading(false);
+      console.log("error ", err);
     }
   };
 

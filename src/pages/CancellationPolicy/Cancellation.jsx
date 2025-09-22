@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
+import Skeleton from "react-loading-skeleton";
 
 export default function Cancellation() {
   const [data, setData] = useState("");
@@ -10,15 +11,15 @@ export default function Cancellation() {
     try {
       const res = await API.get("/policy/cancellation-return-refund-policy");
       if (res.data.status === 200) {
+        // Simulate delay only if you really want it
         setTimeout(() => {
           setData(res.data?.data);
-        }, 2000);
+          setLoading(false); // stop loader when content is ready
+        }, 1000); // reduce delay (10s is too long for UX)
       }
     } catch (err) {
-      // toast.error(err.response?.data?.message || "Failed to send OTP");
       console.log(err);
-    } finally {
-      setLoading(false); // stop loader whether success or fail
+      setLoading(false);
     }
   };
 
@@ -30,7 +31,14 @@ export default function Cancellation() {
     <>
       <div className="terms-container">
         {loading ? (
-          <div className="loading-spinner">Loading...</div>
+          <div className="loading-skeleton" style={{ textAlign: "center" }}>
+            {/* Paragraph-style skeleton */}
+            <Skeleton width="80%" height={30} style={{ marginBottom: 15 }} />
+            <Skeleton count={6} height={18} style={{ marginBottom: 8 }} />
+            <Skeleton width="90%" height={18} style={{ marginBottom: 8 }} />
+            <Skeleton width="80%" height={18} style={{ marginBottom: 8 }} />
+            {/* <Skeleton count={2} height={18} style={{ marginBottom: 8 }} /> */}
+          </div>
         ) : (
           <div dangerouslySetInnerHTML={{ __html: data?.content }} />
         )}

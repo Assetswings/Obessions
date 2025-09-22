@@ -12,6 +12,8 @@ const Footer = () => {
   const [footerData, setFooterData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   // fetch footer links
   useEffect(() => {
@@ -62,10 +64,46 @@ const Footer = () => {
     navigate("/products", { state: { category: categorySlug } });
   };
 
+  const handleSubscribe = async () => {
+    if (!email.trim()) {
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setMessage("");
+
+      const res = await API.post(
+        "/forms/newsletter-subscribe",
+        { email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+
+      if (res.data) {
+        // keep skeleton/loader until data is ready if you want
+        setTimeout(() => {
+          setMessage("✅ Subscribed successfully!");
+          setEmail(""); // clear input
+          setLoading(false);
+        }, 800); // optional small delay to mimic your pattern
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Something went wrong. Please try again later.");
+      setLoading(false);
+    }
+  };
+
   return (
     <footer className="footer">
       {/* Newsletter */}
-      <div className="newsletter">
+      {/* <div className="newsletter">
         <h2>
           Your Home Just Got <em>More Interesting</em>
         </h2>
@@ -81,6 +119,29 @@ const Footer = () => {
           />
           <button>SIGN UP →</button>
         </div>
+      </div> */}
+      <div className="newsletter">
+        <h2>
+          Your Home Just Got <em>More Interesting</em>
+        </h2>
+        <p className="sub_text">
+          Get updates on new collections, trending products, and curated content
+          you'll love.
+        </p>
+        <div className="email-signup">
+          <input
+            type="email"
+            placeholder="ENTER EMAIL ADDRESS"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
+          />
+          <button onClick={handleSubscribe} disabled={loading}>
+            {loading ? "Signing up..." : "SIGN UP →"}
+          </button>
+        </div>
+
+        {message && <p className="response-message">{message}</p>}
       </div>
 
       {/* Dynamic Footer Links */}
@@ -90,7 +151,10 @@ const Footer = () => {
           <h4>SHOP</h4>
           <ul>
             {SHOP?.slice(0, 7).map((item, idx) => (
-              <li key={idx} onClick={() => handleCategoryClick(item.action_url)}>
+              <li
+                key={idx}
+                onClick={() => handleCategoryClick(item.action_url)}
+              >
                 {item.title}
               </li>
             ))}
@@ -98,8 +162,11 @@ const Footer = () => {
         </div>
         <div>
           <ul>
-            {SHOP?.slice(7,15).map((item, idx) => (
-              <li key={idx} onClick={() => handleCategoryClick(item.action_url)}>
+            {SHOP?.slice(7, 15).map((item, idx) => (
+              <li
+                key={idx}
+                onClick={() => handleCategoryClick(item.action_url)}
+              >
                 {item.title}
               </li>
             ))}

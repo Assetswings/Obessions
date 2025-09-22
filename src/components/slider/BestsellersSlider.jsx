@@ -1,15 +1,32 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./BestsellersSlider.css";
 import { Expand, Heart } from "lucide-react";
 import arrowleft from "../../assets/icons/ArrowLeft.png";
 import arrowright from "../../assets/icons/ArrowRight.png";
+import { addToWishlist, removeFromWishlist } from "../Wishtlist/WishlistSlice";
+import { ToastContainer, toast } from "react-toastify";
+import { Player } from "@lottiefiles/react-lottie-player";
+import heartAnimation from "../../assets/icons/Heart.json";
+import LoginPromptModal from "../LoginModal/LoginPromptModal";
+import { useNavigate } from "react-router-dom";
 
 const BestsellersSlider = ({ onQuickView }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { data } = useSelector((state) => state.home);
-  const bestsellers = data?.bestSellers?.products || [];
+  // const bestsellers = data?.bestSellers?.products || [];
   const [startIndex, setStartIndex] = useState(0);
+  const [animatedWish, setAnimatedWish] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [bestsellers, setBestsellers] = useState([]);
 
+  useEffect(() => {
+    setBestsellers(data?.bestSellers?.products || []);
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, [data]);
   const handlePrev = () => {
     setStartIndex((prev) => Math.max(prev - 1, 0));
   };
@@ -22,14 +39,102 @@ const BestsellersSlider = ({ onQuickView }) => {
     if (onQuickView) onQuickView(data);
   };
 
+  const toggleWishlist = async (e, product) => {
+    e.stopPropagation();
+    if (!isLoggedIn) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
+    const isInWishlist = product.is_wishlisted;
+    try {
+      if (isInWishlist) {
+        const wishlistItem = product.wishlist[0].wishlist_id;
+        if (wishlistItem) {
+          await dispatch(removeFromWishlist(wishlistItem)).unwrap();
+          toast.success("Removed from wishlist", {
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+            iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+            hideProgressBar: true,
+            closeButton: true,
+            icon: true,
+          });
+          setBestsellers((prev) =>
+            prev.map((p) =>
+              p.id === product.id
+                ? { ...p, is_wishlisted: false, wishlist: [] }
+                : p
+            )
+          );
+        }
+      } else {
+        // addToWishlist thunk should return the new wishlist item(s)
+        const addedWishlistItem = await dispatch(
+          addToWishlist({ product_id: product.id })
+        ).unwrap();
+        toast.success("Added to wishlist", {
+          style: {
+            border: "1px solid #713200",
+            padding: "16px",
+            color: "#713200",
+          },
+          iconTheme: {
+            primary: "#713200",
+            secondary: "#FFFAEE",
+          },
+          hideProgressBar: true,
+          closeButton: true,
+          icon: true,
+        });
+        setAnimatedWish(product.id);
+
+        // If your API returns the whole wishlist array:
+        const wishlist = Array.isArray(addedWishlistItem)
+          ? addedWishlistItem.find((w) => w.product_id === product.id)
+          : addedWishlistItem;
+
+        // Update local state immutably
+        setBestsellers((prev) =>
+          prev.map((p) =>
+            p.id === product.id
+              ? {
+                  ...p,
+                  is_wishlisted: true,
+                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+                }
+              : p
+          )
+        );
+        setTimeout(() => setAnimatedWish(null), 1500);
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
     <div className="bestseller-container">
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="bestseller-slider">
         {/* Left Scrolling Card */}
         <div className="slider-strip">
           {bestsellers?.slice(startIndex, startIndex + 1).map((item) => (
             <div className="bestseller-card" key={item.id}>
-              <div className="image-wrapper">
+              <div
+                className="image-wrapper"
+                onClick={() => {
+                  navigate("/productsdetails", {
+                    state: { product: item.action_url },
+                  });
+                }}
+              >
                 <img src={item?.media_list?.main?.file} alt={item.name} />
                 <div className="order_view_btn">
                   <button className="quick-view" onClick={() => LogsIcon(item)}>
@@ -40,9 +145,45 @@ const BestsellersSlider = ({ onQuickView }) => {
                   </button>
                 </div>
 
-                <span className="fav-icon">
+                {/* <span className="fav-icon">
                   <Heart color="#000000" size={20} strokeWidth={2} />
-                </span>
+                </span> */}
+                <button
+                  className="wishlist-btn_products"
+                  onClick={(e) => toggleWishlist(e, item)}
+                >
+                  {animatedWish === item.id ? (
+                    <div
+                      style={{
+                        width: 20,
+                        height: 24,
+                        overflow: "hidden",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Player
+                        autoplay
+                        keepLastFrame
+                        src={heartAnimation}
+                        style={{
+                          width: 139,
+                          height: 139,
+                          transform: "scale(0.5)",
+                          transformOrigin: "center",
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <Heart
+                      color={item.is_wishlisted ? "#FF0000" : "#000"}
+                      fill={item.is_wishlisted ? "#FF0000" : "none"}
+                      size={20}
+                      strokeWidth={2}
+                    />
+                  )}
+                </button>
               </div>
               <div className="product-info-card">
                 <p className="title">{item.name}</p>
@@ -71,7 +212,14 @@ const BestsellersSlider = ({ onQuickView }) => {
         <div className="slider-strip">
           {bestsellers?.slice(startIndex + 1, startIndex + 4).map((item) => (
             <div className="bestseller-card" key={item.id}>
-              <div className="image-wrapper">
+              <div
+                className="image-wrapper"
+                onClick={() => {
+                  navigate("/productsdetails", {
+                    state: { product: item.action_url },
+                  });
+                }}
+              >
                 <img src={item?.media_list?.main?.file} alt={item.name} />
                 <button className="quick-view" onClick={() => LogsIcon(item)}>
                   Quick View &nbsp;
@@ -79,9 +227,45 @@ const BestsellersSlider = ({ onQuickView }) => {
                     <Expand color="#000000" size={15} strokeWidth={1.25} />
                   </span>
                 </button>
-                <span className="fav-icon">
+                {/* <span className="fav-icon">
                   <Heart color="#000000" size={20} strokeWidth={2} />
-                </span>
+                </span> */}
+                <button
+                  className="wishlist-btn_products"
+                  onClick={(e) => toggleWishlist(e, item)}
+                >
+                  {animatedWish === item.id ? (
+                    <div
+                      style={{
+                        width: 20,
+                        height: 24,
+                        overflow: "hidden",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Player
+                        autoplay
+                        keepLastFrame
+                        src={heartAnimation}
+                        style={{
+                          width: 139,
+                          height: 139,
+                          transform: "scale(0.5)",
+                          transformOrigin: "center",
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <Heart
+                      color={item.is_wishlisted ? "#FF0000" : "#000"}
+                      fill={item.is_wishlisted ? "#FF0000" : "none"}
+                      size={20}
+                      strokeWidth={2}
+                    />
+                  )}
+                </button>
               </div>
               <div className="product-info">
                 <p className="title">{item.name}</p>
@@ -91,6 +275,10 @@ const BestsellersSlider = ({ onQuickView }) => {
           ))}
         </div>
       </div>
+      {/* login modal */}
+      {showLoginPrompt && (
+        <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
+      )}
     </div>
   );
 };

@@ -106,6 +106,27 @@ const LoginPage = () => {
           setTimeout(() => {
             navigate(-1);
           }, 2000); // wait 1s before redirect
+        } else if (res.meta.requestStatus === "rejected") {
+          // Get API error message
+          const message =
+            res.message ||
+            res.error?.data?.message ||
+            "Failed to verify OTP.";
+
+          toast.error(message, {
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+            iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+            hideProgressBar: true,
+            closeButton: true,
+            icon: true,
+          });
         }
       }
     );

@@ -194,7 +194,7 @@
   background: #111827;
   color: #fff;
   font-size: 14px;
-  font-weight: 600;
+  /* font-weight: 600; */
   border: none;
   cursor: pointer;
   transition: background 0.2s ease;

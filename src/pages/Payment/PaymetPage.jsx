@@ -5,15 +5,12 @@ import { Info } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { initiatePayment, verifyPayment } from "./paymentService";
 import { useNavigate } from "react-router-dom";
-import phonepayimage from "../../assets/images/phonepe.png";
-import razorpay from "../../assets/images/Razorpay.png";
 import { ToastContainer, toast } from "react-toastify";
 
 const PaymentPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { orderResponse, orderPayload, checkoutData } = location.state || {};
-  console.log("orderResponse--->", orderResponse);
   const [selectedPayment, setSelectedPayment] = useState(null);
 
   // Default selection logic
@@ -29,21 +26,6 @@ const PaymentPage = () => {
       }
     }
   }, [orderResponse]);
-
-  // Load Razorpay script
-  const loadRazorpayScript = () => {
-    return new Promise((resolve) => {
-      if (document.getElementById("razorpay-sdk")) {
-        return resolve(true); // already loaded
-      }
-      const script = document.createElement("script");
-      script.id = "razorpay-sdk";
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
-  };
 
   const startPayment = async () => {
     try {
@@ -64,12 +46,8 @@ const PaymentPage = () => {
         ref_id: orderResponse?.data?.ref_id,
         provider: gateway.provider,
         secret: gateway.secret,
+        redirect_url: `${window.location.origin}/paymentcheck`,
       };
-
-      // only add redirect_url for PHONEPE
-      if (gateway.provider === "PHONEPE") {
-        payload.redirect_url = `${window.location.origin}/paymentcheck`;
-      }
 
       const orderData = await initiatePayment(payload);
       if (!orderData?.success) {
@@ -84,63 +62,44 @@ const PaymentPage = () => {
             secondary: "#FFFAEE",
           },
         });
+        return false;
       }
       // Step 2: Razorpay Flow
       if (gateway.provider === "RAZORPAY") {
-        const loaded = await loadRazorpayScript();
-        if (!loaded) {
-          alert("Razorpay SDK failed to load. Are you online?");
-          return;
+        if (orderData?.success) {
+          // Redirect user to PhonePe payment page
+          window.location.href = orderData?.data?.payment_link;
+        } else {
+          toast.error("Payment initiation failed", {
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+            iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+          });
         }
-
-        const options = {
-          key: orderData.razorpay_key,
-          amount: orderData.order.amount,
-          currency: orderData.order.currency,
-          name: "Obsessions",
-          description: "Order Payment",
-          order_id: orderData.order.id,
-          handler: async function (response) {
-            console.log("Razorpay Success Response:", response);
-            const verifyRes = await verifyPayment(
-              response.razorpay_payment_id,
-              response.razorpay_order_id
-            );
-
-            console.log("Payment Verify Response:", verifyRes);
-            // alert("Payment Verified: " + JSON.stringify(verifyRes));
-            if (verifyRes.status) {
-              navigate("/ordersuccess", {
-                state: {
-                  verifyResponse: verifyRes,
-                },
-              });
-            }
-          },
-          prefill: {
-            name:
-              orderPayload.billing_first_name +
-              " " +
-              orderPayload.billing_last_name,
-            contact: orderPayload.billing_mobile,
-          },
-          theme: { color: "black" },
-        };
-
-        const rzp = new window.Razorpay(options);
-        rzp.open();
       } else if (gateway.provider === "PHONEPE") {
         // Handle PhonePe
-        console.log(orderData);
-
-        if (orderData?.order) {
+        if (orderData?.success) {
           // Redirect user to PhonePe payment page
-          window.location.href = orderData.payment_url;
+          window.location.href = orderData?.data?.payment_link;
         } else {
-          alert("Payment initiation failed");
+          toast.error("Payment initiation failed", {
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+            iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+          });
         }
-        alert("Redirecting to PhonePe...");
-        // window.location.href = orderData.redirect_url;
       }
     } catch (err) {
       console.error("Payment error:", err);
@@ -277,14 +236,14 @@ const PaymentPage = () => {
                   >
                     {pg.provider === "RAZORPAY" && (
                       <img
-                        src={razorpay}
+                        src={pg.logo}
                         alt="Razorpay"
                         className="payment-logo"
                       />
                     )}
                     {pg.provider === "PHONEPE" && (
                       <img
-                        src={phonepayimage}
+                        src={pg.logo}
                         alt="PhonePe"
                         className="payment-logo"
                       />

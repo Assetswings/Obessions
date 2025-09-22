@@ -56,24 +56,24 @@ const ProductsPage = () => {
   useEffect(() => {
     if (category) {
       setProducts([]);
-      dispatch(fetchProducts({ category, subcategory, page: 1, limit: 20 }));
+      dispatch(fetchProducts({ category, subcategory, page: 1, limit: 20,filters: selectedFilters, }));
     }
-  }, [dispatch, category, subcategory]);
+  }, [dispatch, category, subcategory, selectedFilters]);
 
-  useEffect(() => {
-    if (category) {
-      setProducts([]);
-      dispatch(
-        fetchProducts({
-          category,
-          subcategory,
-          page: 1,
-          limit: 20,
-          filters: selectedFilters,
-        })
-      );
-    }
-  }, [selectedFilters]);
+  // useEffect(() => {
+  //   if (category) {
+  //     setProducts([]);
+  //     dispatch(
+  //       fetchProducts({
+  //         category,
+  //         subcategory,
+  //         page: 1,
+  //         limit: 20,
+  //         filters: selectedFilters,
+  //       })
+  //     );
+  //   }
+  // }, [selectedFilters]);
 
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {

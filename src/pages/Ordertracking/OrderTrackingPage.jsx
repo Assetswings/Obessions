@@ -6,39 +6,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { fetchOrderHistory } from "../Orderhistory/orderhistorySlice";
 import API from "../../app/api";
 
-// { label: "Shipped", time: null, status: "done", type: "major" },
-// {
-//   label: "Pick-up Scheduled with the Courier",
-//   time: "May 2, 2025 at 05:30 PM",
-//   status: "done",
-//   type: "minor",
-// },
-// {
-//   label: "Package has left our facility",
-//   time: "May 3, 2025 at 05:10 PM",
-//   status: "done",
-//   type: "minor",
-// },
-// {
-//   label: "Package has reached the Carrier Location",
-//   time: "May 3, 2025 at 08:30 PM",
-//   status: "done",
-//   type: "minor",
-// },
-// {
-//   label: "Package left the shipper facility",
-//   time: "May 4, 2025 at 04:10 AM",
-//   status: "done",
-//   type: "minor",
-// },
-// { label: "Out for Delivery", time: null, status: "pending", type: "major" },
-// { label: "Delivered", time: null, status: "pending", type: "major" },
-
 const OrderTrackingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const [trackingData, setData] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const { order_no } = location.state || {};
   const { results, loading, error } = useSelector((state) => state.orders);
@@ -97,6 +72,19 @@ const OrderTrackingPage = () => {
     }
   };
 
+  const handleSimilarProductClick = (slug) => {
+    navigate("/productsdetails", { state: { product: slug } });
+  };
+
+  const handleProceed = () => {
+    setShowModal(false);
+    if (selectedItem) {
+      navigate("/returnexchange", {
+        state: { item: selectedItem, orderNo: selectedOrder },
+      });
+    }
+  };
+
   if (loading) return <p>Loading order details...</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
   if (!order) return <p>No order found.</p>;
@@ -132,12 +120,57 @@ const OrderTrackingPage = () => {
               <p>₹{item.mrp}</p>
               <p>Quantity : {item.quantity}</p>
               <div className="actions">
-                <a href="#">Buy Again</a>
-                <a href="#">Exchange / Return</a>
+                <span
+                  onClick={() => handleSimilarProductClick(item.action_url)}
+                >
+                  Buy Again
+                </span>
+                <span
+                  onClick={() => {
+                    setSelectedItem({
+                      itemId: item.id,
+                      product_name: item.product_name,
+                      product_media: item.product_media,
+                      price: item.mrp,
+                      qty: item.quantity,
+                      order_no: order.order_no,
+                      allow_exchange: item.allow_exchange,
+                      allow_return: item.allow_return,
+                    });
+                    setSelectedOrder(order.order_no);
+                    setShowModal(true);
+                  }}
+                >
+                  Exchange / Return
+                </span>
               </div>
             </div>
           </div>
         ))}
+
+        {/*Exchange Modal */}
+        {showModal && (
+          <div className="modal-overlay-history">
+            <div className="modal-box">
+              <h3>Return / Exchange Order</h3>
+              <p>Are you sure you want to return/cancel this order?</p>
+              <div className="modal-actions">
+                <button
+                  className="go-back"
+                  onClick={() => {
+                    setShowModal(false);
+                    setSelectedItem(null);
+                  }}
+                >
+                  GO BACK
+                </button>
+                <button className="proceed" onClick={handleProceed}>
+                  YES, PROCEED
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="price-details">
           <div>

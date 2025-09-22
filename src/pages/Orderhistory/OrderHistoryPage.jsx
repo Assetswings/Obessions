@@ -77,6 +77,10 @@ const OrderHistoryPage = () => {
     }
   };
 
+  const handleSimilarProductClick = (slug) => {
+    navigate("/productsdetails", { state: { product: slug }});
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error.msg}</p>;
 
@@ -118,13 +122,16 @@ const OrderHistoryPage = () => {
                   <div>
                     <div> Estimated Delivery</div>
                     <div>
-  {new Date(order.order_placed_at).toLocaleDateString("en-US", {
-    weekday: "short",
-    day: "2-digit",
-    month: "short",
-    timeZone: "Asia/Kolkata",
-  })}
-</div>
+                      {new Date(order.order_placed_at).toLocaleDateString(
+                        "en-US",
+                        {
+                          weekday: "short",
+                          day: "2-digit",
+                          month: "short",
+                          timeZone: "Asia/Kolkata",
+                        }
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="trac">
@@ -135,14 +142,18 @@ const OrderHistoryPage = () => {
                 </div>
                 <div className="order-actions">
                   <span
+                    className="pointer-crusser"
                     onClick={() =>
                       navigate("/OrderTrackingPage", {
-                      state: { order_no: order.order_no },
+                        state: { order_no: order.order_no },
                       })
-                    }>
+                    }
+                  >
                     Track Order
                   </span>
-                  <div><span>View Invoice</span></div>
+                  <div>
+                    <span>View Invoice</span>
+                  </div>
                 </div>
               </div>
 
@@ -173,12 +184,12 @@ const OrderHistoryPage = () => {
                     {(item.allow_exchange || item.allow_return) && (
                       <div className="actions">
                         <div className="link-btn">
-                          <p className="cancel-order">Buy Again</p>
+                          <p className="cancel-order" onClick={() => handleSimilarProductClick(item.action_url)} >Buy Again</p>
                         </div>
                         <div
-                              className="link-btn"
-                              onClick={() => {
-                              setSelectedItem({
+                          className="link-btn"
+                          onClick={() => {
+                            setSelectedItem({
                               itemId: item.id,
                               product_name: item.product_name,
                               product_media: item.product_media,

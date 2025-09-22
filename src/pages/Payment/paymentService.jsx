@@ -7,9 +7,10 @@ import API from "../../app/api";
       const response = await API.post("/checkout/payment-initiate", payload);
 
     // response.data.data.data contains { razorpay_key, order, callback_url }
-    return response.data.data.data;
+    return response.data;
     } catch (error) {
     console.error("Error initiating payment:", error.response?.data || error);
+    return error.response?.data;
     throw error;
   }
 };

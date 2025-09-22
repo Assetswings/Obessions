@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CancelOrder.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import API from "../../app/api";
-import toast from "react-hot-toast";
+import { ToastContainer, toast } from "react-toastify";
 
 const CancelOrder = () => {
   const [reason, setReason] = useState("");
@@ -50,17 +50,20 @@ const CancelOrder = () => {
     // If there are validation errors, stop execution
     if (Object.keys(errors).length > 0) {
       console.log("Validation Errors:", errors);
-      toast.error(errors || "Order Return failed!", {
-        style: {
-          border: "1px solid #FF0000",
-          padding: "16px",
-          color: "#FF0000",
-        },
-        iconTheme: {
-          primary: "#FF0000",
-          secondary: "#FFFAEE",
-        },
-      });
+      toast.error(
+        errors?.reason || errors?.comments || "Order Return failed!",
+        {
+          style: {
+            border: "1px solid #FF0000",
+            padding: "16px",
+            color: "#FF0000",
+          },
+          iconTheme: {
+            primary: "#FF0000",
+            secondary: "#FFFAEE",
+          },
+        }
+      );
       return;
     }
     try {
@@ -102,6 +105,8 @@ const CancelOrder = () => {
   };
 
   return (
+    <>
+    <ToastContainer position="top-right" autoClose={3000} />
     <div className="cancel-order-container">
       {/* Left Section */}
       <div className="cancel-order-form">
@@ -169,6 +174,7 @@ const CancelOrder = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

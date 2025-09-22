@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import API from "../../app/api";
+import processvideo from "../../assets/icons/Obsessionsgiffff.gif";
 
 const PaymentCheck = () => {
   const [searchParams] = useSearchParams();
@@ -40,18 +41,17 @@ const PaymentCheck = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white rounded-2xl shadow-lg p-8 text-center w-full max-w-sm">
+      <div className="rounded-2xl p-8 text-center w-full max-w-sm">
         {loading ? (
           <>
             <div className="flex justify-center mb-4">
-              <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+              <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin">
+                <img  src={processvideo} alt="loader"  height={300} width={300 }/>
+              </div>
             </div>
             <h2 className="text-xl font-semibold text-gray-700">
-              Verifying your payment...
+              Please wait while we securely process your Order!
             </h2>
-            <p className="text-sm text-gray-500 mt-2">
-              Please wait a moment while we confirm your transaction.
-            </p>
           </>
         ) : (
           <h2 className="text-xl font-semibold text-green-500">

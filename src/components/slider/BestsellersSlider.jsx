@@ -120,7 +120,24 @@ const BestsellersSlider = ({ onQuickView }) => {
   };
 
   return (
-    <div className="bestseller-container">
+     <> 
+         <div className="bestseller-fixed-card-mlb">
+         <div> 
+          <h2 className="txt_mlb_haed">
+          Get the <em>Bestsellers</em>
+          </h2>
+          </div>
+          <div className="arrow-controls">
+            <button onClick={handlePrev}>
+              <img className="btn_left_arrow" src={arrowleft} alt="prev" />
+            </button>
+            <button onClick={handleNext}>
+              <img className="btn_right_arrow" src={arrowright} alt="next" />
+            </button>
+          </div>
+          </div>
+
+      <div className="bestseller-container">
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="bestseller-slider">
         {/* Left Scrolling Card */}
@@ -280,6 +297,8 @@ const BestsellersSlider = ({ onQuickView }) => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
     </div>
+     </>
+ 
   );
 };
 

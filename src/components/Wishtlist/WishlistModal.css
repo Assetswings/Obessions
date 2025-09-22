@@ -8,7 +8,7 @@
     width: 100vw;
     height: 100vh;
     background: rgba(51, 51, 51, 0.8);
-    z-index: 999999;
+    z-index: 9999999;
   }
   
   .wishlist-modal {
@@ -103,6 +103,21 @@
      font-size: 14px;
      /* font-family: 'Helvetica Neue', sans-serif;
       font-weight: 300; */
-      
   }
  
+  @media (max-width: 480px) {
+    .wishlist-modal {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background: #fff;
+      width: 100%;
+      height: 150vh;
+      /* padding: 30px; */
+      overflow-y: auto;
+  }
+  .wishlist-item {
+     padding: 20px;
+  }
+
+  }

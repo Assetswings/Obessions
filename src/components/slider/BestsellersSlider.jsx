@@ -154,12 +154,18 @@ const BestsellersSlider = ({ onQuickView }) => {
               >
                 <img src={item?.media_list?.main?.file} alt={item.name} />
                 <div className="order_view_btn">
-                  <button className="quick-view" onClick={() => LogsIcon(item)}>
-                    Quick View &nbsp;
-                    <span>
-                      <Expand color="#000000" size={15} strokeWidth={1.25} />
-                    </span>
-                  </button>
+                <button
+  className="quick-view"
+  onClick={(e) => {
+    e.stopPropagation();  // ✅ prevent redirect
+    LogsIcon(item);       // ✅ open Quick View modal
+  }}
+>
+  Quick View &nbsp;
+  <span>
+    <Expand color="#000000" size={15} strokeWidth={1.25} />
+  </span>
+</button>
                 </div>
 
                 {/* <span className="fav-icon">
@@ -238,12 +244,18 @@ const BestsellersSlider = ({ onQuickView }) => {
                 }}
               >
                 <img src={item?.media_list?.main?.file} alt={item.name} />
-                <button className="quick-view" onClick={() => LogsIcon(item)}>
-                  Quick View &nbsp;
-                  <span>
-                    <Expand color="#000000" size={15} strokeWidth={1.25} />
-                  </span>
-                </button>
+                <button
+  className="quick-view"
+  onClick={(e) => {
+    e.stopPropagation();  
+    LogsIcon(item);       
+  }}
+>
+  Quick View &nbsp;
+  <span>
+    <Expand color="#000000" size={15} strokeWidth={1.25} />
+  </span>
+</button>
                 {/* <span className="fav-icon">
                   <Heart color="#000000" size={20} strokeWidth={2} />
                 </span> */}

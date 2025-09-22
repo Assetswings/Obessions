@@ -224,6 +224,8 @@ const ProfilePage = () => {
 
     if (!form.address.trim()) {
       formErrors.address = "Address is required";
+    } else if (form.address.trim().length < 5) {
+      formErrors.address = "Address 1 must be at least 5 characters long";
     }
 
     if (!form.city.trim()) {
@@ -243,13 +245,16 @@ const ProfilePage = () => {
     } else if (!/^\d{6}$/.test(form.pincode)) {
       formErrors.pincode = "Enter a valid 6-digit pincode";
     }
-
     if (!form.address2.trim()) {
       formErrors.address2 = "Address 2 is required";
+    } else if (form.address2.trim().length < 5) {
+      formErrors.address2 = "Address 2 must be at least 5 characters long";
     }
 
     if (!form.landmark.trim()) {
       formErrors.landmark = "landmark is required";
+    } else if (form.landmark.trim().length < 5) {
+      formErrors.landmark = "Landmark must be at least 5 characters long";
     }
 
     setErrors(formErrors);

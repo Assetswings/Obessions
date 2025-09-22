@@ -298,8 +298,7 @@ const HomePage = () => {
           {data?.hero_banner_categories?.map((item) => (
             <li
               key={item.id}
-              onClick={() => handleCategoryClick(item.action_url)}
-            >
+              onClick={() => handleCategoryClick(item.action_url)}>
               {item.name}
             </li>
           ))}
@@ -420,7 +419,7 @@ const HomePage = () => {
       </section>
 
       {/* ────────────────── 🥀💎💎 🐉 SHOP BY SECTION 🐉 💎💎🥀 ────────────────── */}
-      <section className="shopby py-5">
+      <section className="shopby ">
         <p className="shopby-title text-uppercase mb-4 txt_shopby">Shop by</p>
 
         <ul className="shopby-list">

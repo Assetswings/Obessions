@@ -3,6 +3,7 @@
     color: #f0f0f0;
     padding: 80px 80px;
     font-family: 'Arial', sans-serif;
+    z-index: 9999;
   }
   
   .newsletter {
@@ -163,3 +164,14 @@
     }
   }
   
+
+  @media (max-width: 480px){
+    .footer {
+      background-color: #1c150f;
+      color: #f0f0f0;
+      padding: 80px 80px;
+      font-family: 'Arial', sans-serif;
+      z-index: 999999 !important;
+      position: relative;
+    }
+  } 

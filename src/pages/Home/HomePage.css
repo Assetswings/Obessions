@@ -265,10 +265,9 @@ body {
 }
 
 /* ───────────── COLLECTION ───────────── */
-.section_collection {
-  padding: 9rem 0;
-  position: relative;
-}
+
+
+
 .collection-content {
   max-width: 560px;
   z-index: 2;
@@ -329,9 +328,13 @@ border-radius: 0px 4px 4px 0px;
   margin-bottom: 10px;
 }
 /* ───────────── SHOP BY ───────────── */
-.shopby {
+/* .shopby {
   background: #f7f7f7;
   margin-top: 120px;
+} */
+section.shopby {
+  height: 84vh;
+margin-top: 200px;
 }
 
 .shopby-title {
@@ -970,16 +973,8 @@ border-radius: 0px 4px 4px 0px;
   .category-list{
     display: none;
   }
-  .homepage {
-    height: 70vh;
-    background: white;
-    overflow: hidden;
-  }
   .txt_dynamic_betlt{
     display: none;
-  }
-  .search-wrapper{
-   width: 350px;
   }
 
   .collection-img.img-left {
@@ -1012,7 +1007,7 @@ border-radius: 0px 4px 4px 0px;
     display: none;
   }
   .obsessions-text {
-    top: 100px;
+    top: 185px;
     left: -40px;
     z-index: 0;
     font-size: 20vw;
@@ -1025,5 +1020,59 @@ border-radius: 0px 4px 4px 0px;
     position: relative !important;
     z-index: 20;
   }
+ 
+   /* ─── Set 0 ─── */
+.set-0 .img-center { top: 55%; left: 33%; width: 25vw; z-index: 25;transform: rotate(-8deg); }
+.set-0 .img-left   { top: 32%; left: 6%; width: 16vw; transform: rotate(-3deg);}
+.set-0 .img-top    { top: 10%;  left: 45%; width: 6vw;transform: rotate(16deg);  }
+.set-0 .img-right  { top: 30%; right: 5%; width: 24vw; z-index: 25;transform: rotate(10deg);}
+
+/* ─── Set 1 ─── */
+.set-1 .img-center { top: 55%; left: 43%; width: 40vw; z-index: 25; transform: translateX(-50%); }
+.set-1 .img-left  { top: 30%; left: 5%; width: 15vw; transform: rotate(8deg);}
+.set-1 .img-top    { top: 8%; left: 40%; width: 22vw; transform: rotate(13deg);}
+.set-1 .img-right  { top: 38%; right: 6%; width: 29vw; z-index: 25;transform: rotate(12deg); }
+
+/* ─── Set 2 ─── */
+.set-2 .img-center { top: 36%; left:5%; width: 80vw; z-index: 25;transform: rotate(15deg); }
+.set-2 .img-left    { top: 25%; left: 2%; width: 30vw; transform: rotate(-3deg);}
+.set-2 .img-top    { top: 10%;  left: 42%; width: 12vw; transform: rotate(10deg);  }
+.set-2 .img-right { top: 38%; right: 10%; width: 22vw; z-index: 25;transform: rotate(12deg);}
+
+/* ─── Set 3 ─── */
+.set-3 .img-center { top: 40%; left: 10%; width: 62vw; z-index: 25;transform: rotate(1deg); }
+.set-3 .img-left   { top: 30%; left: 5%; width: 15vw; }
+.set-3 .img-top    { top: 10%;  left: 40%; width: 18vw;transform: rotate(19deg); }
+.set-3 .img-right  { top: 26%; right: 2%; width: 25vw; transform: rotate(10deg);}
+
+.description
+ {
+    /* top: 48%; */
+    right: 10px;
+    width: 130px;
+    font-size: 10px;
+    z-index: 2;
+    color: #625e55;
 }
+.search-wrapper{
+  width: 90%;
+  bottom: 33%;
+  position:fixed;
+
+ }
+
+ .homepage {
+  height: 80vh;
+  background:white;
+  overflow: hidden;
+}
+
+section.shopby {
+  height: 55vh;
+margin-top: 150px;
+}
+
+}
+
+
 

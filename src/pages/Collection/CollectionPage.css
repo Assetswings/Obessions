@@ -100,6 +100,9 @@ font-family: "Playfair Display", serif; */
   .good-to-know-section {
     text-align: left;
   }
+  .sidebar{
+    display: none;
+  }
 }
   /* Responsive: 1 column on small screens */
   @media (max-width: 768px) {

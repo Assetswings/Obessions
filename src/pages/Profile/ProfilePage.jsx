@@ -204,12 +204,16 @@ const ProfilePage = () => {
       formErrors.first_name = "First name is required";
     } else if (!/^[A-Za-z\s]+$/.test(form.first_name)) {
       formErrors.first_name = "Only alphabets are allowed";
+    } else if (form.first_name.trim().length < 3) {
+      formErrors.first_name = "First name must be at least 3 characters long";
     }
 
     if (!form.last_name.trim()) {
       formErrors.last_name = "Last name is required";
     } else if (!/^[A-Za-z\s]+$/.test(form.last_name)) {
       formErrors.last_name = "Only alphabets are allowed";
+    } else if (form.last_name.trim().length < 3) {
+      formErrors.last_name = "Last name must be at least 3 characters long";
     }
 
     if (!form.mobile.trim()) {
@@ -238,6 +242,14 @@ const ProfilePage = () => {
       formErrors.pincode = "Pincode is required";
     } else if (!/^\d{6}$/.test(form.pincode)) {
       formErrors.pincode = "Enter a valid 6-digit pincode";
+    }
+
+    if (!form.address2.trim()) {
+      formErrors.address2 = "Address 2 is required";
+    }
+
+    if (!form.landmark.trim()) {
+      formErrors.landmark = "landmark is required";
     }
 
     setErrors(formErrors);
@@ -541,17 +553,18 @@ const ProfilePage = () => {
                       });
                       setShowAddAddressModal(false);
                       setErrors({}); // clear errors on success
+                      toast.success("Address Added Successfully.");
                     }
                   });
                 }}
               >
                 <label>
-                  First Name
+                 <span>First Name <span className="required">*</span></span> 
                   <input
                     name="first_name"
                     value={newAddress.first_name}
                     onChange={handleNewAddressChange}
-                    required
+                    
                   />
                   {errors.first_name && (
                     <p className="error">{errors.first_name}</p>
@@ -559,81 +572,82 @@ const ProfilePage = () => {
                 </label>
 
                 <label>
-                  Last Name
+                  <span>Last Name <span className="required">*</span></span>
                   <input
                     name="last_name"
                     value={newAddress.last_name}
                     onChange={handleNewAddressChange}
-                    required
+                    
                   />
                   {errors.last_name && (
                     <p className="error">{errors.last_name}</p>
                   )}
                 </label>
                 <label>
-                  Mobile Number
+                  <span>Mobile Number <span className="required">*</span></span>
                   <input
                     name="mobile"
                     maxLength={10}
                     value={newAddress.mobile}
                     onChange={handleNewAddressChange}
-                    required
+                    
                   />
                   {errors.mobile && <p className="error">{errors.mobile}</p>}
                 </label>
                 <label>
-                  PIN Code
+                  <span>PIN Code <span className="required">*</span></span>
                   <input
                     name="pincode"
                     value={newAddress.pincode}
                     onChange={handleNewAddressChange}
-                    required
+                    
                   />
                   {errors.pincode && <p className="error">{errors.pincode}</p>}
                 </label>
                 <label>
-                  State
+                  <span>State <span className="required">*</span></span>
                   <input
                     name="state"
                     value={newAddress.state}
                     onChange={handleNewAddressChange}
-                    required
+                    
                   />
                   {errors.state && <p className="error">{errors.state}</p>}
                 </label>
                 <label>
-                  City
+                  <span>City <span className="required">*</span></span>
                   <input
                     name="city"
                     value={newAddress.city}
                     onChange={handleNewAddressChange}
-                    required
+                    
                   />
                   {errors.city && <p className="error">{errors.city}</p>}
                 </label>
                 <label>
-                  Street Address 1
+                  <span>Street Address 1 <span className="required">*</span></span>
                   <input
                     name="address"
                     value={newAddress.address}
                     onChange={handleNewAddressChange}
-                    required
+                    
                   />
                   {errors.address && <p className="error">{errors.address}</p>}
                 </label>
                 <label>
-                  Street Address 2
+                  <span>Street Address 2 <span className="required">*</span></span>
                   <input
                     name="address2"
                     value={newAddress.address2}
                     onChange={handleNewAddressChange}
+                    
                   />
                   {errors.address2 && (
                     <p className="error">{errors.address2}</p>
                   )}
                 </label>
                 <label>
-                  Landmark
+                  <span>Landmark <span className="required">*</span></span>
                   <input
                     name="landmark"
                     value={newAddress.landmark}
@@ -677,12 +691,13 @@ const ProfilePage = () => {
                       setShowEditAddressModal(false);
                       setEditAddressData(null);
                       setErrors({});
+                      toast.success("Address Updated Successfully.");
                     }
                   });
                 }}
               >
                 <label>
-                  First Name
+                  <span>First Name <span className="required">*</span></span> 
                   <input
                     name="first_name"
                     value={editAddressData?.first_name || ""}
@@ -693,7 +708,7 @@ const ProfilePage = () => {
                   )}
                 </label>
                 <label>
-                  Last Name
+                  <span>Last Name <span className="required">*</span></span>
                   <input
                     name="last_name"
                     value={editAddressData?.last_name || ""}
@@ -704,7 +719,7 @@ const ProfilePage = () => {
                   )}
                 </label>
                 <label>
-                  Mobile Number
+                  <span>Mobile Number <span className="required">*</span></span>
                   <input
                     name="mobile"
                     maxLength={10}
@@ -714,7 +729,7 @@ const ProfilePage = () => {
                   {errors.mobile && <p className="error">{errors.mobile}</p>}
                 </label>
                 <label>
-                  PIN Code
+                  <span>PIN Code <span className="required">*</span></span>
                   <input
                     name="pincode"
                     value={editAddressData?.pincode || ""}
@@ -723,7 +738,7 @@ const ProfilePage = () => {
                   {errors.pincode && <p className="error">{errors.pincode}</p>}
                 </label>
                 <label>
-                  State
+                  <span>State <span className="required">*</span></span>
                   <input
                     name="state"
                     value={editAddressData?.state || ""}
@@ -732,7 +747,7 @@ const ProfilePage = () => {
                   {errors.state && <p className="error">{errors.state}</p>}
                 </label>
                 <label>
-                  City
+                  <span>City <span className="required">*</span></span>
                   <input
                     name="city"
                     value={editAddressData?.city || ""}
@@ -741,7 +756,7 @@ const ProfilePage = () => {
                   {errors.city && <p className="error">{errors.city}</p>}
                 </label>
                 <label>
-                  Street Address 1
+                  <span>Street Address 1 <span className="required">*</span></span>
                   <input
                     name="address"
                     value={editAddressData?.address || ""}
@@ -750,7 +765,7 @@ const ProfilePage = () => {
                   {errors.address && <p className="error">{errors.address}</p>}
                 </label>
                 <label>
-                  Street Address 2
+                  <span>Street Address 2 <span className="required">*</span></span>
                   <input
                     name="address2"
                     value={editAddressData?.address2 || ""}
@@ -761,7 +776,7 @@ const ProfilePage = () => {
                   )}
                 </label>
                 <label>
-                  Landmark
+                  <span>Landmark <span className="required">*</span></span>
                   <input
                     name="landmark"
                     value={editAddressData?.landmark || ""}

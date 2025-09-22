@@ -33,6 +33,7 @@ import CancelOrder from "../pages/CancelOrder/Cancelorder";
 import ReturnExchange from "../pages/ReturnExchange/Returnexchange";
 import Otherpage from "../pages/Otherproductlist/Otherpage";
 import VideoGallery from "../pages/VideoGallery/VideoGallery";
+import Failedpage from "../pages/Payment/Failedpage";
 const AppRoutes = () => {
   return (
     <ScrollToTopWrapper>
@@ -51,6 +52,7 @@ const AppRoutes = () => {
           <Route path="ProfilePage" element={<ProfilePage />} />
           <Route path="paymentgetway" element={<PaymentPage />} />
           <Route path="ordersuccess" element={<Successpage />} />
+          <Route path="orderfailed" element={<Failedpage />} />
           <Route path="paymentcheck" element={<PaymentCheck />} />
           <Route path="cancelorder" element={<CancelOrder/>} />
           <Route path="returnexchange" element={<ReturnExchange/>} />

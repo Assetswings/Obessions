@@ -5,6 +5,7 @@ import "./Successpage.css"; // ✅ import CSS file
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAddOns } from "../Products/otherproductSlice";
 import { UseDispatch } from "react-redux";
+import Footer from "../../components/Footer/Footer";
 const Successpage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,9 +40,9 @@ const Successpage = () => {
         {/* ✅ Buttons */}
         <div className="button-group">
           <button
-              onClick={() =>
+            onClick={() =>
               navigate("/OrderTrackingPage", {
-              state: { order_no: verifyResponse?.data?.order_no },
+                state: { order_no: verifyResponse?.data?.order_no },
               })
             }
             className="btn-outline"
@@ -84,6 +85,8 @@ const Successpage = () => {
           ))}
         </div>
       </section>
+      {/* Fotter section  */}
+      <Footer />
     </>
   );
 };

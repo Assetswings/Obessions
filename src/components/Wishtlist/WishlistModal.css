@@ -100,12 +100,12 @@
   margin-top: 30px;
   }
   .sub_title_whistlist{
-     font-size: 14px;
-     /* font-family: 'Helvetica Neue', sans-serif;
-      font-weight: 300; */
+    font-size: 14px;
+    /* font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 300; */
   }
  
-  @media (max-width: 480px) {
+    @media (max-width: 480px) {
     .wishlist-modal {
       position: absolute;
       right: 0;

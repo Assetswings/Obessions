@@ -1,23 +1,23 @@
+import { CircleCheck } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const CartToast = ({ product, onViewCart, onCheckout, onClose }) => {
     const navigate = useNavigate();
   return (
-    <div style={{ width: "360px", fontFamily: "Arial, sans-serif" }}>
+    <div style={{ width: "450px", fontFamily: "Helvetica Neue sans-serif" }}>
       {/* Header */}
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          borderBottom: "1px solid #ddd",
           paddingBottom: "8px",
           marginBottom: "10px",
         }}
       >
-        <span style={{ color: "green", fontWeight: "bold", fontSize: "14px" }}>
-          ✔ Added to your Cart
+        <span style={{ color: "green"}}>
+          <CircleCheck color="#ffffffff" variant="Bold" fill="currentColor"/> <span style={{ color: "black", fontSize: "20px"}}>Added to your Cart</span>
         </span>
         <span
           style={{
@@ -48,7 +48,7 @@ const CartToast = ({ product, onViewCart, onCheckout, onClose }) => {
 
         {/* Details */}
         <div style={{ flex: 1 }}>
-          <p style={{ fontWeight: "bold", margin: "0 0 4px" }}>{product.name}</p>
+          <p style={{ margin: "0 0 4px" }}>{product.name?.length > 40 ? product.name.slice(0, 40) + "..." : product.name}</p>
           <p style={{ margin: "4px 0", fontSize: "14px" }}>₹{product.price}</p>
           <p style={{ margin: "2px 0", fontSize: "13px", color: "#666" }}>
             Quantity: {product.quantity}

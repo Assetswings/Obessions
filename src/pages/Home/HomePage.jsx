@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import { FaSearch } from "react-icons/fa";
 import "./HomePage.css";
 import BestsellersSlider from "../../components/slider/BestsellersSlider";
@@ -80,6 +80,7 @@ const HomePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const inputRef = useRef(null);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [query, setQuery] = useState("");
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -280,6 +281,42 @@ const HomePage = () => {
       </>
     );
   };
+
+   useEffect(() => {
+  if (isSearchActive) {
+    // 🔒 Lock scroll when search is active
+    document.body.style.overflow = "hidden";
+  } else {
+    // 🔓 Unlock scroll when search is closed
+    document.body.style.overflow = "";
+  }
+
+  // cleanup just in case
+  return () => {
+    document.body.style.overflow = "";
+  };
+}, [isSearchActive]);
+
+  const handleFocus = () => {
+    setIsSearchActive(true);
+  
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+  
+        const rect = inputRef.current.getBoundingClientRect();
+        const scrollY =
+          window.scrollY + rect.top - window.innerHeight / 3;
+  
+        window.scrollTo({
+          top: scrollY,
+          behavior: "smooth",
+        });
+      }
+    }, 300);
+  };
+
+
   return (
     <>
       {/* ───────────────────── HERO ───────────────────── */}
@@ -313,7 +350,7 @@ const HomePage = () => {
           </p>
         </div>
 
-        <div
+        {/* <div
           className={`search-wrapper bg-white rounded shadow ${
             isSearchActive ? "active" : ""
           }`}
@@ -339,10 +376,6 @@ const HomePage = () => {
               <Search strokeWidth={1.25} />
             </button>
           </div>
-
-          {/* Dropdown results */}
-
-          {/* Search Results Grid */}
           {isSearchActive && Array.isArray(results) && results.length > 0 && (
             <>
               <div className="search-results-grid">
@@ -372,7 +405,64 @@ const HomePage = () => {
               </div>
             </>
           )}
+        </div> */}
+
+<div
+      className={`search-wrapper bg-white rounded shadow ${
+        isSearchActive ? "active" : ""
+      }`}
+    >
+      <div className="d-flex">
+        <input
+          ref={inputRef}
+          type="text"
+          className="form-control border-0 rounded-5 input_home"
+          placeholder="WHAT ARE YOU LOOKING FOR?"
+          onChange={(e) => setQuery(e.target.value)}
+          onFocus={handleFocus}
+          value={query}
+        />
+        <button
+          className="btn btn-dark rounded-5 button_search"
+          disabled={!query?.trim()}
+          onClick={() =>
+            navigate("/searchlist", {
+              state: { query: query },
+            })
+          }
+        >
+          <Search strokeWidth={1.25} />
+        </button>
+      </div>
+
+      {isSearchActive && Array.isArray(results) && results.length > 0 && (
+        <div className="search-results-grid">
+          {results.slice(0, 8).map((item, index) => (
+            <div
+              key={index}
+              className="search-card"
+              onClick={() =>
+                navigate("/productsdetails", {
+                  state: { product: item.action_url },
+                })
+              }
+            >
+              <img
+                src={item.media_list?.main?.file}
+                alt={item.name}
+                className="search-card-img"
+              />
+              <div className="search-card-body">
+                <h6 className="search-card-title">
+                  {item.name.split(" ").slice(0, 5).join(" ")}
+                </h6>
+              </div>
+            </div>
+          ))}
         </div>
+      )}
+    </div>
+  
 
         {/* Overlay */}
         {isSearchActive && (

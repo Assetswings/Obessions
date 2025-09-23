@@ -52,15 +52,8 @@ body {
   z-index: 2;
   color: #625e55;
 }
-/* .search-wrapper
- {
-    bottom: 25%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    z-index: 3;
-    z-index: 99;
-} */
+/* .search-wrapper */
+
 
 .search-wrapper {
   position: absolute;
@@ -74,11 +67,8 @@ body {
 
 /* Active state */
 .search-wrapper.active {
-  transform: translate(-50%, -200px);
+  transform: translate(-50%, -100px);
 }
-
-/* Search dropdown */
-/* Grid wrapper */
 
 .search-overlay {
   position: fixed;
@@ -111,6 +101,8 @@ body {
   z-index: 2000;
 }
 
+
+
 /* Each card */
 .search-card {
   background: #fff;
@@ -121,6 +113,17 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+
+.input_home {
+  transition: all 0.3s ease;
+  width: 100%;
+  font-size: 12px; /* prevent Safari zoom */
+}
+
+.input_home.input-shrink {
+  transform: scale(0.9);   /* shrink slightly */
+  font-size: 14px;        /* smaller text size */
+}
 /* .search-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 15px rgba(0,0,0,0.1);
@@ -168,6 +171,34 @@ body {
   font-weight: 600;
   margin-left: 4px;
 }
+ /* serach_end */
+
+ @media (max-width: 480px) {
+  .search-results-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 items in one row */
+    max-height: 500px; /* adjust height for mobile */
+  }
+
+  .search-card-img {
+    width: 90px;
+    height: 90px;
+    /* object-fit: contain; */
+    margin-bottom: 8px;
+      }
+      .search-card-title {
+        font-size: 9px;
+        font-weight: 500;
+        color: #222;
+        margin: 0 0 4px 0;
+        width: 83px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* ⬅️ only 2 lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal; /* allow wrapping */
+      }
+}
 
 .button_track_more{
   display: flex;
@@ -188,6 +219,7 @@ body {
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
 }
+
 
 .fade-in {
   opacity: 1;
@@ -1071,9 +1103,18 @@ margin-top: 50px;
 
 section.shopby {
   height: 55vh;
-margin-top: 100px;
+  margin-top: 100px;
 }
 
+ .search-wrapper.active {
+  transform: translate(-50%, -350px);
+}
+
+.input_home {
+  transition: all 0.3s ease;
+  width: 100%;
+  font-size: 16px !important ; /* prevent Safari zoom */
+}
 }
 
 

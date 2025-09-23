@@ -157,7 +157,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       return;
     }
 
-    if (!pincodeChecked || !pincodeDetails.pinset?.is_active) {
+    if (!pincodeChecked || !pincodeDetails?.is_active) {
       toast.error("Please check delivery availability before adding to cart", {
         style: {
           background: "#1f1f1f",

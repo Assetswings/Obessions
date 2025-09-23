@@ -29,8 +29,8 @@ export const removeCartItem = createAsyncThunk(
   'cart/removeCartItem',
   async (cart_id, { rejectWithValue }) => {
     try {
-      await API.delete(`/cart/item/${cart_id}`);
-      return cart_id;
+      const res = await API.delete(`/cart/item/${cart_id}`);
+      return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -96,15 +96,25 @@ const cartSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
+      // .addCase(removeCartItem.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   const removedId = action.payload;
+      //   state.cartItems.items = state.cartItems.items.filter((item) => item.id !== removedId);
+      //   let newTotal = 0;
+      //   state.cartItems.items.forEach(i => {
+      //     newTotal += (i.product?.selling_price || 0) * (i.cart_qty || 0);
+      //   });
+      //   state.cartItems.total = newTotal;
+      // })
       .addCase(removeCartItem.fulfilled, (state, action) => {
         state.loading = false;
-        const removedId = action.payload;
-        state.cartItems.items = state.cartItems.items.filter((item) => item.id !== removedId);
-        let newTotal = 0;
-        state.cartItems.items.forEach(i => {
-          newTotal += (i.product?.selling_price || 0) * (i.cart_qty || 0);
-        });
-        state.cartItems.total = newTotal;
+
+        const { success, message, data } = action.payload; // ✅ destructure response
+        if (success) {
+          // API already gives updated items & total
+          state.cartItems.items = data.items || [];
+          state.cartItems.total = data.total || 0;
+        }
       })
       .addCase(removeCartItem.rejected, (state, action) => {
         state.loading = false;

@@ -32,6 +32,7 @@ const Carpetfinderserch = () => {
   const [animatedWish, setAnimatedWish] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState({});
   const filtercarpetdata = location.state;
 
   const { filteredData, filters, loading, error } = useSelector(
@@ -112,21 +113,40 @@ const Carpetfinderserch = () => {
     }
   };
 
-  const renderFilterGroup = (title, options, key) => (
-    <div className="custom-filter-group" key={key}>
-      <h4>{title}</h4>
-      {options.map((opt, i) => (
-        <label key={i}>
-          <input
-            type="checkbox"
-            checked={selectedFilters[key]?.includes(opt) || false}
-            onChange={() => handleFilterChange(key, opt)}
-          />
-          <span className="txt_checkbox">{opt}</span>
-        </label>
-      ))}
-    </div>
-  );
+  const toggleExpand = (key) => {
+    setExpandedGroups((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+  const renderFilterGroup = (title, options, key) => {
+    const isExpanded = expandedGroups[key] || false;
+    const visibleOptions = isExpanded ? options : options.slice(0, 5);
+    const hiddenCount = options.length - visibleOptions.length;
+
+    return (
+      <div className="custom-filter-group" key={key}>
+        <h4>{title}</h4>
+        {visibleOptions.map((opt, i) => (
+          <label key={i}>
+            <input
+              type="checkbox"
+              checked={selectedFilters[key]?.includes(opt) || false}
+              onChange={() => handleFilterChange(key, opt)}
+            />
+            <span className="txt_checkbox">{opt}</span>
+          </label>
+        ))}
+
+        {/* Show More / Show Less row with count */}
+        {options.length > 5 && (
+          <div className="show-more-row" onClick={() => toggleExpand(key)}>
+            {isExpanded ? "− Show Less" : `+ Show More (${hiddenCount})`}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="custom-products-page">

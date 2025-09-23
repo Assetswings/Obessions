@@ -13,29 +13,29 @@ const pincodeSlice = createSlice({
   name: 'pincode',
   initialState: {
     pinset: {},
-    loading: false,
-    error: null,
+    pinloading: false,
+    pinerror: null,
   },
   reducers: {
     resetPincodeState: (state) => {
       state.pinset = {};
-      state.loading = false;
-      state.error = null;
+      state.pinloading = false;
+      state.pinerror = null;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(checkPincode.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.pinloading = true;
+        state.pinerror = null;
       })
       .addCase(checkPincode.fulfilled, (state, action) => {
-        state.loading = false;
+        state.pinloading = false;
         state.pinset = action.payload;
       })
       .addCase(checkPincode.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
+        state.pinloading = false;
+        state.pinerror = action.error.message;
       });
   },
 });

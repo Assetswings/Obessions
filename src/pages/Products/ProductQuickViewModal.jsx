@@ -22,6 +22,7 @@ import {
   checkPincode,
   resetPincodeState,
 } from "../Productdetails/pincodeSlice";
+import CartToast from "../../components/AddtoCartToster/CartToast";
 
 const ProductQuickViewModal = ({ show, product, onHide }) => {
   const [quantity, setQuantity] = useState(1);
@@ -37,13 +38,14 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const [productDetails, setProductsDetails] = useState([]);
   const [similarStyle, setSimilarStyle] = useState([]);
   const [matchingFound, setMatchingFound] = useState([]);
+  const [pincodeDetails, setPincodeDetails] = useState({});
 
   const modalRef = useRef();
   const sectionsRef = useRef({});
   const dispatch = useDispatch();
   const actionurl = product?.action_url ? product?.action_url : product?.slug;
   const { data, loading, error } = useSelector((state) => state.productDetail);
-  const pincodeset = useSelector((state) => state.pincode);
+  const { pinset, pinloading, pinerror } = useSelector((state) => state.pincode);
   const wishlist = useSelector((state) => state.wishlist);
 
   useEffect(() => {
@@ -78,6 +80,13 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       );
     }
   }, [data]);
+
+  useEffect(() => {
+    if (pinset) {
+      setPincodeChecked(true);
+      setPincodeDetails(pinset);
+    }
+  }, [pinset]);
 
   // Scroll tracking (for highlights/description tabs)
   useEffect(() => {
@@ -115,17 +124,22 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   // Close when clicking outside modal
   const handleOutsideClick = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
+      setPincodeDetails({});
+      setPincode("");
+      setPincodeChecked(false);
       onHide();
     }
   };
-
+  const closediloug = () => {
+    setPincodeDetails({});
+    setPincode("");
+    setPincodeChecked(false);
+  }
   // Don't render if not shown
   if (!show || !product) return null;
   const handleCheck = () => {
     if (pincode.trim()) {
-      dispatch(checkPincode(pincode)).then(() => {
-        setPincodeChecked(true);
-      });
+      dispatch(checkPincode(pincode));
     }
   };
 
@@ -143,7 +157,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       return;
     }
 
-    if (!pincodeChecked || !pincodeset.pinset?.is_active) {
+    if (!pincodeChecked || !pincodeDetails.pinset?.is_active) {
       toast.error("Please check delivery availability before adding to cart", {
         style: {
           background: "#1f1f1f",
@@ -159,22 +173,35 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       });
       return;
     }
-
+    let product = { ...selectedColor };
+    product["quantity"] = quantity;
+    product["name"] = selectedSize?.name;
+    product["image"] = selectedImage;
+    product["price"] = selectedSize?.price;
     dispatch(addToCart({ product_id: selectedColor.id, quantity }))
       .unwrap()
       .then(() => {
-        toast.success("Product added to cart successfully!", {
-          style: {
-            background: "#1f1f1f",
-            color: "#fff",
-            borderRadius: "0px",
-            padding: "12px 16px",
-            fontSize: "14px",
-          },
-          hideProgressBar: true,
-          closeButton: false,
-          icon: true,
-        });
+        const id = toast(
+          <CartToast
+            product={product}
+            onViewCart={() => console.log("Go to cart")}
+            onCheckout={() => console.log("Go to checkout")}
+            onClose={() => toast.dismiss(id)}
+          />,
+          {
+            position: "top-right",
+            autoClose: 6000,
+            hideProgressBar: true,
+            closeButton: false, // custom close already inside
+            style: {
+              padding: "12px",
+              background: "#fff",
+              color: "#000",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            },
+            icon: false,
+          }
+        );
       })
       .catch((error) => {
         toast.error("Failed to add to cart");
@@ -344,7 +371,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
         <div className="quickview-modal" ref={modalRef}>
           <div className="quickview-header">
             <div></div>
-            <div className="close-icon" onClick={onHide}>
+            <div className="close-icon" onClick={()=> {onHide(); closediloug();}}>
               ×
             </div>
           </div>
@@ -425,13 +452,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                       <span className="sub-1">
                         <del>₹{selectedSize?.mrp}</del> &nbsp;
                         <span className="dis-sub">
-                          (
-                          {Math.round(
-                            ((selectedSize?.mrp - currentPrice) /
-                              selectedSize?.mrp) *
-                              100
-                          )}
-                          % OFF)
+                          {selectedSize?.discount}% OFF
                         </span>{" "}
                         (Inclusive of all taxes)
                       </span>
@@ -574,18 +595,20 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 </div>
 
                 {/* Show pincode info */}
-                {pincodeset.loading && <p>Checking...</p>}
-                {pincodeset.error && (
+                {pinloading && <p>Checking...</p>}
+                {pinerror && (
                   <p style={{ color: "red", marginTop: "15px" }}>
                     Not serviceable for your area
                   </p>
                 )}
-                {pincodeset.pinset?.pincode && pincodeset.pinset?.is_active && (
-                  <p style={{ color: "green", marginTop: "15px" }}>
-                    ✅ Delivery available at {pincodeset.pinset.city},{" "}
-                    {pincodeset.pinset.state} ({pincodeset.pinset.delivery_tat})
-                  </p>
-                )}
+                {pincodeDetails?.pincode &&
+                  pincodeDetails?.is_active && (
+                    <p style={{ color: "green", marginTop: "15px" }}>
+                      ✅ Delivery available at {pincodeDetails?.city},{" "}
+                      {pincodeDetails?.state} (
+                      {pincodeDetails?.delivery_tat})
+                    </p>
+                  )}
               </div>
 
               {/* Cart & Wishlist */}

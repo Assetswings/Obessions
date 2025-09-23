@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCarpetFinder } from "./carpetFinderSlice";
 import { useNavigate } from "react-router-dom";
 import "./CarpetFinder.css";
-import { toast } from "react-hot-toast";
+import { ToastContainer, toast } from "react-toastify";
 
 const CarpetFinder = () => {
   const dispatch = useDispatch();
@@ -89,12 +89,12 @@ const CarpetFinder = () => {
       return;
     }
 
-      let filterReq = {
+    let filterReq = {
       room_filter: selections[0][0].key,
       size_filter: selections[1][0].key,
       color_filter: selections[2][0].key,
       pattern_filter: selections[3][0].key,
-      };
+    };
 
     console.log("====================================");
     console.log(filterReq);
@@ -136,72 +136,77 @@ const CarpetFinder = () => {
   }
 
   return (
-    <div className="finder-wrapper">
-      <div className="finder-main">
-        <h2 className="finder-title">{steps[currentStep]?.title}</h2>
-        <div className="finder-grid">
-          {steps[currentStep]?.options.map(({ label, image, key }) => (
-            <div
-              key={label}
-              className={`finder-card ${
-                isSelected(currentStep, label) ? "selected" : ""
-              }`}
-              onClick={() => toggleOption(currentStep, label, key)}
+    <>
+      <ToastContainer position="top-right" autoClose={3000} />
+      <div className="finder-wrapper">
+        <div className="finder-main">
+          <h2 className="finder-title">{steps[currentStep]?.title}</h2>
+          <div className="finder-grid">
+            {steps[currentStep]?.options.map(({ label, image, key }) => (
+              <div
+                key={label}
+                className={`finder-card ${
+                  isSelected(currentStep, label) ? "selected" : ""
+                }`}
+                onClick={() => toggleOption(currentStep, label, key)}
+              >
+                {image ? (
+                  <img src={image} alt={label} />
+                ) : (
+                  <div className="img-placeholder">No Image</div>
+                )}
+                <span className="card-label">{label}</span>
+                {isSelected(currentStep, label) && (
+                  <div className="checkmark">✔</div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="finder-buttons">
+            <button
+              onClick={() => setCurrentStep((prev) => prev - 1)}
+              disabled={currentStep === 0}
             >
-              {image ? (
-                <img src={image} alt={label} />
-              ) : (
-                <div className="img-placeholder">No Image</div>
-              )}
-              <span className="card-label">{label}</span>
-              {isSelected(currentStep, label) && (
-                <div className="checkmark">✔</div>
-              )}
+              Back ↑
+            </button>
+            {currentStep < steps.length - 1 ? (
+              <button
+                onClick={() => {
+                  if (!selections[currentStep]?.length) {
+                    toast.error(
+                      "Please select at least one option to proceed."
+                    );
+                    return;
+                  }
+                  setCurrentStep((prev) => prev + 1);
+                }}
+              >
+                Next ↓
+              </button>
+            ) : (
+              <button className="submit-btn" onClick={handelseeresult}>
+                See Results
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="stepper-right">
+          {steps.map((_, index) => (
+            <div key={index} className="stepper-line-wrapper">
+              <div
+                className={`stepper-circle ${
+                  index === currentStep ? "active" : ""
+                }`}
+              >
+                {index + 1}
+              </div>
+              {index < steps.length - 1 && <div className="stepper-line"></div>}
             </div>
           ))}
         </div>
-        <div className="finder-buttons">
-          <button
-            onClick={() => setCurrentStep((prev) => prev - 1)}
-            disabled={currentStep === 0}
-          >
-            Back ↑
-          </button>
-          {currentStep < steps.length - 1 ? (
-            <button
-              onClick={() => {
-                if (!selections[currentStep]?.length) {
-                  toast.error("Please select at least one option to proceed.");
-                  return;
-                }
-                setCurrentStep((prev) => prev + 1);
-              }}
-            >
-              Next ↓
-            </button>
-          ) : (
-            <button className="submit-btn" onClick={handelseeresult}>
-              See Results
-            </button>
-          )}
-        </div>
       </div>
-
-      <div className="stepper-right">
-        {steps.map((_, index) => (
-          <div key={index} className="stepper-line-wrapper">
-            <div
-              className={`stepper-circle ${
-                index === currentStep ? "active" : ""
-              }`}
-            >
-              {index + 1}
-            </div>
-            {index < steps.length - 1 && <div className="stepper-line"></div>}
-          </div>
-        ))}
-      </div>
-    </div>
+    </>
   );
 };
 

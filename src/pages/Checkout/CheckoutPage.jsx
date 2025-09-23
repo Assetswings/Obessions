@@ -13,7 +13,7 @@ import {
 import { fetchUserProfile } from "../Profile/profileSlice";
 import { useNavigate } from "react-router-dom";
 import { Info } from "lucide-react";
-import { Toaster, toast } from "react-hot-toast";
+import { ToastContainer, toast } from "react-toastify";
 
 const CheckoutPage = () => {
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
@@ -101,7 +101,31 @@ const CheckoutPage = () => {
   const displayedAddresses = expanded ? addressdata : addressdata.slice(0, 2);
 
   const handlePlaceOrder = () => {
+    let formErrors = {};
     if (defuktAddr) {
+      if (gstinEnabled) {
+        if (!gstinData.registrationNumber) {
+          toast.error("Please Input GSTIN Registration NO");
+          formErrors.registrationNumber = "Please Input GSTIN Registration NO";
+          setErrors(formErrors);
+          return false;
+        }
+        // GSTIN Validation Regex
+        const gstinRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+        if (!gstinRegex.test(gstinData.registrationNumber)) {
+          toast.error("Please enter a valid GSTIN Registration NO");
+          formErrors.registrationNumber =
+            "Please enter a valid GSTIN Registration NO";
+          setErrors(formErrors);
+          return false;
+        }
+        if (!gstinData.companyAddress) {
+          toast.error("Please Input Company Address");
+          formErrors.companyAddress = "Please Input Company Address";
+          setErrors(formErrors);
+          return false;
+        }
+      }
       const orderPayload = {
         billing_first_name: defuktAddr.first_name,
         billing_last_name: defuktAddr.last_name,
@@ -133,6 +157,7 @@ const CheckoutPage = () => {
         .unwrap()
         .then((res) => {
           if (res.status === 200) {
+            setErrors({});
             navigate("/paymentgetway", {
               state: {
                 orderResponse: res,
@@ -142,13 +167,14 @@ const CheckoutPage = () => {
             });
           } else {
             alert(res.message);
+            toast.success(res.message || "Item removed from cart!");
           }
         })
         .catch((err) => {
           alert(err?.message || "Something went wrong!");
         });
     } else {
-      alert("Please Add address before continue payment");
+      toast.error("Please Add address before continue payment");
     }
   };
 
@@ -219,13 +245,13 @@ const CheckoutPage = () => {
 
   return (
     <>
-    <Toaster position="top-right" reverseOrder={false} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="root-title-chk">
         <h2 className="title_chk">Checkout</h2>
       </div>
-      <div className="cart_mlb"> 
-    <span className="txt_mlb_my"> Checkout</span>
-  </div>
+      <div className="cart_mlb">
+        <span className="txt_mlb_my"> Checkout</span>
+      </div>
       <div className="checkout-container_chk">
         <div className="checkout-right_ck">
           {checkoutData?.data?.items.map((item) => (
@@ -362,6 +388,9 @@ const CheckoutPage = () => {
                       className="coupon-input"
                       placeholder="GSTIN Registration Number"
                     />
+                    {errors.registrationNumber && (
+                      <p className="error">{errors.registrationNumber}</p>
+                    )}
                   </div>
 
                   <div className="coupon-input-container">
@@ -373,6 +402,9 @@ const CheckoutPage = () => {
                       className="coupon-input"
                       placeholder="Registered Company with Address"
                     />
+                    {errors.companyAddress && (
+                      <p className="error">{errors.companyAddress}</p>
+                    )}
                   </div>
                 </div>
               )}
@@ -491,7 +523,9 @@ const CheckoutPage = () => {
               }}
             >
               <label>
-                <span>First Name <span className="required">*</span></span> 
+                <span>
+                  First Name <span className="required">*</span>
+                </span>
                 <input
                   name="first_name"
                   value={newAddress.first_name}
@@ -503,7 +537,9 @@ const CheckoutPage = () => {
               </label>
 
               <label>
-                <span>Last Name <span className="required">*</span></span>
+                <span>
+                  Last Name <span className="required">*</span>
+                </span>
                 <input
                   name="last_name"
                   value={newAddress.last_name}
@@ -514,7 +550,9 @@ const CheckoutPage = () => {
                 )}
               </label>
               <label>
-                <span>Mobile Number <span className="required">*</span></span>
+                <span>
+                  Mobile Number <span className="required">*</span>
+                </span>
                 <input
                   name="mobile"
                   maxLength={10}
@@ -524,7 +562,9 @@ const CheckoutPage = () => {
                 {errors.mobile && <p className="error">{errors.mobile}</p>}
               </label>
               <label>
-                <span>PIN Code <span className="required">*</span></span>
+                <span>
+                  PIN Code <span className="required">*</span>
+                </span>
                 <input
                   name="pincode"
                   value={newAddress.pincode}
@@ -533,7 +573,9 @@ const CheckoutPage = () => {
                 {errors.pincode && <p className="error">{errors.pincode}</p>}
               </label>
               <label>
-                <span>State <span className="required">*</span></span>
+                <span>
+                  State <span className="required">*</span>
+                </span>
                 <input
                   name="state"
                   value={newAddress.state}
@@ -542,7 +584,9 @@ const CheckoutPage = () => {
                 {errors.state && <p className="error">{errors.state}</p>}
               </label>
               <label>
-                <span>City <span className="required">*</span></span>
+                <span>
+                  City <span className="required">*</span>
+                </span>
                 <input
                   name="city"
                   value={newAddress.city}
@@ -551,7 +595,9 @@ const CheckoutPage = () => {
                 {errors.city && <p className="error">{errors.city}</p>}
               </label>
               <label>
-                <span>Street Address 1 <span className="required">*</span></span>
+                <span>
+                  Street Address 1 <span className="required">*</span>
+                </span>
                 <input
                   name="address"
                   value={newAddress.address}
@@ -560,7 +606,9 @@ const CheckoutPage = () => {
                 {errors.address && <p className="error">{errors.address}</p>}
               </label>
               <label>
-                <span>Street Address 2 <span className="required">*</span></span>
+                <span>
+                  Street Address 2 <span className="required">*</span>
+                </span>
                 <input
                   name="address2"
                   value={newAddress.address2}
@@ -569,7 +617,9 @@ const CheckoutPage = () => {
                 {errors.address2 && <p className="error">{errors.address2}</p>}
               </label>
               <label>
-                <span>Landmark <span className="required">*</span></span>
+                <span>
+                  Landmark <span className="required">*</span>
+                </span>
                 <input
                   name="landmark"
                   value={newAddress.landmark}

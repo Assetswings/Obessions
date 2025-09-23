@@ -55,8 +55,20 @@ const CartPage = () => {
     }
   }, [error]);
 
+  // const handleRemoveItem = async (cartId) => {
+  //   await dispatch(removeCartItem(cartId));
+  // };
+
   const handleRemoveItem = async (cartId) => {
-    await dispatch(removeCartItem(cartId));
+    try {
+      const response = await dispatch(removeCartItem(cartId)).unwrap();
+      if (response?.success) {
+        // dispatch(fetchCartDetails());
+        toast.success(response.message || "Item removed from cart!");
+      }
+    } catch (err) {
+      toast.error("Failed to remove item");
+    }
   };
 
   const handleUpdateQty = async (product_id, newQty) => {
@@ -249,7 +261,7 @@ const CartPage = () => {
               <button onClick={handleCheckout} className="checkout">
                 CHECKOUT
               </button>
-              <button className="continue_shoping">CONTINUE SHOPPING</button>
+              <button className="continue_shoping" onClick={()=>navigate("/")}>CONTINUE SHOPPING</button>
             </div>
           </div>
         )}

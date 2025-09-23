@@ -17,6 +17,7 @@ import {
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
 import { checkPincode, resetPincodeState } from "./pincodeSlice";
+import CartToast from "../../components/AddtoCartToster/CartToast";
 
 const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
@@ -35,12 +36,15 @@ const ProductDetailPage = () => {
   const dispatch = useDispatch();
   const sectionsRef = useRef({});
   const prevSlugRef = useRef(null);
+  const [pincodeDetails, setPincodeDetails] = useState({});
   const location = useLocation();
   const navigate = useNavigate();
 
   const productSlug = location.state?.product;
   const { data, loading, error } = useSelector((state) => state.productDetail);
-  const pincodeset = useSelector((state) => state.pincode);
+  const { pinset, pinloading, pinerror } = useSelector(
+    (state) => state.pincode
+  );
 
   useEffect(() => {
     if (!productSlug) return;
@@ -53,44 +57,52 @@ const ProductDetailPage = () => {
       setSelectedSize(null);
       setSelectedColor(null);
       setProductsDetails([]);
+      // pincode reset state
+      setPincodeDetails({});
+      setPincode("");
+      setPincodeChecked(false);
       // Don’t clear similarStyle/matchingFound here 👈
       dispatch(fetchProductDetail(productSlug));
     }
-  
+
     return () => {
-      dispatch(clearProductDetail()); 
+      dispatch(clearProductDetail());
     };
   }, [dispatch, productSlug]);
-
 
   useEffect(() => {
     if (!data?.id) return;
     // check if product changed
     if (prevSlugRef.current !== data.id) {
       setProductsDetails(data);
-  
+
       // reset with new product data
       setSimilarStyle(data?.discover_similar_styles?.slice(0, 10) || []);
-      setMatchingFound(data?.dont_miss_these_matching_finds?.slice(0, 10) || []);
-  
+      setMatchingFound(
+        data?.dont_miss_these_matching_finds?.slice(0, 10) || []
+      );
+
       if (data?.product_sizes?.length > 0) {
         setSelectedSize(data.product_sizes[0]);
         setSelectedColor(data.product_sizes[0].product_colors?.[0] || null);
         setSelectedImage(
-          data.product_sizes[0].product_colors?.[0]?.product_media?.[0]?.media || null
+          data.product_sizes[0].product_colors?.[0]?.product_media?.[0]
+            ?.media || null
         );
         setAnimatedWish(
           data.product_sizes[0]?.is_wishlisted ? data.product_sizes[0].id : null
         );
       }
-      prevSlugRef.current = data.id; 
+      prevSlugRef.current = data.id;
     }
     setLocalLoading(false);
   }, [data]);
-  
 
   // Scroll tracking (for highlights/description tabs)
   useEffect(() => {
+    setPincodeDetails({});
+    setPincode("");
+    setPincodeChecked(false);
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -107,14 +119,21 @@ const ProductDetailPage = () => {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (pinset) {
+      setPincodeChecked(true);
+      setPincodeDetails(pinset);
+    }
+  }, [pinset]);
+
   const handleAddToCart = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       setShowLoginPrompt(true);
       return;
     }
-    
-    if (!pincodeChecked || !pincodeset.pinset?.is_active) {
+
+    if (!pincodeChecked || !pincodeDetails.pinset?.is_active) {
       toast.error("Please check delivery availability before adding to cart", {
         style: {
           background: "#1f1f1f",
@@ -129,22 +148,35 @@ const ProductDetailPage = () => {
       });
       return;
     }
-
-     dispatch(addToCart({ product_id: selectedColor?.id, quantity }))
+    let product = { ...selectedColor };
+    product["quantity"] = quantity;
+    product["name"] = selectedSize?.name;
+    product["image"] = selectedImage;
+    product["price"] = selectedSize?.price;
+    dispatch(addToCart({ product_id: selectedColor?.id, quantity }))
       .unwrap()
       .then(() => {
-        toast.success("Product added to cart successfully!", {
-          style: {
-            background: "#1f1f1f",
-            color: "#fff",
-            borderRadius: "0px",
-            padding: "12px 16px",
-            fontSize: "14px",
-          },
-          hideProgressBar: true,
-          closeButton: false,
-          icon: true,
-        });
+        const id = toast(
+          <CartToast
+            product={product}
+            onViewCart={() => console.log("Go to cart")}
+            onCheckout={() => console.log("Go to checkout")}
+            onClose={() => toast.dismiss(id)}
+          />,
+          {
+            position: "top-right",
+            autoClose: 6000,
+            hideProgressBar: true,
+            closeButton: false, // custom close already inside
+            style: {
+              padding: "12px",
+              background: "#fff",
+              color: "#000",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            },
+            icon: false,
+          }
+        );
       })
       .catch((error) => {
         toast.error("Failed to add to cart");
@@ -159,7 +191,7 @@ const ProductDetailPage = () => {
   // ping the wishlist
   const handleSimilarProductClick = (slug) => {
     window.scrollTo({ top: 0, behavior: "auto" });
-    navigate("/productsdetails", { state: { product: slug }});
+    navigate("/productsdetails", { state: { product: slug } });
   };
 
   const toggleWishlist = async (e, product) => {
@@ -206,7 +238,9 @@ const ProductDetailPage = () => {
           }));
         }
       } else {
-        const addedWishlistItem = await dispatch(addToWishlist({ product_id: product.id })).unwrap();
+        const addedWishlistItem = await dispatch(
+          addToWishlist({ product_id: product.id })
+        ).unwrap();
         toast.success("Added to wishlist", {
           style: {
             border: "1px solid #713200",
@@ -362,9 +396,7 @@ const ProductDetailPage = () => {
 
   const handleCheck = () => {
     if (pincode.trim()) {
-      dispatch(checkPincode(pincode)).then(() => {
-        setPincodeChecked(true);
-      });
+      dispatch(checkPincode(pincode));
     }
   };
 
@@ -476,7 +508,7 @@ const ProductDetailPage = () => {
           </h1>
 
           <p className="price_details">
-            {localLoading  ? (
+            {localLoading ? (
               <Skeleton width={120} />
             ) : (
               <>
@@ -494,7 +526,11 @@ const ProductDetailPage = () => {
             )}
           </p>
           <p className="id_tracker">
-            {localLoading ? <Skeleton width={100} /> : `SKU: ${selectedSize?.sku}`}
+            {localLoading ? (
+              <Skeleton width={100} />
+            ) : (
+              `SKU: ${selectedSize?.sku}`
+            )}
           </p>
 
           {/* Size Selector */}
@@ -623,16 +659,16 @@ const ProductDetailPage = () => {
             </div>
 
             {/* Show pincode info */}
-            {pincodeset.loading && <p>Checking...</p>}
-            {pincodeset.error && (
+            {pinloading && <p>Checking...</p>}
+            {pinerror && (
               <p style={{ color: "red", marginTop: "15px" }}>
                 Not serviceable for your area
               </p>
             )}
-            {pincodeset.pinset?.pincode && pincodeset.pinset?.is_active && (
+            {pincodeDetails?.pincode && pincodeDetails?.is_active && (
               <p style={{ color: "green", marginTop: "15px" }}>
-                ✅ Delivery available at {pincodeset.pinset.city},{" "}
-                {pincodeset.pinset.state} ({pincodeset.pinset.delivery_tat})
+                ✅ Delivery available at {pincodeDetails?.city},{" "}
+                {pincodeDetails?.state} ({pincodeDetails?.delivery_tat})
               </p>
             )}
           </div>
@@ -716,7 +752,7 @@ const ProductDetailPage = () => {
       {/* Similar Products */}
       <div className="similar-styles-section">
         <h2>Discover Similar Styles</h2>
-        {localLoading  ? (
+        {localLoading ? (
           <div className="product-grid">
             {Array(5)
               .fill(0)

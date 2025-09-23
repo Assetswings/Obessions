@@ -49,6 +49,7 @@ const Otherpage = () => {
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { items } = useSelector((state) => state.toppick);
   const [isFilterOpen, setIsFilterOpen] = useState(false); // NEW: mobile filter modal state
+  const [expandedGroups, setExpandedGroups] = useState({});
   const [tempMobileFilters, setTempMobileFilters] = useState({});
 
   useEffect(() => {
@@ -183,29 +184,6 @@ const Otherpage = () => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
 
-  const renderFilterGroup = (title, options, key, isMobile = false) => (
-    <div className="custom-filter-group" key={key}>
-      <h4>{title}</h4>
-      {options.map((opt, i) => {
-        const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
-        return (
-          <label key={i}>
-            <input
-              type="checkbox"
-              checked={currentFilters[key]?.includes(opt) || false}
-              onChange={() =>
-                isMobile
-                  ? handleMobileFilterChange(key, opt)
-                  : handleFilterChange(key, opt)
-              }
-            />
-            <span className="txt_checkbox">{opt}</span>
-          </label>
-        );
-      })}
-    </div>
-  );
-
   const handleMobileFilterChange = (filterKey, value) => {
     setTempMobileFilters((prev) => {
       const current = prev[filterKey] || [];
@@ -214,6 +192,60 @@ const Otherpage = () => {
         : [...current, value];
       return { ...prev, [filterKey]: updated };
     });
+  };
+
+  const renderFilterGroup = (title, options, key, isMobile = false) => {
+    const isExpanded = expandedGroups[key] || false;
+    const visibleOptions = isExpanded ? options : options.slice(0, 5);
+    const hiddenCount = options.length - visibleOptions.length;
+
+    const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
+    const onChangeHandler = isMobile
+      ? handleMobileFilterChange
+      : handleFilterChange;
+
+    return (
+      <div className="custom-filter-group" key={key}>
+        <h4>{title}</h4>
+
+        {visibleOptions.map((opt, i) => (
+          <label key={i}>
+            <input
+              type="checkbox"
+              checked={currentFilters[key]?.includes(opt) || false}
+              onChange={() => onChangeHandler(key, opt)}
+            />
+            <span className="txt_checkbox">{opt}</span>
+          </label>
+        ))}
+
+        {/* Show More / Show Less row */}
+        {options.length > 5 && (
+          <div
+            className="show-more-row"
+            onClick={() =>
+              setExpandedGroups((prev) => ({
+                ...prev,
+                [key]: !isExpanded,
+              }))
+            }
+          >
+            {isExpanded ? "− Show Less" : `+ Show More (${hiddenCount})`}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const handleProductClick = (slug) => {
+    if (slug) {
+      navigate("/products", {
+        state: {
+          category: slug,
+        },
+      });
+    }
+    window.scrollTo({ top: 0, behavior: "auto" });
   };
 
   return (
@@ -409,9 +441,15 @@ const Otherpage = () => {
               <img
                 src={item.media}
                 alt={item.name}
-                className="top-pick-image"
+                className="top-pick-image pointer-crusser"
+                onClick={() => handleProductClick(item.action_url)}
               />
-              <p className="top-pick-title">{item.name}</p>
+              <p
+                className="top-pick-title pointer-crusser"
+                onClick={() => handleProductClick(item.action_url)}
+              >
+                {item.name}
+              </p>
             </div>
           ))}
         </div>

@@ -299,7 +299,6 @@ const HomePage = () => {
 
   const handleFocus = () => {
     setIsSearchActive(true);
-  
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();

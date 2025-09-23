@@ -14,16 +14,26 @@ import WishlistModal from "../Wishtlist/WishlistModal";
 import "./OtherTopnav.css";
 import logo from "../../assets/icons/Obslogo.png";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
+import {
+  fetchSearchResults,
+  clearSearchResults,
+} from "../../pages/Home/searchSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const OtherTopnav = () => {
+  const dispatch = useDispatch();
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [query, setQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const navigate = useNavigate();
   const userWrapperRef = useRef(null);
+
+  const searchState = useSelector((state) => state.search || {});
+  const { results = [], loading, error } = searchState;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -43,6 +53,18 @@ const OtherTopnav = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!query.trim()) {
+      dispatch(clearSearchResults());
+      return;
+    }
+    const timeoutId = setTimeout(() => {
+      dispatch(fetchSearchResults(query));
+    }, 400);
+
+    return () => clearTimeout(timeoutId);
+  }, [query, dispatch]);
 
   const handleLogoClick = () => navigate("/");
   const handleCartClick = () => {
@@ -84,6 +106,12 @@ const OtherTopnav = () => {
 
   const handelroute = (route) => {
     navigate(route);
+  };
+
+  const claersearch = () => {
+    setShowSearch(false);
+    dispatch(clearSearchResults);
+    setQuery("");
   };
 
   return (
@@ -179,29 +207,58 @@ const OtherTopnav = () => {
 
       {/* 🔹 Fullscreen Search Modal */}
       {showSearch && (
-        <div className="search-overlay" onClick={() => setShowSearch(false)}>
-          <div
-            className="search-modal"
-            onClick={(e) => e.stopPropagation()} // prevent closing on modal click
-          >
+        <div className="search-overlay" onClick={() => claersearch()}>
+          <div className="search-modal" onClick={(e) => e.stopPropagation()}>
             <div className="d-flex">
               <input
                 type="text"
                 className="form-control border-0 rounded-5 input_global"
                 placeholder="WHAT ARE YOU LOOKING FOR?"
-                // value={query}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                // onFocus={handleFocus}
               />
               <button
                 className="btn btn-dark rounded-5 button_search"
-                // onClick={() =>
-                //   navigate("/searchlist", {
-                //     state: { query: query },
-                //   })
-                // }
+                disabled={!query?.trim()}
+                onClick={() => {
+                  claersearch();
+                  navigate("/searchlist", {
+                    state: { query: query },
+                  });
+                }}
               >
                 <Search strokeWidth={1.25} />
               </button>
             </div>
+
+            {Array.isArray(results) && results.length > 0 && (
+              <div className="search-results-grid">
+                {results.slice(0, 8).map((item, index) => (
+                  <div
+                    key={index}
+                    className="search-card"
+                    onClick={() => {
+                      claersearch();
+                      navigate("/productsdetails", {
+                        state: { product: item.action_url },
+                      });
+                    }}
+                  >
+                    <img
+                      src={item.media_list?.main?.file}
+                      alt={item.name}
+                      className="search-card-img"
+                    />
+                    <div className="search-card-body">
+                      <h6 className="search-card-title">
+                        {item.name.split(" ").slice(0, 5).join(" ")}
+                      </h6>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

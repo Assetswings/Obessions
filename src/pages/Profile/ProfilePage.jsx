@@ -276,7 +276,10 @@ const ProfilePage = () => {
       setErrors({});
     });
 
-    dispatch(fetchUserProfile());
+    // dispatch(fetchUserProfile());
+    setTimeout(() => {
+      dispatch(fetchUserProfile());
+    }, 1000);
   };
 
   const formatDateForInput = (dateString) => {
@@ -359,13 +362,18 @@ const ProfilePage = () => {
                   style={{ display: "flex", alignItems: "center", gap: "10px" }}
                 >
                   {profileData?.email}
-                  {profileData?.email_verified === 0 ? (
+                  {/* {profileData?.email_verified === 0 ? (
                     <button className="verify-btn" onClick={handleSendOtp}>
                       Verify
                     </button>
                   ) : (
                     <span> ✅ email veryfied </span>
-                  )}
+                  )} */}
+                  {profileData?.email_verified == 0 ? (
+                    <u onClick={handleSendOtp} style={{ fontWeight: "bold", cursor:"pointer" }}>Verify</u>
+                  ) : profileData?.email_verified == 1 ? (
+                    <span>✅ Email Verified</span>
+                  ) : null}
                 </div>
               </div>
               <div>
@@ -564,12 +572,13 @@ const ProfilePage = () => {
                 }}
               >
                 <label>
-                 <span>First Name <span className="required">*</span></span> 
+                  <span>
+                    First Name <span className="required">*</span>
+                  </span>
                   <input
                     name="first_name"
                     value={newAddress.first_name}
                     onChange={handleNewAddressChange}
-                    
                   />
                   {errors.first_name && (
                     <p className="error">{errors.first_name}</p>
@@ -577,82 +586,91 @@ const ProfilePage = () => {
                 </label>
 
                 <label>
-                  <span>Last Name <span className="required">*</span></span>
+                  <span>
+                    Last Name <span className="required">*</span>
+                  </span>
                   <input
                     name="last_name"
                     value={newAddress.last_name}
                     onChange={handleNewAddressChange}
-                    
                   />
                   {errors.last_name && (
                     <p className="error">{errors.last_name}</p>
                   )}
                 </label>
                 <label>
-                  <span>Mobile Number <span className="required">*</span></span>
+                  <span>
+                    Mobile Number <span className="required">*</span>
+                  </span>
                   <input
                     name="mobile"
                     maxLength={10}
                     value={newAddress.mobile}
                     onChange={handleNewAddressChange}
-                    
                   />
                   {errors.mobile && <p className="error">{errors.mobile}</p>}
                 </label>
                 <label>
-                  <span>PIN Code <span className="required">*</span></span>
+                  <span>
+                    PIN Code <span className="required">*</span>
+                  </span>
                   <input
                     name="pincode"
                     value={newAddress.pincode}
                     onChange={handleNewAddressChange}
-                    
                   />
                   {errors.pincode && <p className="error">{errors.pincode}</p>}
                 </label>
                 <label>
-                  <span>State <span className="required">*</span></span>
+                  <span>
+                    State <span className="required">*</span>
+                  </span>
                   <input
                     name="state"
                     value={newAddress.state}
                     onChange={handleNewAddressChange}
-                    
                   />
                   {errors.state && <p className="error">{errors.state}</p>}
                 </label>
                 <label>
-                  <span>City <span className="required">*</span></span>
+                  <span>
+                    City <span className="required">*</span>
+                  </span>
                   <input
                     name="city"
                     value={newAddress.city}
                     onChange={handleNewAddressChange}
-                    
                   />
                   {errors.city && <p className="error">{errors.city}</p>}
                 </label>
                 <label>
-                  <span>Street Address 1 <span className="required">*</span></span>
+                  <span>
+                    Street Address 1 <span className="required">*</span>
+                  </span>
                   <input
                     name="address"
                     value={newAddress.address}
                     onChange={handleNewAddressChange}
-                    
                   />
                   {errors.address && <p className="error">{errors.address}</p>}
                 </label>
                 <label>
-                  <span>Street Address 2 <span className="required">*</span></span>
+                  <span>
+                    Street Address 2 <span className="required">*</span>
+                  </span>
                   <input
                     name="address2"
                     value={newAddress.address2}
                     onChange={handleNewAddressChange}
-                    
                   />
                   {errors.address2 && (
                     <p className="error">{errors.address2}</p>
                   )}
                 </label>
                 <label>
-                  <span>Landmark <span className="required">*</span></span>
+                  <span>
+                    Landmark <span className="required">*</span>
+                  </span>
                   <input
                     name="landmark"
                     value={newAddress.landmark}
@@ -702,7 +720,9 @@ const ProfilePage = () => {
                 }}
               >
                 <label>
-                  <span>First Name <span className="required">*</span></span> 
+                  <span>
+                    First Name <span className="required">*</span>
+                  </span>
                   <input
                     name="first_name"
                     value={editAddressData?.first_name || ""}
@@ -713,7 +733,9 @@ const ProfilePage = () => {
                   )}
                 </label>
                 <label>
-                  <span>Last Name <span className="required">*</span></span>
+                  <span>
+                    Last Name <span className="required">*</span>
+                  </span>
                   <input
                     name="last_name"
                     value={editAddressData?.last_name || ""}
@@ -724,7 +746,9 @@ const ProfilePage = () => {
                   )}
                 </label>
                 <label>
-                  <span>Mobile Number <span className="required">*</span></span>
+                  <span>
+                    Mobile Number <span className="required">*</span>
+                  </span>
                   <input
                     name="mobile"
                     maxLength={10}
@@ -734,7 +758,9 @@ const ProfilePage = () => {
                   {errors.mobile && <p className="error">{errors.mobile}</p>}
                 </label>
                 <label>
-                  <span>PIN Code <span className="required">*</span></span>
+                  <span>
+                    PIN Code <span className="required">*</span>
+                  </span>
                   <input
                     name="pincode"
                     value={editAddressData?.pincode || ""}
@@ -743,7 +769,9 @@ const ProfilePage = () => {
                   {errors.pincode && <p className="error">{errors.pincode}</p>}
                 </label>
                 <label>
-                  <span>State <span className="required">*</span></span>
+                  <span>
+                    State <span className="required">*</span>
+                  </span>
                   <input
                     name="state"
                     value={editAddressData?.state || ""}
@@ -752,7 +780,9 @@ const ProfilePage = () => {
                   {errors.state && <p className="error">{errors.state}</p>}
                 </label>
                 <label>
-                  <span>City <span className="required">*</span></span>
+                  <span>
+                    City <span className="required">*</span>
+                  </span>
                   <input
                     name="city"
                     value={editAddressData?.city || ""}
@@ -761,7 +791,9 @@ const ProfilePage = () => {
                   {errors.city && <p className="error">{errors.city}</p>}
                 </label>
                 <label>
-                  <span>Street Address 1 <span className="required">*</span></span>
+                  <span>
+                    Street Address 1 <span className="required">*</span>
+                  </span>
                   <input
                     name="address"
                     value={editAddressData?.address || ""}
@@ -770,7 +802,9 @@ const ProfilePage = () => {
                   {errors.address && <p className="error">{errors.address}</p>}
                 </label>
                 <label>
-                  <span>Street Address 2 <span className="required">*</span></span>
+                  <span>
+                    Street Address 2 <span className="required">*</span>
+                  </span>
                   <input
                     name="address2"
                     value={editAddressData?.address2 || ""}
@@ -781,7 +815,9 @@ const ProfilePage = () => {
                   )}
                 </label>
                 <label>
-                  <span>Landmark <span className="required">*</span></span>
+                  <span>
+                    Landmark <span className="required">*</span>
+                  </span>
                   <input
                     name="landmark"
                     value={editAddressData?.landmark || ""}
@@ -798,16 +834,15 @@ const ProfilePage = () => {
         )}
       </div>
       {showOtpModal && (
-        <div className="modal-overlay" onClick={() => setShowOtpModal(false)}>
-          <div className="side-modal" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="close-btn"
-              onClick={() => setShowOtpModal(false)}
-            >
-              <IoMdClose />
-            </button>
-            <h3>Enter OTP</h3>
-            <form onSubmit={handleVerifyOtp}>
+        <div className="verify-modal-overlay">
+          <div className="verify-modal-box">
+            <h3 className="verify-title">Verify Your Email to Continue</h3>
+            <p className="verify-subtitle">
+              A verification code has been sent to{" "}
+              <strong>{profileData?.email}</strong>
+            </p>
+
+            <div className="verify-input-wrap">
               <input
                 type="text"
                 value={otp}
@@ -815,8 +850,16 @@ const ProfilePage = () => {
                 placeholder="Enter OTP"
                 required
               />
-              <button type="submit">Verify OTP</button>
-            </form>
+            </div>
+
+            <button className="verify-btn" onClick={handleVerifyOtp}>
+              VERIFY
+            </button>
+
+            <p className="verify-resend">
+              Didn’t receive code?{" "}
+              <button onClick={handleSendOtp}>Resend Code</button>
+            </p>
           </div>
         </div>
       )}

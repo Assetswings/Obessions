@@ -37,7 +37,7 @@ const WishlistModal = ({ onClose }) => {
   };
 
   return (
-    <div className="wishlist-modal-overlay">
+    <div className="wishlist-modal-overlay" onClick={onClose}>
       <div className="wishlist-modal">
         <div className="wishlist-header">
           <h3>
@@ -132,13 +132,13 @@ const WishlistModal = ({ onClose }) => {
                 <img src={imgbag} />
               </div>
 
-               <div className="text_sections">
+              <div className="text_sections">
                 <h2 className="txt_title_one">Show your list some love!</h2>
                 <p className="sub_title_whistlist">
                   Love something? Hit the heart to add it to your favourites.
                 </p>
 
-                 <button className="empty-cart-btn">
+                <button className="empty-cart-btn">
                   Explore Bestsellers →
                 </button>
               </div>

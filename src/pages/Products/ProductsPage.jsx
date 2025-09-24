@@ -18,6 +18,8 @@ import heartAnimation from "../../assets/icons/Heart.json";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "./otherproductSlice";
+import plpone from "../../assets/images/plp-01.png";
+import plptwo from "../../assets/images/plp-02.png";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
@@ -187,7 +189,7 @@ const ProductsPage = () => {
               checked={currentFilters[key]?.includes(opt) || false}
               onChange={() => onChangeHandler(key, opt)}
             />
-            <span className="txt_checkbox">{opt}</span>
+            <span className="txt_checkbox">{opt.trim()}</span>
           </label>
         ))}
 
@@ -208,29 +210,6 @@ const ProductsPage = () => {
       </div>
     );
   };
-
-  // const renderFilterGroup = (title, options, key, isMobile = false) => (
-  //   <div className="custom-filter-group" key={key}>
-  //     <h4>{title}</h4>
-  //     {options.map((opt, i) => {
-  //       const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
-  //       return (
-  //         <label key={i}>
-  //           <input
-  //             type="checkbox"
-  //             checked={currentFilters[key]?.includes(opt) || false}
-  //             onChange={() =>
-  //               isMobile
-  //                 ? handleMobileFilterChange(key, opt)
-  //                 : handleFilterChange(key, opt)
-  //             }
-  //           />
-  //           <span className="txt_checkbox">{opt}</span>
-  //         </label>
-  //       );
-  //     })}
-  //   </div>
-  // );
 
   const handleMobileFilterChange = (filterKey, value) => {
     setTempMobileFilters((prev) => {
@@ -448,21 +427,70 @@ const ProductsPage = () => {
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
         <div className="top-picks-grid">
           {items.map((item) => (
-            <div
-              key={item.id}
-              className="top-pick-card"
-            >
+            <div key={item.id} className="top-pick-card">
               <img
                 src={item.media}
                 alt={item.name}
                 className="top-pick-image pointer-crusser"
                 onClick={() => handleProductClick(item.action_url)}
               />
-              <p className="top-pick-title pointer-crusser" onClick={() => handleProductClick(item.action_url)}>{item.name}</p>
+              <p
+                className="top-pick-title pointer-crusser"
+                onClick={() => handleProductClick(item.action_url)}
+              >
+                {item.name}
+              </p>
             </div>
           ))}
         </div>
       </section>
+
+      <section className="obsession-section">
+        <div className="obsession-content">
+          {/* Left side text */}
+          <div className="obsession-text">
+            <h2>
+              What makes Obsessions <br /> a customer <em>favourite</em>.
+            </h2>
+            <div className="obsession-columns">
+              <div className="obsession-col">
+                <h4>CRAFT</h4>
+                <p>
+                  It’s never just about products it’s about how they make our
+                  customers feel.
+                </p>
+              </div>
+              <div className="obsession-col">
+                <h4>PURPOSE</h4>
+                <p>
+                  From elegant design to practical use, every detail is
+                  obsessively crafted for the life you love living.
+                </p>
+              </div>
+              <div className="obsession-col">
+                <h4>STYLE</h4>
+                <p>
+                  We design with empathy; for how people live, love, and gather.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right side images */}
+          <div className="obsession-images">
+            <div className="obsession-img-wrapper large">
+              <img src={plpone} alt="Laundry" />
+              <span className="obsession-tag top-left">Designed for life</span>
+              <span className="obsession-tag top-right">Usability</span>
+            </div>
+            <div className="obsession-img-wrapper small">
+              <img src={plptwo} alt="Cooking" />
+              <span className="obsession-tag bottom">Effortless function</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* SLIDE FILTER MODAL (Mobile) */}
       <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>
         <div className="mobile-filter-header">

@@ -161,7 +161,7 @@
   font-weight: 500;
   color: #625e55;
   cursor: pointer;
-  /* padding-left: 22px; */
+  padding-bottom: 16px;
   /* aligns with checkbox text */
 }
 

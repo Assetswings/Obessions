@@ -112,10 +112,15 @@
   overflow-y: hidden;
   padding-bottom: 10px;
   scroll-behavior: smooth;
+
+  /* Hide scrollbar but keep scroll working */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
 .top-picks-grid::-webkit-scrollbar {
-  height: 6px; /* smaller scrollbar */
+  /* height: 6px; */
+  display: none;
 }
 
 .top-picks-grid::-webkit-scrollbar-thumb {
@@ -124,8 +129,10 @@
 }
 
 .top-pick-card {
-  flex: 0 0 auto;   /* ✅ side by side, no shrink */
-  width: 180px;
+  /* flex: 0 0 auto;
+  width: 180px; */
+    flex: 0 0 calc(25% - 18px); /* 4 items (100% / 4) minus gap adjustment */
+  max-width: calc(25% - 18px);
   display: flex;
   flex-direction: column;
 }
@@ -138,8 +145,8 @@
 
 .top-pick-title {
   margin-top: 12px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 24px;
+  font-weight: 400;
   font-family: "Canela Trial", sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.5px;

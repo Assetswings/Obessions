@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMegamenuData } from "./megamenuSlice";
 import { useNavigate } from "react-router-dom";
 
-  const MegaMenu = ({ closeMenu }) => {
+const MegaMenu = ({ closeMenu }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -15,35 +15,34 @@ import { useNavigate } from "react-router-dom";
   const menuList = Array.isArray(data) ? data : [];
   const activeSection = menuList[activeSectionIndex];
 
-     useEffect(() => {
-     dispatch(fetchMegamenuData());
+  useEffect(() => {
+    dispatch(fetchMegamenuData());
   }, [dispatch]);
 
-    useEffect(() => {
+  useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
-    document.body.style.overflow = "auto";
+      document.body.style.overflow = "auto";
     };
   }, []);
 
-     const handleSubcategoryClick = (categorySlug, subcategorySlug) => {
-    console.log("two slugs---->", categorySlug, subcategorySlug);
+  const handleSubcategoryClick = (categorySlug, subcategorySlug) => {
     navigate("/products", {
       state: {
         category: categorySlug,
         subcategory: subcategorySlug,
       },
     });
-    closeMenu(); 
+    closeMenu();
   };
 
   const handleCategoryClick = (categorySlug) => {
     navigate("/products", {
       state: {
-      category: categorySlug,
-        },
-        });
-    closeMenu(); 
+        category: categorySlug,
+      },
+    });
+    closeMenu();
   };
   if (loading || menuList.length === 0) {
     return <div className="mega-modal"></div>;
@@ -57,12 +56,13 @@ import { useNavigate } from "react-router-dom";
       <div className="mega-menu-content">
         {/* LEFT: Main Categories */}
         <div className="mega-menu-left">
-        <ul className="menu-categories">
-        {menuList.map((section, index) => (
+          <ul className="menu-categories">
+            {menuList.map((section, index) => (
               <li
                 key={section.id}
                 className={index === activeSectionIndex ? "active" : ""}
-                onClick={() => setActiveSectionIndex(index)}>
+                onClick={() => setActiveSectionIndex(index)}
+              >
                 <span>{section.name}</span>
                 <span className="icon_arrow_section">
                   <IoIosArrowForward />

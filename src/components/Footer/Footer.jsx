@@ -142,6 +142,9 @@ const Footer = () => {
         </div>
 
         {message && <p className="response-message">{message}</p>}
+        <p className="sub_text mt-2">
+          By signing up you agree with our <u className="pointer-crusser" onClick={() => handleNavigate('tc-of-sale')}>Terms & Conditions</u>.
+        </p>
       </div>
 
       {/* Dynamic Footer Links */}
@@ -160,7 +163,7 @@ const Footer = () => {
             ))}
           </ul>
         </div>
-        <div>
+        <div><br/>
           <ul>
             {SHOP?.slice(7, 15).map((item, idx) => (
               <li
@@ -201,7 +204,7 @@ const Footer = () => {
         <div className="contact">
           <div className="ctn_txt">
             <h4>CONTACT US</h4>
-            <p>{CONTACT_US?.address}</p>
+            <p>A. {CONTACT_US?.address}</p>
             <p>T. {CONTACT_US?.phone}</p>
             <p>E. {CONTACT_US?.email}</p>
           </div>

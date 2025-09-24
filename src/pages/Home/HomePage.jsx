@@ -419,6 +419,17 @@ const HomePage = () => {
           onFocus={handleFocus}
           value={query}
         />
+         {loading && (
+          <div className="sarchlader">
+            <div
+              className="spinner-border text-secondary"
+              style={{ width: "20px", height: "20px" }}
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        )}
         <button
           className="btn btn-dark rounded-5 button_search"
           disabled={!query?.trim()}

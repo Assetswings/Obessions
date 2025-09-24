@@ -227,10 +227,13 @@ const OtherTopnav = () => {
       {/* 🔹 Fullscreen Search Modal */}
       {showSearch && (
         <div className="search-overlay" onClick={() => claersearch()}>
-          <div className="search-modal-other" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="search-modal-other"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="d-flex">
               <input
-                 ref={inputRef}
+                ref={inputRef}
                 type="text"
                 className="form-control border-0 rounded-5 input_global"
                 placeholder="WHAT ARE YOU LOOKING FOR?"
@@ -238,6 +241,17 @@ const OtherTopnav = () => {
                 onChange={(e) => setQuery(e.target.value)}
                 // onFocus={handleFocus}
               />
+              {loading && (
+                <div className="sarchlader">
+                  <div
+                    className="spinner-border text-secondary"
+                    style={{ width: "20px", height: "20px" }}
+                    role="status"
+                  >
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              )}
               <button
                 className="btn btn-dark rounded-5 button_search"
                 disabled={!query?.trim()}

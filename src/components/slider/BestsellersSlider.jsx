@@ -30,9 +30,11 @@ const BestsellersSlider = ({ onQuickView }) => {
   const handlePrev = () => {
     setStartIndex((prev) => Math.max(prev - 1, 0));
   };
-
+  
   const handleNext = () => {
-    setStartIndex((prev) => Math.min(prev + 1, bestsellers.length - 3));
+    setStartIndex((prev) =>
+      Math.min(prev + 1, bestsellers.length - 5) // ✅ show 5 at a time
+    );
   };
 
   const LogsIcon = (data) => {
@@ -233,7 +235,7 @@ const BestsellersSlider = ({ onQuickView }) => {
 
         {/* Right Scrolling Cards */}
         <div className="slider-strip">
-          {bestsellers?.slice(startIndex + 1, startIndex + 4).map((item) => (
+          {bestsellers?.slice(startIndex + 1, startIndex + 5).map((item) => (
             <div className="bestseller-card" key={item.id}>
               <div
                 className="image-wrapper"

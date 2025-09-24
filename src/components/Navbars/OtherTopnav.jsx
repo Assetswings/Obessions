@@ -242,7 +242,7 @@ const OtherTopnav = () => {
                 // onFocus={handleFocus}
               />
               {loading && (
-                <div className="sarchlader">
+                <div style={{backgroundColor:"white"}} className="sarchlader">
                   <div
                     className="spinner-border text-secondary"
                     style={{ width: "20px", height: "20px" }}

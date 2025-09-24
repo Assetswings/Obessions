@@ -287,8 +287,7 @@ const MobileNav = () => {
                               category.action_url,
                               sub.action_url
                             )
-                          }
-                        >
+                          }>
                           {sub.name}
                         </li>
                       ))}
@@ -302,14 +301,13 @@ const MobileNav = () => {
       </div>
 
       {isOpen && <div className="overlay" onClick={toggleDrawer}></div>}
-
       {showWishlist && <WishlistModal onClose={() => setShowWishlist(false)} />}
       {showLoginPrompt && (
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-      {isLoggedIn && showUserPopup && (
-        <>
+        {isLoggedIn && showUserPopup && (
+            <>
           <div className="popup-triangle"></div>
           <div className="user-popup">
             <div className="popup-item" onClick={handleProfile}>

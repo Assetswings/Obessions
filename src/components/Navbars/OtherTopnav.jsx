@@ -31,6 +31,7 @@ const OtherTopnav = () => {
   const [showSearch, setShowSearch] = useState(false);
   const navigate = useNavigate();
   const userWrapperRef = useRef(null);
+  const inputRef = useRef(null);
 
   const searchState = useSelector((state) => state.search || {});
   const { results = [], loading, error } = searchState;
@@ -66,6 +67,24 @@ const OtherTopnav = () => {
     return () => clearTimeout(timeoutId);
   }, [query, dispatch]);
 
+  useEffect(() => {
+    if (showSearch) {
+      // Focus input automatically
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+      // Block scroll
+      document.body.style.overflow = "hidden";
+    } else {
+      // Restore scroll
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup when unmount
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showSearch]);
   const handleLogoClick = () => navigate("/");
   const handleCartClick = () => {
     if (isLoggedIn) {
@@ -208,9 +227,10 @@ const OtherTopnav = () => {
       {/* 🔹 Fullscreen Search Modal */}
       {showSearch && (
         <div className="search-overlay" onClick={() => claersearch()}>
-          <div className="search-modal" onClick={(e) => e.stopPropagation()}>
+          <div className="search-modal-other" onClick={(e) => e.stopPropagation()}>
             <div className="d-flex">
               <input
+                 ref={inputRef}
                 type="text"
                 className="form-control border-0 rounded-5 input_global"
                 placeholder="WHAT ARE YOU LOOKING FOR?"
@@ -233,7 +253,7 @@ const OtherTopnav = () => {
             </div>
 
             {Array.isArray(results) && results.length > 0 && (
-              <div className="search-results-grid">
+              <div className="search-results-grid-other">
                 {results.slice(0, 8).map((item, index) => (
                   <div
                     key={index}

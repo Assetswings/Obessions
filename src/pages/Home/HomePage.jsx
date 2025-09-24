@@ -37,7 +37,6 @@ import FloorDesign3 from "../../assets/images/FloorDesign3.png";
 import FloorDesign4 from "../../assets/images/FloorDesign4.png";
 import FloorDesign5 from "../../assets/images/FloorDesign5.png";
 import FloorDesign6 from "../../assets/images/FloorDesign6.png";
-
 // video section
 import videoimage from "../../assets/images/videoimage.png";
 import { Search } from "lucide-react";
@@ -96,7 +95,6 @@ const HomePage = () => {
   const { data } = useSelector((state) => state.home);
   const searchState = useSelector((state) => state.search || {});
   const { results = [], loading, error } = searchState;
-
   // console.log("🔥fffffff::::::::", results);
   // Pick random hero set whenever HomePage mounts
 

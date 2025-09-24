@@ -509,7 +509,7 @@ const HomePage = () => {
             that strike the perfect balance between charm and practicality.
           </p>
           <button onClick={handleNavigate} className="hero-button">
-            CHECK OUR COLLECTION
+            CHECK OUR COLLECTIONS
           </button>
         </div>
         <img src={leftImage} className="collection-img img-left" alt="" />

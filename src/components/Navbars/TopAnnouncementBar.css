@@ -5,13 +5,16 @@
     background-color: #d32020;
     color: white;
     height: 35px;
-    padding: 0 16px;
     font-size: 13px;
     /* overflow: hidden; */
     box-sizing: border-box;
     cursor: pointer;
   }
   
+  .user-click-wrapper {
+    position: relative;
+    top: -2px;
+}
   .scrolling-text {
     flex: 1;
     margin-right: 16px;

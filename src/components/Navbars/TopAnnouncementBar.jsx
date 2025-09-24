@@ -90,12 +90,13 @@ const TopAnnouncementBar = () => {
             ref={userWrapperRef}
             className="user-click-wrapper"
             onClick={handleUserClick}
-            style={{ position: "relative" }}
+            // style={{ position: "relative" }}
           >
             <CircleUser
               color="#FFFFFF"
-              size={25}
+              size={27}
               style={{ cursor: "pointer" }}
+              strokeWidth={1} 
             />
 
             {isLoggedIn && showUserPopup && (
@@ -128,6 +129,7 @@ const TopAnnouncementBar = () => {
             size={27}
             onClick={handleWishlistClick}
             style={{ cursor: "pointer" }}
+              strokeWidth={1} 
           />
 
           {/* Cart Icon */}
@@ -135,6 +137,7 @@ const TopAnnouncementBar = () => {
             size={27}
             onClick={handleCartClick}
             style={{ cursor: "pointer" }}
+            strokeWidth={1} 
           />
         </div>
       </div>

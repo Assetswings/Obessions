@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const CartToast = ({ product, onViewCart, onCheckout, onClose }) => {
     const navigate = useNavigate();
   return (
-    <div style={{ width: "450px", fontFamily: "Helvetica Neue sans-serif" }}>
+    <div style={{ width: "360px", fontFamily: "Helvetica Neue sans-serif" }}>
       {/* Header */}
       <div
         style={{

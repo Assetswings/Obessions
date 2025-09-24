@@ -12,7 +12,7 @@ import {
 } from "../Profile/addressSlice";
 import { fetchUserProfile } from "../Profile/profileSlice";
 import { useNavigate } from "react-router-dom";
-import { Info } from "lucide-react";
+import { Info, X } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 
 const CheckoutPage = () => {
@@ -111,7 +111,8 @@ const CheckoutPage = () => {
           return false;
         }
         // GSTIN Validation Regex
-        const gstinRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+        const gstinRegex =
+          /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
         if (!gstinRegex.test(gstinData.registrationNumber)) {
           toast.error("Please enter a valid GSTIN Registration NO");
           formErrors.registrationNumber =
@@ -517,7 +518,21 @@ const CheckoutPage = () => {
                     });
                     setShowAddAddressModal(false);
                     setErrors({});
-                    toast.success("Address Added Successfully.");
+                    toast.success("Address Added Successfully.", {
+                      style: {
+                        background: "#1f1f1f",
+                        color: "#fff",
+                        borderRadius: "0px",
+                        padding: "12px 16px",
+                        fontSize: "14px",
+                      },
+                      autoClose: 6000,
+                      hideProgressBar: true,
+                      closeButton: ({ closeToast }) => (
+                        <X size={18} color="#fff" onClick={closeToast} style={{ cursor: "pointer" }} />
+                      ),
+                      icon: true,
+                    });
                   }
                 });
               }}

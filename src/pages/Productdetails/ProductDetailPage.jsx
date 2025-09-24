@@ -169,7 +169,6 @@ const ProductDetailPage = () => {
             hideProgressBar: true,
             closeButton: false, // custom close already inside
             style: {
-              width: "450px",
               padding: "12px",
               background: "#fff",
               color: "#000",

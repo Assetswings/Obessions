@@ -425,7 +425,8 @@
 }
 
 /* customer favourite  */
-.obsession-section {
+
+/* .obsession-section {
   display: flex;
   justify-content: center;
   padding: 80px 40px;
@@ -487,7 +488,7 @@
 
 .obsession-img-wrapper.large {
   flex: 2;
-  border-radius: 150px 150px 0 0; /* top-rounded oval */
+  border-radius: 150px 150px 0 0;
 }
 
 .obsession-img-wrapper.small {
@@ -529,4 +530,4 @@
   bottom: -20px;
   left: 50%;
   transform: translateX(-50%) rotate(-5deg);
-}
+} */

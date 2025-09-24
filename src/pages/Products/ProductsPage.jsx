@@ -445,9 +445,8 @@ const ProductsPage = () => {
         </div>
       </section>
 
-      <section className="obsession-section">
+      {/* <section className="obsession-section">
         <div className="obsession-content">
-          {/* Left side text */}
           <div className="obsession-text">
             <h2>
               What makes Obsessions <br /> a customer <em>favourite</em>.
@@ -476,7 +475,6 @@ const ProductsPage = () => {
             </div>
           </div>
 
-          {/* Right side images */}
           <div className="obsession-images">
             <div className="obsession-img-wrapper large">
               <img src={plpone} alt="Laundry" />
@@ -489,7 +487,7 @@ const ProductsPage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* SLIDE FILTER MODAL (Mobile) */}
       <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>

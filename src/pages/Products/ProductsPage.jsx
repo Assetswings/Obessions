@@ -117,8 +117,8 @@ const ProductsPage = () => {
           );
         }
       } else {
-        // addToWishlist thunk should return the new wishlist item(s)
-        const addedWishlistItem = await dispatch(
+         // addToWishlist thunk should return the new wishlist item(s)
+          const addedWishlistItem = await dispatch(
           addToWishlist({ product_id: product.id })
         ).unwrap();
         toast.success("Added to wishlist", {
@@ -154,7 +154,7 @@ const ProductsPage = () => {
               : p
           )
         );
-        setTimeout(() => setAnimatedWish(null), 1500);
+      setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {
       toast.error("Something went wrong");
@@ -242,7 +242,6 @@ const ProductsPage = () => {
     <>
       <ToastContainer position="top-right" autoClose={3000} />
       {/* MOBILE FILTER BUTTON */}
-
       <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">
@@ -445,9 +444,9 @@ const ProductsPage = () => {
         </div>
       </section>
 
-      {/* <section className="obsession-section">
-        <div className="obsession-content">
-          <div className="obsession-text">
+     <section className="obsession-section-pd">
+        <div className="obsession-content-pd">
+          <div className="obsession-text-pd">
             <h2>
               What makes Obsessions <br /> a customer <em>favourite</em>.
             </h2>
@@ -476,18 +475,18 @@ const ProductsPage = () => {
           </div>
 
           <div className="obsession-images">
-            <div className="obsession-img-wrapper large">
-              <img src={plpone} alt="Laundry" />
+            <div className="obsession-img-wrapper">
+              <img   className="on-image-one" src={plpone} alt="Laundry" />
               <span className="obsession-tag top-left">Designed for life</span>
               <span className="obsession-tag top-right">Usability</span>
             </div>
-            <div className="obsession-img-wrapper small">
-              <img src={plptwo} alt="Cooking" />
+            <div  className="obsession-img-wrapper">
+              <img  className="on-image-two" src={plptwo} alt="Cooking" />
               <span className="obsession-tag bottom">Effortless function</span>
             </div>
           </div>
         </div>
-      </section> */}
+      </section> 
 
       {/* SLIDE FILTER MODAL (Mobile) */}
       <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>

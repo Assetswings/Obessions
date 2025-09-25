@@ -45,7 +45,7 @@ const ProductDetailPage = () => {
   const { pinset, pinloading, pinerror } = useSelector(
     (state) => state.pincode
   );
-
+  
   useEffect(() => {
     if (!productSlug) return;
     // Only run when slug actually changes
@@ -422,8 +422,7 @@ const ProductDetailPage = () => {
         <div className="product-gallery">
           <div
             className="image_track"
-            style={{ width: "100%", minHeight: "750px" }}
-          >
+            style={{ width: "100%", minHeight: "750px" }}>
             {loading || !selectedImage ? (
               <div style={{ width: "100%", height: "100%" }}>
                 <Skeleton
@@ -596,7 +595,7 @@ const ProductDetailPage = () => {
             ) : (
               <>
                 <div>
-                  <p>CHOOSE A COLOR:</p>
+                  <p>CHOOSE A COLOR:{selectedColor?.color}</p>
                 </div>
                 <div className="color-options">
                   {selectedSize?.product_colors?.map((color, idx) => (
@@ -632,7 +631,7 @@ const ProductDetailPage = () => {
               <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
                 −
               </button>
-              <span>{quantity}</span>
+              <span className="order_track_count">{quantity}</span>
               <button onClick={() => setQuantity((q) => q + 1)}>+</button>
             </div>
           </div>

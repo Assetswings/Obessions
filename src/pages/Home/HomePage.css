@@ -2,10 +2,9 @@
 @import url('https://fonts.cdnfonts.com/css/helvetica-neue-55');
 @import url('https://fonts.cdnfonts.com/css/playfair-display');
 
-
 /* ─── Global ─── */
 body {
-  background: white;
+background: white;
 }
 
 /* ─────────────── HERO ─────────────── */
@@ -13,6 +12,13 @@ body {
   height: 120vh;
   background: #F2F2F2;
   overflow: hidden;
+}
+
+.logo_mian{
+  height: 30px;
+  width: 30px;
+  top: 0%; 
+  left: 45%; 
 }
 .obsessions-text {
   top: 100px;
@@ -44,8 +50,8 @@ body {
   margin: 4px;
   cursor: pointer;
 }
-.description {
-  top: 56%;
+.description-hero{
+  top: 60%;
   right: 80px;
   width: 300px;
   font-size: 12px;
@@ -398,7 +404,7 @@ background-color: #F2F2F2;
   list-style: none;
 }
 
-  .shopby-item {
+.shopby-item {
   border-bottom: 1px solid black;
   position: relative;
   font-family: 'Canela Trial', sans-serif;
@@ -509,17 +515,15 @@ background-color: #F2F2F2;
   .shopby-item {
     font-size: 2.25rem;
   }
-}
-
+  }
 
 /* _______ Tbltop section ________*/
-
 .hero-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 4rem 2rem;
-  background-color: #f3f0eb; /* light beige background */
+  background-color:#EDE7DF; /* light beige background */
   font-family: "Playfair Display", serif;
   flex-wrap: wrap;
 }
@@ -618,7 +622,7 @@ background-color: #F2F2F2;
 }
 
 .promo-title {
-  margin-top: 1rem;
+  margin-top: 0rem;
   font-family: 'Canela Trial', sans-serif;
   font-size: 22px;
   font-weight: 400;
@@ -904,11 +908,12 @@ background-color: #F2F2F2;
    
 /* OUR OBSESSIONS css*/
 .obsession-section {
-    padding: 60px 20px;
-    max-width: 100%;
-    margin: auto;
-    margin-bottom: 30px;
-  }
+  padding: 45px 20px;
+  max-width: 100%;
+  margin: auto;
+  background-color: #F2F2F2;
+}
+  
   
   .obsession-title {
     font-size: 12vw;
@@ -1092,7 +1097,7 @@ background-color: #F2F2F2;
 .set-3 .img-top    { top: 10%;  left: 40%; width: 18vw;transform: rotate(19deg); }
 .set-3 .img-right  { top: 26%; right: 2%; width: 25vw; transform: rotate(10deg);}
 
-.description
+.description-hero
  {
     /* top: 48%; */
     right: 10px;

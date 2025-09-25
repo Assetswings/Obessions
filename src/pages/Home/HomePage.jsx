@@ -4,6 +4,7 @@ import "./HomePage.css";
 import BestsellersSlider from "../../components/slider/BestsellersSlider";
 import VideoSection from "../../components/InstaVideo/VideoSection";
 import Footer from "../../components/Footer/Footer";
+import obslogo from "../../assets/icons/Obslogo.png"
 // import { search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHomeData } from "./homeSlice";
@@ -11,12 +12,12 @@ import { fetchSearchResults, clearSearchResults } from "./searchSlice";
 import emtyimage from "../../assets/images/empty.jpg";
 import ProductQuickViewModal from "../Products/ProductQuickViewModal";
 import { useNavigate, useLocation } from "react-router-dom";
-
 /* ─── Hero + Collection assets ─── */
 import image1 from "../../assets/images/Maskgroup-1.png";
 import image2 from "../../assets/images/Maskgroup-2.png";
 import image3 from "../../assets/images/Maskgroup-3.png";
 import image4 from "../../assets/images/Maskgroup.png";
+
 import logo from "../../assets/icons/Obslogo.png";
 import livingroomLeft from "../../assets/images/livingroomLeft.png";
 import livingroomRight from "../../assets/images/livingroomRight.png";
@@ -98,8 +99,8 @@ const HomePage = () => {
   // console.log("🔥fffffff::::::::", results);
   // Pick random hero set whenever HomePage mounts
 
-  useEffect(() => {
-    if (!query.trim()) {
+      useEffect(() => {
+      if (!query.trim()) {
       dispatch(clearSearchResults());
       return;
     }
@@ -122,7 +123,7 @@ const HomePage = () => {
     }
   };
 
-  useEffect(() => {
+    useEffect(() => {
     if (data) {
       if (data.shop_by) {
         const formattedItems = Object.entries(data.shop_by).map(
@@ -146,7 +147,7 @@ const HomePage = () => {
 
   // 🧭 Navigation Page
   const handleNavigate = () => {
-    navigate("/collections");
+  navigate("/collections");
   };
 
   const handleCategoryClick = (categorySlug) => {
@@ -318,7 +319,7 @@ const HomePage = () => {
     <>
       {/* ───────────────────── HERO ───────────────────── */}
       <div className="homepage container-fluid position-relative p-5">
-        <img src={logo} className="floating-img img-left-logo" alt="" />
+        <img src={logo} className=" img-left-logo" alt="" />
         <h1 className="display-1 bold position-absolute obsessions-text">
           obsessions
         </h1>
@@ -339,7 +340,7 @@ const HomePage = () => {
         </ul>
 
         {/* Description */}
-        <div className="position-absolute description text-secondary">
+        <div className="position-absolute description-hero text-secondary">
           <p>
             We believe home is more than just a place. It's a feeling. That’s
             why we design enduring products that strike the perfect balance
@@ -536,7 +537,10 @@ const HomePage = () => {
               {/* Thumbnails */}
               <div className="thumb-bar">
                 {item.thumbs.map((src, idx) => (
-                  <img src={src} alt="" key={idx} />
+                   <div>
+                    <img src={src} alt="" key={idx} />
+                   </div> 
+                  
                 ))}
               </div>
               {/* Text label */}

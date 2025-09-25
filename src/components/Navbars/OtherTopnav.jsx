@@ -32,7 +32,6 @@ const OtherTopnav = () => {
   const navigate = useNavigate();
   const userWrapperRef = useRef(null);
   const inputRef = useRef(null);
-
   const searchState = useSelector((state) => state.search || {});
   const { results = [], loading, error } = searchState;
 
@@ -136,13 +135,14 @@ const OtherTopnav = () => {
   return (
     <>
       <nav className="other-topnav">
+
         <div
           className="nav-logo"
           onClick={handleLogoClick}
-          style={{ cursor: "pointer" }}
-        >
+          style={{ cursor: "pointer" }}>
           <img src={logo} alt="Logo" />
         </div>
+        
 
         <ul className="nav-links">
           <li onClick={() => setShowMegaMenu((prev) => !prev)}>SHOP</li>
@@ -212,6 +212,8 @@ const OtherTopnav = () => {
           />
         </div>
       </nav>
+
+       {/* <div style={{height:"60px"}}></div> */}
 
       {showMegaMenu && (
         <div className="megamenu-wrapper">

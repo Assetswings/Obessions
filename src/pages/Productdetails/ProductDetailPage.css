@@ -134,7 +134,7 @@ font-family: "Playfair Display", serif; */
 .price_details {
   font-size: 20px !important;
   margin: 10px 0;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   color: #1b170e !important;
   /* font-family: "Helvetica Neue", sans-serif; */
 }
@@ -257,7 +257,6 @@ font-family: "Playfair Display", serif; */
 
 .qty-control {
   display: flex;
-  gap: 10px;
   align-items: center;
 }
 
@@ -265,6 +264,7 @@ font-family: "Playfair Display", serif; */
   padding: 5px 17px;
   font-size: 18px;
   border: none;
+  background-color: #f2f2f2f2;
 }
 
 .pincode-check {
@@ -284,9 +284,14 @@ font-family: "Playfair Display", serif; */
   align-items: center;
   border: 1px solid #aaa;
   padding: 10px 12px;
-  max-width: 70%;
+  max-width: 80%;
 }
 
+.order_track_count{
+  background: #F2F2F2;
+  padding: 7px;
+  padding: 6.3PX 10px;
+}
 .input-wrapper input {
   border: none;
   outline: none;

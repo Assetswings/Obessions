@@ -17,7 +17,8 @@
     max-width: 160vh;
     position: relative;
     overflow-y: auto;
-    max-height: 90vh;
+    margin-top: 60px;
+    max-height: 87vh;
   }
   
   .input-wrapper-quick {

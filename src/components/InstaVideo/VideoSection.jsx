@@ -8,16 +8,11 @@ import Arrowright from "../../assets/icons/ArrowRight.png";
 
 const VideoSection = () => {
   const sliderRef = useRef(null);
-  const navigate = useNavigate()
+  const videoRefs = useRef([]); // store refs for all videos
+  const navigate = useNavigate();
+
   // 🔥 Access the galleries data from Redux
   const galleries = useSelector((state) => state.home?.data?.galleries || []);
-
-  // 📺 Optional default captions (if needed)
-  const defaultCaptions = [
-    'This Carpet Made My Room Look 10x Better',
-    'What Made Me Switch to Obsessions',
-    'Storage Made Simple & Stylish',
-  ];
 
   const scroll = (direction) => {
     const { current } = sliderRef;
@@ -30,7 +25,17 @@ const VideoSection = () => {
     }
   };
 
-    return (
+  // 👇 Pause + reset all other videos when one starts playing
+  const handlePlay = (index) => {
+    videoRefs.current.forEach((video, i) => {
+      if (i !== index && video) {
+        video.pause();
+        video.currentTime = 0; // reset to start
+      }
+    });
+  };
+
+  return (
     <section className="video-section">
       <div className="video-header">
         <h2 className="video-heading">
@@ -40,10 +45,13 @@ const VideoSection = () => {
           See how our products blend into real homes, real moods, and real lifestyles.
         </p>
         <button
-           onClick={()=>{
-            navigate('/videogallery')
-           }}
-         className='matcher-btn'>VIEW THE GALLERY</button>
+          onClick={() => {
+            navigate('/videogallery');
+          }}
+          className='matcher-btn'
+        >
+          VIEW THE GALLERY
+        </button>
       </div>
 
       <div className="video-slider-wrapper">
@@ -52,17 +60,19 @@ const VideoSection = () => {
             <div className="video-card" key={video.id}>
               <div className="video-wrapper">
                 <video
+                  ref={(el) => (videoRefs.current[index] = el)}
                   src={video.uploaded_media}
                   muted
                   playsInline
                   controls={false}
-                  onMouseEnter={(e) => e.currentTarget.setAttribute('controls', true)}
-                  onMouseLeave={(e) => e.currentTarget.removeAttribute('controls')}
+                  onPlay={() => handlePlay(index)}
+                  onMouseEnter={(e) =>
+                    e.currentTarget.setAttribute('controls', true)
+                  }
+                  onMouseLeave={(e) =>
+                    e.currentTarget.removeAttribute('controls')
+                  }
                 />
-                {/* Optional caption overlay */}
-                {/* <div className="video-caption-overlay">
-                  {defaultCaptions[index % defaultCaptions.length]}
-                </div> */}
               </div>
             </div>
           ))}

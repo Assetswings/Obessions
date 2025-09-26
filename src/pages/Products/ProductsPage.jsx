@@ -390,7 +390,7 @@ const ProductsPage = () => {
                           </span>
                         </div>
                       </div>
-                      <p className="custom-product-title">{item.name}</p>
+                      {/* <p className="custom-product-title">{item.name}</p>
                       <p className="custom-product-price">
                         ₹{item.selling_price}
                         {item.mrp && item.mrp !== item.selling_price && (
@@ -403,7 +403,18 @@ const ProductsPage = () => {
                             </span>
                           </>
                         )}
-                      </p>
+                      </p> */}
+
+<p className="product-title">{item.name}</p>
+                  <div className="product-price">
+                    <span>₹{item.selling_price}</span>
+                    {item.mrp && item.mrp !== item.selling_price && (
+                      <>
+                        <span className="original">₹{item.mrp}</span>
+                        <span className="discount">({item.discount}% OFF)</span>
+                      </>
+                    )}
+                  </div>
                     </div>
                   );
                 })}

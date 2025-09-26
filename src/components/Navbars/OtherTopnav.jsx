@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import MegaMenu from "./MegaMenu";
+import MegamenuDuo from "./MegamenuDuo";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import "./OtherTopnav.css";
 import logo from "../../assets/icons/Obslogo.png";
@@ -126,11 +127,11 @@ const OtherTopnav = () => {
     navigate(route);
   };
 
-  const claersearch = () => {
+    const claersearch = () => {
     setShowSearch(false);
     dispatch(clearSearchResults);
     setQuery("");
-  };
+   };
 
   return (
     <>
@@ -213,11 +214,12 @@ const OtherTopnav = () => {
         </div>
       </nav>
 
+      <div style={{height:"50px"}}></div>
        {/* <div style={{height:"60px"}}></div> */}
 
       {showMegaMenu && (
         <div className="megamenu-wrapper">
-          <MegaMenu closeMenu={() => setShowMegaMenu(false)} />
+          <MegamenuDuo closeMenu={() => setShowMegaMenu(false)} />
         </div>
       )}
 
@@ -279,8 +281,7 @@ const OtherTopnav = () => {
                       navigate("/productsdetails", {
                         state: { product: item.action_url },
                       });
-                    }}
-                  >
+                    }}>
                     <img
                       src={item.media_list?.main?.file}
                       alt={item.name}

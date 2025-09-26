@@ -19,6 +19,84 @@ import heartAnimation from "../../assets/icons/Heart.json";
 import { checkPincode, resetPincodeState } from "./pincodeSlice";
 import CartToast from "../../components/AddtoCartToster/CartToast";
 
+const tabs = [
+  { id: "highlights", label: "HIGHLIGHTS" },
+  { id: "care", label: "CARE" },
+  { id: "size-guide", label: "SIZE GUIDE" },
+];
+
+const similarProducts = [
+  {
+    name: "Cassia Classic Checkered Rug",
+    price: "₹1755",
+    original: null,
+    discount: null,
+    img: "https://i.ibb.co/zWv3LyCV/image-387.png",
+  },
+  {
+    name: "Quatrefloral Tribal Fringe Rug",
+    price: "₹1755",
+    original: "₹2125",
+    discount: "-30%",
+    img: "https://i.ibb.co/s9r2vLHV/image-3.png",
+  },
+  {
+    name: "Zaylee Shag Waves Rug",
+    price: "₹1755",
+    original: "₹2125",
+    discount: "-30%",
+    img: "https://i.ibb.co/zTSJJcsf/image-309.png",
+  },
+  {
+    name: "Temple Hand Micro Hooked Wool Rug",
+    price: "₹1755",
+    original: null,
+    discount: null,
+    img: "https://i.ibb.co/s9r2vLHV/image-3.png",
+  },
+  {
+    name: "Pebble Handwoven Performance Rug",
+    price: "₹1755",
+    original: null,
+    discount: null,
+    img: "https://i.ibb.co/Tj9XV1P/image-310.png",
+  },
+  {
+    name: "Malta Handwoven Wool Rug",
+    price: "₹1755",
+    original: null,
+    discount: null,
+    img: "https://i.ibb.co/mrfdMWfJ/image-311.png",
+  },
+  {
+    name: "Kali Handwoven Jute Rug",
+    price: "₹1755",
+    original: "₹2125",
+    discount: "-30%",
+    img: "https://i.ibb.co/kgpY1rXT/image-4.png",
+  },
+  {
+    name: "Ines Hand Micro Hooked Wool Rug",
+    price: "₹1755",
+    original: null,
+    discount: null,
+    img: "https://i.ibb.co/rfZnnjVz/image-5.png",
+  },
+  {
+    name: "Mehari Polypropylene Shaggy Carpet Cream Grey",
+    price: "₹1755",
+    original: "₹2125",
+    discount: "-30%",
+    img: "https://i.ibb.co/Tj9XV1P/image-310.png",
+  },
+  {
+    name: "Lynx Solid Machine Made Carpet Teal",
+    price: "₹1755",
+    original: "₹2125",
+    discount: "-30%",
+    img: "https://i.ibb.co/mrfdMWfJ/image-311.png",
+  },
+];
 const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("highlights");
@@ -45,7 +123,7 @@ const ProductDetailPage = () => {
   const { pinset, pinloading, pinerror } = useSelector(
     (state) => state.pincode
   );
-  
+
   useEffect(() => {
     if (!productSlug) return;
     // Only run when slug actually changes
@@ -103,22 +181,26 @@ const ProductDetailPage = () => {
     setPincodeDetails({});
     setPincode("");
     setPincodeChecked(false);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveTab(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.4 }
-    );
-    Object.values(sectionsRef.current).forEach((section) =>
-      observer.observe(section)
-    );
-    return () => observer.disconnect();
-  }, []);
-
+  
+    if (productDetails?.sub_category_action_url === "carpet") {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActiveTab(entry.target.id);
+            }
+          });
+        },
+        { threshold: 0.4 }
+      );
+  
+      Object.values(sectionsRef.current).forEach((section) => {
+        if (section) observer.observe(section);
+      });
+  
+      return () => observer.disconnect();
+    }
+  }, [productDetails?.sub_category_action_url]);
   useEffect(() => {
     if (pinset) {
       setPincodeChecked(true);
@@ -172,7 +254,7 @@ const ProductDetailPage = () => {
               padding: "12px",
               background: "#fff",
               color: "#000",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
             },
             icon: false,
           }
@@ -422,7 +504,8 @@ const ProductDetailPage = () => {
         <div className="product-gallery">
           <div
             className="image_track"
-            style={{ width: "100%", minHeight: "750px" }}>
+            style={{ width: "100%", minHeight: "750px" }}
+          >
             {loading || !selectedImage ? (
               <div style={{ width: "100%", height: "100%" }}>
                 <Skeleton
@@ -747,6 +830,322 @@ const ProductDetailPage = () => {
           </div>
         </div>
       </div>
+
+      {productDetails?.sub_category_action_url === "carpet" ? (
+        <>
+          <div className="product-tabs-container">
+            <div className="tabs-bar">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  disabled={true}
+                  // onClick={() => scrollToSection(tab.id)}
+                  className={`tab-btn ${activeTab === tab.id ? "active" : ""}`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="track_box_pr">
+              <div className="img_section">
+                <img
+                  src={selectedColor?.product_media[1].media}
+                  alt="Product"
+                  className="highlight-image"
+                />
+              </div>
+
+              <div>
+                <div
+                  className="tab-section"
+                  id="highlights"
+                  ref={(el) => (sectionsRef.current["highlights"] = el)}
+                >
+                  <h2 className="tab-section-txt">SPECIFICATIONS:</h2>
+                  <div className="section-txt-pdb">
+                    <strong>Material:</strong>{" "}
+                    <span className="sub-section-pdp">
+                      100% Heat-set Polypropylene
+                    </span>
+                  </div>
+                  <div className="section-txt-pdb">
+                    <strong>Weave:</strong>{" "}
+                    <span className="sub-section-pdp">Power-loomed</span>
+                  </div>
+                  <div className="section-txt-pdb">
+                    <strong>Color:</strong>{" "}
+                    <span className="sub-section-pdp">Soft Blue </span>
+                  </div>
+                  <div className="section-txt-pdb">
+                    <strong>Pile Height:</strong>{" "}
+                    <span className="sub-section-pdp">
+                      {" "}
+                      {`Medium (Approx. 0.5")`}
+                    </span>
+                  </div>
+                  <div className="section-txt-pdb">
+                    <strong>Backing:</strong>{" "}
+                    <span className="sub-section-pdp"> Latex</span>
+                  </div>
+                  <div className="section-txt-pdb">
+                    <strong>Made in:</strong>{" "}
+                    <span className="sub-section-pdp">India </span>
+                  </div>
+                  <div className="section-txt-pdb">
+                    <strong>Available Sizes:</strong>{" "}
+                    <span className="sub-section-pdp">
+                      {" "}
+                      2'3"x3', 3'x5', 5'x7'6", 8'x10', and 9'x12'
+                    </span>
+                  </div>
+                  <div className="feature-grid-section">
+                    <h3 className="tab-section-txt">FEATURES: </h3>
+                    <div className="feature-grid">
+                      <div>
+                        <img
+                          src="https://i.ibb.co/sJWhs530/image-535.png"
+                          alt="Easy"
+                        />
+                        <p className="semi-txt">
+                          EASY TO MAINTAIN
+                          <br />
+                          <span className="sub-text-semi">
+                            Resists stains and everyday wear
+                          </span>
+                        </p>
+                      </div>
+                      <div>
+                        <img
+                          src="https://i.ibb.co/4w7V4QqL/Snowflake-Streamline-Solar-Linear.png"
+                          alt="Soft"
+                        />
+                        <p className="semi-txt">
+                          SOFT UNDERFOOT
+                          <br />
+                          <span className="sub-text-semi">
+                            Comfortable, medium-pile texture{" "}
+                          </span>
+                        </p>
+                      </div>
+                      <div>
+                        <img
+                          src="https://i.ibb.co/6R3CR6DS/Water-Streamline-Solar-Linear.png"
+                          alt="Design"
+                        />
+                        <p className="semi-txt">
+                          VERSATILE DESIGN
+                          <br />
+                          <span className="sub-text-semi">
+                            Blends with modern, classic, or coastal interiors
+                          </span>
+                        </p>
+                      </div>
+                      <div>
+                        <img
+                          src="https://i.ibb.co/6JDjbYsZ/solar-crown-star-linear.png"
+                          alt="Allergy"
+                        />
+                        <p className="semi-txt">
+                          ALLERGY FRIENDLY
+                          <br />
+                          <span className="sub-text-semi">
+                            Synthetic fibers resist dust and allergens{" "}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="tab-section"
+                  id="care"
+                  ref={(el) => (sectionsRef.current["care"] = el)}
+                >
+                  <h2 className="tab-section-txt">CARE INSTRUCTIONS:</h2>
+                  <ul className="section_care">
+                    <li>Vacuum regularly (avoid beater bar)</li>
+                    <li>Spot clean with mild detergent and water</li>
+                    <li>Avoid soaking for excessive moisture</li>
+                    <li>Rotate every few months for even wear</li>
+                    <li>Safe for homes with children and pets</li>
+                  </ul>
+                </div>
+
+                <div
+                  className="tab-section"
+                  id="size-guide"
+                  ref={(el) => (sectionsRef.current["size-guide"] = el)}
+                >
+                  <h2 className="tab-section-txt">SIZE GUIDE:</h2>
+
+                  <div className="size-guide-block">
+                    {/* Living Room */}
+                    <div className="size_sction_root">
+                      <div>
+                        <img
+                          className="img-guild-section"
+                          src="https://i.ibb.co/C3hfGFfT/l-room.png"
+                          alt="living-room"
+                        />
+                      </div>
+                      <div className="sector_group_txt">
+                        <h4 className="title-size-gid">LIVING ROOM</h4>
+                        <div>
+                          <span className="txt-ft">Medium (5x8 ft):</span>{" "}
+                          <span className="txt-ft2">
+                            {" "}
+                            Front legs of furniture on the carpet
+                          </span>
+                        </div>
+                        <div>
+                          <span className="txt-ft">Large (8x10 ft+):</span>{" "}
+                          <span className="txt-ft2">
+                            {" "}
+                            Full furniture fits for a unified look
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bedroom */}
+                    <div className="size_sction_root">
+                      <div>
+                        <img
+                          className="img-guild-section"
+                          src="https://i.ibb.co/yFB0m3LZ/b-room.png"
+                          alt="bedroom"
+                        />
+                      </div>
+                      <div className="sector_group_txt">
+                        <h4 className="title-size-gid">BEDROOM</h4>
+                        <div>
+                          <span className="txt-ft">Medium (5x8 ft):</span>{" "}
+                          <span className="txt-ft2"> Covers bedside area</span>
+                        </div>
+                        <div>
+                          <span className="txt-ft">Large (8x10 ft+):</span>{" "}
+                          <span className="txt-ft2">
+                            {" "}
+                            Extends under bed and nightstands{" "}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Kitchen */}
+                    <div className="size_sction_root">
+                      <div>
+                        <img
+                          className="img-guild-section"
+                          src="https://i.ibb.co/xq3Sx3WB/k-room.png"
+                          alt="kitchen"
+                        />
+                      </div>
+                      <div className="sector_group_txt">
+                        <h4 className="title-size-gid">KITCHEN</h4>
+                        <div>
+                          <span className="txt-ft">
+                            Runner (2.5x6 ft / 2.5x8 ft):
+                          </span>
+                          <span className="txt-ft2">
+                            {" "}
+                            Perfect between counters or alongside islands{" "}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="txt-ft">Small (3x5 ft):</span>{" "}
+                          <span className="txt-ft2">
+                            {" "}
+                            Great near the sink or stove to soften
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Entryway & Hallway */}
+                    <div className="size_sction_root">
+                      <div>
+                        <img
+                          className="img-guild-section"
+                          src="https://i.ibb.co/V03SvfC8/hall-room.png"
+                          alt="entryway-hallway"
+                        />
+                      </div>
+                      <div className="sector_group_txt">
+                        <h4 className="title-size-gid">ENTRYWAY & HALLWAY</h4>
+                        <div>
+                          <span className="txt-ft">
+                            Runners (2x6 ft or 2.5x8 ft):
+                          </span>{" "}
+                          <span className="txt-ft2"> Add warmth and flow </span>
+                        </div>
+                        <div className="txt-ft2">
+                          Use anti-slip backings for safety
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="pp-mc-txt">
+                        Not sure which size fits best? Explore our{" "}
+                        <span className="sub-pp-mc"> Size Guide</span> to find
+                        your perfect match.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rec_section">
+            <div className="recommend-good-know">
+              <div className="recommend-section">
+                <h4>RECOMMENDED FOR</h4>
+                <ul>
+                  <li>Calm, cozy bedrooms or serene living spaces</li>
+                  <li>Soft underfoot comfort in nurseries or reading nooks</li>
+                  <li>
+                    Homes with a neutral, pastel, or coastal-inspired palette
+                  </li>
+                  <li>Anyone looking to add quiet elegance to their space</li>
+                </ul>
+              </div>
+
+              <div className="center-image">
+                <img
+                  src={selectedColor?.product_media[2].media}
+                  alt="Room setting"
+                />
+              </div>
+
+              <div className="good-to-know-section">
+                <h4>GOOD TO KNOW</h4>
+                <ul>
+                  <li>
+                    Edges may curl initially; lay flat or reverse-roll to settle
+                  </li>
+                  <li>Color may look different under various lighting</li>
+                  <li>Not recommended for damp areas like bathrooms</li>
+                </ul>
+              </div>
+
+              <div className="msg_track">
+                <p className="carpet-note">
+                  <span>
+                    <img
+                      className="image_good"
+                      src="https://i.ibb.co/s9gxd00H/Untitled-Artwork-4-2.png"
+                    />
+                  </span>{" "}
+                  MADE FOR LOW-FUSS LIVING: BECAUSE YOUR CARPET SHOULD WORK WITH
+                  YOUR LIFESTYLE, NOT AGAINST IT.
+                </p>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : null}
 
       {/* Similar Products */}
       <div className="similar-styles-section">

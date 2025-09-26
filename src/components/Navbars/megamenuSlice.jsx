@@ -18,8 +18,8 @@ return response.data.data;
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchMegamenuData.pending, (state) => {
+        builder
+        .addCase(fetchMegamenuData.pending, (state) => {
         state.loading = true;
         state.error = null;
       })

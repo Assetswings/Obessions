@@ -44,6 +44,23 @@
     transform: translateY(-20px);
   }
   
+  .mega-menu-content-duo{
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    height: calc(93% - 81px);
+    background: #fff;
+    z-index: 2;
+    display: flex;
+    padding: 40px;
+    overflow-y: auto;
+    pointer-events: auto;
+    animation: fadeSlideDown 0s ease-out forwards;
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  
   @keyframes fadeSlideDown {
     to {
       opacity: 1;

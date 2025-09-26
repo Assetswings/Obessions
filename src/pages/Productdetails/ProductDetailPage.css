@@ -386,7 +386,7 @@ font-family: "Playfair Display", serif; */
 
 .img_section {
   position: sticky;
-  top: 60px; /* adjust based on your tab height */
+  top: 120px;
   align-self: flex-start;
   z-index: 1;
   width: 46%;
@@ -406,7 +406,7 @@ font-family: "Playfair Display", serif; */
   justify-content: space-around;
   position: sticky;
   width: 44rem;
-  top: 0;
+  top: 55px;
   background: #f1f3f1;
   z-index: 10;
   border-bottom: 1px solid #eee;
@@ -418,7 +418,7 @@ font-family: "Playfair Display", serif; */
   border: none;
   font-size: 14px;
   padding: 10px;
-  cursor: pointer;
+  /* cursor: pointer; */
   position: relative;
   color: #444;
 }
@@ -552,7 +552,7 @@ font-family: "Playfair Display", serif; */
 }
 
 .center-image img {
-  max-width: 100%;
+  max-width: 80%;
   height: auto;
   border-radius: 4px;
 }
@@ -579,7 +579,7 @@ font-family: "Playfair Display", serif; */
 }
 
 .similar-styles-section {
-  /* padding: 40px 20px; */
+  padding: 40px 20px;
   background: #fdfdfd;
   text-align: center;
 }

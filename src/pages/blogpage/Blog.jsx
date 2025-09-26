@@ -32,7 +32,7 @@ const Blog = () => {
         {/* BLOG HEADER */}
         <header className="blog-header">
           <h1>BLOG</h1>
-          <p>Insights, stories, and updates from our world.</p>
+          <p style={{color:"#625E55"}}>Insights, stories, and updates from our world.</p>
         </header>
 
         {/* FEATURED POST */}
@@ -42,7 +42,7 @@ const Blog = () => {
           </div>
 
           <div className="featured-info">
-            <div>
+            <div style={{position:"relative", top:"4%"}}>
               <div>
                 <span className="read-time">3min Read</span>
               </div>

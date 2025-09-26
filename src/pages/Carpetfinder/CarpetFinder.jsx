@@ -141,7 +141,8 @@ const CarpetFinder = () => {
       <div className="finder-wrapper">
         <div className="finder-main">
           <h2 className="finder-title">{steps[currentStep]?.title}</h2>
-          <div className="finder-grid">
+            <div className="track-desk"> 
+  <div className="finder-grid">
             {steps[currentStep]?.options.map(({ label, image, key }) => (
               <div
                 key={label}
@@ -162,6 +163,8 @@ const CarpetFinder = () => {
               </div>
             ))}
           </div>
+            </div>
+        
           <div className="finder-buttons">
             <button
               onClick={() => setCurrentStep((prev) => prev - 1)}

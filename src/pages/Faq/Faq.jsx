@@ -5,6 +5,8 @@ import Footer from "../../components/Footer/Footer";
 import { fetchFaqs } from "./faqSlice";
 import { useDispatch, useSelector } from "react-redux";
 import API from "../../app/api";
+import helprightimg from "../../assets/images/need-help-right.jpg";
+import helpleftimg from "../../assets/images/need-help-left.jpg";
 
 const Faq = () => {
   const [activeSection, setActiveSection] = useState();
@@ -60,7 +62,7 @@ const Faq = () => {
         <div className="faq-content">
           <h1>How can we help you today?</h1>
           <p>Browse our most frequently asked questions.</p>
-          <div className="faq-search-bar">
+          {/* <div className="faq-search-bar">
             <input
               type="text"
               onChange={(e)=>{setSearchText(e.target.value)}}
@@ -69,7 +71,7 @@ const Faq = () => {
             <button onClick={faqSearch}>
               <FiSearch size={18} />
             </button>
-          </div>
+          </div> */}
         </div>
         <img
           src={bannerimg?.right}
@@ -113,6 +115,30 @@ const Faq = () => {
           ))}
         </div>
       </section>
+
+      {/* Help Section */}
+      <section className="faq-help-section">
+        <div className="faq-help-container">
+          <div className="faq-help-img-1">
+            <img src={helpleftimg} alt="Help Left" />
+          </div>
+
+          <div className="faq-help-content">
+            <h3>Still need help?</h3>
+            <p>
+              Check out our above FAQs for quick answers to common questions.
+              <br />
+              Still need assistance? Feel free to email us at:
+            </p>
+            <a href="mailto:care@obsessions.co.in">care@obsessions.co.in</a>
+          </div>
+
+          <div className="faq-help-img-2">
+            <img src={helprightimg} alt="Help Right" />
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </>
   );

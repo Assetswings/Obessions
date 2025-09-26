@@ -36,6 +36,8 @@
   font-size: 0.85rem;
   color: #555;
   text-decoration: underline;
+  position:relative;
+  bottom: 30%;
 }
 
 .order-list {
@@ -75,6 +77,9 @@
 .status_key {
   position: relative;
   left: 5px;
+  font-family: 'Canela Trial', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
 }
 .order-item {
   display: flex;
@@ -187,6 +192,8 @@
   text-decoration: underline;
   color: black;
   cursor: pointer;
+  top: 75%;
+  position: relative;
 }
 
 .modal-box h3 {

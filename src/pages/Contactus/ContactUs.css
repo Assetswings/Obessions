@@ -28,9 +28,10 @@
   }
   
   .contact-info h2 {
-    font-family: "Playfair Display", serif;
-    font-size: 2.7rem;
+    font-family: 'Canela Trial', sans-serif;
+    font-size: 44px;
     margin-bottom: 1rem;
+    font-weight: 300;
   }
   
   .contact-info p {
@@ -43,12 +44,14 @@
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    
   }
   
   .info-item span {
     font-size: 1.2rem;
     line-height: 1;
+    position: relative;
+    top: 10px;
   }
   
   .info-item strong {
@@ -64,9 +67,10 @@
   }
   
   .contact-form h2 {
-    font-family: "Playfair Display", serif;
-    font-size: 2.7rem;
+    font-family: 'Canela Trial', sans-serif;
+    font-size: 44px;
     margin-bottom: 1.5rem;
+    font-weight: 300;
   }
   
   .contact-form form {
@@ -83,6 +87,7 @@
   
   .form-row.two-column input {
     width: 100%;
+    border-radius: inherit;
   }
   
   .form-row.full-width {
@@ -92,6 +97,7 @@
   .form-row select,
   .form-row textarea {
     width: 100%;
+    border-radius: inherit;
   }
   
   .form-row input,
@@ -102,6 +108,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-family: inherit;
+    border-radius: inherit;
   }
   
   textarea {
@@ -119,8 +126,8 @@
     text-transform: uppercase;
     font-size: 0.95rem;
     margin-top: 1rem;
-    border-radius: 4px;
     transition: background-color 0.3s ease;
+    border-radius: inherit;
   }
   
   button[type="submit"]:hover {
@@ -131,7 +138,7 @@
   .help-guides {
     text-align: center;
     padding: 6rem 2rem;
-    background-color: #fdfaf7;
+    background-color: #E4DED5;
   }
   
   .help-guides h2 {

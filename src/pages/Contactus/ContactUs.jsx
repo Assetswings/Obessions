@@ -9,6 +9,9 @@ import {
   fetchContactDetails,
 } from "./contactUsSlice";
 import { Toaster, toast } from "react-hot-toast";
+import helpchat from "../../assets/icons/helpchat.png";
+import sizeguide from "../../assets/icons/sizeguide.png";
+import styleguild from "../../assets/icons/styleguild.png";
 
 const ContactUs = () => {
   const dispatch = useDispatch();
@@ -222,25 +225,25 @@ const ContactUs = () => {
         </section>
 
         <section className="help-guides">
-          <h2>Instant Help Guides</h2>
+          <h2 style={{fontWeight:"400", fontSize:"32px"}}>Instant Help Guides</h2>
           <div className="guides-container">
             <div className="guide-item">
               <img
-                src="https://i.ibb.co/1Yv02ntL/Help-Chat-2-Streamline-Core.png"
+                src={helpchat}
                 alt="FAQ Icon"
               />
               <p>FAQ’s</p>
             </div>
             <div className="guide-item">
               <img
-                src="https://i.ibb.co/nMD1WLd6/Vector-1.png"
+                src={sizeguide}
                 alt="Size Guide Icon"
               />
               <p>SIZE GUIDE</p>
             </div>
             <div className="guide-item">
               <img
-                src="https://i.ibb.co/5x1GQCvB/Product-Icons.png"
+                src={styleguild}
                 alt="Style Guide Icon"
               />
               <p>STYLE GUIDE</p>

@@ -318,7 +318,7 @@ const ProfilePage = () => {
           <div className="root_tab"> 
             <div className="tabs">
           <div className="button_group_tracker">
-            {["profile", "address", "orders"].map((tab) => (
+            {["profile", "address", "your orders"].map((tab) => (
               <button
                 key={tab}
                 className={activeTab === tab ? "active" : ""}
@@ -463,7 +463,7 @@ const ProfilePage = () => {
             </div>
           )}
 
-          {activeTab === "orders" && (
+          {activeTab === "your orders" && (
             <div className="orders-section">
               <OrderHistoryPage />
             </div>

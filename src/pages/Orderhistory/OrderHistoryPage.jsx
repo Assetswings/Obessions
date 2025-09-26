@@ -87,9 +87,18 @@ const OrderHistoryPage = () => {
   return (
     <div className="order-history">
       <aside className="sidebar">
-        <h2>Order History</h2>
+        {/* <h2>Order History</h2> */}
         <div className="filters">
-          <h4>Filters</h4>
+          <div  style={{display:"flex", justifyContent:"space-between"}}>
+            <div>
+              <h4>Filters</h4>
+            </div>
+            <div>
+              <a href="#" className="clear-all" onClick={handleClearAll}>
+                Clear all
+              </a>
+            </div>
+          </div>
           <p>ORDER STATUS</p>
 
           {STATUS_OPTIONS.map((status) => (
@@ -102,10 +111,6 @@ const OrderHistoryPage = () => {
               <span className="status_key">{status.label}</span>
             </label>
           ))}
-
-          <a href="#" className="clear-all" onClick={handleClearAll}>
-            Clear all
-          </a>
         </div>
       </aside>
 
@@ -143,6 +148,7 @@ const OrderHistoryPage = () => {
                 <div className="order-actions">
                   <span
                     className="pointer-crusser"
+                    style={{color: "#1B170E"}}
                     onClick={() =>
                       navigate("/OrderTrackingPage", {
                         state: { order_no: order.order_no },
@@ -152,7 +158,7 @@ const OrderHistoryPage = () => {
                     Track Order
                   </span>
                   <div>
-                    <span>View Invoice</span>
+                    <span style={{color: "#1B170E"}}>View Invoice</span>
                   </div>
                 </div>
               </div>

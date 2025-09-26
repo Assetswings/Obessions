@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAddOns } from "../Products/otherproductSlice";
 import { UseDispatch } from "react-redux";
 import Footer from "../../components/Footer/Footer";
+import SuccessIcon from "../../assets/icons/Success-Icon.png";
 const Successpage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,7 +23,10 @@ const Successpage = () => {
     <>
       <div className="success-container">
         {/* ✅ Success Icon */}
-        <CheckCircle className="success-icon" />
+        {/* <CheckCircle className="success-icon" /> */}
+        <div className="mb-4">
+          <img src={SuccessIcon} alt="success" />
+        </div>
 
         {/* ✅ Title */}
         <h2 className="success-title">Order placed Successfully</h2>
@@ -48,7 +52,7 @@ const Successpage = () => {
             className="btn-outline"
           >
             TRACK ORDER
-          </button>
+          </button> &nbsp;
           <button onClick={() => navigate("/")} className="btn-primary">
             CONTINUE SHOPPING
           </button>
@@ -71,7 +75,7 @@ const Successpage = () => {
         </div>
       </section> */}
       <section className="top-picks-section">
-        <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
+        <h2 className="top-picks-heading">Perfect Add-ons for Your Order</h2>
         <div className="top-picks-grid">
           {addOns?.map((item) => (
             <div key={item.id} className="top-pick-card">

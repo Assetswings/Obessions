@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./WishlistModal.css";
-import { X } from "lucide-react";
+import { Heart, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishlist, removeFromWishlist, moveToCart } from "./WishlistSlice";
 import imgbag from "../../assets/images/empty_bag.png";
+import ArrowLeft from "../../assets/icons/ArrowLeft.png";
 
 const WishlistModal = ({ onClose }) => {
   const dispatch = useDispatch();
@@ -41,7 +42,10 @@ const WishlistModal = ({ onClose }) => {
       <div className="wishlist-modal">
         <div className="wishlist-header">
           <h3>
-            Wishlist {!loading && <span>({items.length})</span>}
+            Wishlist{" "}
+            {!loading && (
+              <span className="wishlist-header-count">({items.length})</span>
+            )}
             {loading && <Skeleton width={30} height={20} />}
           </h3>
           <X onClick={onClose} className="close-icon-whst" />
@@ -138,8 +142,8 @@ const WishlistModal = ({ onClose }) => {
                   Love something? Hit the heart to add it to your favourites.
                 </p>
 
-                <button className="empty-cart-btn">
-                  Explore Bestsellers →
+                <button className="empty-wishlist-btn">
+                  Explore Bestsellers &nbsp; <img src={ArrowLeft} height={16} width={16}/>
                 </button>
               </div>
             </div>

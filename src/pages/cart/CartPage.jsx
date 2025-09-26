@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import blankcart from "../../assets/images/blank-cart.png";
 import { fetchAddOns } from "../Products/otherproductSlice";
 import { ToastContainer, toast } from "react-toastify";
+import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -130,7 +131,7 @@ const CartPage = () => {
                 className="empty-cart-btn"
                 onClick={() => navigate("/")} // ✅ send user back to home/shop
               >
-                EXPLORE →
+                EXPLORE &nbsp; <img src={rightarrawwhite} height={25} width={25}/>
               </button>
             </div>
           ) : (
@@ -157,11 +158,11 @@ const CartPage = () => {
                   </span>
                   <p>
                     {" "}
-                    size : <span>{item.product?.size}</span>{" "}
+                    size : <span><u>{item.product?.size}</u></span>{" "}
                   </p>
                   <p>
                     {" "}
-                    color : <span> {item.product?.color}</span>{" "}
+                    color : <span><u>{item.product?.color}</u></span>{" "}
                   </p>
 
                   <div className="root_qtn_cart">

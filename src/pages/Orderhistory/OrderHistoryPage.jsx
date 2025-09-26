@@ -78,7 +78,7 @@ const OrderHistoryPage = () => {
   };
 
   const handleSimilarProductClick = (slug) => {
-    navigate("/productsdetails", { state: { product: slug }});
+    navigate("/productsdetails", { state: { product: slug } });
   };
 
   if (loading) return <p>Loading...</p>;
@@ -99,7 +99,7 @@ const OrderHistoryPage = () => {
                 checked={selectedStatus === status.key}
                 onChange={() => handleStatusChange(status.key)}
               />
-              {status.label}
+              <span className="status_key">{status.label}</span>
             </label>
           ))}
 
@@ -184,7 +184,14 @@ const OrderHistoryPage = () => {
                     {(item.allow_exchange || item.allow_return) && (
                       <div className="actions">
                         <div className="link-btn">
-                          <p className="cancel-order" onClick={() => handleSimilarProductClick(item.action_url)} >Buy Again</p>
+                          <p
+                            className="cancel-order"
+                            onClick={() =>
+                              handleSimilarProductClick(item.action_url)
+                            }
+                          >
+                            Buy Again
+                          </p>
                         </div>
                         <div
                           className="link-btn"

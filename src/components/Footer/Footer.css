@@ -1,178 +1,210 @@
 .footer {
+  background-color: #1c150f;
+  color: #f0f0f0;
+  padding: 80px 80px;
+  font-family: 'Arial', sans-serif;
+  z-index: 9999;
+}
+
+.newsletter {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.newsletter h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 35px;
+  font-weight: 300;
+  color: white !important;
+}
+
+.newsletter em {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.email-signup {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.email-signup input {
+  padding: 10px;
+  width: 319px !important;
+  border: none;
+  border: 2px solid #fff;
+  background: none;
+  color: #fff;
+  position: relative;
+  left: 12px;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+.email-signup button {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  /* font-weight: 600; */
+  border-radius: 2px;
+  margin-top: 15px;
+}
+
+.sub_text {
+  font-size: 14px;
+  color: #BDBDBD;
+}
+
+.terms_footer {
+  margin-top: 10px;
+  font-size: 12px;
+  text-decoration: none;
+  color: #BDBDBD;
+}
+
+.terms_footer a {
+  color: #BDBDBD;
+  text-decoration: underline;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.footer-links>div {
+  flex: 1 1 200px;
+  margin: 20px 10px;
+}
+
+.footer-links h4 {
+  font-size: 14px;
+  margin-bottom: 16px;
+  font-weight: 400;
+  color: #F2F2F2;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  font-weight: 400;
+  font-size: 14px;
+  /* color: aqua; */
+}
+
+.footer-links li {
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 300;
+  color: #BDBDBD;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.contact p {
+  font-size: 13px;
+  margin: 5px 0;
+}
+
+.ctn_txt {
+  color: #BDBDBD;
+}
+
+.social-icons {
+  margin-top: 60px;
+  font-size: 20px;
+}
+
+.social-icons i {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.sub-icon {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-bottom {
+  border-top: 1px solid #444;
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+
+.payments img {
+  height: 25px;
+  margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+  .email-signup {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-links>div {
+    margin: 10px 0;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .email-signup {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .email-signup input {
+    width: 100% !important;
+  }
+
+  .sub_text {
+    font-size: 8px;
+  }
+
+  .newsletter h2 {
+    font-size: 19px;
+  }
+
+  .newsletter input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .email-signup button {
+    padding: 4.7% 4%;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
     background-color: #1c150f;
     color: #f0f0f0;
-    padding: 80px 80px;
+    padding: 10% 10%;
     font-family: 'Arial', sans-serif;
-    z-index: 9999;
+    z-index: 999999 !important;
+    position: relative;
   }
-  
-  .newsletter {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  
-  .newsletter h2 {
-    font-family: "Playfair Display", serif;
-    font-size: 35px;
-    font-weight: 300;
-    color: white !important;
-  }
-  
-  .newsletter em {
-    font-style: italic;
-    font-weight: 500;
-  }
-  
-  .email-signup {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  
-  .email-signup input {
-    padding: 10px;
-    width: 319px !important;
-    border: none;
-    border: 2px solid #fff;
-    background: none;
-     color: #fff;
-     position: relative;
-     left: 12px;
-     font-size: 13px;
-     margin-top: 15px;
-  }
-  
-  .email-signup button {
-    background-color: #fff;
-    color: #000;
-    border: none;
-    padding: 10px 16px;
-    cursor: pointer;
-    /* font-weight: 600; */
-    border-radius: 2px;
-    margin-top: 15px;
-  }
-  
-   .sub_text{
-    font-size:14px ;
-    color: #BDBDBD;
-   }
-  .terms_footer {
-    margin-top: 10px;
-    font-size: 12px;
-   text-decoration: none;
-   color: #BDBDBD;
-  }
-  .terms_footer a {
-    color: #BDBDBD;
-    text-decoration: underline;
-  }
-  
-  .footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 30px;
-  }
-  
-  .footer-links > div {
-    flex: 1 1 200px;
-    margin: 20px 10px;
-  }
-  
-  .footer-links h4 {
-    font-size: 14px;
-    margin-bottom: 16px;
-    font-weight: 400;
-    color: #F2F2F2;
-  }
-  
-  .footer-links ul {
-    list-style: none;
-    padding: 0;
-    font-weight: 400;
-    font-size: 14px;
-    /* color: aqua; */
-  }
-  
-  .footer-links li {
-    margin-bottom: 6px;
-    font-size: 12px;
-    font-weight: 300;
-    color: #BDBDBD;
-    cursor: pointer;
-    text-transform: capitalize;
-  }
-  
-  .contact p {
-    font-size: 13px;
-    margin: 5px 0;
-  }
-  .ctn_txt{
-    color: #BDBDBD;
-  }
-  .social-icons {
-    margin-top: 60px;
-    font-size: 20px;
-  }
-  
-  .social-icons i {
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  .sub-icon{
-   display: flex;
-   gap: 24px;
-  }
-  
-  .footer-bottom {
-    border-top: 1px solid #444;
-    padding-top: 15px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    font-size: 13px;
-  }
-  
-  .payments img {
-    height: 25px;
-    margin-right: 10px;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .email-signup {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .footer-bottom {
-      flex-direction: column;
-      text-align: center;
-      gap: 10px;
-    }
-  
-    .footer-links {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .footer-links > div {
-      margin: 10px 0;
-      text-align: center;
-    }
-  }
-  
-
-  @media (max-width: 480px){
-    .footer {
-      background-color: #1c150f;
-      color: #f0f0f0;
-      padding: 80px 80px;
-      font-family: 'Arial', sans-serif;
-      z-index: 999999 !important;
-      position: relative;
-    }
-  } 
+}

@@ -17,10 +17,11 @@
 }
 
 .success-title {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 300;
   color: #111827;
   margin-bottom: 5px;
+  font-family: "Canela Trial";
 }
 
 .success-subtitle {
@@ -30,14 +31,15 @@
 }
 
 .arrival-box {
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 }
 
 .arrival-title {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 400;
   color: #111827;
   margin-bottom: 5px;
+  font-family: "Helvetica Neue", sans-serif;
 }
 
 .arrival-date {
@@ -46,14 +48,13 @@
 }
 
 .arrival-id {
-  font-size: 0.8rem;
-  color: #6b7280;
+  font-size: 14px;
+  color: #1B170E;
   margin-top: 6px;
 }
 
 .arrival-id span {
-  font-weight: 600;
-  color: #111827;
+  color: #625E55;
 }
 
 .button-group {
@@ -81,8 +82,8 @@
   border: none;
   background: #111827;
   color: #fff;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 300;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -94,14 +95,14 @@
 /* top picks section */
 
 .top-picks-section {
-  padding: 62px 2px 56px 30px;
+  padding: 62px 120px 74px 120px;
   text-align: center;
 }
 
 .top-picks-heading {
-  font-size: 56px;
+  font-size: 44px;
   font-weight: 300;
-  margin-bottom: 40px;
+  /* margin-bottom: 40px; */
   font-family: "Canela Trial", sans-serif;
 }
 
@@ -151,4 +152,14 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   text-align: start;
+}
+
+@media (max-width: 480px) {
+  .top-pick-title {
+    font-size: 10px;
+  }
+  .top-picks-section {
+    padding: 0px 0px 0px 5px;
+    text-align: center;
+  }
 }

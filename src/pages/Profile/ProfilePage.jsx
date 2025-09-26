@@ -9,6 +9,7 @@ import OrderHistoryPage from "../Orderhistory/OrderHistoryPage";
 import API from "../../app/api";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
+import plusicon from "../../assets/icons/plusicon.png";
 
 import {
   getAddress,
@@ -314,7 +315,8 @@ const ProfilePage = () => {
     <>
       <Toaster position="top-right" reverseOrder={false} />
       <div className="profile-container">
-        <div className="tabs">
+          <div className="root_tab"> 
+            <div className="tabs">
           <div className="button_group_tracker">
             {["profile", "address", "orders"].map((tab) => (
               <button
@@ -327,8 +329,11 @@ const ProfilePage = () => {
             ))}
           </div>
         </div>
+          </div>
+        
 
         <div className="content-wrapper">
+
           {activeTab === "profile" && (
             <div className="profile-section">
               <div className="set_box">
@@ -370,7 +375,12 @@ const ProfilePage = () => {
                     <span> ✅ email veryfied </span>
                   )} */}
                   {profileData?.email_verified == 0 ? (
-                    <u onClick={handleSendOtp} style={{ fontWeight: "bold", cursor:"pointer" }}>Verify</u>
+                    <u
+                      onClick={handleSendOtp}
+                      style={{ fontWeight: "bold", cursor: "pointer" }}
+                    >
+                      Verify
+                    </u>
                   ) : profileData?.email_verified == 1 ? (
                     <span>✅ Email Verified</span>
                   ) : null}
@@ -398,7 +408,12 @@ const ProfilePage = () => {
                 className="address-card add"
                 onClick={() => setShowAddAddressModal(true)}
               >
-                + Add Address
+                <div>
+                  <div className="addaddressicon">
+                    <img src={plusicon} alt="plus" />
+                  </div>
+                  <div>Add Address</div>
+                </div>
               </div>
               {addressdata.map((item) => (
                 <div className="address-list">

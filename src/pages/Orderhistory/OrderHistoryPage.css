@@ -59,6 +59,7 @@
   flex-wrap: wrap;
 }
 
+
 .order-header span {
   font-size: 0.85rem;
   color: #555;
@@ -71,6 +72,10 @@
   color: #333;
 }
 
+.status_key {
+  position: relative;
+  left: 5px;
+}
 .order-item {
   display: flex;
   align-items: center;

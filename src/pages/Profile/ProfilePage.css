@@ -7,12 +7,17 @@
   text-align: center;
 }
 
-.tabs {
+.root_tab{
   display: flex;
+  justify-content: center;
+}
+.tabs {
+ display: flex;
   justify-content: center;
   gap: 20px;
   border-bottom: 2px solid #eee;
   margin-bottom: 20px;
+  width: 70%;
 }
 
 .tabs button {
@@ -28,7 +33,6 @@
 .tabs button.active {
   color: black;
   border-color: red;
-  width: 200px;
 }
 
 .content-wrapper {
@@ -140,7 +144,7 @@
 
 .button_group_tracker {
   display: flex;
-  gap: 125px;
+  gap: 96px;
 }
 
 .txt_head_add {
@@ -210,11 +214,11 @@
 
 .close-btn {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 0px;
+  right: 24px;
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 40px;
   cursor: pointer;
 }
 
@@ -328,4 +332,15 @@
   color: #007bff;
   font-size: 13px;
   cursor: pointer;
+}
+
+.addaddressicon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.address_title_text {
+  overflow-wrap: break-word;
+  color: #625E55;
 }

@@ -280,7 +280,7 @@ const CheckoutPage = () => {
                 <p>
                   Color:{" "}
                   <span className={`color-${item.product.color.toLowerCase()}`}>
-                    {item.product.color}
+                    <u>{item.product.color}</u>
                   </span>
                 </p>
                 <p className="item-qtn">
@@ -295,10 +295,6 @@ const CheckoutPage = () => {
           <div className="section">
             <div className="price-summary">
               <div className="trackvel">
-                <div className="txt_title_cal">TOTAL MRP</div>
-                <div>₹{checkoutData?.data?.subtotal}</div>
-              </div>
-              <div className="trackvel">
                 <div className="txt_title_cal">
                   COUPON [{" "}
                   <span className="coupon">
@@ -309,18 +305,28 @@ const CheckoutPage = () => {
                 <div>-₹{checkoutData?.data?.applied_coupon[0]?.discount}</div>
               </div>
               <div className="trackvel">
+                <div className="txt_title_cal">SHIPPING CHARGES</div>
+                <div>₹{checkoutData?.data?.shipping_charges}</div>
+              </div>
+              <div className="trackvel">
                 <div className="txt_title_cal">ROUND OFF</div>
                 <div>₹{checkoutData?.data?.order_total_roundoff}</div>
               </div>
               <div className="trackvel">
-                <div className="txt_title_cal">SHIPPING CHARGES</div>
-                <div>₹{checkoutData?.data?.shipping_charges}</div>
+                <div className="txt_title_cal">TOTAL MRP</div>
+                <div>₹{checkoutData?.data?.subtotal}</div>
               </div>
-              <br />
-              <div className="breaker_global"></div>
+              {/* <br /> */}
+              <div className="breaker_global">
+                <hr />
+              </div>
               <div className="trackvel">
-                <div className="txt_title_cal">ORDER TOTAL</div>
-                <div>₹{checkoutData?.data?.order_total}</div>
+                <div className="txt_title_cal">
+                  ORDER TOTAL
+                </div>
+                <div>
+                  ₹{checkoutData?.data?.order_total}
+                </div>
               </div>
             </div>
 
@@ -328,36 +334,42 @@ const CheckoutPage = () => {
             <h4 className="title_roolt_checkout">Personal Information</h4>
             <div className="root_track">
               <div className="row">
-                <input
-                  type="text"
-                  value={profileData?.first_name || ""}
-                  placeholder="First Name"
-                  className="input_checkout"
-                  readOnly
-                />
-                <input
-                  type="text"
-                  value={profileData?.last_name || ""}
-                  placeholder="Last Name"
-                  className="input_checkout"
-                  readOnly
-                />
+                <div className="per-row-input">
+                  <input
+                    type="text"
+                    value={profileData?.first_name || ""}
+                    placeholder="First Name"
+                    className="input_checkout"
+                    readOnly
+                  />
+                  <input
+                    type="text"
+                    value={profileData?.last_name || ""}
+                    placeholder="Last Name"
+                    className="input_checkout"
+                    readOnly
+                  />
+                </div>
               </div>
               <div className="row">
-                <input
-                  type="email"
-                  value={profileData?.email || ""}
-                  placeholder="Email"
-                  className="input_checkout"
-                  readOnly
-                />
-                <input
-                  type="tel"
-                  value={profileData?.mobile ? `+91 ${profileData.mobile}` : ""}
-                  placeholder="Mobile"
-                  className="input_checkout"
-                  readOnly
-                />
+                <div className="per-row-input">
+                  <input
+                    type="email"
+                    value={profileData?.email || ""}
+                    placeholder="Email"
+                    className="input_checkout"
+                    readOnly
+                  />
+                  <input
+                    type="tel"
+                    value={
+                      profileData?.mobile ? `+91 ${profileData.mobile}` : ""
+                    }
+                    placeholder="Mobile"
+                    className="input_checkout"
+                    readOnly
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -461,9 +473,11 @@ const CheckoutPage = () => {
           </div>
 
           <div className="root_track">
-            <button onClick={handlePlaceOrder} className="payment-btn">
-              CONTINUE TO PAYMENT
-            </button>
+            <div>
+              <button onClick={handlePlaceOrder} className="payment-btn">
+                CONTINUE TO PAYMENT
+              </button>
+            </div>
           </div>
           <div className="root_track">
             <p className="info-note">
@@ -529,7 +543,12 @@ const CheckoutPage = () => {
                       autoClose: 6000,
                       hideProgressBar: true,
                       closeButton: ({ closeToast }) => (
-                        <X size={18} color="#fff" onClick={closeToast} style={{ cursor: "pointer" }} />
+                        <X
+                          size={18}
+                          color="#fff"
+                          onClick={closeToast}
+                          style={{ cursor: "pointer" }}
+                        />
                       ),
                       icon: true,
                     });

@@ -141,7 +141,7 @@ const PaymentPage = () => {
                 <p>
                   Color:{" "}
                   <span className={`color-${item.product.color.toLowerCase()}`}>
-                    {item.product.color}
+                    <u>{item.product.color}</u>
                   </span>
                 </p>
                 <p className="item-qtn">
@@ -157,10 +157,6 @@ const PaymentPage = () => {
             {/* calculation */}
             <div className="price-summary">
               <div className="trackvel">
-                <div className="txt_title_cal">TOTAL MRP</div>
-                <div>₹{checkoutData?.data?.subtotal}</div>
-              </div>
-              <div className="trackvel">
                 <div className="txt_title_cal">
                   COUPON [{" "}
                   <span className="coupon">
@@ -171,30 +167,40 @@ const PaymentPage = () => {
                 <div>-₹{checkoutData?.data?.applied_coupon[0]?.discount}</div>
               </div>
               <div className="trackvel">
+                <div className="txt_title_cal">SHIPPING CHARGES</div>
+                <div>₹{checkoutData?.data?.shipping_charges}</div>
+              </div>
+              <div className="trackvel">
                 <div className="txt_title_cal">ROUND OFF</div>
                 <div>₹{checkoutData?.data?.order_total_roundoff}</div>
               </div>
               <div className="trackvel">
-                <div className="txt_title_cal">SHIPPING CHARGES</div>
-                <div>₹{checkoutData?.data?.shipping_charges}</div>
+                <div className="txt_title_cal">TOTAL MRP</div>
+                <div>₹{checkoutData?.data?.subtotal}</div>
               </div>
-              <br />
-              <div className="breaker_global"></div>
+              <div className="breaker_global">
+                <hr />
+              </div>
               <div className="trackvel">
-                <div className="txt_title_cal">ORDER TOTAL</div>
-                <div>₹{checkoutData?.data?.order_total}</div>
+                <div className="txt_title_cal">
+                  ORDER TOTAL
+                </div>
+                <div>
+                  ₹{checkoutData?.data?.order_total}
+                </div>
               </div>
             </div>
           </div>
 
           <div className="section">
-            <h6>DELIVERY ADDRESS</h6>
-            <p>
-              {orderPayload.billing_first_name} {orderPayload.billing_last_name}
-            </p>
-            <p>{orderPayload.billing_mobile}</p>
-            <p>{orderPayload.billing_address}</p>
-            <p>
+            <h6 style={{ fontWeight: "bold" }}>DELIVERY ADDRESS</h6>
+            <p style={{color: "#625E55"}}>
+              {orderPayload.billing_first_name} {orderPayload.billing_last_name}{" "}
+              <br />
+              {orderPayload.billing_mobile}
+              <br />
+              {orderPayload.billing_address}
+              <br />
               {orderPayload.billing_address2},{orderPayload.billing_landmark},{" "}
               {orderPayload.billing_pincode}, {orderPayload.billing_city},{" "}
               {orderPayload.billing_state}
@@ -202,7 +208,7 @@ const PaymentPage = () => {
           </div>
 
           <div className="section">
-            <h6>SELECT A PAYMENT METHOD</h6>
+            <h6 style={{fontWeight:"bold"}}>SELECT A PAYMENT METHOD</h6>
             {/* <div className="payment-options">
               {orderResponse?.data?.payment_gateways?.map((pg, idx) => (
                 <label key={idx}>

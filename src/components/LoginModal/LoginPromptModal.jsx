@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginPromptModal.css";
 import logo from "../../assets/icons/Obslogo.png";
+import { X } from "lucide-react";
 
 const LoginPromptModal = ({ onClose }) => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const LoginPromptModal = ({ onClose }) => {
   return (
     <div className="login-prompt-backdrop">
       <div className="login-prompt-modal">
-        <button className="close-btn-md" onClick={onClose}>×</button>
+        <button className="close-btn-md" onClick={onClose}><X/></button>
         <img src={logo} alt="Logo" className="modal-logo" />
         <h2 className="modal-heading">Make yourself at home</h2>
         <p className="modal-subtext">

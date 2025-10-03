@@ -25,78 +25,6 @@ const tabs = [
   { id: "size-guide", label: "SIZE GUIDE" },
 ];
 
-const similarProducts = [
-  {
-    name: "Cassia Classic Checkered Rug",
-    price: "₹1755",
-    original: null,
-    discount: null,
-    img: "https://i.ibb.co/zWv3LyCV/image-387.png",
-  },
-  {
-    name: "Quatrefloral Tribal Fringe Rug",
-    price: "₹1755",
-    original: "₹2125",
-    discount: "-30%",
-    img: "https://i.ibb.co/s9r2vLHV/image-3.png",
-  },
-  {
-    name: "Zaylee Shag Waves Rug",
-    price: "₹1755",
-    original: "₹2125",
-    discount: "-30%",
-    img: "https://i.ibb.co/zTSJJcsf/image-309.png",
-  },
-  {
-    name: "Temple Hand Micro Hooked Wool Rug",
-    price: "₹1755",
-    original: null,
-    discount: null,
-    img: "https://i.ibb.co/s9r2vLHV/image-3.png",
-  },
-  {
-    name: "Pebble Handwoven Performance Rug",
-    price: "₹1755",
-    original: null,
-    discount: null,
-    img: "https://i.ibb.co/Tj9XV1P/image-310.png",
-  },
-  {
-    name: "Malta Handwoven Wool Rug",
-    price: "₹1755",
-    original: null,
-    discount: null,
-    img: "https://i.ibb.co/mrfdMWfJ/image-311.png",
-  },
-  {
-    name: "Kali Handwoven Jute Rug",
-    price: "₹1755",
-    original: "₹2125",
-    discount: "-30%",
-    img: "https://i.ibb.co/kgpY1rXT/image-4.png",
-  },
-  {
-    name: "Ines Hand Micro Hooked Wool Rug",
-    price: "₹1755",
-    original: null,
-    discount: null,
-    img: "https://i.ibb.co/rfZnnjVz/image-5.png",
-  },
-  {
-    name: "Mehari Polypropylene Shaggy Carpet Cream Grey",
-    price: "₹1755",
-    original: "₹2125",
-    discount: "-30%",
-    img: "https://i.ibb.co/Tj9XV1P/image-310.png",
-  },
-  {
-    name: "Lynx Solid Machine Made Carpet Teal",
-    price: "₹1755",
-    original: "₹2125",
-    discount: "-30%",
-    img: "https://i.ibb.co/mrfdMWfJ/image-311.png",
-  },
-];
 const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("highlights");
@@ -139,16 +67,15 @@ const ProductDetailPage = () => {
       setPincodeDetails({});
       setPincode("");
       setPincodeChecked(false);
-      // Don’t clear similarStyle/matchingFound here 👈
       dispatch(fetchProductDetail(productSlug));
+      dispatch(resetPincodeState());  
     }
-
-    return () => {
+      return () => {
       dispatch(clearProductDetail());
     };
   }, [dispatch, productSlug]);
 
-  useEffect(() => {
+    useEffect(() => {
     if (!data?.id) return;
     // check if product changed
     if (prevSlugRef.current !== data.id) {
@@ -165,7 +92,7 @@ const ProductDetailPage = () => {
         setSelectedColor(data.product_sizes[0].product_colors?.[0] || null);
         setSelectedImage(
           data.product_sizes[0].product_colors?.[0]?.product_media?.[0]
-            ?.media || null
+           ?.media || null
         );
         setAnimatedWish(
           data.product_sizes[0]?.is_wishlisted ? data.product_sizes[0].id : null
@@ -181,7 +108,7 @@ const ProductDetailPage = () => {
     setPincodeDetails({});
     setPincode("");
     setPincodeChecked(false);
-  
+
     if (productDetails?.sub_category_action_url === "carpet") {
       const observer = new IntersectionObserver(
         (entries) => {
@@ -193,11 +120,11 @@ const ProductDetailPage = () => {
         },
         { threshold: 0.4 }
       );
-  
+
       Object.values(sectionsRef.current).forEach((section) => {
         if (section) observer.observe(section);
       });
-  
+
       return () => observer.disconnect();
     }
   }, [productDetails?.sub_category_action_url]);
@@ -276,6 +203,9 @@ const ProductDetailPage = () => {
     navigate("/productsdetails", { state: { product: slug } });
   };
 
+    const handlefinder =()=>{
+    navigate("/carpet-finder")
+   }
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
     const token = localStorage.getItem("token");
@@ -731,17 +661,27 @@ const ProductDetailPage = () => {
                 onChange={(e) => setPincode(e.target.value)}
               />
               <button onClick={handleCheck} className="check-btn">
-                Check
+               Check 
               </button>
-              {pincodeChecked && (
-                <button onClick={handleReset} className="check-btn">
-                  Reset
-                </button>
-              )}
+
+              <button onClick={handleReset} className="rest-btn">
+                Reset
+              </button>
             </div>
 
+             <div className="root_avl">  
+             <div> 
+            <p className="avl_trck">Available PAN India. We deliver wherever you call home.</p>   
+            </div> 
+
+              <div> 
+              <span className="avl_3"> Shipping Charges calculated at checkout.</span>
+              </div> 
+               </div>  
+           
+
             {/* Show pincode info */}
-            {pinloading && <p>Checking...</p>}
+            {pinloading && <p className="check_test">Checking...</p>}
             {pinerror && (
               <p style={{ color: "red", marginTop: "15px" }}>
                 Not serviceable for your area
@@ -813,7 +753,11 @@ const ProductDetailPage = () => {
             </div>
             <p className="txt-Carpet-Finder">
               Not sure which carpet fits your space? Try our{" "}
-              <span className="txt_crp">Carpet Finder</span>
+              <span 
+               onClick={handlefinder}
+               className="txt_crp">
+                Carpet Finder
+              </span>
             </p>
           </div>
 
@@ -1232,7 +1176,7 @@ const ProductDetailPage = () => {
       </div>
 
       {/* Don’t Miss the product */}
-      <div className="similar-styles-section">
+      <div className="similar-styles-section-2">
         <h2 className="txt_head_list">Don’t Miss These Matching Finds</h2>
         {localLoading ? (
           <div className="product-grid">

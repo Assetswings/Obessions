@@ -7,7 +7,7 @@ import { RiInstagramLine } from "react-icons/ri";
 import API from "../../app/api";
 import { useNavigate } from "react-router-dom";
 
-const Footer = () => {
+  const Footer = () => {
   const navigate = useNavigate();
   const [footerData, setFooterData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +37,6 @@ const Footer = () => {
   if (loading) return null; // or loader
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!footerData) return null;
-
   const { SHOP, COMPANY, RESOURCES, CONTACT_US, SOCIAL_MEDIA } = footerData;
 
   // helper to render social icons
@@ -56,7 +55,7 @@ const Footer = () => {
 
   // 🧭 Navigation Page
   const handleNavigate = (route) => {
-    navigate("/" + route);
+  navigate("/" + route);
   };
 
   const handleCategoryClick = (categorySlug) => {
@@ -232,12 +231,12 @@ const Footer = () => {
       </div>
 
       {/* Footer Bottom */}
-      {/* <div className="footer-bottom">
+      <div className="footer-bottom">
         <p>© 2025 obsessions.co.in | All Rights Reserved</p>
         <div className="payments">
-          <img src={marstrcards} alt="Visa" />
+          <img className="img_tracker_footer" src={marstrcards} alt="Visa" />
         </div>
-      </div> */}
+      </div>
     </footer>
   );
 };

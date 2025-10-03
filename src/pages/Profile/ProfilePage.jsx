@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ProfilePage.css";
 import { IoMdClose } from "react-icons/io";
-import { SquareCheck, SquarePen } from "lucide-react";
+import { CircleCheckBig, SquareCheck, SquarePen } from "lucide-react";
 import Footer from "../../components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile, updateUserProfile } from "./profileSlice";
@@ -337,34 +337,23 @@ const ProfilePage = () => {
           {activeTab === "profile" && (
             <div className="profile-section">
               <div className="set_box">
-                <div>
+                {/* <div>
                   <h5>MY DETAILS</h5>
                   <p>Update your details below to keep your account current.</p>
-                </div>
-                <div>
-                  <div
-                    className="edit-btn"
-                    onClick={() => setShowEditModal(true)}
-                  >
-                    <p>
-                      <span>
-                        <SquarePen />
-                      </span>
-                      <span className="edit_text"> EDIT DETAILS </span>
-                    </p>
-                  </div>
-                </div>
+                </div> */}
+                
               </div>
-              <div>
-                <strong>Name</strong>
-                <div>
+              <div >
+                <p className="txt_level">Name</p>
+                <div className="track_septor">
                   {profileData?.first_name} {profileData?.last_name}
                 </div>
               </div>
               <div>
-                <strong>Email</strong>
+                <p className="txt_level">Email</p>
                 <div
-                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                 className="track_septor"
+                  style={{ display: "flex", alignItems: "center", gap: "10px" , justifyContent:"space-between"}}
                 >
                   {profileData?.email}
                   {/* {profileData?.email_verified === 0 ? (
@@ -382,23 +371,32 @@ const ProfilePage = () => {
                       Verify
                     </u>
                   ) : profileData?.email_verified == 1 ? (
-                    <span>✅ Email Verified</span>
+                    <span className="track_ver"> <span style={{position:'relative',right:"5px"}}> <CircleCheckBig size={20} color="green"/> </span>  Email Verified</span>
                   ) : null}
                 </div>
               </div>
               <div>
-                <strong>Phone</strong>
-                <div>{profileData?.mobile}</div>
+                <p className="txt_level">Phone</p>
+                <div className="track_septor">{profileData?.mobile}</div>
               </div>
               <div>
-                <strong>Date of Birth</strong>
-                <div>
+                <p className="txt_level">Date of Birth</p>
+                <div className="track_septor">
                   {profileData?.dob &&
                     new Date(profileData.dob)
                       .toLocaleDateString("en-GB")
                       .replaceAll("/", "-")}
                 </div>
               </div>
+              <div>
+                  <div
+                    className="edit-btn"
+                    onClick={() => setShowEditModal(true)}>
+                    <p>
+                      <span className="edit_text"> EDIT DETAILS </span>
+                    </p>
+                  </div>
+                </div>
             </div>
           )}
 

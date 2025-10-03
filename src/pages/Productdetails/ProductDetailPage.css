@@ -141,6 +141,7 @@ font-family: "Playfair Display", serif; */
 
 .add-cart-section {
   display: flex;
+  padding-top: 4px;
 }
 
 .tax-info {
@@ -180,7 +181,20 @@ font-family: "Playfair Display", serif; */
 
  .txt-Carpet-Finder{
   padding-bottom: 28px;
+
  }
+
+.avl_trck{
+  color: #7C7C7C;
+  font-size: 14px;
+  position: relative;
+    top: 6px;
+}
+
+.root_avl{
+ position: relative;
+ top:10px
+}
 
 .size-btn {
   padding: 6px 12px;
@@ -193,7 +207,11 @@ font-family: "Playfair Display", serif; */
   border: 1.6px solid #000; 
 }
 
+.avl_3{
+  font-size: 16px;
+  color: #625E55;
 
+}
 .txt-des{
   font-size: 14px;
   color: black;
@@ -218,6 +236,7 @@ font-family: "Playfair Display", serif; */
 .txt_crp{
   font-weight: 500;
   text-decoration: underline;
+  cursor: pointer;
 }
 .txt-sub-info-pdp{
   position: relative;
@@ -268,7 +287,7 @@ font-family: "Playfair Display", serif; */
 }
 
 .pincode-check {
-  margin: 20px 0;
+  margin: 10px 0;
   font-family: Arial, sans-serif;
 }
 
@@ -283,7 +302,7 @@ font-family: "Playfair Display", serif; */
   display: flex;
   align-items: center;
   border: 1px solid #aaa;
-  padding: 10px 12px;
+  padding: 15px 12px;
   max-width: 80%;
 }
 
@@ -300,6 +319,10 @@ font-family: "Playfair Display", serif; */
   color: #333;
   max-width: 70%;
 }
+.check_test{
+  position: relative;
+    top: 10px;
+}
 
 .check-btn {
   border: none;
@@ -308,10 +331,22 @@ font-family: "Playfair Display", serif; */
   font-weight: 500;
   color: #4a4a4a;
   cursor: pointer;
-  padding-left: 12px;
+  /* padding-left: 16px; */
+  position: relative;
+  left: 42px;
   text-decoration: underline;
 }
 
+ .rest-btn{
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a4a4a;
+  cursor: pointer;
+  padding-left: 54px;
+  text-decoration: underline;
+ }
 /* .checkup_track_txt {
   background-color: #f7f7f7;
 } */
@@ -590,12 +625,37 @@ font-family: "Playfair Display", serif; */
   margin-bottom: 30px;
   font-family: "Canela Trial", sans-serif;
 }
+.similar-styles-section-2{
+  padding: 40px 20px;
+  background: #fdfdfd;
+  text-align: center;
+}
+.similar-styles-section-2 h2 {
+  font-size: 3rem;
+  font-weight: 300;
+  margin-bottom: 30px;
+  font-family: "Canela Trial", sans-serif;
+}
+.similar-styles-section {
+  padding: 40px 20px;
+  background: #fdfdfd;
+  text-align: center;
+}
+
+
+.similar-styles-section h2 {
+  font-size: 3rem;
+  font-weight: 300;
+  margin-bottom: 30px;
+  font-family: "Canela Trial", sans-serif;
+}
 
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 0px;
 }
+
 
 .product-card-dtl {
   background: #fff;
@@ -670,6 +730,14 @@ font-family: "Playfair Display", serif; */
   padding: -13px 6px;
   /* font-size: 20px; */
   cursor: pointer;
+}
+
+.txt_del_av{
+  padding-top: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: 'Helvetica Neue', sans-serif;
+  color: #7C7C7C;
 }
 
 @media (min-width: 1200px) {

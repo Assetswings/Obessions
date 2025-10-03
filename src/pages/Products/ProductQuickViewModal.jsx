@@ -568,7 +568,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                   >
                     −
                   </button>
-                  <span>{quantity}</span>
+                  <span className="order_track_count">{quantity}</span>
                   <button onClick={() => setQuantity((q) => q + 1)}>+</button>
                 </div>
               </div>
@@ -591,7 +591,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     <button onClick={handleReset} className="check-btn">
                       Reset
                     </button>
-                  )}
+                  )} 
                 </div>
 
                 {/* Show pincode info */}
@@ -694,7 +694,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
         </div>
       </div>
       {showLoginPrompt && (
-        <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
+      <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
     </>
   );

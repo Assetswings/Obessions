@@ -141,11 +141,14 @@
   font-size: 13px;
 }
 
-.payments img {
-  height: 25px;
-  margin-right: 10px;
+
+.payments{
+  /* width: 50px; */
 }
 
+.img_tracker_footer{
+  width: 400px;
+}
 @media (max-width: 768px) {
   .email-signup {
     flex-direction: column;
@@ -169,6 +172,7 @@
   }
 }
 
+
 @media (max-width: 768px) {
   .email-signup {
     flex-direction: row;
@@ -183,22 +187,22 @@
     font-size: 8px;
   }
 
-  .newsletter h2 {
+   .newsletter h2 {
     font-size: 19px;
   }
 
-  .newsletter input {
+   .newsletter input {
     flex: 1;
     min-width: 0;
   }
 
-  .email-signup button {
+   .email-signup button {
     padding: 4.7% 4%;
     font-size: 11px;
   }
 }
 
-@media (max-width: 480px) {
+  @media (max-width: 480px) {
   .footer {
     background-color: #1c150f;
     color: #f0f0f0;
@@ -206,5 +210,9 @@
     font-family: 'Arial', sans-serif;
     z-index: 999999 !important;
     position: relative;
+  }
+
+  .img_tracker_footer{
+   width: 300px;
   }
 }

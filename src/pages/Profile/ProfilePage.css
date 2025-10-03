@@ -41,13 +41,38 @@
   align-items: flex-start;
   min-height: 300px;
 }
+.track_septor{
+  border: 1px solid #625E55;
+  padding: 10px;
+}
 
 .profile-section {
   text-align: left;
-  max-width: 630px;
+  max-width: 450px;
   width: 100%;
 }
-
+.edit-btn {
+  background: #15130f;
+  color: #fff;
+  font-size: 12px;
+  padding: 8px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+    top: 15px;
+}
+.txt_level{
+  font-size: 16px;
+  color:#625E55;
+  position: relative;
+    top: 10px;
+}
 .orders-section {
   text-align: left;
   max-width: 1051px;
@@ -108,18 +133,19 @@
   color: green;
   font-size: 20px;
 }
-
 .card-actions {
   display: flex;
   gap: 15px;
-  margin-top: 10px;
   font-size: 14px;
   color: #1B170E;
   cursor: pointer;
   text-decoration: underline;
   font-weight: 400;
+  position: absolute;
+  bottom: 10px;
+  left: 15px;
+  right: 15px;
 }
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -157,9 +183,14 @@
 }
 
 .edit_text {
-  text-decoration: underline;
+  font-size: 14px;
+  position: relative;
+  top: 10px;
+}
+.track_ver{
   font-size: 14px;
 }
+
 
 .address_title_text {
   overflow-wrap: break-word;
@@ -246,10 +277,7 @@
   position: relative;
   bottom: 10px;
 }
-
 }
-
-
 .verify-modal-overlay {
   position: fixed;
   top: 0;

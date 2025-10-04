@@ -50,11 +50,14 @@ const CollectionPage = () => {
         </aside>
         <main className="products-grid">
           {collections?.collections?.map((product, index) => (
-            <div className="product-card" key={index} onClick={() => handleCategoryClick(product.action_url)}>
+            <div className="product-card pointer-crusser" key={index} onClick={() => handleCategoryClick(product.action_url)}>
               <img src={product.uploaded_media} alt={product.name} />
               <p>{product.name}</p>
             </div>
           ))}
+          <div className="mb-4">
+
+          </div>
         </main>
       </div>
       {/* Fotter section  */}

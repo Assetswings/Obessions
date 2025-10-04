@@ -30,7 +30,7 @@ const BestsellersSlider = ({ onQuickView }) => {
   const handlePrev = () => {
     setStartIndex((prev) => Math.max(prev - 1, 0));
   };
-  
+
   const handleNext = () => {
     setStartIndex((prev) =>
       Math.min(prev + 1, bestsellers.length - 5) // ✅ show 5 at a time
@@ -107,10 +107,10 @@ const BestsellersSlider = ({ onQuickView }) => {
           prev.map((p) =>
             p.id === product.id
               ? {
-                  ...p,
-                  is_wishlisted: true,
-                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
-                }
+                ...p,
+                is_wishlisted: true,
+                wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+              }
               : p
           )
         );
@@ -122,197 +122,203 @@ const BestsellersSlider = ({ onQuickView }) => {
   };
 
   return (
-     <> 
-         <div className="bestseller-fixed-card-mlb">
-         <div> 
+    <>
+      <div className="bestseller-fixed-card-mlb">
+        <div>
           <h2 className="txt_mlb_haed">
-          Get the <em>Bestsellers</em>
-          </h2>
-          </div>
-          <div className="arrow-controls">
-            <button onClick={handlePrev}>
-              <img className="btn_left_arrow" src={arrowleft} alt="prev" />
-            </button>
-            <button onClick={handleNext}>
-              <img className="btn_right_arrow" src={arrowright} alt="next" />
-            </button>
-          </div>
-          </div>
-
-      <div className="bestseller-container">
-      <ToastContainer position="top-right" autoClose={3000} />
-      <div className="bestseller-slider">
-        {/* Left Scrolling Card */}
-        <div className="slider-strip">
-          {bestsellers?.slice(startIndex, startIndex + 1).map((item) => (
-            <div className="bestseller-card" key={item.id}>
-              <div
-                className="image-wrapper"
-                onClick={() => {
-                  navigate("/productsdetails", {
-                    state: { product: item.action_url },
-                  });
-                }}
-              >
-                <img src={item?.media_list?.main?.file} alt={item.name} />
-                <div className="order_view_btn">
-                <button
-  className="quick-view"
-  onClick={(e) => {
-    e.stopPropagation();  // ✅ prevent redirect
-    LogsIcon(item);       // ✅ open Quick View modal
-  }}
->
-  Quick View &nbsp;
-  <span>
-    <Expand color="#000000" size={15} strokeWidth={1.25} />
-  </span>
-</button>
-                </div>
-
-                {/* <span className="fav-icon">
-                  <Heart color="#000000" size={20} strokeWidth={2} />
-                </span> */}
-                <button
-                  className="wishlist-btn_products"
-                  onClick={(e) => toggleWishlist(e, item)}
-                >
-                  {animatedWish === item.id ? (
-                    <div
-                      style={{
-                        width: 20,
-                        height: 24,
-                        overflow: "hidden",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Player
-                        autoplay
-                        keepLastFrame
-                        src={heartAnimation}
-                        style={{
-                          width: 139,
-                          height: 139,
-                          transform: "scale(0.5)",
-                          transformOrigin: "center",
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <Heart
-                      color={item.is_wishlisted ? "#FF0000" : "#000"}
-                      fill={item.is_wishlisted ? "#FF0000" : "none"}
-                      size={20}
-                      strokeWidth={2}
-                    />
-                  )}
-                </button>
-              </div>
-              <div className="product-info-card">
-                <p className="title">{item.name}</p>
-                <p className="price">₹{item.selling_price}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Center Fixed Card */}
-        <div className="bestseller-fixed-card">
-          <h3>
             Get the <em>Bestsellers</em>
-          </h3>
-          <div className="arrow-controls">
-            <button onClick={handlePrev}>
-              <img className="btn_left_arrow" src={arrowleft} alt="prev" />
-            </button>
-            <button onClick={handleNext}>
-              <img className="btn_right_arrow" src={arrowright} alt="next" />
-            </button>
-          </div>
+          </h2>
         </div>
-
-        {/* Right Scrolling Cards */}
-        <div className="slider-strip">
-          {bestsellers?.slice(startIndex + 1, startIndex + 5).map((item) => (
-            <div className="bestseller-card" key={item.id}>
-              <div
-                className="image-wrapper"
-                onClick={() => {
-                  navigate("/productsdetails", {
-                    state: { product: item.action_url },
-                  });
-                }}
-              >
-                <img src={item?.media_list?.main?.file} alt={item.name} />
-                <button
-  className="quick-view"
-  onClick={(e) => {
-    e.stopPropagation();  
-    LogsIcon(item);       
-  }}
->
-  Quick View &nbsp;
-  <span>
-    <Expand color="#000000" size={15} strokeWidth={1.25} />
-  </span>
-</button>
-                {/* <span className="fav-icon">
-                  <Heart color="#000000" size={20} strokeWidth={2} />
-                </span> */}
-                <button
-                  className="wishlist-btn_products"
-                  onClick={(e) => toggleWishlist(e, item)}
-                >
-                  {animatedWish === item.id ? (
-                    <div
-                      style={{
-                        width: 20,
-                        height: 24,
-                        overflow: "hidden",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Player
-                        autoplay
-                        keepLastFrame
-                        src={heartAnimation}
-                        style={{
-                          width: 139,
-                          height: 139,
-                          transform: "scale(0.5)",
-                          transformOrigin: "center",
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <Heart
-                      color={item.is_wishlisted ? "#FF0000" : "#000"}
-                      fill={item.is_wishlisted ? "#FF0000" : "none"}
-                      size={20}
-                      strokeWidth={2}
-                    />
-                  )}
-                </button>
-              </div>
-              <div className="product-info">
-                <p className="title">{item.name}</p>
-                <p className="price">₹{item.selling_price}</p>
-              </div>
-            </div>
-          ))}
+        <div className="arrow-controls">
+          <button onClick={handlePrev}>
+            <img className="btn_left_arrow" src={arrowleft} alt="prev" />
+          </button>
+          <button onClick={handleNext}>
+            <img className="btn_right_arrow" src={arrowright} alt="next" />
+          </button>
         </div>
       </div>
-      {/* login modal */}
-      {showLoginPrompt && (
-        <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
-      )}
-    </div>
-     </>
- 
+
+      <div className="bestseller-container">
+        <ToastContainer position="top-right" autoClose={3000} />
+        <div className="bestseller-slider">
+          {/* Left Scrolling Card */}
+          <div className="slider-strip">
+            {bestsellers?.slice(startIndex, startIndex + 1).map((item) => (
+              <div className="bestseller-card" key={item.id}>
+                <div
+                  className="image-wrapper"
+                  onClick={() => {
+                    navigate("/productsdetails", {
+                      state: { product: item.action_url },
+                    });
+                  }}
+                >
+                  <img src={item?.media_list?.main?.file} alt={item.name} />
+                  <div className="order_view_btn">
+                    <button
+                      className="quick-view"
+                      onClick={(e) => {
+                        e.stopPropagation();  // ✅ prevent redirect
+                        LogsIcon(item);       // ✅ open Quick View modal
+                      }}
+                    >
+                      Quick View &nbsp;
+                      <span>
+                        <Expand color="#000000" size={15} strokeWidth={1.25} />
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* <span className="fav-icon">
+                  <Heart color="#000000" size={20} strokeWidth={2} />
+                </span> */}
+                  <button
+                    className="wishlist-btn_products"
+                    onClick={(e) => toggleWishlist(e, item)}
+                  >
+                    {animatedWish === item.id ? (
+                      <div
+                        style={{
+                          width: 20,
+                          height: 24,
+                          overflow: "hidden",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Player
+                          autoplay
+                          keepLastFrame
+                          src={heartAnimation}
+                          style={{
+                            width: 139,
+                            height: 139,
+                            transform: "scale(0.5)",
+                            transformOrigin: "center",
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <Heart
+                        color={item.is_wishlisted ? "#FF0000" : "#000"}
+                        fill={item.is_wishlisted ? "#FF0000" : "none"}
+                        size={20}
+                        strokeWidth={2}
+                      />
+                    )}
+                  </button>
+                </div>
+                <div className="product-info-card">
+                  <p className="title">{item.name}</p>
+                  <p className="price">₹{item.selling_price}</p>
+                  {item.mrp && item.mrp !== item.selling_price && (
+                    <>
+                      <span className="original">₹{item.mrp}</span>
+                      <span className="discount">({item.discount}% OFF)</span>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Center Fixed Card */}
+          <div className="bestseller-fixed-card">
+            <h3>
+              Get the <em>Bestsellers</em>
+            </h3>
+            <div className="arrow-controls">
+              <button onClick={handlePrev}>
+                <img className="btn_left_arrow" src={arrowleft} alt="prev" />
+              </button>
+              <button onClick={handleNext}>
+                <img className="btn_right_arrow" src={arrowright} alt="next" />
+              </button>
+            </div>
+          </div>
+
+          {/* Right Scrolling Cards */}
+          <div className="slider-strip">
+            {bestsellers?.slice(startIndex + 1, startIndex + 5).map((item) => (
+              <div className="bestseller-card" key={item.id}>
+                <div
+                  className="image-wrapper"
+                  onClick={() => {
+                    navigate("/productsdetails", {
+                      state: { product: item.action_url },
+                    });
+                  }}
+                >
+                  <img src={item?.media_list?.main?.file} alt={item.name} />
+                  <button
+                    className="quick-view"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      LogsIcon(item);
+                    }}
+                  >
+                    Quick View &nbsp;
+                    <span>
+                      <Expand color="#000000" size={15} strokeWidth={1.25} />
+                    </span>
+                  </button>
+                  {/* <span className="fav-icon">
+                  <Heart color="#000000" size={20} strokeWidth={2} />
+                </span> */}
+                  <button
+                    className="wishlist-btn_products"
+                    onClick={(e) => toggleWishlist(e, item)}
+                  >
+                    {animatedWish === item.id ? (
+                      <div
+                        style={{
+                          width: 20,
+                          height: 24,
+                          overflow: "hidden",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Player
+                          autoplay
+                          keepLastFrame
+                          src={heartAnimation}
+                          style={{
+                            width: 139,
+                            height: 139,
+                            transform: "scale(0.5)",
+                            transformOrigin: "center",
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <Heart
+                        color={item.is_wishlisted ? "#FF0000" : "#000"}
+                        fill={item.is_wishlisted ? "#FF0000" : "none"}
+                        size={20}
+                        strokeWidth={2}
+                      />
+                    )}
+                  </button>
+                </div>
+                <div className="product-info">
+                  <p className="title">{item.name}</p>
+                  <p className="price">₹{item.selling_price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* login modal */}
+        {showLoginPrompt && (
+          <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
+        )}
+      </div>
+    </>
+
   );
 };
 

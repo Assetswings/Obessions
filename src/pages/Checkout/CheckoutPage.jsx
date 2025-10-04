@@ -268,11 +268,17 @@ const CheckoutPage = () => {
                 <h4 className="item-title">{item.product.name}</h4>
                 <p className="price_details">
                   ₹{item.product.selling_price}{" "}
-                  <span className="sub-1">
+                  {item.mrp && item.mrp !== item.selling_price && (
+                    <>
+                      <span className="original">₹{item.mrp}</span>
+                      <span className="discount">({item.discount}% OFF)</span>
+                    </>
+                  )}
+                  {/* <span className="sub-1">
                     {" "}
                     <del>₹{item.product.mrp}</del> &nbsp;
                     <span className="dis-sub">{`(-${item.product.discount}%)`}</span>{" "}
-                  </span>
+                  </span> */}
                 </p>
                 <p className="item-size">
                   Size: <u>{item.product.size}</u>
@@ -295,6 +301,10 @@ const CheckoutPage = () => {
           <div className="section">
             <div className="price-summary">
               <div className="trackvel">
+                <div className="txt_title_cal">TOTAL MRP</div>
+                <div>₹{checkoutData?.data?.subtotal}</div>
+              </div>
+              <div className="trackvel">
                 <div className="txt_title_cal">
                   COUPON [{" "}
                   <span className="coupon">
@@ -311,10 +321,6 @@ const CheckoutPage = () => {
               <div className="trackvel">
                 <div className="txt_title_cal">ROUND OFF</div>
                 <div>₹{checkoutData?.data?.order_total_roundoff}</div>
-              </div>
-              <div className="trackvel">
-                <div className="txt_title_cal">TOTAL MRP</div>
-                <div>₹{checkoutData?.data?.subtotal}</div>
               </div>
               {/* <br /> */}
               <div className="breaker_global">

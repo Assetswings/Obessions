@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 70vh;
+  min-height: 60vh;
   background: #fff;
   text-align: center;
   padding: 20px;
@@ -95,7 +95,7 @@
 /* top picks section */
 
 .top-picks-section {
-  padding: 62px 120px 74px 120px;
+  padding: 30px 120px 74px 120px;
   text-align: center;
 }
 

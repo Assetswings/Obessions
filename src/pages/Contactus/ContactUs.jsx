@@ -30,7 +30,7 @@ const ContactUs = () => {
     last_name: "",
     email: "",
     mobile: "",
-    country: "",
+    category: "",
     message: "",
   });
 
@@ -44,7 +44,7 @@ const ContactUs = () => {
   //       last_name: "",
   //       email: "",
   //       mobile: "",
-  //       country: "",
+  //       category: "",
   //       message: "",
   //     });
   //   }
@@ -69,7 +69,7 @@ const ContactUs = () => {
           last_name: "",
           email: "",
           mobile: "",
-          country: "",
+          category: "",
           message: "",
         });
         toast.success("message send successfully", {
@@ -198,14 +198,17 @@ const ContactUs = () => {
               </div>
               <div className="form-row full-width">
                 <select
-                  name="country"
-                  value={formData.country}
+                  name="category"
+                  value={formData.category}
                   onChange={handleChange}
                   required
                 >
-                  <option value="">Country</option>
-                  <option value="India">India</option>
-                  <option value="USA">USA</option>
+                  <option value="">Category</option>
+                  <option value="Bulk Enquiry / Corporate Order">Bulk Enquiry / Corporate Order</option>
+                  <option value="Order Cancellation">Order Cancellation</option>
+                  <option value="Return & Exchange">Return & Exchange</option>
+                  <option value="Careers">Careers</option>
+                  <option value="Others">Others</option>
                 </select>
               </div>
               <div className="form-row full-width">

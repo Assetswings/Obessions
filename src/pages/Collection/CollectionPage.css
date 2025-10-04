@@ -118,6 +118,7 @@ font-family: "Playfair Display", serif; */
   /* Responsive: 1 column on small screens */
   .products-grid {
     grid-template-columns: 1fr;
+    width: 100%;
   }
 
   .product-card {

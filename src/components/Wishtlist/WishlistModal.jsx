@@ -194,15 +194,17 @@ const WishlistModal = ({ onClose }) => {
                     >
                       <button
                         className="move-to-cart"
-                        onClick={() =>
-                          handleMoveToCart(product.id, wishlistItem.id)
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleMoveToCart(product.id, wishlistItem.id);
+                        }
                         }
                       >
                         MOVE TO CART
                       </button>
                       <button
                         className="move-to-cart"
-                        onClick={() => handleRemove(wishlistItem.id)}
+                        onClick={(e) => { e.stopPropagation(); handleRemove(wishlistItem.id); }}
                       >
                         REMOVE
                       </button>

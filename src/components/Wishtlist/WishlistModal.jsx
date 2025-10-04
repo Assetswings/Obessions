@@ -182,7 +182,7 @@ const WishlistModal = ({ onClose }) => {
                       <span>
                         {product.mrp && product.mrp !== product.selling_price && (
                           <>
-                            <p><del>₹{product?.mrp}</del></p>
+                            <span><del>₹{product?.mrp}</del></span> &nbsp;
                             <span className="discount">({product.discount}% OFF)</span>
                           </>
                         )}

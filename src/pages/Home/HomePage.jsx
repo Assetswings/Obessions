@@ -600,8 +600,8 @@ const HomePage = () => {
               key={item.id}
               onClick={() => handelpdp(item.action_url)}
             >
-              <img src={item.media} alt={item.name} className="promo-image" />
-              <p className="promo-title">{item.name}</p>
+              <img src={item.media} alt={item.name} className="promo-image pointer-crusser" />
+              <p className="promo-title pointer-crusser">{item.name}</p>
             </div>
           ))}
         </div>

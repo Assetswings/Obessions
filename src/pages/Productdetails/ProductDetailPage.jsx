@@ -68,14 +68,14 @@ const ProductDetailPage = () => {
       setPincode("");
       setPincodeChecked(false);
       dispatch(fetchProductDetail(productSlug));
-      dispatch(resetPincodeState());  
+      dispatch(resetPincodeState());
     }
-      return () => {
+    return () => {
       dispatch(clearProductDetail());
     };
   }, [dispatch, productSlug]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (!data?.id) return;
     // check if product changed
     if (prevSlugRef.current !== data.id) {
@@ -92,7 +92,7 @@ const ProductDetailPage = () => {
         setSelectedColor(data.product_sizes[0].product_colors?.[0] || null);
         setSelectedImage(
           data.product_sizes[0].product_colors?.[0]?.product_media?.[0]
-           ?.media || null
+            ?.media || null
         );
         setAnimatedWish(
           data.product_sizes[0]?.is_wishlisted ? data.product_sizes[0].id : null
@@ -188,8 +188,7 @@ const ProductDetailPage = () => {
         );
       })
       .catch((error) => {
-        toast.error("Failed to add to cart");
-        console.error(error);
+        toast.error(error?.error || "Failed to add to cart");
       });
   };
 
@@ -203,9 +202,9 @@ const ProductDetailPage = () => {
     navigate("/productsdetails", { state: { product: slug } });
   };
 
-    const handlefinder =()=>{
-    navigate("/carpet-finder")
-   }
+  const handlefinder = () => {
+    navigate("/carpet-finder");
+  };
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
     const token = localStorage.getItem("token");
@@ -660,25 +659,30 @@ const ProductDetailPage = () => {
                 value={pincode}
                 onChange={(e) => setPincode(e.target.value)}
               />
-              <button onClick={handleCheck} className="check-btn">
-               Check 
-              </button>
 
               <button onClick={handleReset} className="rest-btn">
                 Reset
               </button>
+
+              <button onClick={handleCheck} className="check-btn-2">
+                Check
+              </button>
             </div>
 
-             <div className="root_avl">  
-             <div> 
-            <p className="avl_trck">Available PAN India. We deliver wherever you call home.</p>   
-            </div> 
+            <div className="root_avl">
+              <div>
+                <p className="avl_trck">
+                  Available PAN India. We deliver wherever you call home.
+                </p>
+              </div>
 
-              <div> 
-              <span className="avl_3"> Shipping Charges calculated at checkout.</span>
-              </div> 
-               </div>  
-           
+              <div>
+                <span className="avl_3">
+                  {" "}
+                  Shipping Charges calculated at checkout.
+                </span>
+              </div>
+            </div>
 
             {/* Show pincode info */}
             {pinloading && <p className="check_test">Checking...</p>}
@@ -753,9 +757,7 @@ const ProductDetailPage = () => {
             </div>
             <p className="txt-Carpet-Finder">
               Not sure which carpet fits your space? Try our{" "}
-              <span 
-               onClick={handlefinder}
-               className="txt_crp">
+              <span onClick={handlefinder} className="txt_crp">
                 Carpet Finder
               </span>
             </p>

@@ -21,15 +21,16 @@
     max-height: 87vh;
   }
   
-  .input-wrapper-quick {
+  .input-wrapper-quick-2 {
     display: flex;
     align-items: center;
     border: 1px solid #aaa;
     padding: 10px 12px;
     max-width:85%;
   }
-  
-  .input-wrapper-quick input {
+
+ 
+  .input-wrapper-quick-2 input {
     border: none;
     outline: none;
     flex: 1;
@@ -43,6 +44,19 @@
     align-items: center;
     height: 15px;
   }
+
+  .check-btn-2 {
+    border: none;
+    background: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4a4a4a;
+    cursor: pointer;
+    /* padding-left: 16px; */
+    position: relative;
+    text-decoration: underline;
+  }
+  
   
   .close-icon {
     cursor: pointer;
@@ -83,7 +97,7 @@
   
   .discount {
     color: red;
-    font-weight: bold;
+  
   }
   
   .description {

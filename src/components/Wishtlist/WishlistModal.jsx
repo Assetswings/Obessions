@@ -172,8 +172,20 @@ const WishlistModal = ({ onClose }) => {
                   />
                   <div className="wishlist-details" style={{ flex: 1 }}>
                     <div>
-                      <p>{product.name}</p>
+                      <p>
+                          {product.name.length > 40 
+    ? product.name.substring(0, 40) + "..." 
+    : product.name}
+                      </p>
                       <span>₹{product.selling_price}</span>
+                       &nbsp;
+    <span>
+         {product.mrp && product.mrp !== product.selling_price && (
+                      <>
+                        <span className="discount">({product.discount}% OFF)</span>
+                      </>
+                    )}    
+      </span> 
                     </div>
                     <div
                       className="wishlist-actions"

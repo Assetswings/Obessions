@@ -45,7 +45,9 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const dispatch = useDispatch();
   const actionurl = product?.action_url ? product?.action_url : product?.slug;
   const { data, loading, error } = useSelector((state) => state.productDetail);
-  const { pinset, pinloading, pinerror } = useSelector((state) => state.pincode);
+  const { pinset, pinloading, pinerror } = useSelector(
+    (state) => state.pincode
+  );
   const wishlist = useSelector((state) => state.wishlist);
 
   useEffect(() => {
@@ -134,7 +136,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
     setPincodeDetails({});
     setPincode("");
     setPincodeChecked(false);
-  }
+  };
   // Don't render if not shown
   if (!show || !product) return null;
   const handleCheck = () => {
@@ -204,8 +206,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
         );
       })
       .catch((error) => {
-        toast.error("Failed to add to cart");
-        console.error(error);
+        toast.error(error?.error || "Failed to add to cart");
       });
   };
 
@@ -371,7 +372,13 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
         <div className="quickview-modal" ref={modalRef}>
           <div className="quickview-header">
             <div></div>
-            <div className="close-icon" onClick={()=> {onHide(); closediloug();}}>
+            <div
+              className="close-icon"
+              onClick={() => {
+                onHide();
+                closediloug();
+              }}
+            >
               ×
             </div>
           </div>
@@ -576,22 +583,21 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
               {/* Pincode Check */}
               <div className="pincode-check">
                 <p className="check-heading">CHECK AVAILABILITY</p>
-                <div className="input-wrapper-quick">
+                <div className="input-wrapper-quick-2">
                   <input
                     className="checkup_track_txt"
                     type="text"
                     placeholder="Enter Delivery Pincode"
                     value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
-                  />
-                  <button onClick={handleCheck} className="check-btn">
-                    Check
-                  </button>
-                  {pincodeChecked && (
-                    <button onClick={handleReset} className="check-btn">
+                    onChange={(e) => setPincode(e.target.value)} />
+                  
+                    <button onClick={handleReset} className="check-btn-2">
                       Reset
-                    </button>
-                  )} 
+                    </button>  
+              
+                  <button onClick={handleCheck} className="check-btn-2 ">
+                  Check
+                  </button>
                 </div>
 
                 {/* Show pincode info */}
@@ -601,14 +607,12 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     Not serviceable for your area
                   </p>
                 )}
-                {pincodeDetails?.pincode &&
-                  pincodeDetails?.is_active && (
-                    <p style={{ color: "green", marginTop: "15px" }}>
-                      ✅ Delivery available at {pincodeDetails?.city},{" "}
-                      {pincodeDetails?.state} (
-                      {pincodeDetails?.delivery_tat})
-                    </p>
-                  )}
+                {pincodeDetails?.pincode && pincodeDetails?.is_active && (
+                  <p style={{ color: "green", marginTop: "15px" }}>
+                    ✅ Delivery available at {pincodeDetails?.city},{" "}
+                    {pincodeDetails?.state} ({pincodeDetails?.delivery_tat})
+                  </p>
+                )}
               </div>
 
               {/* Cart & Wishlist */}
@@ -694,7 +698,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
         </div>
       </div>
       {showLoginPrompt && (
-      <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
+        <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
     </>
   );

@@ -299,13 +299,10 @@ const ProductsPage = () => {
               ? Array.from({ length: 8 }).map((_, i) => (
                   <div key={i} className="custom-product-card">
                     <div className="custom-product-image">
-                      <Skeleton height={250} width={230} />
+                      <Skeleton height={250} width={275} />
                     </div>
                     <p className="custom-product-title">
                       <Skeleton width={180} height={16} />
-                    </p>
-                    <p className="custom-product-price">
-                      <Skeleton width={100} height={16} />
                     </p>
                   </div>
                 ))
@@ -405,7 +402,7 @@ const ProductsPage = () => {
                         )}
                       </p> */}
 
-<p className="product-title">{item.name}</p>
+      <p className="product-title">{item.name}</p>
                   <div className="product-price">
                     <span>₹{item.selling_price}</span>
                     {item.mrp && item.mrp !== item.selling_price && (

@@ -666,7 +666,7 @@ const HomePage = () => {
               }
             >
               <img className="img_right_now" src={item.src} alt={item.title} />
-              <p>{item.title}</p>
+              <p className="pointer-crusser">{item.title}</p>
             </div>
           ))}
         </div>

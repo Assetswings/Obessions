@@ -629,6 +629,7 @@ font-family: "Playfair Display", serif; */
   padding: 40px 20px;
   background: #fdfdfd;
   text-align: center;
+  margin-bottom: 45px;
 }
 .similar-styles-section-2 h2 {
   font-size: 3rem;
@@ -699,7 +700,7 @@ font-family: "Playfair Display", serif; */
 
 .product-price {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .product-price .original {

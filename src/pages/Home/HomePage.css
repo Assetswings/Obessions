@@ -692,7 +692,7 @@ background-color: #F2F2F2;
 
 .carpet-label {
   font-family: "Playfair Display", serif;
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: white;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   padding: 1rem;
@@ -700,6 +700,9 @@ background-color: #F2F2F2;
   line-height: 1.4;
 }
 
+.pointer-crusser {
+  cursor: pointer;
+}
 /* Responsive */
 @media (max-width: 1024px) {
   .carpet-grid {

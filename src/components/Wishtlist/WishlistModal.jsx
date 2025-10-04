@@ -143,7 +143,7 @@ const WishlistModal = ({ onClose }) => {
                 </p>
 
                 <button className="empty-wishlist-btn">
-                  Explore Bestsellers &nbsp; <img src={ArrowLeft} height={16} width={16}/>
+                  Explore Bestsellers &nbsp; <img src={ArrowLeft} height={16} width={16} />
                 </button>
               </div>
             </div>
@@ -173,19 +173,20 @@ const WishlistModal = ({ onClose }) => {
                   <div className="wishlist-details" style={{ flex: 1 }}>
                     <div>
                       <p>
-                          {product.name.length > 40 
-    ? product.name.substring(0, 40) + "..." 
-    : product.name}
+                        {product.name.length > 40
+                          ? product.name.substring(0, 40) + "..."
+                          : product.name}
                       </p>
                       <span>₹{product.selling_price}</span>
-                       &nbsp;
-    <span>
-         {product.mrp && product.mrp !== product.selling_price && (
-                      <>
-                        <span className="discount">({product.discount}% OFF)</span>
-                      </>
-                    )}    
-      </span> 
+                      &nbsp;
+                      <span>
+                        {product.mrp && product.mrp !== product.selling_price && (
+                          <>
+                            <p><del>₹{product?.mrp}</del></p>
+                            <span className="discount">({product.discount}% OFF)</span>
+                          </>
+                        )}
+                      </span>
                     </div>
                     <div
                       className="wishlist-actions"

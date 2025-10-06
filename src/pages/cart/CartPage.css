@@ -27,7 +27,7 @@
 
 .cart-right.sticky-summary {
   position: sticky;
-  top: 20px;
+  top: 80px;
   align-self: flex-start;
 }
 

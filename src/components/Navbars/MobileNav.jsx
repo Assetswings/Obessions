@@ -208,9 +208,15 @@ const MobileNav = () => {
               <ChevronLeft />
             </span>
           )}
-          <span onClick={toggleDrawer} className="close-btn">
+
+  <>  
+
+  <div className="track_sector_close"> 
+  <span onClick={toggleDrawer} className="close-btn-mlb" >
             ✕
           </span>
+   </div> 
+  </>
         </div>
 
         <div className="menu-container">

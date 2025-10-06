@@ -289,7 +289,7 @@ const ProductsPage = () => {
             >
               <span>
                 {" "}
-                <SlidersHorizontal />
+                <SlidersHorizontal size={20}/>
               </span>{" "}
               Filters
             </button>

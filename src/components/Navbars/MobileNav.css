@@ -55,9 +55,14 @@ body {
   align-items: center;
   margin-bottom: 16px;
 }
-.close-btn {
+.close-btn-mlb {
   cursor: pointer;
   font-size: 20px;
+}
+.track_sector_close{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 .back-btn {
   cursor: pointer;

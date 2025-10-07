@@ -1,15 +1,19 @@
 .top-announcement-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #d32020;
-    color: white;
-    height: 35px;
-    font-size: 13px;
-    /* overflow: hidden; */
-    box-sizing: border-box;
-    cursor: pointer;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #d32020;
+  color: white;
+  height: 35px;
+  font-size: 13px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
   
   .user-click-wrapper {
     position: relative;
@@ -38,7 +42,7 @@
     padding: 8px 0;
     padding: 10px;
     min-width: 140px;
-    z-index: 10000;
+    z-index: 9999999;
   }
 
   .user-icon-wrapper {

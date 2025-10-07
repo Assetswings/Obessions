@@ -1,10 +1,10 @@
-import React, { useState, useEffect ,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaSearch } from "react-icons/fa";
 import "./HomePage.css";
 import BestsellersSlider from "../../components/slider/BestsellersSlider";
 import VideoSection from "../../components/InstaVideo/VideoSection";
 import Footer from "../../components/Footer/Footer";
-import obslogo from "../../assets/icons/Obslogo.png"
+import obslogo from "../../assets/icons/Obslogo.png";
 // import { search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHomeData } from "./homeSlice";
@@ -99,8 +99,8 @@ const HomePage = () => {
   // console.log("🔥fffffff::::::::", results);
   // Pick random hero set whenever HomePage mounts
 
-      useEffect(() => {
-      if (!query.trim()) {
+  useEffect(() => {
+    if (!query.trim()) {
       dispatch(clearSearchResults());
       return;
     }
@@ -123,7 +123,7 @@ const HomePage = () => {
     }
   };
 
-    useEffect(() => {
+  useEffect(() => {
     if (data) {
       if (data.shop_by) {
         const formattedItems = Object.entries(data.shop_by).map(
@@ -147,7 +147,7 @@ const HomePage = () => {
 
   // 🧭 Navigation Page
   const handleNavigate = () => {
-  navigate("/collections");
+    navigate("/collections");
   };
 
   const handleCategoryClick = (categorySlug) => {
@@ -281,31 +281,30 @@ const HomePage = () => {
     );
   };
 
-   useEffect(() => {
-  if (isSearchActive) {
-    // 🔒 Lock scroll when search is active
-    document.body.style.overflow = "hidden";
-  } else {
-    // 🔓 Unlock scroll when search is closed
-    document.body.style.overflow = "";
-  }
+  useEffect(() => {
+    if (isSearchActive) {
+      // 🔒 Lock scroll when search is active
+      document.body.style.overflow = "hidden";
+    } else {
+      // 🔓 Unlock scroll when search is closed
+      document.body.style.overflow = "";
+    }
 
-  // cleanup just in case
-  return () => {
-    document.body.style.overflow = "";
-  };
-}, [isSearchActive]);
+    // cleanup just in case
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isSearchActive]);
 
   const handleFocus = () => {
     setIsSearchActive(true);
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
-  
+
         const rect = inputRef.current.getBoundingClientRect();
-        const scrollY =
-          window.scrollY + rect.top - window.innerHeight / 3;
-  
+        const scrollY = window.scrollY + rect.top - window.innerHeight / 3;
+
         window.scrollTo({
           top: scrollY,
           behavior: "smooth",
@@ -314,12 +313,12 @@ const HomePage = () => {
     }, 300);
   };
 
-
   return (
     <>
+      <div className="spacer_track"></div>
       {/* ───────────────────── HERO ───────────────────── */}
       <div className="homepage container-fluid position-relative p-5">
-        <img src={logo} className=" img-left-logo" alt="" />
+        <img src={logo} className="img-left-logo" alt="Obesession" />
         <h1 className="display-1 bold position-absolute obsessions-text">
           obsessions
         </h1>
@@ -333,7 +332,8 @@ const HomePage = () => {
           {data?.hero_banner_categories?.map((item) => (
             <li
               key={item.id}
-              onClick={() => handleCategoryClick(item.action_url)}>
+              onClick={() => handleCategoryClick(item.action_url)}
+            >
               {item.name}
             </li>
           ))}
@@ -405,73 +405,72 @@ const HomePage = () => {
           )}
         </div> */}
 
-<div
-      className={`search-wrapper bg-white rounded shadow ${
-        isSearchActive ? "active" : ""
-      }`}
-    >
-      <div className="d-flex">
-        <input
-          ref={inputRef}
-          type="text"
-          className="form-control border-0 rounded-5 input_home"
-          placeholder="WHAT ARE YOU LOOKING FOR?"
-          onChange={(e) => setQuery(e.target.value)}
-          onFocus={handleFocus}
-          value={query}
-        />
-         {loading && (
-          <div className="sarchlader">
-            <div
-              className="spinner-border text-secondary"
-              style={{ width: "20px", height: "20px" }}
-              role="status"
-            >
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        )}
-        <button
-          className="btn btn-dark rounded-5 button_search"
-          disabled={!query?.trim()}
-          onClick={() =>
-            navigate("/searchlist", {
-              state: { query: query },
-            })
-          }
+        <div
+          className={`search-wrapper bg-white rounded shadow ${
+            isSearchActive ? "active" : ""
+          }`}
         >
-          <Search strokeWidth={1.25} />
-        </button>
-      </div>
-
-      {isSearchActive && Array.isArray(results) && results.length > 0 && (
-        <div className="search-results-grid">
-          {results.slice(0, 8).map((item, index) => (
-            <div
-              key={index}
-              className="search-card"
+          <div className="d-flex">
+            <input
+              ref={inputRef}
+              type="text"
+              className="form-control border-0 rounded-5 input_home"
+              placeholder="WHAT ARE YOU LOOKING FOR?"
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={handleFocus}
+              value={query}
+            />
+            {loading && (
+              <div className="sarchlader">
+                <div
+                  className="spinner-border text-secondary"
+                  style={{ width: "20px", height: "20px" }}
+                  role="status"
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            )}
+            <button
+              className="btn btn-dark rounded-5 button_search"
+              disabled={!query?.trim()}
               onClick={() =>
-                navigate("/productsdetails", {
-                  state: { product: item.action_url },
+                navigate("/searchlist", {
+                  state: { query: query },
                 })
               }
             >
-              <img
-                src={item.media_list?.main?.file}
-                alt={item.name}
-                className="search-card-img"
-              />
-              <div className="search-card-body">
-                <h6 className="search-card-title">
-                  {item.name.split(" ").slice(0, 5).join(" ")}
-                </h6>
-              </div>
+              <Search strokeWidth={1.25} />
+            </button>
+          </div>
+
+          {isSearchActive && Array.isArray(results) && results.length > 0 && (
+            <div className="search-results-grid">
+              {results.slice(0, 8).map((item, index) => (
+                <div
+                  key={index}
+                  className="search-card"
+                  onClick={() =>
+                    navigate("/productsdetails", {
+                      state: { product: item.action_url },
+                    })
+                  }
+                >
+                  <img
+                    src={item.media_list?.main?.file}
+                    alt={item.name}
+                    className="search-card-img"
+                  />
+                  <div className="search-card-body">
+                    <h6 className="search-card-title">
+                      {item.name.split(" ").slice(0, 5).join(" ")}
+                    </h6>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
-      )}
-    </div>
-  
 
         {/* Overlay */}
         {isSearchActive && (
@@ -537,10 +536,9 @@ const HomePage = () => {
               {/* Thumbnails */}
               <div className="thumb-bar">
                 {item.thumbs.map((src, idx) => (
-                   <div>
+                  <div>
                     <img src={src} alt="" key={idx} />
-                   </div> 
-                  
+                  </div>
                 ))}
               </div>
               {/* Text label */}
@@ -600,7 +598,11 @@ const HomePage = () => {
               key={item.id}
               onClick={() => handelpdp(item.action_url)}
             >
-              <img src={item.media} alt={item.name} className="promo-image pointer-crusser" />
+              <img
+                src={item.media}
+                alt={item.name}
+                className="promo-image pointer-crusser"
+              />
               <p className="promo-title pointer-crusser">{item.name}</p>
             </div>
           ))}

@@ -763,6 +763,7 @@ font-family: "Playfair Display", serif; */
     overflow-x: auto;
     justify-content: flex-start;
     scrollbar-width: none;
+    display: none;
   }
 
   .tab-btn {
@@ -809,6 +810,31 @@ font-family: "Playfair Display", serif; */
   .selected-color {
     flex: 0 0 auto;          
   }
+  .highlight-image {
+  display: none;
+}
+.tab-section {
+  padding: 10px  0px;
+  /* min-height: 400px; */
+  border-bottom: 1px solid #f0f0f0;
+  position: relative;
+  right: 70px;
+}
+
+.recommend-good-know {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  flex-wrap: wrap;
+  padding: 20px;
+  background-color: #f1f3f1;
+}
+.good-to-know-section {
+height: 20px;
+}
+ 
+
 }
 
 /* Responsive */
@@ -873,4 +899,5 @@ font-family: "Playfair Display", serif; */
     font-size: 1.6rem;
     margin-bottom: 10px;
   }
+ 
 }

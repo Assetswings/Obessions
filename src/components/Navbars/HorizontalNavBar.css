@@ -1,12 +1,16 @@
 .horizontal-nav-bar {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 43px;
-    background-color: #f5f5f5;
-    border-bottom: 1px solid #8c8981;
-    z-index: 999; /* Higher than modal’s 998 */
-  }
+  position: fixed;
+  top: 35px; /* exactly below the 35px tall announcement bar */
+  left: 0;
+  width: 100%;
+  z-index: 9998; /* just below or same as announcement bar */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 43px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #8c8981;
+}
   
   .nav-item {
     font-size: 12px;

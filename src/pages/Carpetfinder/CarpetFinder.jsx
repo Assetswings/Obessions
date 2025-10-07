@@ -4,6 +4,7 @@ import { fetchCarpetFinder } from "./carpetFinderSlice";
 import { useNavigate } from "react-router-dom";
 import "./CarpetFinder.css";
 import { ToastContainer, toast } from "react-toastify";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 const CarpetFinder = () => {
   const dispatch = useDispatch();
@@ -166,30 +167,30 @@ const CarpetFinder = () => {
             </div>
         
           <div className="finder-buttons">
-            <button
+            <div
+              className="arrow-stack"
               onClick={() => setCurrentStep((prev) => prev - 1)}
-              disabled={currentStep === 0}
-            >
-              Back ↑
-            </button>
+              disabled={currentStep === 0}>
+          <span> Back </span>  <span> <ArrowUp size={15}/> </span> 
+            </div>
             {currentStep < steps.length - 1 ? (
-              <button
+              <div
+                 className="arrow-stack"
                 onClick={() => {
                   if (!selections[currentStep]?.length) {
                     toast.error(
-                      "Please select at least one option to proceed."
+                    "Please select at least one option to proceed."
                     );
                     return;
                   }
                   setCurrentStep((prev) => prev + 1);
-                }}
-              >
-                Next ↓
-              </button>
+                }}>
+              <span> Next </span>  <span>  <ArrowDown size={15} /></span> 
+              </div>
             ) : (
-              <button className="submit-btn" onClick={handelseeresult}>
+              <div className="submit-btn" onClick={handelseeresult}>
                 See Results
-              </button>
+              </div>
             )}
           </div>
         </div>

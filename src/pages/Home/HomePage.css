@@ -7,6 +7,9 @@ body {
 background: white;
 }
 
+.spacer_track{
+  height: 50px;
+}
 /* ─────────────── HERO ─────────────── */
 .homepage {
   height: 120vh;
@@ -1010,6 +1013,9 @@ background-color: #F2F2F2;
   .obsessed-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+  .spacer_track{
+    height:0px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1139,6 +1145,10 @@ section.shopby {
 /* margin-top: 50px; */
 padding-top: 150px;
 background-color: #F2F2F2;
+}
+
+.spacer_track{
+  height:0px;
 }
 }
 

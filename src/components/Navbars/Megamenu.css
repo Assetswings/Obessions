@@ -29,7 +29,7 @@
   /* Actual mega menu content area */
   .mega-menu-content {
     position: absolute;
-    top: 80px;
+    top: 78px;
     left: 0;
     width: 100%;
     height: calc(93% - 81px);

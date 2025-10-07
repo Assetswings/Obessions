@@ -20,6 +20,7 @@ import {
   clearSearchResults,
 } from "../../pages/Home/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
 
 const OtherTopnav = () => {
   const dispatch = useDispatch();
@@ -106,8 +107,21 @@ const OtherTopnav = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     setShowUserPopup(false);
-    alert("Logout successful");
-    navigate("/");
+    toast.success("Logout Successfully.", {
+      style: {
+        border: "1px solid #713200",
+        padding: "16px",
+        color: "#713200",
+      },
+      iconTheme: {
+        primary: "#713200",
+        secondary: "#FFFAEE",
+      },
+      hideProgressBar: true,
+      closeButton: true,
+      icon: true,
+    });
+    // navigate("/");
   };
 
   const handleProfile = () => {
@@ -127,14 +141,15 @@ const OtherTopnav = () => {
     navigate(route);
   };
 
-    const claersearch = () => {
+  const claersearch = () => {
     setShowSearch(false);
     dispatch(clearSearchResults);
     setQuery("");
-   };
+  };
 
   return (
     <>
+      <ToastContainer position="top-right" autoClose={3000} />
       <nav className="other-topnav">
 
         <div
@@ -143,10 +158,10 @@ const OtherTopnav = () => {
           style={{ cursor: "pointer" }}>
           <img src={logo} alt="Logo" />
         </div>
-        
+
 
         <ul className="nav-links">
-          <li onClick={() => setShowMegaMenu((prev) => !prev)}>SHOP</li>
+          <li onMouseEnter={() => setShowMegaMenu(true)}>SHOP</li>
           <li onClick={() => handelroute("/new-arrivals")}>NEW ARRIVALS</li>
           <li onClick={() => handelroute("/bestseller")}>BEST SELLERS</li>
           <li onClick={() => handelroute("/offer-spot")}>OFFERS SPOT</li>
@@ -214,8 +229,8 @@ const OtherTopnav = () => {
         </div>
       </nav>
 
-      <div style={{height:"50px"}}></div>
-       {/* <div style={{height:"60px"}}></div> */}
+      <div style={{ height: "50px" }}></div>
+      {/* <div style={{height:"60px"}}></div> */}
 
       {showMegaMenu && (
         <div className="megamenu-wrapper">
@@ -243,10 +258,10 @@ const OtherTopnav = () => {
                 placeholder="WHAT ARE YOU LOOKING FOR?"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                // onFocus={handleFocus}
+              // onFocus={handleFocus}
               />
               {loading && (
-                <div style={{backgroundColor:"white"}} className="sarchlader">
+                <div style={{ backgroundColor: "white" }} className="sarchlader">
                   <div
                     className="spinner-border text-secondary"
                     style={{ width: "20px", height: "20px" }}

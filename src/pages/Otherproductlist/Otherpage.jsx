@@ -407,7 +407,7 @@ const Otherpage = () => {
                     {item.mrp && item.mrp !== item.selling_price && (
                       <>
                         <span className="original">₹{item.mrp}</span>
-                        <span className="discount">({item.discount}% OFF)</span>
+                        <span className="discount">({item.discount_percent}% OFF)</span>
                       </>
                     )}
                   </div>

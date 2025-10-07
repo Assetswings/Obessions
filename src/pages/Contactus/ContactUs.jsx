@@ -19,7 +19,7 @@ const ContactUs = () => {
     (state) => state.contact
   );
   const { details } = useSelector((state) => state.contact);
-  console.log("Contact details:::::::;:", details);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     dispatch(fetchContactDetails());
@@ -34,24 +34,24 @@ const ContactUs = () => {
     message: "",
   });
 
-  // Show toast messages
-  // useEffect(() => {
-  //   if (success) {
-  //     toast.success(message || "Form submitted successfully!");
-  //     dispatch(resetContactState());
-  //     setFormData({
-  //       first_name: "",
-  //       last_name: "",
-  //       email: "",
-  //       mobile: "",
-  //       category: "",
-  //       message: "",
-  //     });
-  //   }
-  //   if (error) {
-  //     toast.error(error);
-  //   }
-  // }, [success, error, message, dispatch]);
+  const validateForm = () => {
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{10}$/;
+
+    if (!formData.first_name.trim()) newErrors.first_name = "First name is required.";
+    if (!formData.last_name.trim()) newErrors.last_name = "Last name is required.";
+    if (!formData.email.trim()) newErrors.email = "Email is required.";
+    else if (!emailRegex.test(formData.email)) newErrors.email = "Enter a valid email.";
+    if (!formData.mobile.trim()) newErrors.mobile = "Phone number is required.";
+    else if (!phoneRegex.test(formData.mobile))
+      newErrors.mobile = "Enter a valid 10-digit number.";
+    if (!formData.category) newErrors.category = "Please select a category.";
+    if (!formData.message.trim()) newErrors.message = "Message cannot be empty.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -59,6 +59,7 @@ const ContactUs = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!validateForm()) return;
     // Dispatch the thunk and unwrap the result
     dispatch(submitContactForm(formData))
       .unwrap()
@@ -122,7 +123,11 @@ const ContactUs = () => {
               </span>
               <div>
                 <strong>Call Us</strong>
-                <p>{details.data?.mobile}</p>
+                <p>
+                  <a href={`tel:${details.data?.mobile}`} className="phone-link">
+                    {details.data?.mobile}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -132,7 +137,11 @@ const ContactUs = () => {
               </span>
               <div>
                 <strong>Send Us a Mail</strong>
-                <p>{details.data?.support_email}</p>
+                <p>
+                  <a href={`mailto:${details.data?.support_email}`} className="mail-link">
+                    {details.data?.support_email}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -159,67 +168,83 @@ const ContactUs = () => {
 
           <div className="contact-form">
             <h2>Send Us a Message</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} noValidate>
               <div className="form-row two-column">
-                <input
-                  type="text"
-                  name="first_name"
-                  placeholder="First name"
-                  value={formData.first_name}
-                  onChange={handleChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="last_name"
-                  placeholder="Last name"
-                  value={formData.last_name}
-                  onChange={handleChange}
-                  required
-                />
+                <div>
+                  <input
+                    type="text"
+                    name="first_name"
+                    placeholder="First name"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                  />
+                  {errors.first_name && <p className="error-text">{errors.first_name}</p>}
+                </div>
+
+                <div>
+                  <input
+                    type="text"
+                    name="last_name"
+                    placeholder="Last name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                  />
+                  {errors.last_name && <p className="error-text">{errors.last_name}</p>}
+                </div>
               </div>
+
               <div className="form-row two-column">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="E-mail"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="mobile"
-                  placeholder="Phone Number"
-                  value={formData.mobile}
-                  onChange={handleChange}
-                  required
-                />
+                <div>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="E-mail"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                  {errors.email && <p className="error-text">{errors.email}</p>}
+                </div>
+
+                <div>
+                  <input
+                    type="text"
+                    name="mobile"
+                    placeholder="Phone Number"
+                    value={formData.mobile}
+                    onChange={handleChange}
+                  />
+                  {errors.mobile && <p className="error-text">{errors.mobile}</p>}
+                </div>
               </div>
+
               <div className="form-row full-width">
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  required
                 >
                   <option value="">Category</option>
-                  <option value="Bulk Enquiry / Corporate Order">Bulk Enquiry / Corporate Order</option>
+                  <option value="Bulk Enquiry / Corporate Order">
+                    Bulk Enquiry / Corporate Order
+                  </option>
                   <option value="Order Cancellation">Order Cancellation</option>
                   <option value="Return & Exchange">Return & Exchange</option>
                   <option value="Careers">Careers</option>
                   <option value="Others">Others</option>
                 </select>
+                {errors.category && <p className="error-text">{errors.category}</p>}
               </div>
+
               <div className="form-row full-width">
                 <textarea
                   name="message"
                   placeholder="Message"
                   value={formData.message}
                   onChange={handleChange}
-                  required
                 />
+                {errors.message && <p className="error-text">{errors.message}</p>}
               </div>
+
               <button type="submit" disabled={loading}>
                 {loading ? "Submitting..." : "SEND MESSAGE"}
               </button>
@@ -228,7 +253,7 @@ const ContactUs = () => {
         </section>
 
         <section className="help-guides">
-          <h2 style={{fontWeight:"400", fontSize:"32px"}}>Instant Help Guides</h2>
+          <h2 style={{ fontWeight: "400", fontSize: "32px" }}>Instant Help Guides</h2>
           <div className="guides-container">
             <div className="guide-item">
               <img

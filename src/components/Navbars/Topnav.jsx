@@ -14,7 +14,7 @@ const Topnav = () => {
       <nav className="horizontal-nav-bar">
         <div
           className="nav-item"
-          onClick={() => setShowMegaMenu((prev) => !prev)}
+          onMouseEnter={() => setShowMegaMenu(true)}
         >
           SHOP
         </div>

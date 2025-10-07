@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
 import "./TopAnnouncementBar.css";
+import { toast, ToastContainer } from "react-toastify";
 
 const TopAnnouncementBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,7 +47,20 @@ const TopAnnouncementBar = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     setShowUserPopup(false);
-    alert("Logout successful");
+    toast.success("Logout Successfully.", {
+      style: {
+        border: "1px solid #713200",
+        padding: "16px",
+        color: "#713200",
+      },
+      iconTheme: {
+        primary: "#713200",
+        secondary: "#FFFAEE",
+      },
+      hideProgressBar: true,
+      closeButton: true,
+      icon: true,
+    });
   };
 
   const handleProfile = () => {
@@ -72,6 +86,7 @@ const TopAnnouncementBar = () => {
 
   return (
     <>
+    <ToastContainer position="top-right" autoClose={3000} />
       <div className="top-announcement-bar">
         <div className="scrolling-text">
           <Marquee pauseOnHover gradient={false} speed={60}>
@@ -90,6 +105,7 @@ const TopAnnouncementBar = () => {
             ref={userWrapperRef}
             className="user-click-wrapper"
             onClick={handleUserClick}
+            title="User Profile"
             // style={{ position: "relative" }}
           >
             <CircleUser
@@ -129,7 +145,8 @@ const TopAnnouncementBar = () => {
             size={27}
             onClick={handleWishlistClick}
             style={{ cursor: "pointer" }}
-              strokeWidth={1} 
+            strokeWidth={1} 
+            title="Wishlist"
           />
 
           {/* Cart Icon */}
@@ -138,6 +155,7 @@ const TopAnnouncementBar = () => {
             onClick={handleCartClick}
             style={{ cursor: "pointer" }}
             strokeWidth={1} 
+            title="Cart"
           />
         </div>
       </div>

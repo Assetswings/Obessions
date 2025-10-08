@@ -18,10 +18,13 @@ import {
   editAddress,
   makeDefaultAddress,
 } from "./addressSlice";
+import { useLocation } from "react-router-dom";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
-  const [activeTab, setActiveTab] = useState("profile");
+   const location = useLocation();
+  const savedTab = localStorage.getItem("activeTab");
+  const [activeTab, setActiveTab] = useState(savedTab || "profile");
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
   const [showEditAddressModal, setShowEditAddressModal] = useState(false);
@@ -52,6 +55,27 @@ const ProfilePage = () => {
     mobile: "",
     dob: "",
   });
+
+  // ✅ Step 2: Save tab when user changes it
+  useEffect(() => {
+    localStorage.setItem("activeTab", activeTab);
+  }, [activeTab]);
+
+  // ✅ Step 3: When user LEAVES this page, clear saved tab
+  useEffect(() => {
+    // Run when route changes away from /profile
+    return () => {
+      if (!location.pathname.includes("/profile")) {
+        localStorage.removeItem("activeTab");
+      }
+    };
+  }, [location.pathname]);
+
+  // ✅ Step 4 (Optional): Re-sync when component mounts
+  useEffect(() => {
+    const storedTab = localStorage.getItem("activeTab");
+    if (storedTab) setActiveTab(storedTab);
+  }, []);
 
   useEffect(() => {
     if (showEditModal || showAddAddressModal || showEditAddressModal) {
@@ -172,12 +196,12 @@ const ProfilePage = () => {
 
     if (!editForm.first_name.trim()) {
       formErrors.first_name = "First name is required";
-    } else if (!/^[A-Za-z]+$/.test(editForm.first_name)) {
+    } else if (!/^[A-Za-z\s]+$/.test(editForm.last_name)) {
       formErrors.first_name = "Only alphabets are allowed";
     }
     if (!editForm.last_name.trim()) {
       formErrors.last_name = "Last name is required";
-    } else if (!/^[A-Za-z]+$/.test(editForm.last_name)) {
+    } else if (!/^[A-Za-z\s]+$/.test(editForm.last_name)) {
       formErrors.last_name = "Only alphabets are allowed";
     }
     if (!editForm.email.trim()) {
@@ -190,9 +214,9 @@ const ProfilePage = () => {
     } else if (!/^\d{10}$/.test(editForm.mobile)) {
       formErrors.mobile = "Enter a valid 10-digit number";
     }
-    if (!editForm.dob) {
-      formErrors.dob = "Date of birth is required";
-    }
+    // if (!editForm.dob) {
+    //   formErrors.dob = "Date of birth is required";
+    // }
 
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0; // true if no errors
@@ -315,22 +339,22 @@ const ProfilePage = () => {
     <>
       <Toaster position="top-right" reverseOrder={false} />
       <div className="profile-container">
-          <div className="root_tab"> 
-            <div className="tabs">
-          <div className="button_group_tracker">
-            {["profile", "address", "your orders"].map((tab) => (
-              <button
-                key={tab}
-                className={activeTab === tab ? "active" : ""}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab.toUpperCase()}
-              </button>
-            ))}
+        <div className="root_tab">
+          <div className="tabs">
+            <div className="button_group_tracker">
+              {["profile", "address", "your orders"].map((tab) => (
+                <button
+                  key={tab}
+                  className={activeTab === tab ? "active" : ""}
+                  onClick={() => setActiveTab(tab)}
+                >
+                  {tab.toUpperCase()}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-          </div>
-        
+
 
         <div className="content-wrapper">
 
@@ -341,7 +365,7 @@ const ProfilePage = () => {
                   <h5>MY DETAILS</h5>
                   <p>Update your details below to keep your account current.</p>
                 </div> */}
-                
+
               </div>
               <div >
                 <p className="txt_level">Name</p>
@@ -352,8 +376,8 @@ const ProfilePage = () => {
               <div>
                 <p className="txt_level">Email</p>
                 <div
-                 className="track_septor"
-                  style={{ display: "flex", alignItems: "center", gap: "10px" , justifyContent:"space-between"}}
+                  className="track_septor"
+                  style={{ display: "flex", alignItems: "center", gap: "10px", justifyContent: "space-between" }}
                 >
                   {profileData?.email}
                   {/* {profileData?.email_verified === 0 ? (
@@ -371,7 +395,7 @@ const ProfilePage = () => {
                       Verify
                     </u>
                   ) : profileData?.email_verified == 1 ? (
-                    <span className="track_ver"> <span style={{position:'relative',right:"5px"}}> <CircleCheckBig size={20} color="green"/> </span>  Email Verified</span>
+                    <span className="track_ver"> <span style={{ position: 'relative', right: "5px" }}> <CircleCheckBig size={20} color="green" /> </span>  Email Verified</span>
                   ) : null}
                 </div>
               </div>
@@ -389,14 +413,14 @@ const ProfilePage = () => {
                 </div>
               </div>
               <div>
-                  <div
-                    className="edit-btn"
-                    onClick={() => setShowEditModal(true)}>
-                    <p>
-                      <span className="edit_text"> EDIT DETAILS </span>
-                    </p>
-                  </div>
+                <div
+                  className="edit-btn"
+                  onClick={() => setShowEditModal(true)}>
+                  <p>
+                    <span className="edit_text"> EDIT DETAILS </span>
+                  </p>
                 </div>
+              </div>
             </div>
           )}
 
@@ -417,9 +441,8 @@ const ProfilePage = () => {
                 <div className="address-list">
                   <div
                     key={item.id}
-                    className={`address-card ${
-                      item.is_default ? "default" : ""
-                    }`}
+                    className={`address-card ${item.is_default ? "default" : ""
+                      }`}
                   >
                     <div className="address-header">
                       <span className="txt_head_add">

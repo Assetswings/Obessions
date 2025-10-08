@@ -192,7 +192,7 @@
   text-decoration: underline;
   color: black;
   cursor: pointer;
-  top: 75%;
+  /* top: 75%; */
   position: relative;
 }
 
@@ -227,6 +227,7 @@
   background: #fff;
   color: #000;
   border: 2px solid black;
+  text-transform: uppercase;
 }
 
 .go-back:hover {
@@ -236,6 +237,7 @@
 .proceed {
   background: #000;
   color: #fff;
+  text-transform: uppercase;
 }
 
 .proceed:hover {

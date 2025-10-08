@@ -17,16 +17,13 @@ const BlogPost = () => {
     if (blugSlug) {
       getBlogDetails(blugSlug);
     }
-  });
+  }, [blugSlug]);
 
   const getBlogDetails = async (blugSlug) => {
-    console.log(blugSlug);
-
     try {
       const res = await API.get("/blogs/" + blugSlug);
       if (res.data.status === 200) {
         setData(res.data?.data);
-        console.log(res, "???????????");
       }
     } catch (err) {
       // toast.error(err.response?.data?.message || "Failed to send OTP");
@@ -60,11 +57,11 @@ const BlogPost = () => {
               year: "numeric",
             })}
           </p>
-          
+
           <div className="terms-container">
             <div dangerouslySetInnerHTML={{ __html: data.blog?.description }} />
           </div>
-          
+
           {/* <h1 className="post-title">{data?.blog?.name}</h1> */}
           {/* <div className="sector_image">
             <div>
@@ -165,8 +162,8 @@ const BlogPost = () => {
           <ul className="related-list">
             {data?.related?.map((post, index) => (
               <li key={index}>
-                <img src={post?.media} alt="Related 1" />
-                <div>
+                <img src={post?.media} alt="Related 1" onClick={() => handleBlogClick(post?.action_url)} className="pointer-crusser"/>
+                <div className="pointer-crusser">
                   <p onClick={() => handleBlogClick(post?.action_url)}>{post?.name}</p>
                   <span>
                     {post?.description?.split(" ").slice(0, 15).join(" ")}
@@ -203,8 +200,8 @@ const BlogPost = () => {
         <h2 className="recommended-title">Recommended Posts</h2>
         <div className="recommended-grid">
           {data?.recommended?.map((post, index) => (
-            <div className="recommended-card" key={index}>
-              <img src={post?.media} alt="Post 1" />
+            <div className="recommended-card pointer-crusser" key={index}>
+              <img src={post?.media} alt="Post 1" onClick={() => handleBlogClick(post?.action_url)}/>
               <p>{post?.name}</p>
               <div className="txt_btn_recomend">
                 <p>

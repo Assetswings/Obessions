@@ -40,6 +40,8 @@ const ProductsPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false); // NEW: mobile filter modal state
   const [tempMobileFilters, setTempMobileFilters] = useState({});
   const [expandedGroups, setExpandedGroups] = useState({});
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
   const { data, filters, loading } = useSelector((state) => state.products);
 
   useEffect(() => {
@@ -117,8 +119,8 @@ const ProductsPage = () => {
           );
         }
       } else {
-         // addToWishlist thunk should return the new wishlist item(s)
-          const addedWishlistItem = await dispatch(
+        // addToWishlist thunk should return the new wishlist item(s)
+        const addedWishlistItem = await dispatch(
           addToWishlist({ product_id: product.id })
         ).unwrap();
         toast.success("Added to wishlist", {
@@ -147,14 +149,14 @@ const ProductsPage = () => {
           prev.map((p) =>
             p.id === product.id
               ? {
-                  ...p,
-                  is_wishlisted: true,
-                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
-                }
+                ...p,
+                is_wishlisted: true,
+                wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+              }
               : p
           )
         );
-      setTimeout(() => setAnimatedWish(null), 1500);
+        setTimeout(() => setAnimatedWish(null), 1500);
       }
     } catch (err) {
       toast.error("Something went wrong");
@@ -170,7 +172,7 @@ const ProductsPage = () => {
 
   const renderFilterGroup = (title, options, key, isMobile = false) => {
     const isExpanded = expandedGroups[key] || false;
-    const visibleOptions = isExpanded ? options : options.slice(0, 5);
+    const visibleOptions = isExpanded ? options : options?.slice(0, 5);
     const hiddenCount = options.length - visibleOptions.length;
 
     const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
@@ -207,6 +209,118 @@ const ProductsPage = () => {
             {isExpanded ? "− Show Less" : `+ Show More (${hiddenCount})`}
           </div>
         )}
+      </div>
+    );
+  };
+
+  // Render category filters (with subcategories)
+  const renderCategoryFilter = (categories, isMobile = false) => {
+    const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
+    const onChangeHandler = isMobile
+      ? handleMobileFilterChange
+      : handleFilterChange;
+
+    return (
+      <div className="custom-filter-group" key="categories">
+        <h4>Categories</h4>
+        <label>
+          <input
+            type="checkbox"
+            checked={
+              currentFilters.categories?.includes(categories.name) || false
+            }
+            onChange={() => onChangeHandler("categories", categories.name)}
+          />
+          <span className="txt_checkbox">{categories.name}</span>
+        </label>
+
+        <div className="subcategory-list">
+          {categories.subcategories.map((sub) => (
+            <label key={sub.id}>
+              <input
+                type="checkbox"
+                checked={
+                  currentFilters.subcategories?.includes(sub.name) || false
+                }
+                onChange={() => onChangeHandler("subcategories", sub.name)}
+              />
+              <span className="txt_checkbox">{sub.name}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    if (filters?.price_filter) {
+      setMinPrice(filters.price_filter.min_price);
+      setMaxPrice(filters.price_filter.max_price);
+    }
+  }, [filters?.price_filter]);
+
+  // Render price range filter
+  const renderPriceFilter = (priceFilter, isMobile = false) => {
+    // setMinPrice(priceFilter.min_price);
+    // setMaxPrice(priceFilter.max_price);
+    const onApplyPrice = () => {
+      const onChangeHandler = isMobile
+        ? handleMobileFilterChange
+        : handleFilterChange;
+      onChangeHandler("price_min", minPrice);
+      onChangeHandler("price_max", maxPrice);
+    };
+
+    return (
+      <div className="custom-filter-group" key="price_filter">
+        <h4>Price</h4>
+        <div className="price-inputs">
+          <input
+            type="number"
+            min={priceFilter.min_price}
+            max={priceFilter.max_price}
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+          />
+          <span> - </span>
+          <input
+            type="number"
+            min={priceFilter.min_price}
+            max={priceFilter.max_price}
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+          />
+          <button onClick={onApplyPrice}>Apply</button>
+        </div>
+      </div>
+    );
+  };
+
+  // Render discount filters
+  const renderDiscountFilter = (discounts, isMobile = false) => {
+    const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
+    const onChangeHandler = isMobile
+      ? handleMobileFilterChange
+      : handleFilterChange;
+
+    return (
+      <div className="custom-filter-group" key="discount_filter">
+        <h4>Discount</h4>
+        {discounts.map((disc, i) => (
+          <label key={i}>
+            <input
+              type="checkbox"
+              checked={
+                currentFilters.discount_filter?.includes(disc.discount_range) ||
+                false
+              }
+              onChange={() => onChangeHandler("discount_filter", disc.discount_range)}
+            />
+            <span className="txt_checkbox">
+              {disc.discount_range}% Off ({disc.total_items})
+            </span>
+          </label>
+        ))}
       </div>
     );
   };
@@ -249,12 +363,14 @@ const ProductsPage = () => {
           </h2>
           <div className="root_devider_flt">
             <h2>Filters</h2>
-            <p className="clr-all" onClick={() => setSelectedFilters({})}>
-              clear all
-            </p>
+            {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
+              <p className="clr-all" onClick={() => setSelectedFilters({})}>
+                Clear all
+              </p>
+            ) : null}
           </div>
 
-          {loading ? (
+          {/* {loading ? (
             <>
               <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
               {Array.from({ length: 3 }).map((_, i) => (
@@ -278,7 +394,42 @@ const ProductsPage = () => {
             Object.entries(filters).map(([filterKey, values]) =>
               renderFilterGroup(filterKey.replace(/_/g, " "), values, filterKey)
             )
+          )} */}
+          {loading ? (
+            // 🔄 Skeleton loader while fetching data
+            <>
+              <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
+
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div className="custom-filter-group" key={i}>
+                  <Skeleton height={14} width={100} style={{ marginBottom: 10 }} />
+                  <Skeleton count={4} height={16} width={120} style={{ marginBottom: 8 }} />
+                </div>
+              ))}
+            </>
+          ) : filters && Object.keys(filters).length > 0 ? (
+            // ✅ Render filters when available
+            <>
+              {/* 1️⃣ Category Filter */}
+              {filters.categories && renderCategoryFilter(filters.categories)}
+
+              {/* 2️⃣ Price Filter */}
+              {filters.price_filter && renderPriceFilter(filters.price_filter)}
+
+              {/* 3️⃣ Discount Filter */}
+              {filters.discount_filter && renderDiscountFilter(filters.discount_filter)}
+
+              {/* 4️⃣ Product Filters */}
+              {filters.product_filter &&
+                Object.entries(filters.product_filter).map(([key, values]) =>
+                  renderFilterGroup(key.replace(/_/g, " "), values, key)
+                )}
+            </>
+          ) : (
+            // ❌ No filters found
+            <p className="no-filters">No filters available.</p>
           )}
+
         </aside>
 
         <main className="custom-product-list">
@@ -289,7 +440,7 @@ const ProductsPage = () => {
             >
               <span>
                 {" "}
-                <SlidersHorizontal size={20}/>
+                <SlidersHorizontal size={20} />
               </span>{" "}
               Filters
             </button>
@@ -297,97 +448,97 @@ const ProductsPage = () => {
           <div className="custom-products-grid">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (
-                  <div key={i} className="custom-product-card">
-                    <div className="custom-product-image">
-                      <Skeleton height={250} width={275} />
-                    </div>
-                    <p className="custom-product-title">
-                      <Skeleton width={180} height={16} />
-                    </p>
+                <div key={i} className="custom-product-card">
+                  <div className="custom-product-image">
+                    <Skeleton height={250} width={275} />
                   </div>
-                ))
+                  <p className="custom-product-title">
+                    <Skeleton width={180} height={16} />
+                  </p>
+                </div>
+              ))
               : products?.map((item, index) => {
-                  const isWishlisted = item.is_wishlisted;
-                  return (
-                    <div
-                      key={item.index}
-                      className="custom-product-card"
-                      onClick={(e) => {
-                        const isQuickView = e.target.closest(".qucick_dv");
-                        const isWishlist = e.target.closest(
-                          ".wishlist-btn_products"
-                        );
-                        if (!isQuickView && !isWishlist) {
-                          navigate("/productsdetails", {
-                            state: { product: item.action_url },
-                          });
-                        }
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <div className="custom-product-image">
-                        <img
-                          src={item.media_list?.main?.file}
-                          alt={item.name}
-                        />
+                const isWishlisted = item.is_wishlisted;
+                return (
+                  <div
+                    key={item.index}
+                    className="custom-product-card"
+                    onClick={(e) => {
+                      const isQuickView = e.target.closest(".qucick_dv");
+                      const isWishlist = e.target.closest(
+                        ".wishlist-btn_products"
+                      );
+                      if (!isQuickView && !isWishlist) {
+                        navigate("/productsdetails", {
+                          state: { product: item.action_url },
+                        });
+                      }
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className="custom-product-image">
+                      <img
+                        src={item.media_list?.main?.file}
+                        alt={item.name}
+                      />
 
-                        {/* wishliat_track */}
-                        <button
-                          className="wishlist-btn_products"
-                          onClick={(e) => toggleWishlist(e, item)}
-                        >
-                          {animatedWish === item.id ? (
-                            <div
-                              style={{
-                                width: 20,
-                                height: 24,
-                                overflow: "hidden",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                              }}
-                            >
-                              <Player
-                                autoplay
-                                keepLastFrame
-                                src={heartAnimation}
-                                style={{
-                                  width: 139,
-                                  height: 139,
-                                  transform: "scale(0.5)",
-                                  transformOrigin: "center",
-                                }}
-                              />
-                            </div>
-                          ) : (
-                            <Heart
-                              color={isWishlisted ? "#FF0000" : "#000"}
-                              fill={isWishlisted ? "#FF0000" : "none"}
-                              size={20}
-                              strokeWidth={2}
-                            />
-                          )}
-                        </button>
-
-                        <div className="qucick_dv">
-                          <span
-                            className="quick-view_pd"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setQuickViewProduct(item);
-                              setShowModal(true);
+                      {/* wishliat_track */}
+                      <button
+                        className="wishlist-btn_products"
+                        onClick={(e) => toggleWishlist(e, item)}
+                      >
+                        {animatedWish === item.id ? (
+                          <div
+                            style={{
+                              width: 20,
+                              height: 24,
+                              overflow: "hidden",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
                             }}
                           >
-                            Quick View &nbsp;
-                            <Expand
-                              color="#000000"
-                              size={15}
-                              strokeWidth={1.25}
+                            <Player
+                              autoplay
+                              keepLastFrame
+                              src={heartAnimation}
+                              style={{
+                                width: 139,
+                                height: 139,
+                                transform: "scale(0.5)",
+                                transformOrigin: "center",
+                              }}
                             />
-                          </span>
-                        </div>
+                          </div>
+                        ) : (
+                          <Heart
+                            color={isWishlisted ? "#FF0000" : "#000"}
+                            fill={isWishlisted ? "#FF0000" : "none"}
+                            size={20}
+                            strokeWidth={2}
+                          />
+                        )}
+                      </button>
+
+                      <div className="qucick_dv">
+                        <span
+                          className="quick-view_pd"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setQuickViewProduct(item);
+                            setShowModal(true);
+                          }}
+                        >
+                          Quick View &nbsp;
+                          <Expand
+                            color="#000000"
+                            size={15}
+                            strokeWidth={1.25}
+                          />
+                        </span>
                       </div>
-                      {/* <p className="custom-product-title">{item.name}</p>
+                    </div>
+                    {/* <p className="custom-product-title">{item.name}</p>
                       <p className="custom-product-price">
                         ₹{item.selling_price}
                         {item.mrp && item.mrp !== item.selling_price && (
@@ -402,19 +553,19 @@ const ProductsPage = () => {
                         )}
                       </p> */}
 
-      <p className="product-title">{item.name}</p>
-                  <div className="product-price">
-                    <span>₹{item.selling_price}</span>
-                    {item.mrp && item.mrp !== item.selling_price && (
-                      <>
-                        <span className="original">₹{item.mrp}</span>
-                        <span className="discount">({item.discount}% OFF)</span>
-                      </>
-                    )}
-                  </div>
+                    <p className="product-title">{item.name}</p>
+                    <div className="product-price">
+                      <span>₹{item.selling_price}</span>
+                      {item.mrp && item.mrp !== item.selling_price && (
+                        <>
+                          <span className="original">₹{item.mrp}</span>
+                          <span className="discount">({item.discount_percent}% OFF)</span>
+                        </>
+                      )}
                     </div>
-                  );
-                })}
+                  </div>
+                );
+              })}
           </div>
         </main>
 
@@ -452,7 +603,7 @@ const ProductsPage = () => {
         </div>
       </section>
 
-     <section className="obsession-section-pd">
+      <section className="obsession-section-pd">
         <div className="obsession-content-pd">
           <div className="obsession-text-pd">
             <h2>
@@ -484,17 +635,17 @@ const ProductsPage = () => {
 
           <div className="obsession-images">
             <div className="obsession-img-wrapper">
-              <img   className="on-image-one" src={plpone} alt="Laundry" />
+              <img className="on-image-one" src={plpone} alt="Laundry" />
               <span className="obsession-tag top-left">Designed for life</span>
               <span className="obsession-tag top-right">Usability</span>
             </div>
-            <div  className="obsession-img-wrapper">
-              <img  className="on-image-two" src={plptwo} alt="Cooking" />
+            <div className="obsession-img-wrapper">
+              <img className="on-image-two" src={plptwo} alt="Cooking" />
               <span className="obsession-tag bottom">Effortless function</span>
             </div>
           </div>
         </div>
-      </section> 
+      </section>
 
       {/* SLIDE FILTER MODAL (Mobile) */}
       <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>
@@ -510,7 +661,7 @@ const ProductsPage = () => {
             </p>
           </div>
 
-          {filters &&
+          {/* {filters &&
             Object.entries(filters).map(([filterKey, values]) =>
               renderFilterGroup(
                 filterKey.replace(/_/g, " "),
@@ -518,7 +669,24 @@ const ProductsPage = () => {
                 filterKey,
                 true
               )
-            )}
+            )} */}
+          {filters && (
+            <>
+              {filters.categories &&
+                renderCategoryFilter(filters.categories, true)}
+
+              {filters.price_filter &&
+                renderPriceFilter(filters.price_filter, true)}
+
+              {filters.discount_filter &&
+                renderDiscountFilter(filters.discount_filter, true)}
+
+              {filters.product_filter &&
+                Object.entries(filters.product_filter).map(([key, values]) =>
+                  renderFilterGroup(key.replace(/_/g, " "), values, key, true)
+                )}
+            </>
+          )}
         </div>
         {/* ✅ Sticky Footer Apply Button */}
         <div className="mobile-filter-footer">

@@ -89,14 +89,16 @@ const OrderHistoryPage = () => {
       <aside className="sidebar">
         {/* <h2>Order History</h2> */}
         <div className="filters">
-          <div  style={{display:"flex", justifyContent:"space-between"}}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>
               <h4>Filters</h4>
             </div>
             <div>
-              <a href="#" className="clear-all" onClick={handleClearAll}>
-                Clear all
-              </a>
+              {selectedStatus.length > 0 && (
+                <a href="#" className="clear-all" onClick={handleClearAll}>
+                  Clear all
+                </a>
+              )}
             </div>
           </div>
           <p>ORDER STATUS</p>
@@ -127,7 +129,7 @@ const OrderHistoryPage = () => {
                   <div>
                     <div> Estimated Delivery</div>
                     <div>
-                      {new Date(order.order_placed_at).toLocaleDateString(
+                      {/* {new Date(order.order_placed_at).toLocaleDateString(
                         "en-US",
                         {
                           weekday: "short",
@@ -135,7 +137,7 @@ const OrderHistoryPage = () => {
                           month: "short",
                           timeZone: "Asia/Kolkata",
                         }
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
@@ -148,7 +150,7 @@ const OrderHistoryPage = () => {
                 <div className="order-actions">
                   <span
                     className="pointer-crusser"
-                    style={{color: "#1B170E"}}
+                    style={{ color: "#1B170E" }}
                     onClick={() =>
                       navigate("/OrderTrackingPage", {
                         state: { order_no: order.order_no },
@@ -158,7 +160,7 @@ const OrderHistoryPage = () => {
                     Track Order
                   </span>
                   <div>
-                    <span style={{color: "#1B170E"}}>View Invoice</span>
+                    <span style={{ color: "#1B170E" }}>View Invoice</span>
                   </div>
                 </div>
               </div>
@@ -179,6 +181,9 @@ const OrderHistoryPage = () => {
                             price: item.mrp,
                             qty: item.quantity,
                             order_no: order.order_no,
+                            action_url: item.action_url,
+                            size: item.size,
+                            color: item.color
                           });
                           setSelectedOrder(order.order_no);
                           setShowcnModal(true);
@@ -211,6 +216,9 @@ const OrderHistoryPage = () => {
                               order_no: order.order_no,
                               allow_exchange: item.allow_exchange,
                               allow_return: item.allow_return,
+                              action_url: item.action_url,
+                              size: item.size,
+                              color: item.color
                             });
                             setSelectedOrder(order.order_no);
                             setShowModal(true);
@@ -224,7 +232,11 @@ const OrderHistoryPage = () => {
                     )}
                   </div>
                   <div className="arrow">
-                    <ChevronRight size={24} />
+                    <ChevronRight size={24} onClick={() =>
+                      navigate("/OrderTrackingPage", {
+                        state: { order_no: order.order_no },
+                      })
+                    } />
                   </div>
                 </div>
               ))}

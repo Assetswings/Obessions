@@ -36,7 +36,7 @@ const Blog = () => {
         </header>
 
         {/* FEATURED POST */}
-        <section className="featured-post">
+        <section className="featured-post pointer-crusser">
           <div onClick={() => handleBlogClick(data?.top_first?.slug)}>
             <img src={data?.top_first?.media} alt="Featured" />
           </div>
@@ -72,7 +72,7 @@ const Blog = () => {
           <h3>Latest Posts</h3>
           <div className="posts-grid">
             {data?.latest_blogs?.data.map((post, index) => (
-              <div className="post-card" key={index}>
+              <div className="post-card pointer-crusser" key={index} onClick={() => handleBlogClick(post?.action_url)}>
                 <img src={post.media} alt={post.name} />
                 <div className="post-info">
                   <div className="post-meta">
@@ -89,7 +89,7 @@ const Blog = () => {
                     </span>
                     <span>{post?.readTime}</span>
                   </div>
-                  <h4 onClick={() => handleBlogClick(post?.action_url)}>{post.name}</h4>
+                  <h4>{post.name}</h4>
                 </div>
               </div>
             ))}

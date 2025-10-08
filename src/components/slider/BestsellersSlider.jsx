@@ -32,8 +32,8 @@ const BestsellersSlider = ({ onQuickView }) => {
   };
 
   const handleNext = () => {
-    setStartIndex((prev) =>
-      Math.min(prev + 1, bestsellers.length - 5) // ✅ show 5 at a time
+    setStartIndex(
+      (prev) => Math.min(prev + 1, bestsellers.length - 5) // ✅ show 5 at a time
     );
   };
 
@@ -107,10 +107,10 @@ const BestsellersSlider = ({ onQuickView }) => {
           prev.map((p) =>
             p.id === product.id
               ? {
-                ...p,
-                is_wishlisted: true,
-                wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
-              }
+                  ...p,
+                  is_wishlisted: true,
+                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+                }
               : p
           )
         );
@@ -159,8 +159,8 @@ const BestsellersSlider = ({ onQuickView }) => {
                     <button
                       className="quick-view"
                       onClick={(e) => {
-                        e.stopPropagation();  // ✅ prevent redirect
-                        LogsIcon(item);       // ✅ open Quick View modal
+                        e.stopPropagation(); // ✅ prevent redirect
+                        LogsIcon(item); // ✅ open Quick View modal
                       }}
                     >
                       Quick View &nbsp;
@@ -210,15 +210,23 @@ const BestsellersSlider = ({ onQuickView }) => {
                     )}
                   </button>
                 </div>
-                <div className="product-info-card">
-                  <p className="title">{item.name}</p>
-                  <p className="price">₹{item.selling_price}</p>
-                  {item.mrp && item.mrp !== item.selling_price && (
-                    <>
-                      <span className="original">₹{item.mrp}</span>
-                      <span className="discount">({item.discount}% OFF)</span>
-                    </>
-                  )}
+                <div className="product-info">
+                  <span className="title">{item.name}</span>
+                  <span className="price">₹{item.selling_price}</span>
+                  <span>
+                    {" "}
+                    {item.mrp && item.mrp !== item.selling_price && (
+                      <>
+                        <span className="original">
+                          <del>₹{item.mrp}</del>
+                             {" "}
+                        </span>
+                        <span className="discount">
+                          ({item?.discount_percent}% OFF)
+                        </span>
+                      </>
+                    )}{" "}
+                  </span>
                 </div>
               </div>
             ))}
@@ -305,8 +313,20 @@ const BestsellersSlider = ({ onQuickView }) => {
                   </button>
                 </div>
                 <div className="product-info">
-                  <p className="title">{item.name}</p>
-                  <p className="price">₹{item.selling_price}</p>
+                  <span className="title">{item.name}</span>
+                  <span className="price">₹{item.selling_price}</span>
+                  <span>
+                    {" "}
+                    {item.mrp && item.mrp !== item.selling_price && (
+                      <>
+                        <span className="original"> <del>₹{item.mrp}</del>
+                             {" "}</span>
+                        <span className="discount">
+                          ({item?.discount_percent}% OFF)
+                        </span>
+                      </>
+                    )}{" "}
+                  </span>
                 </div>
               </div>
             ))}
@@ -318,7 +338,6 @@ const BestsellersSlider = ({ onQuickView }) => {
         )}
       </div>
     </>
-
   );
 };
 

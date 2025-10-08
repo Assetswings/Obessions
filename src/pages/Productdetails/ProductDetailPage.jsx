@@ -472,7 +472,7 @@ const ProductDetailPage = () => {
                 />
               </div>
             ) : (
-              <img
+              <img        
                 src={selectedImage}
                 alt="Main Product"
                 className="main-image"
@@ -514,143 +514,157 @@ const ProductDetailPage = () => {
 
         {/* Product Info */}
         <div className="product-info">
-          <h1 className="title_details">
-            {localLoading ? <Skeleton width={200} /> : selectedSize?.name}
-          </h1>
+      <h1 className="title_details">
+        {localLoading ? <Skeleton width={200} /> : selectedSize?.name}
+      </h1>
 
-          <p className="price_details">
-            {localLoading ? (
-              <Skeleton width={120} />
-            ) : (
-              <>
-                ₹{currentPrice}{" "}
-                {selectedSize?.mrp && (
-                  <span className="sub-1">
-                    <del>₹{selectedSize?.mrp}</del> &nbsp;
-                    <span className="dis-sub">
-                      {selectedSize?.discount}% OFF
-                    </span>{" "}
-                    (Inclusive of all taxes)
-                  </span>
-                )}
-              </>
+      <p className="price_details">
+        {localLoading ? (
+          <Skeleton width={120} />
+        ) : (
+          <>
+            ₹{currentPrice}{" "}
+            {selectedSize?.mrp && (
+              <span className="sub-1">
+                <del>₹{selectedSize?.mrp}</del> &nbsp;
+                <span className="dis-sub">
+                  {selectedSize?.discount}% OFF
+                </span>{" "}
+                (Inclusive of all taxes)
+              </span>
             )}
-          </p>
-          <p className="id_tracker">
-            {localLoading ? (
-              <Skeleton width={100} />
-            ) : (
-              `SKU: ${selectedSize?.sku}`
-            )}
-          </p>
+          </>
+        )}
+      </p>
 
-          {/* Size Selector */}
-          <div className="size-selector">
-            {localLoading ? (
-              <>
-                <p>
-                  <Skeleton width={150} />
-                </p>
-                <div style={{ display: "flex", gap: 10 }}>
-                  {Array(3)
-                    .fill(0)
-                    .map((_, i) => (
-                      <Skeleton key={i} width={60} height={60} />
-                    ))}
-                </div>
-              </>
-            ) : (
-              productDetails?.product_sizes?.length > 0 && (
-                <>
-                  <p className="selected-size-label">
-                    CHOOSE A SIZE:
-                    {selectedSize && <strong>{selectedSize.size}</strong>}
-                  </p>
+      <p className="id_tracker">
+        {localLoading ? <Skeleton width={100} /> : `SKU: ${selectedSize?.sku}`}
+      </p>
 
-                  <div className="size-options">
-                    {productDetails.product_sizes.map((size) => (
-                      <div
-                        key={size.id}
-                        className={`size-btn ${
-                          selectedSize?.id === size.id ? "active-size" : ""
-                        }`}
-                        onClick={() => {
-                          setSelectedSize(size);
-                          sizeSelection(size);
-                        }}
-                      >
-                        <div className="set_btn_trcak">
-                          <img
-                            src="https://i.ibb.co/x86bSjV6/Frame-7.png"
-                            className="size-image"
-                            alt={size.size}
-                          />
-                        </div>
-                        <div className="lbl-track">{size.size}</div>
-                      </div>
-                    ))}
+      {/* Size Selector */}
+      <div className="size-selector">
+        {localLoading ? (
+          <>
+            <p>
+              <Skeleton width={150} />
+            </p>
+            <div style={{ display: "flex", gap: 10 }}>
+              {Array(3)
+                .fill(0)
+                .map((_, i) => (
+                  <Skeleton key={i} width={60} height={60} />
+                ))}
+            </div>
+          </>
+        ) : productDetails?.product_sizes?.length > 0 ? (
+          <>
+            <p className="selected-size-label">
+              CHOOSE A SIZE:
+              {selectedSize && <strong>{selectedSize.size}</strong>}
+            </p>
+            <div className="size-options">
+              {productDetails.product_sizes.map((size) => (
+                <div
+                  key={size.id}
+                  className={`size-btn ${
+                    selectedSize?.id === size.id ? "active-size" : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedSize(size);
+                    sizeSelection(size);
+                  }}
+                >
+                  <div className="set_btn_trcak">
+                    <img
+                      src="https://i.ibb.co/x86bSjV6/Frame-7.png"
+                      className="size-image"
+                      alt={size.size}
+                    />
                   </div>
-                </>
-              )
-            )}
-          </div>
-
-          <div className="color-selector">
-            {loading ? (
-              <div style={{ display: "flex", gap: "10px" }}>
-                {Array(5)
-                  .fill(0)
-                  .map((_, idx) => (
-                    <Skeleton key={idx} square height={30} width={30} />
-                  ))}
-              </div>
-            ) : (
-              <>
-                <div>
-                  <p>CHOOSE A COLOR:{selectedColor?.color}</p>
+                  <div className="lbl-track">{size.size}</div>
                 </div>
-                <div className="color-options">
-                  {selectedSize?.product_colors?.map((color, idx) => (
-                    <div
-                      className={`selected-color ${
-                        selectedColor?.id === color.id ? "active-size" : ""
-                      }`}
-                      key={idx}
-                      onClick={() => {
-                        setSelectedColor(color);
-                        selectionColor(color);
-                      }}
-                    >
-                      <div className="color-circle">
-                        <img
-                          src={color.color_media}
-                          alt={color.color}
-                          height={60}
-                          width={60}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <Skeleton count={2} />
+        )}
+      </div>
 
-          {/* Quantity Selector */}
-          <div className="quantity-selector">
-            <p>QUANTITY</p>
-            <div className="qty-control">
+      {/* Color Selector */}
+      <div className="color-selector">
+        {loading ? (
+          <div style={{ display: "flex", gap: "10px" }}>
+            {Array(5)
+              .fill(0)
+              .map((_, idx) => (
+                <Skeleton key={idx} square height={30} width={30} />
+              ))}
+          </div>
+        ) : selectedSize?.product_colors?.length > 0 ? (
+          <>
+            <div>
+              <p>CHOOSE A COLOR:{selectedColor?.color}</p>
+            </div>
+            <div className="color-options">
+              {selectedSize?.product_colors?.map((color, idx) => (
+                <div
+                  className={`selected-color ${
+                    selectedColor?.id === color.id ? "active-size" : ""
+                  }`}
+                  key={idx}
+                  onClick={() => {
+                    setSelectedColor(color);
+                    selectionColor(color);
+                  }}
+                >
+                  <div className="color-circle">
+                    <img
+                      src={color.color_media}
+                      alt={color.color}
+                      height={60}
+                      width={60}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <Skeleton count={2} />
+        )}
+      </div>
+
+      {/* Quantity Selector */}
+      <div className="quantity-selector">
+        <p>{localLoading ? <Skeleton width={100} /> : "QUANTITY"}</p>
+        <div className="qty-control">
+          {localLoading ? (
+            <Skeleton width={100} height={40} />
+          ) : (
+            <>
               <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
                 −
               </button>
               <span className="order_track_count">{quantity}</span>
               <button onClick={() => setQuantity((q) => q + 1)}>+</button>
-            </div>
-          </div>
+            </>
+          )}
+        </div>
+      </div>
 
-          {/* Pincode Check */}
-          <div className="pincode-check">
-            <p className="check-heading">CHECK AVAILABILITY</p>
+      {/* Pincode Check */}
+      <div className="pincode-check">
+        <p className="check-heading">
+          {localLoading ? <Skeleton width={180} /> : "CHECK AVAILABILITY"}
+        </p>
+        {localLoading ? (
+          <>
+            <Skeleton height={40} width={250} />
+            <Skeleton width={200} />
+          </>
+        ) : (
+          <>
             <div className="input-wrapper">
               <input
                 className="checkup_track_txt"
@@ -675,16 +689,13 @@ const ProductDetailPage = () => {
                   Available PAN India. We deliver wherever you call home.
                 </p>
               </div>
-
               <div>
                 <span className="avl_3">
-                  {" "}
                   Shipping Charges calculated at checkout.
                 </span>
               </div>
             </div>
 
-            {/* Show pincode info */}
             {pinloading && <p className="check_test">Checking...</p>}
             {pinerror && (
               <p style={{ color: "red", marginTop: "15px" }}>
@@ -697,10 +708,19 @@ const ProductDetailPage = () => {
                 {pincodeDetails?.state} ({pincodeDetails?.delivery_tat})
               </p>
             )}
-          </div>
+          </>
+        )}
+      </div>
 
-          {/* Cart & Wishlist */}
-          <div className="add-cart-section">
+      {/* Cart & Wishlist */}
+      <div className="add-cart-section">
+        {localLoading ? (
+          <>
+            <Skeleton width={150} height={40} />
+            <Skeleton circle width={40} height={40} />
+          </>
+        ) : (
+          <>
             <button className="add-to-cart-btn" onClick={handleAddToCart}>
               ADD TO CART
             </button>
@@ -723,10 +743,18 @@ const ProductDetailPage = () => {
                 />
               )}
             </div>
-          </div>
+          </>
+        )}
+      </div>
 
-          {/* Return Info */}
-          <div className="root_return_details">
+      {/* Return Info */}
+      <div className="root_return_details">
+        {localLoading ? (
+          <>
+            <Skeleton height={30} width={250} count={3} />
+          </>
+        ) : (
+          <>
             <div className="details_flx">
               <div>
                 <img
@@ -758,23 +786,21 @@ const ProductDetailPage = () => {
             <p className="txt-Carpet-Finder">
               Not sure which carpet fits your space? Try our{" "}
               <span onClick={handlefinder} className="txt_crp">
-                Carpet Finder
+                Floor Matcher
               </span>
             </p>
-          </div>
+          </>
+        )}
+      </div>
 
-          {/* Description */}
-          <div className="product-description">
-            <h3 className="txt-des">PRODUCT DESCRIPTION</h3>
-            <p>
-              {loading ? (
-                <Skeleton count={3} />
-              ) : (
-                data?.product_info?.description
-              )}
-            </p>
-          </div>
-        </div>
+      {/* Description */}
+      <div className="product-description">
+        <h3 className="txt-des">
+          {loading ? <Skeleton width={180} /> : "PRODUCT DESCRIPTION"}
+        </h3>
+        <p>{loading ? <Skeleton count={3} /> : data?.product_info?.description}</p>
+      </div>
+    </div>
       </div>
 
       {productDetails?.sub_category_action_url === "carpet" ? (
@@ -1115,7 +1141,7 @@ const ProductDetailPage = () => {
 
               return (
                 <div
-                  className="product-card-dtl"
+                  className="product-card-dtl pointer-crusser"
                   key={item.id}
                   onClick={() => handleSimilarProductClick(item.action_url)}
                 >
@@ -1160,7 +1186,7 @@ const ProductDetailPage = () => {
                       )}
                     </button>
                   </div>
-                  <p className="product-title">{item.name}</p>
+                  <p className="product-title pointer-crusser">{item.name}</p>
                   <div className="product-price">
                     <span>₹{item.selling_price}</span>
                     {item.mrp && item.mrp !== item.selling_price && (
@@ -1185,7 +1211,7 @@ const ProductDetailPage = () => {
             {Array(5)
               .fill(0)
               .map((_, idx) => (
-                <div className="product-card-dtl" key={idx}>
+                <div className="product-card-dtl pointer-crusser" key={idx}>
                   <Skeleton height={200} />
                   <Skeleton height={20} width={150} style={{ marginTop: 10 }} />
                   <Skeleton height={20} width={100} />

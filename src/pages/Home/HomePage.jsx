@@ -31,13 +31,6 @@ import shopThumb5 from "../../assets/images/shopthump.png";
 import shopThumb6 from "../../assets/images/shopthump.png";
 import Tableimage from "../../assets/images/Kitchen1.png";
 
-//image for floorsection
-import FloorDesign1 from "../../assets/images/FloorDesign1.png";
-import FloorDesign2 from "../../assets/images/FloorDesign2.png";
-import FloorDesign3 from "../../assets/images/FloorDesign3.png";
-import FloorDesign4 from "../../assets/images/FloorDesign4.png";
-import FloorDesign5 from "../../assets/images/FloorDesign5.png";
-import FloorDesign6 from "../../assets/images/FloorDesign6.png";
 // video section
 import videoimage from "../../assets/images/videoimage.png";
 import { Search } from "lucide-react";
@@ -63,15 +56,10 @@ const shopByItems = [
     url: "/sale",
   },
 ];
+ 
 
-const floatingImages = [
-  { id: 1, src: FloorDesign1, className: "imgf1" },
-  { id: 2, src: FloorDesign2, className: "imgf2" },
-  { id: 3, src: FloorDesign3, className: "imgf3" },
-  { id: 4, src: FloorDesign4, className: "imgf4" },
-  { id: 5, src: FloorDesign5, className: "imgf5" },
-  { id: 6, src: FloorDesign6, className: "imgf6" },
-];
+
+
 
 const HomePage = () => {
   const token = localStorage.getItem("token");
@@ -98,6 +86,7 @@ const HomePage = () => {
   const { results = [], loading, error } = searchState;
   // console.log("🔥fffffff::::::::", results);
   // Pick random hero set whenever HomePage mounts
+  console.log("data_set--->", data )
 
   useEffect(() => {
     if (!query.trim()) {
@@ -313,6 +302,22 @@ const HomePage = () => {
     }, 300);
   };
 
+  const FloorDesign1 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[0]?.media || "";
+  const FloorDesign2 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[1]?.media || "";
+  const FloorDesign3 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[2]?.media || "";
+  const FloorDesign4 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[3]?.media || "";
+  const FloorDesign5 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[4]?.media || "";
+  const FloorDesign6 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[5]?.media || "";
+  console.log("tracker_image",FloorDesign1 )
+  const floatingImages = [
+    { id: 1, src: FloorDesign1, className: "imgf1" },
+    { id: 2, src: FloorDesign2, className: "imgf2" },
+    { id: 3, src: FloorDesign3, className: "imgf3" },
+    { id: 4, src: FloorDesign4, className: "imgf4" },
+    { id: 5, src: FloorDesign5, className: "imgf5" },
+    { id: 6, src: FloorDesign6, className: "imgf6" },
+  ];
+
   return (
     <>
       <div className="spacer_track"></div>
@@ -419,6 +424,13 @@ const HomePage = () => {
               onChange={(e) => setQuery(e.target.value)}
               onFocus={handleFocus}
               value={query}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && query.trim()) {
+                  navigate("/searchlist", {
+                    state: { query: query },
+                  });
+                }
+              }}
             />
             {loading && (
               <div className="sarchlader">
@@ -476,7 +488,7 @@ const HomePage = () => {
         {isSearchActive && (
           <div
             className="search-overlay"
-            onClick={() => setIsSearchActive(false)}
+            onClick={() => {setIsSearchActive(false); setQuery("");}}
           />
         )}
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendOtp, verifyOtp, registerUser } from "../auth/authSlice";
 import Footer from "../../components/Footer/Footer";
@@ -18,6 +18,19 @@ const LoginPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const mobileRef = useRef(null);
+  const otpRef = useRef(null);
+
+  useEffect(() => {
+    // Autofocus handling for each step
+    if (step === 1 && mobileRef.current) {
+      mobileRef.current.focus();
+    } else if (step === 2 && otpRef.current) {
+      otpRef.current.focus();
+    }
+  }, [step]);
 
   useEffect(() => {
     if (step === 2 && timer > 0) {
@@ -27,12 +40,13 @@ const LoginPage = () => {
   }, [step, timer]);
 
   const isValidMobile = (number) => /^[0-9]{10}$/.test(number.trim());
+  const isValidEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const handleSendOtp = () => {
     if (!localMobile.trim()) {
       return alert("Please enter phone number.");
     }
-
     if (!isValidMobile(localMobile)) {
       return alert("Mobile number must be exactly 10 digits.");
     }
@@ -51,9 +65,16 @@ const LoginPage = () => {
   };
 
   const handleRegister = () => {
-    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
-      return alert("Please fill in all registration fields.");
-    }
+    const newErrors = {};
+
+    if (!firstName.trim()) newErrors.firstName = "First name is required.";
+    if (!lastName.trim()) newErrors.lastName = "Last name is required.";
+    if (!email.trim()) newErrors.email = "Email is required.";
+    else if (!isValidEmail(email)) newErrors.email = "Enter a valid email.";
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) return;
 
     dispatch(
       registerUser({
@@ -87,7 +108,6 @@ const LoginPage = () => {
     dispatch(verifyOtp({ otp: otp.trim(), otp_requested_id, temp_id })).then(
       (res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          // alert("Login successful!");
           toast.success("Login successful!", {
             style: {
               border: "1px solid #713200",
@@ -102,12 +122,10 @@ const LoginPage = () => {
             closeButton: true,
             icon: true,
           });
-          // navigate(-1); // go back to previous page
           setTimeout(() => {
             navigate(-1);
-          }, 2000); // wait 1s before redirect
+          }, 2000);
         } else if (res.meta.requestStatus === "rejected") {
-          // Get API error message
           const message =
             res.message ||
             res.error?.data?.message ||
@@ -132,24 +150,33 @@ const LoginPage = () => {
     );
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      if (step === 1) handleSendOtp();
+      else if (step === 2) handleVerifyOtp();
+      else if (step === 3) handleRegister();
+    }
+  };
+
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="login-container">
-        <div className="login-box">
+        <div className="login-box" onKeyDown={handleKeyDown}>
           {step === 1 && (
             <>
               <div className="title_track">
                 <h2>Sign In</h2>
               </div>
               <input
+                ref={mobileRef}
                 type="text"
                 className="phone_number"
                 placeholder="Phone Number"
                 inputMode="numeric"
                 value={localMobile}
-                onChange={
-                  (e) => setLocalMobile(e.target.value.replace(/\D/g, "")) // only digits allowed
+                onChange={(e) =>
+                  setLocalMobile(e.target.value.replace(/\D/g, ""))
                 }
                 maxLength={10}
               />
@@ -157,9 +184,8 @@ const LoginPage = () => {
                 {loading ? "Sending..." : "CONTINUE"}
               </button>
               <p className="terms">
-                By continuing, you agree to Obsessions{" "}
-                <a href="#">Terms of Service</a> and{" "}
-                <a href="#">Privacy Policy</a>
+              <a href="/tc-of-sale">Terms of Service</a> and{" "}
+                <a href="/privacy-policy">Privacy Policy</a>
               </p>
             </>
           )}
@@ -176,9 +202,11 @@ const LoginPage = () => {
                 </a>
               </p>
               <input
+                ref={otpRef}
                 type="text"
                 placeholder="Verification Code"
                 value={otp}
+                max={6}
                 onChange={(e) => setOtp(e.target.value)}
               />
               <button className="btn-dark" onClick={handleVerifyOtp}>
@@ -208,29 +236,32 @@ const LoginPage = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
               />
+              {errors.firstName && (
+                <p className="error-text">{errors.firstName}</p>
+              )}
+
               <input
                 type="text"
                 placeholder="Last Name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
+              {errors.lastName && (
+                <p className="error-text">{errors.lastName}</p>
+              )}
+
               <input
                 type="email"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              {errors.email && <p className="error-text">{errors.email}</p>}
+
               <input type="text" disabled value={mobile || localMobile} />
               <button className="btn-dark" onClick={handleRegister}>
                 CONTINUE
               </button>
-              <div className="skip">
-                <p>
-                  <a href="#" onClick={() => setStep(1)}>
-                    Not now
-                  </a>
-                </p>
-              </div>
             </>
           )}
         </div>

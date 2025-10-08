@@ -265,7 +265,7 @@ const CheckoutPage = () => {
                 />
               </div>
               <div className="item-details">
-                <h4 className="item-title">{item.product.name}</h4>
+                <h4 className="item-title" onClick={() => navigate("/productsdetails", { state: { product: item.product?.action_url } })}>{item.product.name}</h4>
                 <p className="price_details">
                   ₹{item.product.selling_price}{" "}
                   {item.mrp && item.mrp !== item.selling_price && (
@@ -281,12 +281,12 @@ const CheckoutPage = () => {
                   </span> */}
                 </p>
                 <p className="item-size">
-                  Size: <u>{item.product.size}</u>
+                  Size: {item.product.size}
                 </p>
                 <p>
                   Color:{" "}
                   <span className={`color-${item.product.color.toLowerCase()}`}>
-                    <u>{item.product.color}</u>
+                    {item.product.color}
                   </span>
                 </p>
                 <p className="item-qtn">

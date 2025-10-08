@@ -64,7 +64,7 @@ const PaymentCheck = () => {
                 </div>
               </div>
               <h2 className="text-xl font-semibold text-gray-700">
-                Please wait while we securely process your Order!
+                Your Transaction is being process please don’t press “Back” or “refresh”.
               </h2>
             </>
           ) : (
@@ -75,7 +75,7 @@ const PaymentCheck = () => {
         </div>
       </div>
       {/* Fotter section  */}
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

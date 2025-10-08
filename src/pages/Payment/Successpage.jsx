@@ -19,6 +19,16 @@ const Successpage = () => {
     dispatch(fetchAddOns());
   }, [dispatch]);
 
+  const redirectProduct = (action_url) => {
+    const parts = action_url.replace(/^\/+/, "").split("/");
+
+    const categorySlug = parts[0];      // "bath Care"
+    const subcategorySlug = parts[1];   // "bath Set"
+
+    // Navigate with state
+    navigate("/products", { state: { category: categorySlug, subcategory: subcategorySlug } });
+  }
+
   return (
     <>
       <div className="success-container">
@@ -35,7 +45,17 @@ const Successpage = () => {
         {/* ✅ Estimated Arrival */}
         <div className="arrival-box">
           <h3 className="arrival-title">Estimated arrival</h3>
-          <p className="arrival-date">---</p>
+          <p className="arrival-date">--</p>
+          <p className="arrival-id">
+            Order PLACED : <span>{new Date(verifyResponse?.data?.created_at).toLocaleDateString(
+              "en-GB",
+              {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              }
+            )}</span>
+          </p>
           <p className="arrival-id">
             Order ID : <span>{verifyResponse?.data?.order_no}</span>
           </p>
@@ -78,13 +98,14 @@ const Successpage = () => {
         <h2 className="top-picks-heading">Perfect Add-ons for Your Order</h2>
         <div className="top-picks-grid">
           {addOns?.map((item) => (
-            <div key={item.id} className="top-pick-card">
+            <div key={item.id} className="top-pick-card pointer-crusser">
               <img
                 src={item.media}
                 alt={item.name}
                 className="top-pick-image"
+                onClick={() => redirectProduct(item.action_url)}
               />
-              <p className="top-pick-title">{item.name}</p>
+              <p className="top-pick-title" onClick={() => redirectProduct(item.action_url)}>{item.name}</p>
             </div>
           ))}
         </div>

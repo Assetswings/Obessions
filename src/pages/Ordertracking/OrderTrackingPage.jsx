@@ -22,12 +22,12 @@ const OrderTrackingPage = () => {
   const order = results[0]; // ✅ take first order safely
   const trackingUpdates = [
     { label: "Order Placed", time: null, status: "done", type: "major" },
-    {
-      label: "Preparing Your Order",
-      time: null,
-      status: "done",
-      type: "major",
-    },
+    // {
+    //   label: "Preparing Your Order",
+    //   time: null,
+    //   status: "done",
+    //   type: "major",
+    // },
   ];
   useEffect(() => {
     if (order_no) {
@@ -95,7 +95,7 @@ const OrderTrackingPage = () => {
       <div className="order-tracking-container">
         <div className="order-left">
           <h2>Order Details</h2>
-          <p className="delivered-msg">Order was delivered on 06th May 2025</p>
+          <p className="delivered-msg">Order was delivered on --</p>
 
           <div className="order-info">
             <p>
@@ -118,7 +118,8 @@ const OrderTrackingPage = () => {
               <img src={item.product_media} alt={item.product_name} />
               <div className="product-details">
                 <p>{item.product_name}</p>
-                <p>Color :--</p>
+                <p>Color : {item.color}</p>
+                <p>Size : {item.size}</p>
                 <p>₹{item.mrp}</p>
                 <p>Quantity : {item.quantity}</p>
                 <div className="actions">

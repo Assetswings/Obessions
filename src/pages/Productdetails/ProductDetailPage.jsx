@@ -764,14 +764,14 @@ const ProductDetailPage = () => {
                 />
                 <span className="txt-sub-info-pdp">Free Shipping</span>
               </div>
-              <div>
+              {/* <div>
                 <img
                   src="https://i.ibb.co/SDsg21mX/Frame-2763.png"
                   className="img-ruppee"
                   alt="Prepaid only"
                 />
                 <span className="txt-sub-info-pdp">Prepaid orders only</span>
-              </div>
+              </div> */}
             </div>
             <div className="txt-exchange">
               <img
@@ -780,7 +780,7 @@ const ProductDetailPage = () => {
                 alt="Returns"
               />
               <span className="txt-sub-info-pdp">
-                5 days return and exchange available
+                {productDetails?.return_exchange_days}
               </span>
             </div>
             <p className="txt-Carpet-Finder">
@@ -1224,7 +1224,7 @@ const ProductDetailPage = () => {
               const isWishlisted = item.is_wishlisted;
               return (
                 <div
-                  className="product-card-dtl"
+                  className="product-card-dtl pointer-crusser"
                   key={item.id}
                   onClick={() => handleSimilarProductClick(item.action_url)}
                 >

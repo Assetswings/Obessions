@@ -39,18 +39,18 @@ const CartPage = () => {
           ? error
           : error.error || error.error || "Something went wrong";
 
-      toast.error(msg, {
-        style: {
-          background: "#1f1f1f",
-          color: "#fff",
-          borderRadius: "0px",
-          padding: "12px 16px",
-          fontSize: "14px",
-        },
-        hideProgressBar: true,
-        closeButton: true,
-        icon: true,
-      });
+      // toast.error(msg, {
+      //   style: {
+      //     background: "#1f1f1f",
+      //     color: "#fff",
+      //     borderRadius: "0px",
+      //     padding: "12px 16px",
+      //     fontSize: "14px",
+      //   },
+      //   hideProgressBar: true,
+      //   closeButton: true,
+      //   icon: true,
+      // });
 
       lastErrorRef.current = error;
     }
@@ -131,7 +131,7 @@ const CartPage = () => {
                 className="empty-cart-btn"
                 onClick={() => navigate("/")} // ✅ send user back to home/shop
               >
-                EXPLORE &nbsp; <img src={rightarrawwhite} height={25} width={25}/>
+                EXPLORE &nbsp; <img src={rightarrawwhite} height={25} width={25} />
               </button>
             </div>
           ) : (
@@ -139,30 +139,36 @@ const CartPage = () => {
               <div className="cart-item" key={item.id}>
                 <div className="item-image">
                   <img
-                    className="img-cart-page"
+                    className="img-cart-page pointer-crusser"
                     src={item.product?.media}
                     alt={item.product?.name || "product"}
+                    onClick={() => navigate("/productsdetails", { state: { product: item.product?.action_url } })}
                   />
                 </div>
 
                 <div className="item-details">
-                  <h4 className="item-title">{item.product?.name}</h4>
+                  <h4 className="item-title pointer-crusser"
+                    onClick={() => navigate("/productsdetails", { state: { product: item.product?.action_url } })}>{item.product?.name}</h4>
                   <span className="price_details_cart">
                     ₹{item.product?.selling_price}
-                    <span className="sub-1">
-                      <del>₹{item.product?.mrp}</del> &nbsp;
-                      <span className="dis-sub">
-                        (-{item.product?.discount}%)
-                      </span>
-                    </span>
+                    {item.product?.mrp && item.product?.mrp !== item.product?.selling_price && (
+                      <>
+                        <span className="sub-1">
+                          <del>₹{item.product?.mrp}</del> &nbsp;
+                          <span className="dis-sub">
+                            (-{item.product?.discount}%)
+                          </span>
+                        </span>
+                      </>
+                    )}
                   </span>
-                  <p>
+                  <p style={{ textTransform: "capitalize" }}>
                     {" "}
-                    size : <span><u>{item.product?.size}</u></span>{" "}
+                    size : <span>{item.product?.size}</span>{" "}
                   </p>
-                  <p>
+                  <p style={{ textTransform: "capitalize" }}>
                     {" "}
-                    color : <span><u>{item.product?.color}</u></span>{" "}
+                    color : <span>{item.product?.color}</span>{" "}
                   </p>
 
                   <div className="root_qtn_cart">
@@ -245,24 +251,24 @@ const CartPage = () => {
           <div className="cart-right sticky-summary">
             <div className="summary">
               <div className="summary-row total">
-                <span>ORDER TOTAL</span>
+                <span>Sub Total</span>
                 <span>₹{total}</span>
               </div>
 
               <p className="terms-text">
                 Before proceed further you can review{" "}
-                <a href="#" className="tc_1">
+                <a href="/tc-of-sale" className="tc_1">
                   Terms & Conditions of Sale
                 </a>{" "}
                 and{" "}
-                <a href="#" className="tc_2">
+                <a href="/privacy-policy" className="tc_2">
                   Privacy Policy
                 </a>
               </p>
               <button onClick={handleCheckout} className="checkout">
                 CHECKOUT
               </button>
-              <button className="continue_shoping" onClick={()=>navigate("/")}>CONTINUE SHOPPING</button>
+              <button className="continue_shoping" onClick={() => navigate("/")}>CONTINUE SHOPPING</button>
             </div>
           </div>
         )}

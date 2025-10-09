@@ -259,13 +259,14 @@ const CheckoutPage = () => {
             <div className="cart-item" key={item.id}>
               <div className="item-image">
                 <img
-                  className="img-cart-page"
+                  className="img-cart-page pointer-crusser"
                   src={item.product.media}
                   alt="product"
+                  onClick={() => navigate("/productsdetails", { state: { product: item.product?.action_url } })}
                 />
               </div>
               <div className="item-details">
-                <h4 className="item-title" onClick={() => navigate("/productsdetails", { state: { product: item.product?.action_url } })}>{item.product.name}</h4>
+                <h4 className="item-title pointer-crusser" onClick={() => navigate("/productsdetails", { state: { product: item.product?.action_url } })}>{item.product.name}</h4>
                 <p className="price_details">
                   ₹{item.product.selling_price}{" "}
                   {item.mrp && item.mrp !== item.selling_price && (
@@ -328,7 +329,7 @@ const CheckoutPage = () => {
               </div>
               <div className="trackvel">
                 <div className="txt_title_cal">
-                  ORDER TOTAL
+                  Sub Total
                 </div>
                 <div>
                   ₹{checkoutData?.data?.order_total}

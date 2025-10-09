@@ -16,7 +16,7 @@
 /* ---------- LEFT + RIGHT SECTIONS ---------- */
 .cart-left {
   flex: 2 1;
-  border-right: 1px solid #d7dbdd;
+  /* border-right: 1px solid #d7dbdd; */
   padding-right: 20px;
 }
 

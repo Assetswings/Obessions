@@ -240,10 +240,10 @@ const ProductDetailPage = () => {
             product_sizes: prev?.product_sizes?.map((p) =>
               p.id === product.id
                 ? {
-                    ...p,
-                    is_wishlisted: 0,
-                    wishlist: [],
-                  }
+                  ...p,
+                  is_wishlisted: 0,
+                  wishlist: [],
+                }
                 : p
             ),
           }));
@@ -271,10 +271,10 @@ const ProductDetailPage = () => {
         setSelectedSize((prev) =>
           prev.id === product.id
             ? {
-                ...prev,
-                is_wishlisted: 1,
-                wishlist: [{ wishlist_id: wishlist.id }],
-              }
+              ...prev,
+              is_wishlisted: 1,
+              wishlist: [{ wishlist_id: wishlist.id }],
+            }
             : prev
         );
         setProductsDetails((prev) => ({
@@ -282,10 +282,10 @@ const ProductDetailPage = () => {
           product_sizes: prev?.product_sizes?.map((p) =>
             p.id === product.id
               ? {
-                  ...p,
-                  is_wishlisted: 1,
-                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
-                }
+                ...p,
+                is_wishlisted: 1,
+                wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+              }
               : p
           ),
         }));
@@ -373,10 +373,10 @@ const ProductDetailPage = () => {
             prev.map((p) =>
               p.id === product.id
                 ? {
-                    ...p,
-                    is_wishlisted: true,
-                    wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
-                  }
+                  ...p,
+                  is_wishlisted: true,
+                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+                }
                 : p
             )
           );
@@ -385,10 +385,10 @@ const ProductDetailPage = () => {
             prev.map((p) =>
               p.id === product.id
                 ? {
-                    ...p,
-                    is_wishlisted: true,
-                    wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
-                  }
+                  ...p,
+                  is_wishlisted: true,
+                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+                }
                 : p
             )
           );
@@ -427,7 +427,7 @@ const ProductDetailPage = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={3000} style={{zIndex:9999999999999}} />
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">
@@ -472,7 +472,7 @@ const ProductDetailPage = () => {
                 />
               </div>
             ) : (
-              <img        
+              <img
                 src={selectedImage}
                 alt="Main Product"
                 className="main-image"
@@ -489,282 +489,287 @@ const ProductDetailPage = () => {
           <div className="thumbnail-row">
             {localLoading
               ? Array(4)
-                  .fill(0)
-                  .map((_, index) => (
-                    <Skeleton
-                      key={index}
-                      height={70}
-                      width={70}
-                      style={{ marginRight: 10 }}
-                    />
-                  ))
-              : selectedColor?.product_media?.map((img, index) => (
-                  <img
+                .fill(0)
+                .map((_, index) => (
+                  <Skeleton
                     key={index}
-                    src={img.media}
-                    alt={`Thumbnail ${index + 1}`}
-                    className={`thumbnail ${
-                      selectedImage === img.media ? "selected-thumb" : ""
-                    }`}
-                    onClick={() => setSelectedImage(img.media)}
+                    height={70}
+                    width={70}
+                    style={{ marginRight: 10 }}
                   />
-                ))}
+                ))
+              : selectedColor?.product_media?.map((img, index) => (
+                <img
+                  key={index}
+                  src={img.media}
+                  alt={`Thumbnail ${index + 1}`}
+                  className={`thumbnail ${selectedImage === img.media ? "selected-thumb" : ""
+                    }`}
+                  onClick={() => setSelectedImage(img.media)}
+                />
+              ))}
           </div>
         </div>
 
         {/* Product Info */}
         <div className="product-info">
-      <h1 className="title_details">
-        {localLoading ? <Skeleton width={200} /> : selectedSize?.name}
-      </h1>
+          <h1 className="title_details">
+            {localLoading ? <Skeleton width={200} /> : selectedSize?.name}
+          </h1>
 
-      <p className="price_details">
-        {localLoading ? (
-          <Skeleton width={120} />
-        ) : (
-          <>
-            ₹{currentPrice}{" "}
-            {selectedSize?.mrp && (
-              <span className="sub-1">
-                <del>₹{selectedSize?.mrp}</del> &nbsp;
-                <span className="dis-sub">
-                  {selectedSize?.discount}% OFF
-                </span>{" "}
-                (Inclusive of all taxes)
-              </span>
+          <p className="price_details">
+            {localLoading ? (
+              <Skeleton width={120} />
+            ) : (
+              <>
+                ₹{currentPrice}{" "}
+                {selectedSize?.mrp && (
+                  <span className="sub-1">
+                    <del>₹{selectedSize?.mrp}</del> &nbsp;
+                    <span className="dis-sub">
+                      {selectedSize?.discount}% OFF
+                    </span>{" "}
+                    (Inclusive of all taxes)
+                  </span>
+                )}
+              </>
             )}
-          </>
-        )}
-      </p>
+          </p>
 
-      <p className="id_tracker">
-        {localLoading ? <Skeleton width={100} /> : `SKU: ${selectedSize?.sku}`}
-      </p>
+          <p className="id_tracker">
+            {localLoading ? <Skeleton width={100} /> : `SKU: ${selectedSize?.sku}`}
+          </p>
 
-      {/* Size Selector */}
-      <div className="size-selector">
-        {localLoading ? (
-          <>
-            <p>
-              <Skeleton width={150} />
-            </p>
-            <div style={{ display: "flex", gap: 10 }}>
-              {Array(3)
-                .fill(0)
-                .map((_, i) => (
-                  <Skeleton key={i} width={60} height={60} />
-                ))}
-            </div>
-          </>
-        ) : productDetails?.product_sizes?.length > 0 ? (
-          <>
-            <p className="selected-size-label">
-              CHOOSE A SIZE:
-              {selectedSize && <strong>{selectedSize.size}</strong>}
-            </p>
-            <div className="size-options">
-              {productDetails.product_sizes.map((size) => (
-                <div
-                  key={size.id}
-                  className={`size-btn ${
-                    selectedSize?.id === size.id ? "active-size" : ""
-                  }`}
-                  onClick={() => {
-                    setSelectedSize(size);
-                    sizeSelection(size);
-                  }}
-                >
-                  <div className="set_btn_trcak">
-                    <img
-                      src="https://i.ibb.co/x86bSjV6/Frame-7.png"
-                      className="size-image"
-                      alt={size.size}
-                    />
-                  </div>
-                  <div className="lbl-track">{size.size}</div>
-                </div>
-              ))}
-            </div>
-          </>
-        ) : (
-          <Skeleton count={2} />
-        )}
-      </div>
-
-      {/* Color Selector */}
-      <div className="color-selector">
-        {loading ? (
-          <div style={{ display: "flex", gap: "10px" }}>
-            {Array(5)
-              .fill(0)
-              .map((_, idx) => (
-                <Skeleton key={idx} square height={30} width={30} />
-              ))}
-          </div>
-        ) : selectedSize?.product_colors?.length > 0 ? (
-          <>
-            <div>
-              <p>CHOOSE A COLOR:{selectedColor?.color}</p>
-            </div>
-            <div className="color-options">
-              {selectedSize?.product_colors?.map((color, idx) => (
-                <div
-                  className={`selected-color ${
-                    selectedColor?.id === color.id ? "active-size" : ""
-                  }`}
-                  key={idx}
-                  onClick={() => {
-                    setSelectedColor(color);
-                    selectionColor(color);
-                  }}
-                >
-                  <div className="color-circle">
-                    <img
-                      src={color.color_media}
-                      alt={color.color}
-                      height={60}
-                      width={60}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </>
-        ) : (
-          <Skeleton count={2} />
-        )}
-      </div>
-
-      {/* Quantity Selector */}
-      <div className="quantity-selector">
-        <p>{localLoading ? <Skeleton width={100} /> : "QUANTITY"}</p>
-        <div className="qty-control">
-          {localLoading ? (
-            <Skeleton width={100} height={40} />
-          ) : (
-            <>
-              <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
-                −
-              </button>
-              <span className="order_track_count">{quantity}</span>
-              <button onClick={() => setQuantity((q) => q + 1)}>+</button>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Pincode Check */}
-      <div className="pincode-check">
-        <p className="check-heading">
-          {localLoading ? <Skeleton width={180} /> : "CHECK AVAILABILITY"}
-        </p>
-        {localLoading ? (
-          <>
-            <Skeleton height={40} width={250} />
-            <Skeleton width={200} />
-          </>
-        ) : (
-          <>
-            <div className="input-wrapper">
-              <input
-                className="checkup_track_txt"
-                type="text"
-                placeholder="Enter Delivery Pincode"
-                value={pincode}
-                onChange={(e) => setPincode(e.target.value)}
-              />
-
-              <button onClick={handleReset} className="rest-btn">
-                Reset
-              </button>
-
-              <button onClick={handleCheck} className="check-btn-2">
-                Check
-              </button>
-            </div>
-
-            <div className="root_avl">
-              <div>
-                <p className="avl_trck">
-                  Available PAN India. We deliver wherever you call home.
+          {/* Size Selector */}
+          <div className="size-selector">
+            {localLoading ? (
+              <>
+                <p>
+                  <Skeleton width={150} />
                 </p>
-              </div>
-              <div>
-                <span className="avl_3">
-                  Shipping Charges calculated at checkout.
-                </span>
-              </div>
-            </div>
-
-            {pinloading && <p className="check_test">Checking...</p>}
-            {pinerror && (
-              <p style={{ color: "red", marginTop: "15px" }}>
-                Not serviceable for your area
-              </p>
+                <div style={{ display: "flex", gap: 10 }}>
+                  {Array(3)
+                    .fill(0)
+                    .map((_, i) => (
+                      <Skeleton key={i} width={60} height={60} />
+                    ))}
+                </div>
+              </>
+            ) : productDetails?.product_sizes?.length > 0 ? (
+              <>
+                <p className="selected-size-label">
+                  CHOOSE A SIZE:
+                  {selectedSize && <strong>{selectedSize.size}</strong>}
+                </p>
+                <div className="size-options">
+                  {productDetails.product_sizes.map((size) => (
+                    <div
+                      key={size.id}
+                      className={`size-btn ${selectedSize?.id === size.id ? "active-size" : ""
+                        }`}
+                      onClick={() => {
+                        setSelectedSize(size);
+                        sizeSelection(size);
+                        setQuantity(1);
+                      }}
+                    >
+                      <div className="set_btn_trcak">
+                        <img
+                          src="https://i.ibb.co/x86bSjV6/Frame-7.png"
+                          className="size-image"
+                          alt={size.size}
+                        />
+                      </div>
+                      <div className="lbl-track">{size.size}</div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <Skeleton count={2} />
             )}
-            {pincodeDetails?.pincode && pincodeDetails?.is_active && (
-              <p style={{ color: "green", marginTop: "15px" }}>
-                ✅ Delivery available at {pincodeDetails?.city},{" "}
-                {pincodeDetails?.state} ({pincodeDetails?.delivery_tat})
-              </p>
-            )}
-          </>
-        )}
-      </div>
+          </div>
 
-      {/* Cart & Wishlist */}
-      <div className="add-cart-section">
-        {localLoading ? (
-          <>
-            <Skeleton width={150} height={40} />
-            <Skeleton circle width={40} height={40} />
-          </>
-        ) : (
-          <>
-            <button className="add-to-cart-btn" onClick={handleAddToCart}>
-              ADD TO CART
-            </button>
-            <div
-              className="wst_box"
-              onClick={(e) => toggleWishlist(e, selectedSize)}
-            >
-              {selectedSize?.is_wishlisted == 1 ? (
-                <Player
-                  autoplay
-                  keepLastFrame
-                  src={heartAnimation}
-                  style={{ width: 102, height: 102 }}
-                />
+          {/* Color Selector */}
+          <div className="color-selector">
+            {loading ? (
+              <div style={{ display: "flex", gap: "10px" }}>
+                {Array(5)
+                  .fill(0)
+                  .map((_, idx) => (
+                    <Skeleton key={idx} square height={30} width={30} />
+                  ))}
+              </div>
+            ) : selectedSize?.product_colors?.length > 0 ? (
+              <>
+                <div>
+                  <p>CHOOSE A COLOR:{selectedColor?.color}</p>
+                </div>
+                <div className="color-options">
+                  {selectedSize?.product_colors?.map((color, idx) => (
+                    <div
+                      className={`selected-color ${selectedColor?.id === color.id ? "active-size" : ""
+                        }`}
+                      key={idx}
+                      onClick={() => {
+                        setSelectedColor(color);
+                        selectionColor(color);
+                        setQuantity(1);
+                      }}
+                    >
+                      <div className="color-circle">
+                        <img
+                          src={color.color_media}
+                          alt={color.color}
+                          height={60}
+                          width={60}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <Skeleton count={2} />
+            )}
+          </div>
+
+          {/* Quantity Selector */}
+          <div className="quantity-selector">
+            <p>{localLoading ? <Skeleton width={100} /> : "QUANTITY"}</p>
+            <div className="qty-control">
+              {localLoading ? (
+                <Skeleton width={100} height={40} />
               ) : (
-                <Heart
-                  size={27}
-                  color={selectedSize?.is_wishlisted ? "#FF0000" : "#000"}
-                  fill={selectedSize?.is_wishlisted ? "#FF0000" : "none"}
-                />
+                <>
+                  <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
+                    −
+                  </button>
+                  <span className="order_track_count">{quantity}</span>
+                  <button onClick={() => setQuantity((q) => q + 1)}>+</button>
+                </>
               )}
             </div>
-          </>
-        )}
-      </div>
+          </div>
 
-      {/* Return Info */}
-      <div className="root_return_details">
-        {localLoading ? (
-          <>
-            <Skeleton height={30} width={250} count={3} />
-          </>
-        ) : (
-          <>
-            <div className="details_flx">
-              <div>
-                <img
-                  src="https://i.ibb.co/twnnXYxQ/truck.png"
-                  className="img-truck"
-                  alt="Free Shipping"
-                />
-                <span className="txt-sub-info-pdp">Free Shipping</span>
-              </div>
-              {/* <div>
+          {/* Pincode Check */}
+          <div className="pincode-check">
+            <p className="check-heading">
+              {localLoading ? <Skeleton width={180} /> : "CHECK AVAILABILITY"}
+            </p>
+            {localLoading ? (
+              <>
+                <Skeleton height={40} width={250} />
+                <Skeleton width={200} />
+              </>
+            ) : (
+              <>
+                <div className="input-wrapper">
+                  <input
+                    className="checkup_track_txt"
+                    type="text"
+                    placeholder="Enter Delivery Pincode"
+                    value={pincode}
+                    onChange={(e) => setPincode(e.target.value)}
+                  />
+
+                  {pincode ? (
+                    <button onClick={handleReset} className="rest-btn">
+                      Reset
+                    </button>
+                  ) : (
+                    <button className="rest-btn" style={{ visibility: 'hidden' }}>
+                      Reset
+                    </button>
+                  )}
+
+                  <button onClick={handleCheck} className="check-btn-2">
+                    Check
+                  </button>
+                </div>
+
+                <div className="root_avl">
+                  <div>
+                    <p className="avl_trck">
+                      Available PAN India. We deliver wherever you call home.
+                    </p>
+                  </div>
+                  <div>
+                    <span className="avl_3">
+                      Shipping Charges calculated at checkout.
+                    </span>
+                  </div>
+                </div>
+
+                {pinloading && <p className="check_test">Checking...</p>}
+                {pinerror && (
+                  <p style={{ color: "red", marginTop: "15px" }}>
+                    Not serviceable for your area
+                  </p>
+                )}
+                {pincodeDetails?.pincode && pincodeDetails?.is_active && (
+                  <p style={{ color: "green", marginTop: "15px" }}>
+                    ✅ Delivery available at {pincodeDetails?.city},{" "}
+                    {pincodeDetails?.state} ({pincodeDetails?.delivery_tat})
+                  </p>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Cart & Wishlist */}
+          <div className="add-cart-section">
+            {localLoading ? (
+              <>
+                <Skeleton width={150} height={40} />
+                <Skeleton circle width={40} height={40} />
+              </>
+            ) : (
+              <>
+                <button className="add-to-cart-btn" onClick={handleAddToCart}>
+                  ADD TO CART
+                </button>
+                <div
+                  className="wst_box"
+                  onClick={(e) => toggleWishlist(e, selectedSize)}
+                >
+                  {selectedSize?.is_wishlisted == 1 ? (
+                    <Player
+                      autoplay
+                      keepLastFrame
+                      src={heartAnimation}
+                      style={{ width: 102, height: 102 }}
+                    />
+                  ) : (
+                    <Heart
+                      size={27}
+                      color={selectedSize?.is_wishlisted ? "#FF0000" : "#000"}
+                      fill={selectedSize?.is_wishlisted ? "#FF0000" : "none"}
+                    />
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Return Info */}
+          <div className="root_return_details">
+            {localLoading ? (
+              <>
+                <Skeleton height={30} width={250} count={3} />
+              </>
+            ) : (
+              <>
+                <div className="details_flx">
+                  <div>
+                    <img
+                      src="https://i.ibb.co/twnnXYxQ/truck.png"
+                      className="img-truck"
+                      alt="Free Shipping"
+                    />
+                    <span className="txt-sub-info-pdp">Free Shipping</span>
+                  </div>
+                  {/* <div>
                 <img
                   src="https://i.ibb.co/SDsg21mX/Frame-2763.png"
                   className="img-ruppee"
@@ -772,35 +777,35 @@ const ProductDetailPage = () => {
                 />
                 <span className="txt-sub-info-pdp">Prepaid orders only</span>
               </div> */}
-            </div>
-            <div className="txt-exchange">
-              <img
-                src="https://i.ibb.co/PsNnXB2G/package.png"
-                className="img-exchange"
-                alt="Returns"
-              />
-              <span className="txt-sub-info-pdp">
-                {productDetails?.return_exchange_days}
-              </span>
-            </div>
-            <p className="txt-Carpet-Finder">
-              Not sure which carpet fits your space? Try our{" "}
-              <span onClick={handlefinder} className="txt_crp">
-                Floor Matcher
-              </span>
-            </p>
-          </>
-        )}
-      </div>
+                </div>
+                <div className="txt-exchange">
+                  <img
+                    src="https://i.ibb.co/PsNnXB2G/package.png"
+                    className="img-exchange"
+                    alt="Returns"
+                  />
+                  <span className="txt-sub-info-pdp">
+                    {productDetails?.return_exchange_days}
+                  </span>
+                </div>
+                <p className="txt-Carpet-Finder">
+                  Not sure which carpet fits your space? Try our{" "}
+                  <span onClick={handlefinder} className="txt_crp">
+                    Floor Matcher
+                  </span>
+                </p>
+              </>
+            )}
+          </div>
 
-      {/* Description */}
-      <div className="product-description">
-        <h3 className="txt-des">
-          {loading ? <Skeleton width={180} /> : "PRODUCT DESCRIPTION"}
-        </h3>
-        <p>{loading ? <Skeleton count={3} /> : data?.product_info?.description}</p>
-      </div>
-    </div>
+          {/* Description */}
+          <div className="product-description">
+            <h3 className="txt-des">
+              {loading ? <Skeleton width={180} /> : "PRODUCT DESCRIPTION"}
+            </h3>
+            <p>{loading ? <Skeleton count={3} /> : data?.product_info?.description}</p>
+          </div>
+        </div>
       </div>
 
       {productDetails?.sub_category_action_url === "carpet" ? (

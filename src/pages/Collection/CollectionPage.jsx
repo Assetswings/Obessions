@@ -20,9 +20,19 @@ const CollectionPage = () => {
     }
   }, [dispatch, slug]);
 
-  const handleCategoryClick = (categorySlug,subcategoryslug) => {
-    navigate("/products", { state: { category: categorySlug, subcategory:subcategoryslug } });
+  const handleCategoryClick = (categorySlug, subcategoryslug) => {
+    navigate("/products", { state: { category: categorySlug, subcategory: subcategoryslug } });
   };
+
+  const redirectProduct = (action_url) => {
+    const parts = action_url.replace(/^\/+/, "").split("/");
+
+    const categorySlug = parts[0];      // "bath Care"
+    const subcategorySlug = parts[1];   // "bath Set"
+
+    // Navigate with state
+    navigate("/products", { state: { category: categorySlug, subcategory: subcategorySlug } });
+  }
 
   const toggleShowMore = (catIdx) => {
     setExpandedCats((prev) => ({
@@ -51,7 +61,7 @@ const CollectionPage = () => {
               <div
                 key={idx}
                 className="category-group pointer-crusser"
-                onClick={() => handleCategoryClick(cat.action_url,null)}
+                onClick={() => handleCategoryClick(cat.action_url, null)}
               >
                 <h4>{cat.name}</h4>
                 <ul>
@@ -60,7 +70,7 @@ const CollectionPage = () => {
                       key={item.id || i}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleCategoryClick(cat.action_url,item.action_url);
+                        handleCategoryClick(cat.action_url, item.action_url);
                       }}
                     >
                       {item.name}
@@ -111,7 +121,7 @@ const CollectionPage = () => {
         </aside> */}
         <main className="products-grid">
           {collections?.collections?.map((product, index) => (
-            <div className="product-card pointer-crusser" key={index} onClick={() => handleCategoryClick(product.action_url)}>
+            <div className="product-card pointer-crusser" key={index} onClick={() => redirectProduct(product.action_url)}>
               <img src={product.uploaded_media} alt={product.name} />
               <p>{product.name}</p>
             </div>

@@ -416,22 +416,28 @@ const HomePage = () => {
           }`}
         >
           <div className="d-flex">
-            <input
-              ref={inputRef}
-              type="text"
-              className="form-control border-0 rounded-5 input_home"
-              placeholder="WHAT ARE YOU LOOKING FOR?"
-              onChange={(e) => setQuery(e.target.value)}
-              onFocus={handleFocus}
-              value={query}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && query.trim()) {
-                  navigate("/searchlist", {
-                    state: { query: query },
-                  });
-                }
-              }}
-            />
+          <input
+  ref={inputRef}
+  type="text"
+  className="form-control border-0 input_home"
+  placeholder="WHAT ARE YOU LOOKING FOR?"
+  value={query}
+  onFocus={handleFocus}
+  onChange={(e) => {
+    // Allow only letters, numbers, and spaces (no special characters)
+    let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
+
+    // Remove leading spaces
+    value = value.replace(/^\s+/, "");
+
+    setQuery(value);
+  }}
+  onKeyDown={(e) => {
+    if (e.key === "Enter" && query.trim()) {
+      navigate("/searchlist", { state: { query } });
+    }
+  }}
+/>
             {loading && (
               <div className="sarchlader">
                 <div
@@ -444,7 +450,7 @@ const HomePage = () => {
               </div>
             )}
             <button
-              className="btn btn-dark rounded-5 button_search"
+              className="btn btn-dark button_search"
               disabled={!query?.trim()}
               onClick={() =>
                 navigate("/searchlist", {

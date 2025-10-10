@@ -450,6 +450,66 @@
   .obsession-section-pd {
     display: none;
   }
+  .sortby-btn {
+    display: none;
+   
+  }
+}
+
+ .sortby-btn{
+  font-size: 15px;
+  color: red;
+cursor: pointer;
+ }
+/* .txt_sort{
+  font-size: 10px;
+} */
+ .sortby-container {
+  position: relative;
+  display: inline-block;
+  display:flex ;
+  justify-content: flex-end;
+  width: 98%;
+}
+
+.sortby-btn {
+  background: transparent;
+  border: none;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 8px;
+ 
+}
+
+.selected-text {
+  color: #000;
+  margin-left: 5px;
+}
+
+.dropdown-menu {
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  min-width: 200px;
+  padding: 6px 0;
+}
+
+.dropdown-item {
+  font-size: 14px;
+  padding: 8px 16px;
+  color: #333;
+  background: #fff;
+}
+
+.dropdown-item:hover {
+  background: #f5f5f5;
+}
+
+.active-option {
+  background: #f2f2f2;
+  font-weight: 600;
 }
 
 /* customer favourite  */

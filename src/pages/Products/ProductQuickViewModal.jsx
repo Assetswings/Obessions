@@ -365,7 +365,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
     <>
       <ToastContainer
         position="top-right"
-        style={{ zIndex: 99999 }}
+       style={{zIndex:9999999999999}} 
         autoClose={3000}
       />
       <div className="quickview-modal-overlay" onClick={handleOutsideClick}>

@@ -149,7 +149,7 @@ const OtherTopnav = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
       <nav className="other-topnav">
 
         <div
@@ -254,7 +254,7 @@ const OtherTopnav = () => {
               <input
                 ref={inputRef}
                 type="text"
-                className="form-control border-0 rounded-5 input_global"
+                className="form-control border-0 input_global"
                 placeholder="WHAT ARE YOU LOOKING FOR?"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -272,7 +272,7 @@ const OtherTopnav = () => {
                 </div>
               )}
               <button
-                className="btn btn-dark rounded-5 button_search"
+                className="btn btn-dark  button_search"
                 disabled={!query?.trim()}
                 onClick={() => {
                   claersearch();

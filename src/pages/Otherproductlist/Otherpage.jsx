@@ -250,7 +250,7 @@ const Otherpage = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
       <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">{slug ? formatTitle(slug) : ""}</h2>

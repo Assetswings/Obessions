@@ -40,6 +40,7 @@ const ProductsPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false); // NEW: mobile filter modal state
   const [tempMobileFilters, setTempMobileFilters] = useState({});
   const [expandedGroups, setExpandedGroups] = useState({});
+  const [selected, setSelected] = useState("Recommended");
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
   const { data, filters, loading } = useSelector((state) => state.products);
@@ -352,9 +353,23 @@ const ProductsPage = () => {
       document.body.style.overflow = "auto";
     }
   }, [isFilterOpen]);
+
+  const options = [
+    "Recommended",
+    "What's New",
+    "Popularity",
+    "Better Discount",
+    "Price: High to Low",
+    "Price: Low to High",
+  ];
+
+  const handleSelect = (option) => {
+    setSelected(option);
+  };
+
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" style={{zIndex:9999999999999}}  autoClose={3000} />
       {/* MOBILE FILTER BUTTON */}
       <div className="custom-products-page">
         <aside className="custom-filters">
@@ -445,6 +460,33 @@ const ProductsPage = () => {
               Filters
             </button>
           </div>
+
+           <div className="sortby-container">
+           <div className="dropdown">
+        <div
+          className="dropdown-toggle sortby-btn"
+          id="dropdownMenuButton"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          SORT BY
+        </div>
+        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {options.map((option) => (
+            <li key={option}>
+              <button
+                className={`dropdown-item ${
+                  selected === option ? "active-option" : ""
+                }`}
+                onClick={() => handleSelect(option)}
+              >
+                {option}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
           <div className="custom-products-grid">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (

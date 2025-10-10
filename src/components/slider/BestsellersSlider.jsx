@@ -140,7 +140,7 @@ const BestsellersSlider = ({ onQuickView }) => {
       </div>
 
       <div className="bestseller-container">
-        <ToastContainer position="top-right" autoClose={3000} />
+        <ToastContainer  style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
         <div className="bestseller-slider">
           {/* Left Scrolling Card */}
           <div className="slider-strip">

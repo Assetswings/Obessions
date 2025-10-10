@@ -103,7 +103,7 @@ const CartPage = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
       <div className="root-title-chk">
         <span className="title_chk">My Cart ({items?.length})</span>
       </div>

@@ -138,7 +138,7 @@ const CarpetFinder = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
       <div className="finder-wrapper">
         <div className="finder-main">
           <h2 className="finder-title">{steps[currentStep]?.title}</h2>

@@ -86,7 +86,7 @@ const TopAnnouncementBar = () => {
 
   return (
     <>
-    <ToastContainer position="top-right" autoClose={3000} />
+    <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
       <div className="top-announcement-bar">
         <div className="scrolling-text">
           <Marquee pauseOnHover gradient={false} speed={60}>

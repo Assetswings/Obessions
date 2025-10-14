@@ -5,7 +5,7 @@ import "./ProductDetailPage.css";
 import { Heart } from "lucide-react";
 import Footer from "../../components/Footer/Footer";
 import { fetchProductDetail, clearProductDetail } from "./productDetailSlice";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { addToCart } from "../cart/cartSlice";
@@ -431,7 +431,7 @@ const ProductDetailPage = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} style={{zIndex:9999999999999}} />
+      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">
@@ -721,39 +721,39 @@ const ProductDetailPage = () => {
             )}
           </div>
 
-      {/* Cart & Wishlist */}
-      <div className="add-cart-section">
-        {localLoading ? (
-          <>
-            <Skeleton width={150} height={40} />
-          </>
-        ) : (
-          <>
-            <button className="add-to-cart-btn" onClick={handleAddToCart}>
-              ADD TO CART
-            </button>
-            <div
-              className="wst_box"
-              onClick={(e) => toggleWishlist(e, selectedSize)}
-            >
-              {selectedSize?.is_wishlisted == 1 ? (
-                <Player
-                  autoplay
-                  keepLastFrame
-                  src={heartAnimation}
-                  style={{ width: 102, height: 102 }}
-                />
-              ) : (
-                <Heart
-                  size={27}
-                  color={selectedSize?.is_wishlisted ? "#FF0000" : "#000"}
-                  fill={selectedSize?.is_wishlisted ? "#FF0000" : "none"}
-                />
-              )}
-            </div>
-          </>
-        )}
-      </div>
+          {/* Cart & Wishlist */}
+          <div className="add-cart-section">
+            {localLoading ? (
+              <>
+                <Skeleton width={150} height={40} />
+              </>
+            ) : (
+              <>
+                <button className="add-to-cart-btn" onClick={handleAddToCart}>
+                  ADD TO CART
+                </button>
+                <div
+                  className="wst_box"
+                  onClick={(e) => toggleWishlist(e, selectedSize)}
+                >
+                  {selectedSize?.is_wishlisted == 1 ? (
+                    <Player
+                      autoplay
+                      keepLastFrame
+                      src={heartAnimation}
+                      style={{ width: 102, height: 102 }}
+                    />
+                  ) : (
+                    <Heart
+                      size={27}
+                      color={selectedSize?.is_wishlisted ? "#FF0000" : "#000"}
+                      fill={selectedSize?.is_wishlisted ? "#FF0000" : "none"}
+                    />
+                  )}
+                </div>
+              </>
+            )}
+          </div>
 
           {/* Return Info */}
           <div className="root_return_details">
@@ -801,123 +801,123 @@ const ProductDetailPage = () => {
             )}
           </div>
 
-  {/* Description */}
-  <div className="pdp-accordion">
-  <div
-    className="pdp-accordion-header"
-    onClick={() => setShowDesc((prev) => !prev)}
-  >
-    <h3>
-      {localLoading ? <Skeleton width={180} /> : "PRODUCT DESCRIPTION"}
-    </h3>
-    {!localLoading && <span>{showDesc ? "−" : "+"}</span>}
-  </div>
+          {/* Description */}
+          <div className="pdp-accordion">
+            <div
+              className="pdp-accordion-header"
+              onClick={() => setShowDesc((prev) => !prev)}
+            >
+              <h3>
+                {localLoading ? <Skeleton width={180} /> : "PRODUCT DESCRIPTION"}
+              </h3>
+              {!localLoading && <span>{showDesc ? "−" : "+"}</span>}
+            </div>
 
-  {!localLoading && showDesc && (
-    <div className="pdp-accordion-content">
-      <p className="pdp-care-text">{data?.product_info?.description}</p>
-    </div>
-  )}
+            {!localLoading && showDesc && (
+              <div className="pdp-accordion-content">
+                <p className="pdp-care-text">{data?.product_info?.description}</p>
+              </div>
+            )}
 
-  {localLoading && (
-    <div className="pdp-accordion-content">
-      <Skeleton count={3} />
-    </div>
-  )}
-</div>
-
-         {/* SPECIFICATIONS */}
-     <div className="pdp-accordion">
-        <div className="pdp-accordion-header" onClick={() => setShowSpecs(!showSpecs)}>
-          <h3>SPECIFICATIONS</h3>
-          <span>{showSpecs ? "−" : "+"}</span>
-        </div>
-
-        {showSpecs && (
-          <div className="pdp-accordion-content">
-            <table className="pdp-specs-table">
-              <tbody>
-                <tr>
-                  <td>Product Type</td>
-                  <td>Step Bin</td>
-                </tr>
-                <tr>
-                  <td>Box Content</td>
-                  <td>1 Step Bin with Liner</td>
-                </tr>
-                <tr>
-                  <td>Capacity</td>
-                  <td>12 Litre</td>
-                </tr>
-                <tr>
-                  <td>Liner</td>
-                  <td>1</td>
-                </tr>
-                <tr>
-                  <td>Material</td>
-                  <td>Stainless Steel</td>
-                </tr>
-                <tr>
-                  <td>Size in Inch</td>
-                  <td>NA</td>
-                </tr>
-                <tr>
-                  <td>Features</td>
-                  <td>
-                    Soft square unique shape. Bi-force damper soft close. Stay open lid.
-                    Fingerprint resistant. Durable cantilever foot-operated pedal mechanism.
-                    Plastic bag stabilizer.
-                  </td>
-                </tr>
-                <tr>
-                  <td>Ideal For</td>
-                  <td>Home, Office, Kitchen, Restaurant, Commercial Places, Hospital</td>
-                </tr>
-                <tr>
-                  <td>Approx. Weight (In Kg)</td>
-                  <td>2.75</td>
-                </tr>
-                <tr>
-                  <td>Origin</td>
-                  <td>China</td>
-                </tr>
-                <tr>
-                  <td>Warranty</td>
-                  <td>NA</td>
-                </tr>
-              </tbody>
-            </table>
+            {localLoading && (
+              <div className="pdp-accordion-content">
+                <Skeleton count={3} />
+              </div>
+            )}
           </div>
-        )}
-    
-      {/* CARE INSTRUCTIONS */}
-      <div className="pdp-accordion">
-        <div className="pdp-accordion-header" onClick={() => setShowCare(!showCare)}>
-          <h3>CARE INSTRUCTIONS</h3>
-          <span>{showCare ? "−" : "+"}</span>
-        </div>
 
-        {showCare && (
-          <div className="pdp-accordion-content">
-            <p className="pdp-care-text">
-              Transform your space with our luxurious Chamois Carpet, made from 100% premium
-              Acrylic fibers. Designed for both elegance and resilience, this high-quality
-              carpet offers the perfect balance of sophistication and durability, making it an
-              ideal choice for any living room, office, or hallway. Whether you’re looking to
-              enhance your home or workplace, our Chamois Carpet brings timeless style and
-              lasting comfort to any room.
-            </p>
+          {/* SPECIFICATIONS */}
+          <div className="pdp-accordion">
+            <div className="pdp-accordion-header" onClick={() => setShowSpecs(!showSpecs)}>
+              <h3>SPECIFICATIONS</h3>
+              <span>{showSpecs ? "−" : "+"}</span>
+            </div>
+
+            {showSpecs && (
+              <div className="pdp-accordion-content">
+                <table className="pdp-specs-table">
+                  <tbody>
+                    <tr>
+                      <td>Product Type</td>
+                      <td>Step Bin</td>
+                    </tr>
+                    <tr>
+                      <td>Box Content</td>
+                      <td>1 Step Bin with Liner</td>
+                    </tr>
+                    <tr>
+                      <td>Capacity</td>
+                      <td>12 Litre</td>
+                    </tr>
+                    <tr>
+                      <td>Liner</td>
+                      <td>1</td>
+                    </tr>
+                    <tr>
+                      <td>Material</td>
+                      <td>Stainless Steel</td>
+                    </tr>
+                    <tr>
+                      <td>Size in Inch</td>
+                      <td>NA</td>
+                    </tr>
+                    <tr>
+                      <td>Features</td>
+                      <td>
+                        Soft square unique shape. Bi-force damper soft close. Stay open lid.
+                        Fingerprint resistant. Durable cantilever foot-operated pedal mechanism.
+                        Plastic bag stabilizer.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Ideal For</td>
+                      <td>Home, Office, Kitchen, Restaurant, Commercial Places, Hospital</td>
+                    </tr>
+                    <tr>
+                      <td>Approx. Weight (In Kg)</td>
+                      <td>2.75</td>
+                    </tr>
+                    <tr>
+                      <td>Origin</td>
+                      <td>China</td>
+                    </tr>
+                    <tr>
+                      <td>Warranty</td>
+                      <td>NA</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* CARE INSTRUCTIONS */}
+            <div className="pdp-accordion">
+              <div className="pdp-accordion-header" onClick={() => setShowCare(!showCare)}>
+                <h3>CARE INSTRUCTIONS</h3>
+                <span>{showCare ? "−" : "+"}</span>
+              </div>
+
+              {showCare && (
+                <div className="pdp-accordion-content">
+                  <p className="pdp-care-text">
+                    Transform your space with our luxurious Chamois Carpet, made from 100% premium
+                    Acrylic fibers. Designed for both elegance and resilience, this high-quality
+                    carpet offers the perfect balance of sophistication and durability, making it an
+                    ideal choice for any living room, office, or hallway. Whether you’re looking to
+                    enhance your home or workplace, our Chamois Carpet brings timeless style and
+                    lasting comfort to any room.
+                  </p>
+                </div>
+              )}
+            </div>
+
           </div>
-        )}
+
+        </div>
       </div>
 
-    </div>
 
-    </div>
-      </div>
 
-     
-   
       {productDetails?.sub_category_action_url === "carpet" ? (
         <>
           <div className="product-tabs-container">
@@ -1258,10 +1258,15 @@ const ProductDetailPage = () => {
                 <div
                   className="product-card-dtl pointer-crusser"
                   key={item.id}
-                  onClick={() => handleSimilarProductClick(item.action_url)}
                 >
                   <div className="product-img-box">
-                    <img src={item?.media_list?.main?.file} alt={item.name} />
+                    <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                      <img
+                        src={item.media_list?.main?.file}
+                        alt={item.name}
+                        title={item.name}
+                      />
+                    </Link>
                     <button
                       className="wishlist-btn_products"
                       onClick={(e) =>
@@ -1301,16 +1306,20 @@ const ProductDetailPage = () => {
                       )}
                     </button>
                   </div>
-                  <p className="product-title pointer-crusser">{item.name}</p>
-                  <div className="product-price">
-                    <span>₹{item.selling_price}</span>
-                    {item.mrp && item.mrp !== item.selling_price && (
-                      <>
-                        <span className="original">₹{item.mrp}</span>
-                        <span className="discount">({item.discount}% OFF)</span>
-                      </>
-                    )}
-                  </div>
+                  <p className="product-title pointer-crusser">
+                    <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
+                  </p>
+                  <Link to={`/productsdetails/${item.action_url}`}>
+                    <div className="product-price">
+                      <span>₹{item.selling_price}</span>
+                      {item.mrp && item.mrp !== item.selling_price && (
+                        <>
+                          <span className="original">₹{item.mrp}</span>
+                          <span className="discount">({item.discount_percent}% OFF)</span>
+                        </>
+                      )}
+                    </div>
+                  </Link>
                 </div>
               );
             })}
@@ -1341,10 +1350,15 @@ const ProductDetailPage = () => {
                 <div
                   className="product-card-dtl pointer-crusser"
                   key={item.id}
-                  onClick={() => handleSimilarProductClick(item.action_url)}
                 >
                   <div className="product-img-box">
-                    <img src={item?.media_list?.main?.file} alt={item.name} />
+                    <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                      <img
+                        src={item.media_list?.main?.file}
+                        alt={item.name}
+                        title={item.name}
+                      />
+                    </Link>
                     <button
                       className="wishlist-btn_products"
                       onClick={(e) =>
@@ -1385,16 +1399,20 @@ const ProductDetailPage = () => {
                     </button>
                   </div>
 
-                  <p className="product-title">{item.name}</p>
-                  <div className="product-price">
-                    <span>₹{item.selling_price}</span>
-                    {item.mrp && item.mrp !== item.selling_price && (
-                      <>
-                        <span className="original">₹{item.mrp}</span>
-                        <span className="discount">({item.discount}% OFF)</span>
-                      </>
-                    )}
-                  </div>
+                  <p className="product-title">
+                    <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
+                  </p>
+                  <Link to={`/productsdetails/${item.action_url}`}>
+                    <div className="product-price">
+                      <span>₹{item.selling_price}</span>
+                      {item.mrp && item.mrp !== item.selling_price && (
+                        <>
+                          <span className="original">₹{item.mrp}</span>
+                          <span className="discount">({item.discount_percent}% OFF)</span>
+                        </>
+                      )}
+                    </div>
+                  </Link>
                 </div>
               );
             })}

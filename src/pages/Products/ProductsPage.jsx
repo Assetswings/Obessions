@@ -514,17 +514,6 @@ const ProductsPage = () => {
                   <div
                     key={item.index}
                     className="custom-product-card"
-                    onClick={(e) => {
-                      const isQuickView = e.target.closest(".qucick_dv");
-                      const isWishlist = e.target.closest(
-                        ".wishlist-btn_products"
-                      );
-                      if (!isQuickView && !isWishlist) {
-                        navigate("/productsdetails", {
-                          state: { product: item.action_url },
-                        });
-                      }
-                    }}
                     style={{ cursor: "pointer" }}
                   >
                     <div className="custom-product-image">
@@ -535,10 +524,6 @@ const ProductsPage = () => {
                           title={item.name}
                         />
                       </Link>
-                      <img
-                        src={item.media_list?.main?.file}
-                        alt={item.name}
-                      />
                       {/* wishliat_track */}
                       <button
                         className="wishlist-btn_products"

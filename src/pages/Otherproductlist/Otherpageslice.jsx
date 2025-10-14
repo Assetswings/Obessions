@@ -56,7 +56,7 @@ const otherproductSlice = createSlice({
       .addCase(fetchOtherProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload.products || [];
-        state.filters = action.payload.filters.product_filter || {};
+        state.filters = action.payload.filters || {};
       })
       .addCase(fetchOtherProducts.rejected, (state, action) => {
         state.loading = false;

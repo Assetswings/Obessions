@@ -3,7 +3,7 @@ import "./ProductsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "./productsSlice";
 import { Expand, Heart, SlidersHorizontal, X } from "lucide-react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProductQuickViewModal from "./ProductQuickViewModal";
@@ -340,17 +340,6 @@ const ProductsPage = () => {
       return { ...prev, [filterKey]: updated };
     });
   };
-
-  const handleProductClick = (slug) => {
-    if (slug) {
-      navigate("/products", {
-        state: {
-          category: slug,
-        },
-      });
-    }
-    window.scrollTo({ top: 0, behavior: "auto" });
-  };
   useEffect(() => {
     if (isFilterOpen) {
       document.body.style.overflow = "hidden";
@@ -539,11 +528,17 @@ const ProductsPage = () => {
                     style={{ cursor: "pointer" }}
                   >
                     <div className="custom-product-image">
+                      <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                        <img
+                          src={item.media_list?.main?.file}
+                          alt={item.name}
+                          title={item.name}
+                        />
+                      </Link>
                       <img
                         src={item.media_list?.main?.file}
                         alt={item.name}
                       />
-
                       {/* wishliat_track */}
                       <button
                         className="wishlist-btn_products"
@@ -615,16 +610,20 @@ const ProductsPage = () => {
                         )}
                       </p> */}
 
-                    <p className="product-title">{item.name}</p>
-                    <div className="product-price">
-                      <span>₹{item.selling_price}</span>
-                      {item.mrp && item.mrp !== item.selling_price && (
-                        <>
-                          <span className="original">₹{item.mrp}</span>
-                          <span className="discount">({item.discount_percent}% OFF)</span>
-                        </>
-                      )}
-                    </div>
+                    <p className="product-title">
+                      <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
+                    </p>
+                    <Link to={`/productsdetails/${item.action_url}`}>
+                      <div className="product-price">
+                        <span>₹{item.selling_price}</span>
+                        {item.mrp && item.mrp !== item.selling_price && (
+                          <>
+                            <span className="original">₹{item.mrp}</span>
+                            <span className="discount">({item.discount_percent}% OFF)</span>
+                          </>
+                        )}
+                      </div>
+                    </Link>
                   </div>
                 );
               })}
@@ -648,18 +647,18 @@ const ProductsPage = () => {
         <div className="top-picks-grid">
           {items.map((item) => (
             <div key={item.id} className="top-pick-card">
-              <img
-                src={item.media}
-                alt={item.name}
-                className="top-pick-image pointer-crusser"
-                onClick={() => handleProductClick(item.action_url)}
-              />
-              <p
-                className="top-pick-title pointer-crusser"
-                onClick={() => handleProductClick(item.action_url)}
-              >
-                {item.name}
-              </p>
+              <Link to={`/products${item.action_url}`}>
+                <img
+                  src={item.media}
+                  alt={item.name}
+                  className="top-pick-image pointer-crusser"
+                />
+                <p
+                  className="top-pick-title pointer-crusser"
+                >
+                  {item.name}
+                </p>
+              </Link>
             </div>
           ))}
         </div>

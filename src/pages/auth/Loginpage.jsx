@@ -24,6 +24,7 @@ const LoginPage = () => {
   const otpRef = useRef(null);
 
   useEffect(() => {
+     document.title = `Obsession - Sign In`;
     // Autofocus handling for each step
     if (step === 1 && mobileRef.current) {
       mobileRef.current.focus();

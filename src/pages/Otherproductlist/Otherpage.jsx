@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../Products/ProductsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOtherProducts } from "./Otherpageslice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProductQuickViewModal from "../Products/ProductQuickViewModal";
@@ -60,6 +60,8 @@ const Otherpage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false); // NEW: mobile filter modal state
   const [expandedGroups, setExpandedGroups] = useState({});
   const [tempMobileFilters, setTempMobileFilters] = useState({});
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
 
   useEffect(() => {
     document.title = `Obsession - ${Titelslug}`;
@@ -206,7 +208,7 @@ const Otherpage = () => {
 
   const renderFilterGroup = (title, options, key, isMobile = false) => {
     const isExpanded = expandedGroups[key] || false;
-    const visibleOptions = isExpanded ? options : options.slice(0, 5);
+    const visibleOptions = isExpanded ? options : options?.slice(0, 5);
     const hiddenCount = options.length - visibleOptions.length;
 
     const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
@@ -225,7 +227,7 @@ const Otherpage = () => {
               checked={currentFilters[key]?.includes(opt) || false}
               onChange={() => onChangeHandler(key, opt)}
             />
-            <span className="txt_checkbox">{opt}</span>
+            <span className="txt_checkbox">{opt.trim()}</span>
           </label>
         ))}
 
@@ -247,15 +249,116 @@ const Otherpage = () => {
     );
   };
 
-  const handleProductClick = (slug) => {
-    if (slug) {
-      navigate("/products", {
-        state: {
-          category: slug,
-        },
-      });
+  // Render category filters (with subcategories)
+  const renderCategoryFilter = (categories, isMobile = false) => {
+    const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
+    const onChangeHandler = isMobile
+      ? handleMobileFilterChange
+      : handleFilterChange;
+
+    return (
+      <div className="custom-filter-group" key="categories">
+        <h4>Categories</h4>
+        <label>
+          <input
+            type="checkbox"
+            checked={
+              currentFilters.categories?.includes(categories.name) || false
+            }
+            onChange={() => onChangeHandler("categories", categories.name)}
+          />
+          <span className="txt_checkbox">{categories.name}</span>
+        </label>
+
+        <div className="subcategory-list">
+          {categories.subcategories.map((sub) => (
+            <label key={sub.id}>
+              <input
+                type="checkbox"
+                checked={
+                  currentFilters.subcategories?.includes(sub.name) || false
+                }
+                onChange={() => onChangeHandler("subcategories", sub.name)}
+              />
+              <span className="txt_checkbox">{sub.name}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    if (filters?.price_filter) {
+      setMinPrice(filters.price_filter.min_price);
+      setMaxPrice(filters.price_filter.max_price);
     }
-    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [filters?.price_filter]);
+
+  // Render price range filter
+  const renderPriceFilter = (priceFilter, isMobile = false) => {
+    // setMinPrice(priceFilter.min_price);
+    // setMaxPrice(priceFilter.max_price);
+    const onApplyPrice = () => {
+      const onChangeHandler = isMobile
+        ? handleMobileFilterChange
+        : handleFilterChange;
+      onChangeHandler("price_min", minPrice);
+      onChangeHandler("price_max", maxPrice);
+    };
+
+    return (
+      <div className="custom-filter-group" key="price_filter">
+        <h4>Price</h4>
+        <div className="price-inputs">
+          <input
+            type="number"
+            min={priceFilter.min_price}
+            max={priceFilter.max_price}
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+          />
+          <span> - </span>
+          <input
+            type="number"
+            min={priceFilter.min_price}
+            max={priceFilter.max_price}
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+          />
+          <button onClick={onApplyPrice}>Apply</button>
+        </div>
+      </div>
+    );
+  };
+
+  // Render discount filters
+  const renderDiscountFilter = (discounts, isMobile = false) => {
+    const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
+    const onChangeHandler = isMobile
+      ? handleMobileFilterChange
+      : handleFilterChange;
+
+    return (
+      <div className="custom-filter-group" key="discount_filter">
+        <h4>Discount</h4>
+        {discounts.map((disc, i) => (
+          <label key={i}>
+            <input
+              type="checkbox"
+              checked={
+                currentFilters.discount_filter?.includes(disc.discount_range) ||
+                false
+              }
+              onChange={() => onChangeHandler("discount_filter", disc.discount_range)}
+            />
+            <span className="txt_checkbox">
+              {disc.discount_range}% Off ({disc.total_items})
+            </span>
+          </label>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -272,33 +375,38 @@ const Otherpage = () => {
           </div>
 
           {loading ? (
+            // 🔄 Skeleton loader while fetching data
             <>
               <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
+
               {Array.from({ length: 3 }).map((_, i) => (
                 <div className="custom-filter-group" key={i}>
-                  <Skeleton
-                    height={14}
-                    width={100}
-                    style={{ marginBottom: 10 }}
-                  />
-                  <Skeleton
-                    count={4}
-                    height={16}
-                    width={120}
-                    style={{ marginBottom: 8 }}
-                  />
+                  <Skeleton height={14} width={100} style={{ marginBottom: 10 }} />
+                  <Skeleton count={4} height={16} width={120} style={{ marginBottom: 8 }} />
                 </div>
               ))}
             </>
+          ) : filters && Object.keys(filters).length > 0 ? (
+            // ✅ Render filters when available
+            <>
+              {/* 1️⃣ Category Filter */}
+              {filters.categories && renderCategoryFilter(filters.categories)}
+
+              {/* 2️⃣ Price Filter */}
+              {filters.price_filter && renderPriceFilter(filters.price_filter)}
+
+              {/* 3️⃣ Discount Filter */}
+              {filters.discount_filter && renderDiscountFilter(filters.discount_filter)}
+
+              {/* 4️⃣ Product Filters */}
+              {filters.product_filter &&
+                Object.entries(filters.product_filter).map(([key, values]) =>
+                  renderFilterGroup(key.replace(/_/g, " "), values, key)
+                )}
+            </>
           ) : (
-            filters &&
-            Object.entries(filters).map(([filterKey, values]) =>
-              renderFilterGroup(
-                filterKey?.replace(/_/g, " "),
-                values,
-                filterKey
-              )
-            )
+            // ❌ No filters found
+            <p className="no-filters">No filters available.</p>
           )}
         </aside>
 
@@ -314,34 +422,6 @@ const Otherpage = () => {
               Filters
             </button>
           </div>
-
-          {/* <div className="sortby-container">
-           <div className="dropdown">
-        <div
-          className="dropdown-toggle sortby-btn"
-          id="dropdownMenuButton"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          SORT BY
-        </div>
-        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          {options.map((option) => (
-            <li key={option}>
-              <button
-                className={`dropdown-item ${
-                  selected === option ? "active-option" : ""
-                }`}
-                onClick={() => handleSelect(option)}
-              >
-                {option}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div> */}
-
           <div className="custom-products-grid">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (
@@ -363,25 +443,16 @@ const Otherpage = () => {
                   <div
                     key={item.id}
                     className="custom-product-card"
-                    onClick={(e) => {
-                      const isQuickView = e.target.closest(".qucick_dv");
-                      const isWishlist = e.target.closest(
-                        ".wishlist-btn_products"
-                      );
-                      if (!isQuickView && !isWishlist) {
-                        navigate("/productsdetails", {
-                          state: { product: item.action_url },
-                        });
-                      }
-                    }}
                     style={{ cursor: "pointer" }}
                   >
                     <div className="custom-product-image">
-                      <img
-                        src={item.media_list?.main?.file}
-                        alt={item.name}
-                      />
-
+                      <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                        <img
+                          src={item.media_list?.main?.file}
+                          alt={item.name}
+                          title={item.name}
+                        />
+                      </Link>
                       {/* wishliat_track */}
                       <button
                         className="wishlist-btn_products"
@@ -438,16 +509,20 @@ const Otherpage = () => {
                         </span>
                       </div>
                     </div>
-                    <p className="product-title">{item.name}</p>
-                    <div className="product-price">
-                      <span>₹{item.selling_price}</span>
-                      {item.mrp && item.mrp !== item.selling_price && (
-                        <>
-                          <span className="original">₹{item.mrp}</span>
-                          <span className="discount">({item.discount_percent}% OFF)</span>
-                        </>
-                      )}
-                    </div>
+                    <p className="product-title">
+                      <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
+                    </p>
+                    <Link to={`/productsdetails/${item.action_url}`}>
+                      <div className="product-price">
+                        <span>₹{item.selling_price}</span>
+                        {item.mrp && item.mrp !== item.selling_price && (
+                          <>
+                            <span className="original">₹{item.mrp}</span>
+                            <span className="discount">({item.discount_percent}% OFF)</span>
+                          </>
+                        )}
+                      </div>
+                    </Link>
                   </div>
                 );
               })}
@@ -471,18 +546,18 @@ const Otherpage = () => {
         <div className="top-picks-grid">
           {items.map((item) => (
             <div key={item.id} className="top-pick-card">
-              <img
-                src={item.media}
-                alt={item.name}
-                className="top-pick-image pointer-crusser"
-                onClick={() => handleProductClick(item.action_url)}
-              />
-              <p
-                className="top-pick-title pointer-crusser"
-                onClick={() => handleProductClick(item.action_url)}
-              >
-                {item.name}
-              </p>
+              <Link to={`/products${item.action_url}`}>
+                <img
+                  src={item.media}
+                  alt={item.name}
+                  className="top-pick-image pointer-crusser"
+                />
+                <p
+                  className="top-pick-title pointer-crusser"
+                >
+                  {item.name}
+                </p>
+              </Link>
             </div>
           ))}
         </div>
@@ -501,15 +576,23 @@ const Otherpage = () => {
             </p>
           </div>
 
-          {filters &&
-            Object.entries(filters).map(([filterKey, values]) =>
-              renderFilterGroup(
-                filterKey.replace(/_/g, " "),
-                values,
-                filterKey,
-                true
-              )
-            )}
+          {filters && (
+            <>
+              {filters.categories &&
+                renderCategoryFilter(filters.categories, true)}
+
+              {filters.price_filter &&
+                renderPriceFilter(filters.price_filter, true)}
+
+              {filters.discount_filter &&
+                renderDiscountFilter(filters.discount_filter, true)}
+
+              {filters.product_filter &&
+                Object.entries(filters.product_filter).map(([key, values]) =>
+                  renderFilterGroup(key.replace(/_/g, " "), values, key, true)
+                )}
+            </>
+          )}
         </div>
         {/* ✅ Sticky Footer Apply Button */}
         <div className="mobile-filter-footer">

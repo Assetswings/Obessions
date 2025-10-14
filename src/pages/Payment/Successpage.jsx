@@ -16,6 +16,7 @@ const Successpage = () => {
   const { addOns } = useSelector((state) => state.toppick);
 
   useEffect(() => {
+    document.title = "Obsession - Payment Success";
     dispatch(fetchAddOns());
   }, [dispatch]);
 

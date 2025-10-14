@@ -28,6 +28,7 @@ const OrderHistoryPage = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
+    document.title = "Obsession - Order History";
     dispatch(fetchMoreLike());
   }, [dispatch]);
 

@@ -41,6 +41,7 @@ const Searchlist = () => {
   const { items } = useSelector((state) => state.toppick);
 
   useEffect(() => {
+    document.title = "Obsession - Search Item List";
     dispatch(fetchTopPicks());
   }, [dispatch]);
 

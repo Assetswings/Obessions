@@ -14,6 +14,7 @@ const PaymentCheck = () => {
   const transactionId = searchParams.get("transaction_id");
 
   useEffect(() => {
+    document.title = "Obsession - Payment Check";
     if (orderId && transactionId) {
       fetchPaymentDetails(orderId, transactionId);
     }

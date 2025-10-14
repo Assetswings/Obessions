@@ -16,6 +16,7 @@ const CancelOrder = () => {
   const orderNo = state?.orderNo;
 
   useEffect(() => {
+    document.title = "Obsession - Cancel Order";
     gerReason();
   }, []);
   const gerReason = async () => {

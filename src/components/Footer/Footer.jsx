@@ -5,9 +5,9 @@ import { RiFacebookCircleFill } from "react-icons/ri";
 import { BsYoutube } from "react-icons/bs";
 import { RiInstagramLine } from "react-icons/ri";
 import API from "../../app/api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-  const Footer = () => {
+const Footer = () => {
   const navigate = useNavigate();
   const [footerData, setFooterData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -55,7 +55,7 @@ import { useNavigate } from "react-router-dom";
 
   // 🧭 Navigation Page
   const handleNavigate = (route) => {
-  navigate("/" + route);
+    navigate("/" + route);
   };
 
   const handleCategoryClick = (categorySlug) => {
@@ -65,6 +65,11 @@ import { useNavigate } from "react-router-dom";
 
   const handleSubscribe = async () => {
     if (!email.trim()) {
+      setMessage("Please enter your email address.");
+      return;
+    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
       setMessage("Please enter a valid email address.");
       return;
     }
@@ -141,9 +146,11 @@ import { useNavigate } from "react-router-dom";
         </div>
 
         {message && <p className="response-message">{message}</p>}
-        <p className="sub_text mt-2">
-          By signing up you agree with our <u className="pointer-crusser" onClick={() => handleNavigate('tc-of-sale')}>Terms & Conditions</u>.
-        </p>
+        <Link to={`/tc-of-sale`}>
+          <p className="sub_text mt-2">
+            By signing up you agree with our <u className="pointer-crusser">Terms & Conditions</u>.
+          </p>
+        </Link>
       </div>
 
       {/* Dynamic Footer Links */}
@@ -155,21 +162,19 @@ import { useNavigate } from "react-router-dom";
             {SHOP?.slice(0, 7).map((item, idx) => (
               <li
                 key={idx}
-                onClick={() => handleCategoryClick(item.action_url)}
               >
-                {item.title}
+                <Link to={`/products/${item.action_url}`}>{item.title}</Link>
               </li>
             ))}
           </ul>
         </div>
-        <div><br/>
+        <div><br />
           <ul>
             {SHOP?.slice(7, 15).map((item, idx) => (
               <li
                 key={idx}
-                onClick={() => handleCategoryClick(item.action_url)}
               >
-                {item.title}
+                <Link to={`/products/${item.action_url}`}>{item.title}</Link>
               </li>
             ))}
           </ul>
@@ -180,8 +185,8 @@ import { useNavigate } from "react-router-dom";
           <h4>COMPANY</h4>
           <ul>
             {COMPANY?.map((item, idx) => (
-              <li key={idx} onClick={() => handleNavigate(item.action_url)}>
-                {item.title}
+              <li key={idx} >
+                <Link to={`/${item.action_url}`}>{item.title}</Link>
               </li>
             ))}
           </ul>
@@ -192,8 +197,8 @@ import { useNavigate } from "react-router-dom";
           <h4>RESOURCES</h4>
           <ul>
             {RESOURCES?.map((item, idx) => (
-              <li key={idx} onClick={() => handleNavigate(item.action_url)}>
-                {item.title}
+              <li key={idx}>
+                <Link to={`/${item.action_url}`}>{item.title}</Link>
               </li>
             ))}
           </ul>

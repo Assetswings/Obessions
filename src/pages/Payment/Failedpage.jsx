@@ -1,10 +1,13 @@
 import { XCircle } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 
 const Failedpage = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "Obsession - Payment Failed";
+  })
   return (
     <>
       <div className="success-container">

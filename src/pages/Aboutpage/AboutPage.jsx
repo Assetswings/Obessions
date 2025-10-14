@@ -11,6 +11,7 @@ const AboutPage = () => {
   const { data } = useSelector((state) => state.about);
   console.log(data,'about us data');
   useEffect(() => {
+    document.title = "Obsession - About Us";
     dispatch(fetchAboutUs());
   }, [dispatch]);
   return (

@@ -24,6 +24,7 @@ export default function Privacypolicy() {
   };
 
   useEffect(() => {
+    document.title = "Obsession - Privacy Policy";
     handlePrivacy();
   }, []);
 

@@ -60,6 +60,7 @@ const ProfilePage = () => {
 
   // ✅ Step 2: Save tab when user changes it
   useEffect(() => {
+    document.title = "Obsession - Profile";
     localStorage.setItem("activeTab", activeTab);
   }, [activeTab]);
 

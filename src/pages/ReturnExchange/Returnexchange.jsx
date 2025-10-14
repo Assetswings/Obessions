@@ -17,6 +17,7 @@ const ReturnExchange = () => {
   const orderNo = state?.orderNo;
 
   useEffect(() => {
+    document.title = "Obsession - Return / Exchange";
     getReason("return");
   }, []);
   const getReason = async (option) => {

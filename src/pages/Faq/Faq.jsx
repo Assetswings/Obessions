@@ -15,6 +15,7 @@ const Faq = () => {
   const dispatch = useDispatch();
   const { faqs, loading, error } = useSelector((state) => state.faq);
   useEffect(() => {
+    document.title = "Obsession - FAQ";
     dispatch(fetchFaqs()); 
     getBaner();
   }, [dispatch]);

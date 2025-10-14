@@ -25,6 +25,7 @@ export default function TermsAndConditions() {
   };
 
   useEffect(() => {
+    document.title = "Obsession - Terms & Condition of Sale";
     handleTerms();
   }, []);
 

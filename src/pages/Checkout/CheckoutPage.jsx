@@ -45,6 +45,7 @@ const CheckoutPage = () => {
   const { orderResponse } = useSelector((state) => state.checkout);
 
   useEffect(() => {
+    document.title = "Obsession - Checkout";
     dispatch(fetchCheckout());
   }, [dispatch]);
 

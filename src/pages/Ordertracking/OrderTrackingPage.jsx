@@ -30,6 +30,7 @@ const OrderTrackingPage = () => {
     // },
   ];
   useEffect(() => {
+    document.title = "Obsession - Order Tracking";
     if (order_no) {
       console.log("calling useEffect with order_no:", order_no);
       dispatch(fetchOrderHistory({ order_no }));

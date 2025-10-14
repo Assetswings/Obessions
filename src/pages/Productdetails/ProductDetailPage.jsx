@@ -5,7 +5,7 @@ import "./ProductDetailPage.css";
 import { Heart } from "lucide-react";
 import Footer from "../../components/Footer/Footer";
 import { fetchProductDetail, clearProductDetail } from "./productDetailSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { addToCart } from "../cart/cartSlice";
@@ -48,14 +48,15 @@ const ProductDetailPage = () => {
   const [pincodeDetails, setPincodeDetails] = useState({});
   const location = useLocation();
   const navigate = useNavigate();
-
-  const productSlug = location.state?.product;
+  const { itemSlug } = useParams();
+  const productSlug = location.state?.product || itemSlug || null;
   const { data, loading, error } = useSelector((state) => state.productDetail);
   const { pinset, pinloading, pinerror } = useSelector(
     (state) => state.pincode
   );
 
   useEffect(() => {
+    document.title = "Obsession - Products Details ";
     if (!productSlug) return;
     // Only run when slug actually changes
     if (prevSlugRef.current !== productSlug) {

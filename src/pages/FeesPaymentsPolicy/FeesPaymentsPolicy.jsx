@@ -23,6 +23,7 @@ export default function FeesPaymentsPolicy() {
   };
 
   useEffect(() => {
+    document.title = "Obsession - Fees Payment Policy";
     handleFees();
   }, []);
 

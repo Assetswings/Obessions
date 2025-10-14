@@ -9,7 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const BestsellersSlider = ({ onQuickView }) => {
   const dispatch = useDispatch();
@@ -108,10 +108,10 @@ const BestsellersSlider = ({ onQuickView }) => {
           prev.map((p) =>
             p.id === product.id
               ? {
-                  ...p,
-                  is_wishlisted: true,
-                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
-                }
+                ...p,
+                is_wishlisted: true,
+                wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+              }
               : p
           )
         );
@@ -149,13 +149,10 @@ const BestsellersSlider = ({ onQuickView }) => {
               <div className="bestseller-card" key={item.id}>
                 <div
                   className="image-wrapper"
-                  onClick={() =>
-                    navigate("/productsdetails", {
-                      state: { product: item.action_url },
-                    })
-                  }
                 >
-                  <img src={item?.media_list?.main?.file} alt={item.name} />
+                  <Link to={`/productsdetails/${item.action_url}`}>
+                    <img src={item?.media_list?.main?.file} alt={item.name} />
+                  </Link>
                   <div className="order_view_btn">
                     <button
                       className="quick-view"
@@ -208,7 +205,7 @@ const BestsellersSlider = ({ onQuickView }) => {
                   </button>
                 </div>
                 <div className="product-info">
-                  <span className="title">{item.name}</span>
+                  <span className="title"><Link to={`/productsdetails/${item.action_url}`}>{item.name}</Link></span>
                   <span className="price">₹{item.selling_price}</span>
                   {item.mrp && item.mrp !== item.selling_price && (
                     <>
@@ -249,13 +246,10 @@ const BestsellersSlider = ({ onQuickView }) => {
                 <div className="bestseller-card" key={`${item.id}-${index}`}>
                   <div
                     className="image-wrapper"
-                    onClick={() =>
-                      navigate("/productsdetails", {
-                        state: { product: item.action_url },
-                      })
-                    }
                   >
-                    <img src={item?.media_list?.main?.file} alt={item.name} />
+                    <Link to={`/productsdetails/${item.action_url}`}>
+                      <img src={item?.media_list?.main?.file} alt={item.name} />
+                    </Link>
                     <button
                       className="quick-view"
                       onClick={(e) => {
@@ -306,7 +300,7 @@ const BestsellersSlider = ({ onQuickView }) => {
                     </button>
                   </div>
                   <div className="product-info">
-                    <span className="title">{item.name}</span>
+                    <span className="title"><Link to={`/productsdetails/${item.action_url}`}>{item.name}</Link></span>
                     <span className="price">₹{item.selling_price}</span>
                     {item.mrp && item.mrp !== item.selling_price && (
                       <>

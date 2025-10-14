@@ -59,6 +59,7 @@ const ProductsPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    document.title = "Obsession - Product List";
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);

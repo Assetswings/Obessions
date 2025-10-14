@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import './VideoSection.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // arrow icons
-import Arrowleft from "../../assets/icons/ArrowLeft.png"; 
-import Arrowright from "../../assets/icons/ArrowRight.png"; 
+import Arrowleft from "../../assets/icons/ArrowLeft.png";
+import Arrowright from "../../assets/icons/ArrowRight.png";
 
 const VideoSection = () => {
   const sliderRef = useRef(null);
@@ -44,14 +44,13 @@ const VideoSection = () => {
         <p className='txt_sub_video_tag'>
           See how our products blend into real homes, real moods, and real lifestyles.
         </p>
-        <button
-          onClick={() => {
-            navigate('/videogallery');
-          }}
-          className='matcher-btn'
-        >
-          VIEW THE GALLERY
-        </button>
+        <Link to={`/videogallery`}>
+          <button
+            className='matcher-btn'
+          >
+            VIEW THE GALLERY
+          </button>
+        </Link>
       </div>
 
       <div className="video-slider-wrapper">

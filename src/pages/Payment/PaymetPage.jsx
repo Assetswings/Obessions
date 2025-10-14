@@ -15,6 +15,7 @@ const PaymentPage = () => {
 
   // Default selection logic
   useEffect(() => {
+    document.title = "Obsession - Payment Page";
     if (orderResponse?.data?.payment_gateways?.length) {
       const razorpay = orderResponse.data.payment_gateways.find(
         (g) => g.provider === "RAZORPAY"

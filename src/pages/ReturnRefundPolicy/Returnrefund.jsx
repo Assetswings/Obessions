@@ -23,8 +23,9 @@ export default function Returnrefund() {
     }
   };
 
-    useEffect(() => {
-  Returnrefund();
+  useEffect(() => {
+    document.title = "Obsession - Return Refund Policy";
+    Returnrefund();
   }, []);
 
 

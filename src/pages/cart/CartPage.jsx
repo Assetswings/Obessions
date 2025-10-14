@@ -22,6 +22,7 @@ const CartPage = () => {
   const lastErrorRef = useRef(null);
 
   useEffect(() => {
+    document.title = "Obsession - Cart";
     dispatch(fetchAddOns());
   }, [dispatch]);
 

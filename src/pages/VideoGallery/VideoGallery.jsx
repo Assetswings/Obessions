@@ -25,6 +25,7 @@ export default function VideoGallery() {
   });
 
   useEffect(() => {
+    document.title = "Obsession - Video Gallery";
     (async () => {
       try {
         const res = await API.get("/gallery");

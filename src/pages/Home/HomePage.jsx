@@ -75,17 +75,15 @@ const HomePage = () => {
   const [currentSet, setCurrentSet] = useState(null);
   const [nextSet, setNextSet] = useState(null);
   const [setIndex, setSetIndex] = useState(null);
-  console.log("mmmmmm---->", setIndex);
-  // console.log("query---->", query);
   // 🏠 Home Data Fetching
   const { data } = useSelector((state) => state.home);
   const searchState = useSelector((state) => state.search || {});
   const { results = [], loading, error } = searchState;
   // console.log("🔥fffffff::::::::", results);
   // Pick random hero set whenever HomePage mounts
-  console.log("data_set--->", data)
 
   useEffect(() => {
+    document.title = "Obsession - Home";
     if (!query.trim()) {
       dispatch(clearSearchResults());
       return;
@@ -131,14 +129,6 @@ const HomePage = () => {
     return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   }
 
-  // 🧭 Navigation Page
-  const handleNavigate = () => {
-    navigate("/collections");
-  };
-
-  const handleCategoryClick = (categorySlug) => {
-    navigate("/products", { state: { category: categorySlug } });
-  };
 
   //🖼️ Image fetcing for LIVE_THE_ART_OF_HOME
   const images_live_art = data?.banners?.LIVE_THE_ART_OF_HOME || [];
@@ -173,15 +163,6 @@ const HomePage = () => {
     setShowModal(true);
   };
 
-  const handelpdp = (categorySlug) => {
-    if (categorySlug) {
-      navigate("/products", {
-        state: {
-          category: categorySlug,
-        },
-      });
-    }
-  };
 
   const handelcollectionDetails = (categorySlug) => {
     if (!categorySlug) return;
@@ -348,63 +329,6 @@ const HomePage = () => {
           </p>
         </div>
 
-        {/* <div
-          className={`search-wrapper bg-white rounded shadow ${
-            isSearchActive ? "active" : ""
-          }`}
-        >
-          <div className="d-flex">
-            <input
-              type="text"
-              className="form-control border-0 rounded-5 input_home"
-              placeholder="WHAT ARE YOU LOOKING FOR?"
-              onChange={(e) => setQuery(e.target.value)}
-              onFocus={() => setIsSearchActive(true)}
-              value={query}
-            />
-            <button
-              className="btn btn-dark rounded-5 button_search"
-              disabled={!query?.trim()}
-              onClick={() =>
-                navigate("/searchlist", {
-                  state: { query: query },
-                })
-              }
-            >
-              <Search strokeWidth={1.25} />
-            </button>
-          </div>
-          {isSearchActive && Array.isArray(results) && results.length > 0 && (
-            <>
-              <div className="search-results-grid">
-                {results.slice(0, 8).map((item, index) => (
-                  <div
-                    key={index}
-                    className="search-card"
-                    onClick={(e) => {
-                      navigate("/productsdetails", {
-                        state: { product: item.action_url },
-                      });
-                    }}
-                  >
-                    <img
-                      src={item.media_list?.main?.file}
-                      alt={item.name}
-                      className="search-card-img"
-                    />
-                    <div className="search-card-body">
-                      <h6 className="search-card-title">
-                        {" "}
-                        {item.name.split(" ").slice(0, 5).join(" ")}
-                      </h6>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-        </div> */}
-
         <div
           className={`search-wrapper bg-white rounded shadow ${isSearchActive ? "active" : ""
             }`}
@@ -531,9 +455,11 @@ const HomePage = () => {
             part of the narrative. At Obsessions, we design and curate products
             that strike the perfect balance between charm and practicality.
           </p>
-          <button onClick={handleNavigate} className="hero-button">
-            CHECK OUR COLLECTIONS
-          </button>
+
+          <Link to={`/collections`}>
+            <button className="hero-button">CHECK OUR COLLECTIONS</button>
+          </Link>
+
         </div>
         <img src={leftImage} className="collection-img img-left" alt="" />
         <img src={rightImage} className="collection-img img-right" alt="" />
@@ -589,16 +515,11 @@ const HomePage = () => {
             <p>
               Stylish tabletop finds now discounted for meals & special moments.
             </p>
-            <button
-              className="hero-button"
-              onClick={() =>
-                navigate("/products", {
-                  state: { category: tableSectionImage?.action_url },
-                })
-              }
-            >
-              ELEVATE YOUR TABLETOP
-            </button>
+            <Link to={`/products/${tableSectionImage?.action_url}`}>
+              <button className="hero-button" >
+                ELEVATE YOUR TABLETOP
+              </button>
+            </Link>
           </div>
 
           <div className="hero-image">
@@ -619,50 +540,58 @@ const HomePage = () => {
             <div
               className="promo-card"
               key={item.id}
-              onClick={() => handelpdp(item.action_url)}
             >
-              <img
-                src={item.media}
-                alt={item.name}
-                className="promo-image pointer-crusser"
-              />
-              <p className="promo-title pointer-crusser">{item.name}</p>
-            </div>
+
+              <Link to={`/products/${item.action_url}`}>
+                <img
+                  src={item.media}
+                  alt={item.name}
+                  className="promo-image pointer-crusser"
+                />
+                <p className="promo-title pointer-crusser">{item.name}</p>
+
+              </Link>
+            </div >
           ))}
-        </div>
-      </section>
+        </div >
+      </section >
+
       {/* ────────────────── 🥀💎💎 🐉 Carpet BY SECTION 🐉 💎💎🥀 ────────────────── */}
-      <section>
+      <section section >
         <div className="carpet-section">
           <h2 className="carpet-heading">
             Carpet for <em>Every Spot</em>
           </h2>
           <div className="carpet-grid">
             {carpetCategories.map((item) => (
-              <div
-                key={item.id}
-                className="carpet-tile"
-                onClick={() => handelpdp(item.link)}
-                style={{ backgroundImage: `url(${item.image})` }}
-              >
-                <div className="carpet-label">{item.title}</div>
-              </div>
+              <>
+                <Link to={`/products/${item.link}`}>
+                  <div
+                    key={item.id}
+                    className="carpet-tile"
+                    style={{ backgroundImage: `url(${item.image})` }}
+                  >
+                    <div className="carpet-label">{item.title}</div>
+                  </div>
+                </Link>
+              </>
             ))}
           </div>
         </div>
-      </section>
-
+      </section >
       {/* ────────────────── 🥀💎💎 🐉 Floor BY SECTION 🐉 💎💎🥀 ────────────────── */}
-      <section className="floor-matcher">
-        {floatingImages.map((img) => (
-          <img
-            key={img.id}
-            src={img.src}
-            className={`floating-imgf ${img.className}`}
-            alt=""
-          />
-        ))}
-        <div className="matcher-content">
+      < section className="floor-matcher" >
+        {
+          floatingImages.map((img) => (
+            <img
+              key={img.id}
+              src={img.src}
+              className={`floating-imgf ${img.className}`}
+              alt=""
+            />
+          ))
+        }
+        < div className="matcher-content" >
           <h2>
             Let’s Find Your <br /> <em>Floor’s Best Friend</em>
           </h2>
@@ -670,14 +599,16 @@ const HomePage = () => {
             Your style, your space, your vibe. We’ll help you match it with the
             right floor covering.
           </p>
-          <button className="matcher-btn" onClick={handelcarpet}>
-            TRY FLOOR MATCHER
-          </button>
-        </div>
-      </section>
+          <Link to={`/carpet-finder`}>
+            <button className="matcher-btn" >
+              TRY FLOOR MATCHER
+            </button>
+          </Link>
+        </div >
+      </section >
 
       {/* ────────────────── 🥀💎💎 🐉 Floor BY SECTION 🐉 💎💎🥀 ────────────────── */}
-      <section className="obsessed-section">
+      < section className="obsessed-section" >
         <h2>
           <em>Obsessed</em> Right Now
         </h2>
@@ -686,23 +617,22 @@ const HomePage = () => {
             <div
               className="obsessed-card"
               key={idx}
-              onClick={() =>
-                navigate("/products", { state: { category: item.url } })
-              }
             >
-              <img className="img_right_now" src={item.src} alt={item.title} />
-              <p className="pointer-crusser">{item.title}</p>
+              <Link to={`/products${item.url}`}>
+                <img className="img_right_now" src={item.src} alt={item.title} />
+                <p className="pointer-crusser">{item.title}</p>
+              </Link>
             </div>
           ))}
         </div>
-      </section>
+      </section >
       {/* ────────────────── 🥀💎💎 🐉 video BY SECTION 🐉 💎💎🥀 ────────────────── */}
-      <section>
+      < section >
         <VideoSection />
-      </section>
+      </section >
 
       {/* ────────────────── 🥀💎💎 🐉 OUR OBSESSIONS BY SECTION 🐉 💎💎🥀 ────────────────── */}
-      <section className="obsession-section">
+      < section className="obsession-section" >
         <h2 className="obsession-title">OUR OBSESSIONS</h2>
         <div className="obsession-content">
           <div className="obsession-image">
@@ -728,18 +658,20 @@ const HomePage = () => {
               chosen with care, designed to make your home feel more personal,
               more inspired, and more you.
             </p>
-            <button
-              className="matcher-btn"
-              onClick={() => navigate("/about-us")}
-            >
-              MORE ABOUT US
-            </button>
+
+            <Link to={`/about-us`}>
+              <button
+                className="matcher-btn"
+              >
+                MORE ABOUT US
+              </button>
+            </Link>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* Footer setction  */}
-      <Footer />
+      < Footer />
       <ProductQuickViewModal
         show={showModal}
         onHide={() => setShowModal(false)}

@@ -29,10 +29,19 @@ const Otherpage = () => {
     path == "new-arrivals"
       ? "new-arrivals"
       : path == "bestseller"
-      ? "bestsellers"
-      : path == "offer-spot"
-      ? "offer-spots"
-      : "";
+        ? "bestsellers"
+        : path == "offer-spot"
+          ? "offer-spots"
+          : "";
+
+  const Titelslug =
+    path == "new-arrivals"
+      ? "New Arrivals"
+      : path == "bestseller"
+        ? "Bestsellers"
+        : path == "offer-spot"
+          ? "Offer Spots"
+          : "";
 
   const {
     data: otherproduct,
@@ -53,6 +62,7 @@ const Otherpage = () => {
   const [tempMobileFilters, setTempMobileFilters] = useState({});
 
   useEffect(() => {
+    document.title = `Obsession - ${Titelslug}`;
     if (!loading) {
       setProducts(Array.isArray(otherproduct) ? otherproduct : []);
     }
@@ -163,10 +173,10 @@ const Otherpage = () => {
           prev.map((p) =>
             p.id === product.id
               ? {
-                  ...p,
-                  is_wishlisted: true,
-                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
-                }
+                ...p,
+                is_wishlisted: true,
+                wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+              }
               : p
           )
         );
@@ -250,7 +260,7 @@ const Otherpage = () => {
 
   return (
     <>
-      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
       <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">{slug ? formatTitle(slug) : ""}</h2>
@@ -260,7 +270,7 @@ const Otherpage = () => {
               clear all
             </p>
           </div>
-  
+
           {loading ? (
             <>
               <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
@@ -305,7 +315,7 @@ const Otherpage = () => {
             </button>
           </div>
 
-        {/* <div className="sortby-container">
+          {/* <div className="sortby-container">
            <div className="dropdown">
         <div
           className="dropdown-toggle sortby-btn"
@@ -331,116 +341,116 @@ const Otherpage = () => {
         </ul>
       </div>
     </div> */}
- 
+
           <div className="custom-products-grid">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (
-                  <div key={i} className="custom-product-card">
-                    <div className="custom-product-image">
-                      <Skeleton height={250} width={230} />
-                    </div>
-                    <p className="custom-product-title">
-                      <Skeleton width={180} height={16} />
-                    </p>
-                    <p className="custom-product-price">
-                      <Skeleton width={100} height={16} />
-                    </p>
+                <div key={i} className="custom-product-card">
+                  <div className="custom-product-image">
+                    <Skeleton height={250} width={230} />
                   </div>
-                ))
+                  <p className="custom-product-title">
+                    <Skeleton width={180} height={16} />
+                  </p>
+                  <p className="custom-product-price">
+                    <Skeleton width={100} height={16} />
+                  </p>
+                </div>
+              ))
               : products.map((item) => {
-                  const isWishlisted = item.is_wishlisted;
-                  return (
-                    <div
-                      key={item.id}
-                      className="custom-product-card"
-                      onClick={(e) => {
-                        const isQuickView = e.target.closest(".qucick_dv");
-                        const isWishlist = e.target.closest(
-                          ".wishlist-btn_products"
-                        );
-                        if (!isQuickView && !isWishlist) {
-                          navigate("/productsdetails", {
-                            state: { product: item.action_url },
-                          });
-                        }
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <div className="custom-product-image">
-                        <img
-                          src={item.media_list?.main?.file}
-                          alt={item.name}
-                        />
+                const isWishlisted = item.is_wishlisted;
+                return (
+                  <div
+                    key={item.id}
+                    className="custom-product-card"
+                    onClick={(e) => {
+                      const isQuickView = e.target.closest(".qucick_dv");
+                      const isWishlist = e.target.closest(
+                        ".wishlist-btn_products"
+                      );
+                      if (!isQuickView && !isWishlist) {
+                        navigate("/productsdetails", {
+                          state: { product: item.action_url },
+                        });
+                      }
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className="custom-product-image">
+                      <img
+                        src={item.media_list?.main?.file}
+                        alt={item.name}
+                      />
 
-                        {/* wishliat_track */}
-                        <button
-                          className="wishlist-btn_products"
-                          onClick={(e) => toggleWishlist(e, item)}
-                        >
-                          {animatedWish === item.id ? (
-                            <div
-                              style={{
-                                width: 20,
-                                height: 24,
-                                overflow: "hidden",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                              }}
-                            >
-                              <Player
-                                autoplay
-                                keepLastFrame
-                                src={heartAnimation}
-                                style={{
-                                  width: 139,
-                                  height: 139,
-                                  transform: "scale(0.5)",
-                                  transformOrigin: "center",
-                                }}
-                              />
-                            </div>
-                          ) : (
-                            <Heart
-                              color={isWishlisted ? "#FF0000" : "#000"}
-                              fill={isWishlisted ? "#FF0000" : "none"}
-                              size={20}
-                              strokeWidth={2}
-                            />
-                          )}
-                        </button>
-
-                        <div className="qucick_dv">
-                          <span
-                            className="quick-view_pd"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setQuickViewProduct(item);
-                              setShowModal(true);
+                      {/* wishliat_track */}
+                      <button
+                        className="wishlist-btn_products"
+                        onClick={(e) => toggleWishlist(e, item)}
+                      >
+                        {animatedWish === item.id ? (
+                          <div
+                            style={{
+                              width: 20,
+                              height: 24,
+                              overflow: "hidden",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
                             }}
                           >
-                            Quick View &nbsp;
-                            <Expand
-                              color="#000000"
-                              size={15}
-                              strokeWidth={1.25}
+                            <Player
+                              autoplay
+                              keepLastFrame
+                              src={heartAnimation}
+                              style={{
+                                width: 139,
+                                height: 139,
+                                transform: "scale(0.5)",
+                                transformOrigin: "center",
+                              }}
                             />
-                          </span>
-                        </div>
+                          </div>
+                        ) : (
+                          <Heart
+                            color={isWishlisted ? "#FF0000" : "#000"}
+                            fill={isWishlisted ? "#FF0000" : "none"}
+                            size={20}
+                            strokeWidth={2}
+                          />
+                        )}
+                      </button>
+
+                      <div className="qucick_dv">
+                        <span
+                          className="quick-view_pd"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setQuickViewProduct(item);
+                            setShowModal(true);
+                          }}
+                        >
+                          Quick View &nbsp;
+                          <Expand
+                            color="#000000"
+                            size={15}
+                            strokeWidth={1.25}
+                          />
+                        </span>
                       </div>
-                      <p className="product-title">{item.name}</p>
-                  <div className="product-price">
-                    <span>₹{item.selling_price}</span>
-                    {item.mrp && item.mrp !== item.selling_price && (
-                      <>
-                        <span className="original">₹{item.mrp}</span>
-                        <span className="discount">({item.discount_percent}% OFF)</span>
-                      </>
-                    )}
-                  </div>
                     </div>
-                  );
-                })}
+                    <p className="product-title">{item.name}</p>
+                    <div className="product-price">
+                      <span>₹{item.selling_price}</span>
+                      {item.mrp && item.mrp !== item.selling_price && (
+                        <>
+                          <span className="original">₹{item.mrp}</span>
+                          <span className="discount">({item.discount_percent}% OFF)</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         </main>
 

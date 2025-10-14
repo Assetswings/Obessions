@@ -20,6 +20,7 @@ const Blog = () => {
   };
 
   useEffect(() => {
+    document.title = "Obsession - Blog List";
     BlogList();
   }, []);
 

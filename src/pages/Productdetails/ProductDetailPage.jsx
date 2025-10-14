@@ -39,6 +39,9 @@ const ProductDetailPage = () => {
   const [productDetails, setProductsDetails] = useState([]);
   const [similarStyle, setSimilarStyle] = useState([]);
   const [matchingFound, setMatchingFound] = useState([]);
+  const [showSpecs, setShowSpecs] = useState(false);
+  const [showCare, setShowCare] = useState(false);
+  const [showDesc, setShowDesc] = useState(true);
   const dispatch = useDispatch();
   const sectionsRef = useRef({});
   const prevSlugRef = useRef(null);
@@ -717,7 +720,6 @@ const ProductDetailPage = () => {
         {localLoading ? (
           <>
             <Skeleton width={150} height={40} />
-            <Skeleton circle width={40} height={40} />
           </>
         ) : (
           <>
@@ -793,16 +795,123 @@ const ProductDetailPage = () => {
         )}
       </div>
 
-      {/* Description */}
-      <div className="product-description">
-        <h3 className="txt-des">
-          {loading ? <Skeleton width={180} /> : "PRODUCT DESCRIPTION"}
-        </h3>
-        <p>{loading ? <Skeleton count={3} /> : data?.product_info?.description}</p>
+  {/* Description */}
+  <div className="pdp-accordion">
+  <div
+    className="pdp-accordion-header"
+    onClick={() => setShowDesc((prev) => !prev)}
+  >
+    <h3>
+      {localLoading ? <Skeleton width={180} /> : "PRODUCT DESCRIPTION"}
+    </h3>
+    {!localLoading && <span>{showDesc ? "−" : "+"}</span>}
+  </div>
+
+  {!localLoading && showDesc && (
+    <div className="pdp-accordion-content">
+      <p className="pdp-care-text">{data?.product_info?.description}</p>
+    </div>
+  )}
+
+  {localLoading && (
+    <div className="pdp-accordion-content">
+      <Skeleton count={3} />
+    </div>
+  )}
+</div>
+
+         {/* SPECIFICATIONS */}
+     <div className="pdp-accordion">
+        <div className="pdp-accordion-header" onClick={() => setShowSpecs(!showSpecs)}>
+          <h3>SPECIFICATIONS</h3>
+          <span>{showSpecs ? "−" : "+"}</span>
+        </div>
+
+        {showSpecs && (
+          <div className="pdp-accordion-content">
+            <table className="pdp-specs-table">
+              <tbody>
+                <tr>
+                  <td>Product Type</td>
+                  <td>Step Bin</td>
+                </tr>
+                <tr>
+                  <td>Box Content</td>
+                  <td>1 Step Bin with Liner</td>
+                </tr>
+                <tr>
+                  <td>Capacity</td>
+                  <td>12 Litre</td>
+                </tr>
+                <tr>
+                  <td>Liner</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>Material</td>
+                  <td>Stainless Steel</td>
+                </tr>
+                <tr>
+                  <td>Size in Inch</td>
+                  <td>NA</td>
+                </tr>
+                <tr>
+                  <td>Features</td>
+                  <td>
+                    Soft square unique shape. Bi-force damper soft close. Stay open lid.
+                    Fingerprint resistant. Durable cantilever foot-operated pedal mechanism.
+                    Plastic bag stabilizer.
+                  </td>
+                </tr>
+                <tr>
+                  <td>Ideal For</td>
+                  <td>Home, Office, Kitchen, Restaurant, Commercial Places, Hospital</td>
+                </tr>
+                <tr>
+                  <td>Approx. Weight (In Kg)</td>
+                  <td>2.75</td>
+                </tr>
+                <tr>
+                  <td>Origin</td>
+                  <td>China</td>
+                </tr>
+                <tr>
+                  <td>Warranty</td>
+                  <td>NA</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+    
+      {/* CARE INSTRUCTIONS */}
+      <div className="pdp-accordion">
+        <div className="pdp-accordion-header" onClick={() => setShowCare(!showCare)}>
+          <h3>CARE INSTRUCTIONS</h3>
+          <span>{showCare ? "−" : "+"}</span>
+        </div>
+
+        {showCare && (
+          <div className="pdp-accordion-content">
+            <p className="pdp-care-text">
+              Transform your space with our luxurious Chamois Carpet, made from 100% premium
+              Acrylic fibers. Designed for both elegance and resilience, this high-quality
+              carpet offers the perfect balance of sophistication and durability, making it an
+              ideal choice for any living room, office, or hallway. Whether you’re looking to
+              enhance your home or workplace, our Chamois Carpet brings timeless style and
+              lasting comfort to any room.
+            </p>
+          </div>
+        )}
       </div>
+
+    </div>
+
     </div>
       </div>
 
+     
+   
       {productDetails?.sub_category_action_url === "carpet" ? (
         <>
           <div className="product-tabs-container">

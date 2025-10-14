@@ -58,9 +58,6 @@ const shopByItems = [
 ];
  
 
-
-
-
 const HomePage = () => {
   const token = localStorage.getItem("token");
   // console.log("token----->", token);
@@ -462,32 +459,43 @@ const HomePage = () => {
             </button>
           </div>
 
-          {isSearchActive && Array.isArray(results) && results.length > 0 && (
-            <div className="search-results-grid">
-              {results.slice(0, 8).map((item, index) => (
-                <div
-                  key={index}
-                  className="search-card"
-                  onClick={() =>
-                    navigate("/productsdetails", {
-                      state: { product: item.action_url },
-                    })
-                  }
-                >
-                  <img
-                    src={item.media_list?.main?.file}
-                    alt={item.name}
-                    className="search-card-img"
-                  />
-                  <div className="search-card-body">
-                    <h6 className="search-card-title">
-                      {item.name.split(" ").slice(0, 5).join(" ")}
-                    </h6>
-                  </div>
-                </div>
-              ))}
+          {isSearchActive && Array.isArray(results) && (
+  <>
+    {results.length > 0 ? (
+      <div className="search-results-grid">
+        {results.slice(0, 8).map((item, index) => (
+          <div
+            key={index}
+            className="search-card"
+            onClick={() =>
+              navigate("/productsdetails", {
+                state: { product: item.action_url },
+              })
+            }
+          >
+            <img
+              src={item.media_list?.main?.file}
+              alt={item.name}
+              className="search-card-img"
+            />
+            <div className="search-card-body">
+              <h6 className="search-card-title">
+                {item.name.split(" ").slice(0, 5).join(" ")}
+              </h6>
             </div>
-          )}
+          </div>
+        ))}
+      </div>
+    ) :  (
+      // ✅ No Data Found message 
+      !loading && query?.trim() && (
+        <div className="no-data-found">
+          <p>No Result found</p>
+        </div>
+      )
+    )}
+  </>
+)}
         </div>
 
         {/* Overlay */}

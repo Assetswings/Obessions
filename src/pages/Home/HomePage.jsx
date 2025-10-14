@@ -11,7 +11,7 @@ import { fetchHomeData } from "./homeSlice";
 import { fetchSearchResults, clearSearchResults } from "./searchSlice";
 import emtyimage from "../../assets/images/empty.jpg";
 import ProductQuickViewModal from "../Products/ProductQuickViewModal";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 /* ─── Hero + Collection assets ─── */
 import image1 from "../../assets/images/Maskgroup-1.png";
 import image2 from "../../assets/images/Maskgroup-2.png";
@@ -56,7 +56,7 @@ const shopByItems = [
     url: "/sale",
   },
 ];
- 
+
 
 const HomePage = () => {
   const token = localStorage.getItem("token");
@@ -83,7 +83,7 @@ const HomePage = () => {
   const { results = [], loading, error } = searchState;
   // console.log("🔥fffffff::::::::", results);
   // Pick random hero set whenever HomePage mounts
-  console.log("data_set--->", data )
+  console.log("data_set--->", data)
 
   useEffect(() => {
     if (!query.trim()) {
@@ -305,7 +305,7 @@ const HomePage = () => {
   const FloorDesign4 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[3]?.media || "";
   const FloorDesign5 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[4]?.media || "";
   const FloorDesign6 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[5]?.media || "";
-  console.log("tracker_image",FloorDesign1 )
+  console.log("tracker_image", FloorDesign1)
   const floatingImages = [
     { id: 1, src: FloorDesign1, className: "imgf1" },
     { id: 2, src: FloorDesign2, className: "imgf2" },
@@ -332,11 +332,9 @@ const HomePage = () => {
 
         <ul className="list-unstyled position-absolute category-list text-uppercase">
           {data?.hero_banner_categories?.map((item) => (
-            <li
-              key={item.id}
-              onClick={() => handleCategoryClick(item.action_url)}
-            >
-              {item.name}
+            <li key={item.id} >
+              <Link to={`/products/${item.action_url}`}>{item.name}</Link>
+              {/* target="_blank" rel="noopener noreferrer" */}
             </li>
           ))}
         </ul>
@@ -408,33 +406,32 @@ const HomePage = () => {
         </div> */}
 
         <div
-          className={`search-wrapper bg-white rounded shadow ${
-            isSearchActive ? "active" : ""
-          }`}
+          className={`search-wrapper bg-white rounded shadow ${isSearchActive ? "active" : ""
+            }`}
         >
           <div className="d-flex">
-          <input
-  ref={inputRef}
-  type="text"
-  className="form-control border-0 input_home"
-  placeholder="WHAT ARE YOU LOOKING FOR?"
-  value={query}
-  onFocus={handleFocus}
-  onChange={(e) => {
-    // Allow only letters, numbers, and spaces (no special characters)
-    let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
+            <input
+              ref={inputRef}
+              type="text"
+              className="form-control border-0 input_home"
+              placeholder="WHAT ARE YOU LOOKING FOR?"
+              value={query}
+              onFocus={handleFocus}
+              onChange={(e) => {
+                // Allow only letters, numbers, and spaces (no special characters)
+                let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
 
-    // Remove leading spaces
-    value = value.replace(/^\s+/, "");
+                // Remove leading spaces
+                value = value.replace(/^\s+/, "");
 
-    setQuery(value);
-  }}
-  onKeyDown={(e) => {
-    if (e.key === "Enter" && query.trim()) {
-      navigate("/searchlist", { state: { query } });
-    }
-  }}
-/>
+                setQuery(value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && query.trim()) {
+                  navigate("/searchlist", { state: { query } });
+                }
+              }}
+            />
             {loading && (
               <div className="sarchlader">
                 <div
@@ -460,49 +457,49 @@ const HomePage = () => {
           </div>
 
           {isSearchActive && Array.isArray(results) && (
-  <>
-    {results.length > 0 ? (
-      <div className="search-results-grid">
-        {results.slice(0, 8).map((item, index) => (
-          <div
-            key={index}
-            className="search-card"
-            onClick={() =>
-              navigate("/productsdetails", {
-                state: { product: item.action_url },
-              })
-            }
-          >
-            <img
-              src={item.media_list?.main?.file}
-              alt={item.name}
-              className="search-card-img"
-            />
-            <div className="search-card-body">
-              <h6 className="search-card-title">
-                {item.name.split(" ").slice(0, 5).join(" ")}
-              </h6>
-            </div>
-          </div>
-        ))}
-      </div>
-    ) :  (
-      // ✅ No Data Found message 
-      !loading && query?.trim() && (
-        <div className="no-data-found">
-          <p>No Result found</p>
-        </div>
-      )
-    )}
-  </>
-)}
+            <>
+              {results.length > 0 ? (
+                <div className="search-results-grid">
+                  {results.slice(0, 8).map((item, index) => (
+                    <div
+                      key={index}
+                      className="search-card"
+                      onClick={() =>
+                        navigate("/productsdetails", {
+                          state: { product: item.action_url },
+                        })
+                      }
+                    >
+                      <img
+                        src={item.media_list?.main?.file}
+                        alt={item.name}
+                        className="search-card-img"
+                      />
+                      <div className="search-card-body">
+                        <h6 className="search-card-title">
+                          {item.name.split(" ").slice(0, 5).join(" ")}
+                        </h6>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                // ✅ No Data Found message 
+                !loading && query?.trim() && (
+                  <div className="no-data-found">
+                    <p>No Result found</p>
+                  </div>
+                )
+              )}
+            </>
+          )}
         </div>
 
         {/* Overlay */}
         {isSearchActive && (
           <div
             className="search-overlay"
-            onClick={() => {setIsSearchActive(false); setQuery("");}}
+            onClick={() => { setIsSearchActive(false); setQuery(""); }}
           />
         )}
 

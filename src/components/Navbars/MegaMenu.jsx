@@ -78,7 +78,7 @@ const MegaMenu = ({ closeMenu }) => {
             <div className="menu-section" key={cat.id}>
               <h4
                 className="category-header"
-                onClick={() => handleCategoryClick(cat.action_url)}
+                // onClick={() => handleCategoryClick(cat.action_url)}
               >
                 {cat.name}
               </h4>

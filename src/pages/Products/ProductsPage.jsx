@@ -3,7 +3,7 @@ import "./ProductsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "./productsSlice";
 import { Expand, Heart, SlidersHorizontal, X } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProductQuickViewModal from "./ProductQuickViewModal";
@@ -25,8 +25,12 @@ const ProductsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const category = location.state?.category;
-  const subcategory = location.state?.subcategory;
+  const { categorySlug, subcategorySlug } = useParams();
+  // Try to get from location.state first, else fallback to params
+  const category = location.state?.category || categorySlug || null;
+  const subcategory = location.state?.subcategory || subcategorySlug || null;
+  // const category = location.state?.category;
+  // const subcategory = location.state?.subcategory;
 
   // const { data: products,filters,loading} = useSelector((state) => state.products);
   const [products, setProducts] = useState([]);
@@ -369,37 +373,37 @@ const ProductsPage = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" style={{zIndex:9999999999999}}  autoClose={3000} />
+      <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} />
       {/* MOBILE FILTER BUTTON */}
       <div className="custom-products-page">
         <aside className="custom-filters">
-        <h2 className="title_prd_roots">
-    {loading ? (
-      <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
-    ) : subcategory ? (
-      formatTitle(subcategory)
-    ) : (
-      formatTitle(category)
-    )}
-  </h2>
-          
-  <div className="root_devider_flt">
-    {loading ? (
-      <>
-        <Skeleton height={22} width={80} style={{ marginBottom: 5 }} />
-      
-      </>
-    ) : (
-      <>
-        <h2>Filters</h2>
-        {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
-          <p className="clr-all" onClick={() => setSelectedFilters({})}>
-            Clear all
-          </p>
-        ) : null}
-      </>
-    )}
-  </div>
+          <h2 className="title_prd_roots">
+            {loading ? (
+              <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
+            ) : subcategory ? (
+              formatTitle(subcategory)
+            ) : (
+              formatTitle(category)
+            )}
+          </h2>
+
+          <div className="root_devider_flt">
+            {loading ? (
+              <>
+                <Skeleton height={22} width={80} style={{ marginBottom: 5 }} />
+
+              </>
+            ) : (
+              <>
+                <h2>Filters</h2>
+                {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
+                  <p className="clr-all" onClick={() => setSelectedFilters({})}>
+                    Clear all
+                  </p>
+                ) : null}
+              </>
+            )}
+          </div>
 
           {/* {loading ? (
             <>
@@ -477,32 +481,31 @@ const ProductsPage = () => {
             </button>
           </div>
 
-           <div className="sortby-container">
-           <div className="dropdown">
-        <div
-          className="dropdown-toggle sortby-btn"
-          id="dropdownMenuButton"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          SORT BY
-        </div>
-        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          {options.map((option) => (
-            <li key={option}>
-              <button
-                className={`dropdown-item ${
-                  selected === option ? "active-option" : ""
-                }`}
-                onClick={() => handleSelect(option)}
+          <div className="sortby-container">
+            <div className="dropdown">
+              <div
+                className="dropdown-toggle sortby-btn"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               >
-                {option}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+                SORT BY
+              </div>
+              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {options.map((option) => (
+                  <li key={option}>
+                    <button
+                      className={`dropdown-item ${selected === option ? "active-option" : ""
+                        }`}
+                      onClick={() => handleSelect(option)}
+                    >
+                      {option}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
           <div className="custom-products-grid">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (

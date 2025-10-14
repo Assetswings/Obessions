@@ -42,6 +42,8 @@ const AppRoutes = () => {
           <Route index element={<HomePage />} />
           <Route path="collections" element={<CollectionPage />} />
           <Route path="products" element={<ProductsPage />} />
+          <Route path="/products/:categorySlug" element={<ProductsPage />} />
+          <Route path="/products/:categorySlug/:subcategorySlug" element={<ProductsPage />} />
           <Route path="productsdetails" element={<ProductDetailPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
@@ -54,8 +56,8 @@ const AppRoutes = () => {
           <Route path="ordersuccess" element={<Successpage />} />
           <Route path="orderfailed" element={<Failedpage />} />
           <Route path="paymentcheck" element={<PaymentCheck />} />
-          <Route path="cancelorder" element={<CancelOrder/>} />
-          <Route path="returnexchange" element={<ReturnExchange/>} />
+          <Route path="cancelorder" element={<CancelOrder />} />
+          <Route path="returnexchange" element={<ReturnExchange />} />
           <Route path="carpet-finder" element={<CarpetFinder />} />
           <Route path="searchlist" element={<Searchlist />} />
           <Route path="carpetfinderserch" element={<Carpetfinderserch />} />
@@ -68,11 +70,11 @@ const AppRoutes = () => {
           <Route path="cancellation-return-refund-policy" element={<Cancellation />} />
           <Route path="terms-of-use" element={<Returnrefund />} />
           <Route path="fees-payments-policy" element={<FeesPaymentsPolicy />} />
-          <Route path="privacy-policy" element={<Privacypolicy/>} />
-          <Route path="new-arrivals" element={<Otherpage/>} />
-          <Route path="bestseller" element={<Otherpage/>} />
-          <Route path="offer-spot" element={<Otherpage/>} />
-          <Route path="videogallery" element={<VideoGallery/>} />
+          <Route path="privacy-policy" element={<Privacypolicy />} />
+          <Route path="new-arrivals" element={<Otherpage />} />
+          <Route path="bestseller" element={<Otherpage />} />
+          <Route path="offer-spot" element={<Otherpage />} />
+          <Route path="videogallery" element={<VideoGallery />} />
         </Route>
       </Routes>
     </ScrollToTopWrapper>

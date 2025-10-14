@@ -145,7 +145,13 @@ const Footer = () => {
           </button>
         </div>
 
-        {message && <p className="response-message">{message}</p>}
+        {message && (
+  <div className="response-container">
+       <div className="sub-track-res"> 
+       <p className="response-message">{message}</p>
+       </div> 
+  </div>
+)}
         <Link to={`/tc-of-sale`}>
           <p className="sub_text mt-2">
             By signing up you agree with our <u className="pointer-crusser">Terms & Conditions</u>.

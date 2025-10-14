@@ -141,7 +141,20 @@
   font-size: 13px;
 }
 
+ .response-container{
+    display: flex;
+    justify-content:center;
+ }
+.response-container p{
 
+  margin-top: 12px;
+}
+
+.sub-track-res{
+   width: 420px;
+  display: flex;
+  justify-content: flex-start;
+}
 .payments{
   /* width: 50px; */
 }

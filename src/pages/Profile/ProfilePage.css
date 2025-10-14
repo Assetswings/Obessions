@@ -156,6 +156,7 @@
   z-index: 1000;
   display: flex;
   justify-content: flex-end;
+  z-index: 999999999;
 }
 
 .side-modal {

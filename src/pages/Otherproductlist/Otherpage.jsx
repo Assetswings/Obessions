@@ -260,7 +260,7 @@ const Otherpage = () => {
               clear all
             </p>
           </div>
-
+  
           {loading ? (
             <>
               <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
@@ -296,8 +296,7 @@ const Otherpage = () => {
           <div className="track_filter">
             <button
               className="mobile-filter-btn"
-              onClick={() => setIsFilterOpen(true)}
-            >
+              onClick={() => setIsFilterOpen(true)}>
               <span>
                 {" "}
                 <SlidersHorizontal />
@@ -305,6 +304,34 @@ const Otherpage = () => {
               Filters
             </button>
           </div>
+
+        {/* <div className="sortby-container">
+           <div className="dropdown">
+        <div
+          className="dropdown-toggle sortby-btn"
+          id="dropdownMenuButton"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          SORT BY
+        </div>
+        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {options.map((option) => (
+            <li key={option}>
+              <button
+                className={`dropdown-item ${
+                  selected === option ? "active-option" : ""
+                }`}
+                onClick={() => handleSelect(option)}
+              >
+                {option}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div> */}
+ 
           <div className="custom-products-grid">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (

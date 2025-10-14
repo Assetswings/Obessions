@@ -373,17 +373,33 @@ const ProductsPage = () => {
       {/* MOBILE FILTER BUTTON */}
       <div className="custom-products-page">
         <aside className="custom-filters">
-          <h2 className="title_prd_roots">
-            {subcategory ? formatTitle(subcategory) : formatTitle(category)}
-          </h2>
-          <div className="root_devider_flt">
-            <h2>Filters</h2>
-            {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
-              <p className="clr-all" onClick={() => setSelectedFilters({})}>
-                Clear all
-              </p>
-            ) : null}
-          </div>
+        <h2 className="title_prd_roots">
+    {loading ? (
+      <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
+    ) : subcategory ? (
+      formatTitle(subcategory)
+    ) : (
+      formatTitle(category)
+    )}
+  </h2>
+          
+  <div className="root_devider_flt">
+    {loading ? (
+      <>
+        <Skeleton height={22} width={80} style={{ marginBottom: 5 }} />
+      
+      </>
+    ) : (
+      <>
+        <h2>Filters</h2>
+        {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
+          <p className="clr-all" onClick={() => setSelectedFilters({})}>
+            Clear all
+          </p>
+        ) : null}
+      </>
+    )}
+  </div>
 
           {/* {loading ? (
             <>

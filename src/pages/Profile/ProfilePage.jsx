@@ -10,6 +10,8 @@ import API from "../../app/api";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
 import plusicon from "../../assets/icons/plusicon.png";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 import {
   getAddress,
@@ -33,7 +35,7 @@ const ProfilePage = () => {
   const [otp, setOtp] = useState("");
   const [otpSession, setOtpSession] = useState(null);
   const [dob, setDob] = useState("");
-
+  const [localLoading, setLocalLoading] = useState(true); 
   const [errors, setErrors] = useState({});
 
   const [newAddress, setNewAddress] = useState({
@@ -95,11 +97,16 @@ const ProfilePage = () => {
   }, [dispatch]);
 
   const { data: addressdata } = useSelector((state) => state.address);
-
   useEffect(() => {
     dispatch(getAddress());
   }, [dispatch]);
 
+    useEffect(() => {
+    if (profileData && Object.keys(profileData).length > 0) {
+      setLocalLoading(false); 
+    }
+  }, [profileData]);
+  
   // Send OTP API
   const handleSendOtp = async () => {
     try {
@@ -355,74 +362,99 @@ const ProfilePage = () => {
           </div>
         </div>
 
-
         <div className="content-wrapper">
+        {activeTab === "profile" && (
+  <div className="profile-section">
+    <div className="set_box">
+      {/* <div>
+        <h5>MY DETAILS</h5>
+        <p>Update your details below to keep your account current.</p>
+      </div> */}
+    </div>
 
-          {activeTab === "profile" && (
-            <div className="profile-section">
-              <div className="set_box">
-                {/* <div>
-                  <h5>MY DETAILS</h5>
-                  <p>Update your details below to keep your account current.</p>
-                </div> */}
+    <div>
+      <p className="txt_level">Name</p>
+      <div className="track_septor">
+        {localLoading ? (
+          <Skeleton width={180} />
+        ) : (
+          <>
+            {profileData?.first_name} {profileData?.last_name}
+          </>
+        )}
+      </div>
+    </div>
 
-              </div>
-              <div >
-                <p className="txt_level">Name</p>
-                <div className="track_septor">
-                  {profileData?.first_name} {profileData?.last_name}
-                </div>
-              </div>
-              <div>
-                <p className="txt_level">Email</p>
-                <div
-                  className="track_septor"
-                  style={{ display: "flex", alignItems: "center", gap: "10px", justifyContent: "space-between" }}
-                >
-                  {profileData?.email}
-                  {/* {profileData?.email_verified === 0 ? (
-                    <button className="verify-btn" onClick={handleSendOtp}>
-                      Verify
-                    </button>
-                  ) : (
-                    <span> ✅ email veryfied </span>
-                  )} */}
-                  {profileData?.email_verified == 0 ? (
-                    <u
-                      onClick={handleSendOtp}
-                      style={{ fontWeight: "bold", cursor: "pointer" }}
-                    >
-                      Verify
-                    </u>
-                  ) : profileData?.email_verified == 1 ? (
-                    <span className="track_ver"> <span style={{ position: 'relative', right: "5px" }}> <CircleCheckBig size={20} color="green" /> </span>  Email Verified</span>
-                  ) : null}
-                </div>
-              </div>
-              <div>
-                <p className="txt_level">Phone</p>
-                <div className="track_septor">{profileData?.mobile}</div>
-              </div>
-              <div>
-                <p className="txt_level">Date of Birth</p>
-                <div className="track_septor">
-                  {profileData?.dob &&
-                    new Date(profileData.dob)
-                      .toLocaleDateString("en-GB")
-                      .replaceAll("/", "-")}
-                </div>
-              </div>
-              <div>
-                <div
-                  className="edit-btn"
-                  onClick={() => setShowEditModal(true)}>
-                  <p>
-                    <span className="edit_text"> EDIT DETAILS </span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
+    <div>
+      <p className="txt_level">Email</p>
+      <div
+        className="track_septor"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          justifyContent: "space-between",
+        }}
+      >
+        {localLoading ? (
+          <Skeleton width={200} />
+        ) : (
+          <>
+            {profileData?.email}
+            {profileData?.email_verified == 0 ? (
+              <u
+                onClick={handleSendOtp}
+                style={{ fontWeight: "bold", cursor: "pointer" }}
+              >
+                Verify
+              </u>
+            ) : profileData?.email_verified == 1 ? (
+              <span className="track_ver">
+                <span style={{ position: "relative", right: "5px" }}>
+                  <CircleCheckBig size={20} color="green" />
+                </span>
+                Email Verified
+              </span>
+            ) : null}
+          </>
+        )}
+      </div>
+    </div>
+
+    <div>
+      <p className="txt_level">Phone</p>
+      <div className="track_septor">
+        {localLoading ? <Skeleton width={120} /> : profileData?.mobile}
+      </div>
+    </div>
+
+    <div>
+      <p className="txt_level">Date of Birth</p>
+      <div className="track_septor">
+        {localLoading ? (
+          <Skeleton width={100} />
+        ) : (
+          profileData?.dob &&
+          new Date(profileData.dob)
+            .toLocaleDateString("en-GB")
+            .replaceAll("/", "-")
+        )}
+      </div>
+    </div>
+
+    <div>
+      {localLoading ? (
+        <Skeleton height={40} width={150} borderRadius={10} />
+      ) : (
+        <div className="edit-btn" onClick={() => setShowEditModal(true)}>
+          <p>
+            <span className="edit_text"> EDIT DETAILS </span>
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+)}
 
           {activeTab === "address" && (
             <div className="address-section">
@@ -731,7 +763,7 @@ const ProfilePage = () => {
                   setErrors({});
                 }}
               >
-                <IoMdClose />
+                <IoMdClose  size={25}/>
               </button>
               <h3>Edit Address</h3>
 

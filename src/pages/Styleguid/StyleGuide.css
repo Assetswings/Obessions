@@ -1,0 +1,322 @@
+.styleguide-container {
+    font-family: "Poppins", sans-serif;
+    color: #222;
+    overflow-x: hidden;
+  }
+  
+  /* ------------------ HERO SECTION ------------------ */
+  .hero-section {
+    position: relative;
+    width: 100%;
+    height: 471px; /* fixed height from your design */
+    overflow: hidden;
+  }
+  
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(75%);
+  }
+  
+  .hero-text-sz {
+    position: absolute;
+    bottom: 50px;
+    left: 70px;
+    max-width: 600px;
+    color: #fff;
+  }
+  
+  .hero-text-sz h1 {
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  
+  .hero-text-sz p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #f3f3f3;
+  }
+  .carpet-guide-container {
+    max-width: 1200px;
+    margin: 100px auto;
+    padding: 0 20px;
+
+    color: #222;
+  }
+  
+  .guide-title {
+    font-size: 28px;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  
+  /* Tabs */
+  .tab-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+  }
+  
+  .tab-btn {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    padding-bottom: 6px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+  
+  .tab-btn:hover,
+  .tab-btn.active {
+    color: #000;
+    border-bottom: 2px solid #000;
+  }
+  
+  /* Layout */
+  .guide-content {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+  }
+  
+  .guide-image img {
+    width: 600px;
+    height: 500px;
+    object-fit: cover;
+
+  }
+  
+  .guide-info {
+    flex: 1;
+  }
+  
+  .guide-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .guide-desc {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 25px;
+    line-height: 1.6;
+  }
+  
+  /* Table */
+  .conversion-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+  }
+  
+  .conversion-table th,
+  .conversion-table td {
+    border: 1px solid #ccc;
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  
+  .conversion-table th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+  }
+  
+  .conversion-table thead tr:first-child th {
+    text-align: center;
+    font-size: 14px;
+    background: #fff;
+  }
+  
+  /* Button */
+  .shop-btn {
+    background: #000;
+    color: #fff;
+    font-size: 12px;
+    padding: 12px 22px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .shop-btn:hover {
+    background: #333;
+  }
+  
+  /* Responsive */
+  @media (max-width: 992px) {
+    .guide-content {
+      flex-direction: column;
+      gap: 40px;
+    }
+  
+    .guide-image img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .guide-title {
+      font-size: 22px;
+    }
+  
+    .tab-container {
+      gap: 20px;
+    }
+  
+    .tab-btn {
+      font-size: 13px;
+    }
+  }
+  
+  .roomguide-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    color: #222;
+  }
+  
+  .roomguide-title {
+    font-size: 28px;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  
+  .roomguide-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .roomguide-tab {
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 5px;
+    transition: color 0.3s ease;
+  }
+  
+  .roomguide-tab.active {
+    color: #000;
+    border-bottom: 2px solid #000;
+  }
+  
+  .roomguide-tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    background-color: #000;
+  }
+  
+  .roomguide-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    margin-top: 30px;
+  }
+  
+  .roomguide-image {
+    flex: 1;
+  }
+  
+  .roomguide-image img {
+    width: 100%;
+    object-fit: cover;
+    transition: all 0.4s ease;
+  }
+  
+  .roomguide-text {
+    flex: 1;
+  }
+  
+  .roomguide-heading {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .roomguide-description {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 15px;
+  }
+  
+  .roomguide-subtitle {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 15px 0 10px;
+  }
+  
+  .roomguide-recommendations {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .roomguide-recommendation {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .roomguide-recommendation img {
+    width: 80px;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .roomguide-size {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .roomguide-text-desc {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.4;
+  }
+  
+  .roomguide-btn {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .roomguide-btn:hover {
+    background-color: #333;
+  }
+  
+  /* Responsive */
+  @media (max-width: 900px) {
+    .roomguide-content {
+      flex-direction: column;
+    }
+  }
+  

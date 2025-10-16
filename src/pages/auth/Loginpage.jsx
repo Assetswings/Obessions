@@ -19,12 +19,12 @@ const LoginPage = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
-
+  const [loader, setLoader] = useState(false);
   const mobileRef = useRef(null);
   const otpRef = useRef(null);
 
   useEffect(() => {
-     document.title = `Obsession - Sign In`;
+    document.title = `Obsession - Sign In`;
     // Autofocus handling for each step
     if (step === 1 && mobileRef.current) {
       mobileRef.current.focus();
@@ -105,7 +105,7 @@ const LoginPage = () => {
       alert("Missing OTP session data. Try resending OTP.");
       return;
     }
-
+    setLoader(true);
     dispatch(verifyOtp({ otp: otp.trim(), otp_requested_id, temp_id })).then(
       (res) => {
         if (res.meta.requestStatus === "fulfilled") {
@@ -161,7 +161,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
       <div className="login-container">
         <div className="login-box" onKeyDown={handleKeyDown}>
           {step === 1 && (
@@ -185,7 +185,7 @@ const LoginPage = () => {
                 {loading ? "Sending..." : "CONTINUE"}
               </button>
               <p className="terms">
-              <a href="/tc-of-sale">Terms of Service</a> and{" "}
+                <a href="/tc-of-sale">Terms of Service</a> and{" "}
                 <a href="/privacy-policy">Privacy Policy</a>
               </p>
             </>
@@ -211,7 +211,19 @@ const LoginPage = () => {
                 onChange={(e) => setOtp(e.target.value)}
               />
               <button className="btn-dark" onClick={handleVerifyOtp}>
-                VERIFY
+                {/* VERIFY */}
+                {loader ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>{" "}
+                    Verifying...
+                  </>
+                ) : (
+                  "VERIFY"
+                )}
               </button>
               <p className="timer">
                 Didn't receive code?{" "}

@@ -35,28 +35,6 @@ import Tableimage from "../../assets/images/Kitchen1.png";
 import videoimage from "../../assets/images/videoimage.png";
 import { Search } from "lucide-react";
 
-const shopByItems = [
-  {
-    label: "Design",
-    thumbs: [shopThumb1, shopThumb2, shopThumb3],
-    url: "/category",
-  },
-  {
-    label: "Dustbins",
-    thumbs: [shopThumb4, shopThumb5, shopThumb6],
-    url: "/room",
-  },
-  { label: "Bath Care", thumbs: [shopThumb1, shopThumb4, shopThumb2] },
-  { label: "Bestsellers", thumbs: [shopThumb2, shopThumb5, shopThumb3] },
-  { label: "New Arrivals", thumbs: [shopThumb3, shopThumb6, shopThumb4] },
-  {
-    label: "End of Seasonal Sale",
-    thumbs: [shopThumb1, shopThumb2, shopThumb3],
-    sale: true,
-    url: "/sale",
-  },
-];
-
 
 const HomePage = () => {
   const token = localStorage.getItem("token");
@@ -636,10 +614,12 @@ const HomePage = () => {
         <h2 className="obsession-title">OUR OBSESSIONS</h2>
         <div className="obsession-content">
           <div className="obsession-image">
-            <img src={videoimage} className="img_video_track" alt="Our team" />
+            <img src={data?.bottom_content?.media} className="img_video_track" alt="Our team" />
+            {/* <img src={videoimage} className="img_video_track" alt="Our team" /> */}
           </div>
           <div className="obsession-text">
-            <p>
+            <div dangerouslySetInnerHTML={{ __html: data?.bottom_content?.content }} />
+            {/* <p>
               Because your home deserves more than just functional products. It
               deserves thoughtful design, lasting quality, and pieces that
               effortlessly blend into your lifestyle. At the heart of everything
@@ -657,9 +637,9 @@ const HomePage = () => {
               day, or a waste bin that’s anything but ordinary, each product is
               chosen with care, designed to make your home feel more personal,
               more inspired, and more you.
-            </p>
+            </p> */}
 
-            <Link to={`/about-us`}>
+            <Link to={data?.bottom_content?.action_url}>
               <button
                 className="matcher-btn"
               >

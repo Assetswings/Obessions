@@ -409,6 +409,10 @@ const ProductDetailPage = () => {
     return <div className="error">Error: {error}</div>;
   }
 
+  if(pinerror){
+    toast.error("Invalid or unavailable pincode!");
+  }
+
   const handleCheck = () => {
     if (pincode.trim()) {
       dispatch(checkPincode(pincode));
@@ -527,7 +531,7 @@ const ProductDetailPage = () => {
             ) : (
               <>
                 ₹{currentPrice}{" "}
-                {selectedSize?.mrp && (
+                {selectedSize?.mrp && selectedSize.mrp !== selectedSize.price && (
                   <span className="sub-1">
                     <del>₹{selectedSize?.mrp}</del> &nbsp;
                     <span className="dis-sub">
@@ -561,10 +565,17 @@ const ProductDetailPage = () => {
               </>
             ) : productDetails?.product_sizes?.length > 0 ? (
               <>
-                <p className="selected-size-label">
-                  CHOOSE A SIZE:
-                  {selectedSize && <strong>{selectedSize.size}</strong>}
-                </p>
+                {productDetails?.category_action_url === "dustbins" ? (
+                  <p className="selected-size-label">
+                    CHOOSE A Capacity:&nbsp;
+                    {selectedSize && <strong>{selectedSize.capacity}</strong>}
+                  </p>
+                ) : (
+                  <p className="selected-size-label">
+                    CHOOSE A SIZE:
+                    {selectedSize && <strong>{selectedSize.size}</strong>}
+                  </p>
+                )}
                 <div className="size-options">
                   {productDetails.product_sizes.map((size) => (
                     <div
@@ -584,7 +595,12 @@ const ProductDetailPage = () => {
                           alt={size.size}
                         />
                       </div>
-                      <div className="lbl-track">{size.size}</div>
+                      {/* <div className="lbl-track">{size.size}</div> */}
+                      {productDetails?.category_action_url === "dustbins" ? (
+                        <div className="lbl-track">{size.capacity}</div>
+                      ) : (
+                        <div className="lbl-track">{size.size}</div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -706,11 +722,11 @@ const ProductDetailPage = () => {
                 </div>
 
                 {pinloading && <p className="check_test">Checking...</p>}
-                {pinerror && (
+                {/* {pinerror && (
                   <p style={{ color: "red", marginTop: "15px" }}>
                     Not serviceable for your area
                   </p>
-                )}
+                )} */}
                 {pincodeDetails?.pincode && pincodeDetails?.is_active && (
                   <p style={{ color: "green", marginTop: "15px" }}>
                     ✅ Delivery available at {pincodeDetails?.city},{" "}

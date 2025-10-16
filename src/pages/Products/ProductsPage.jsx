@@ -20,6 +20,7 @@ import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "./otherproductSlice";
 import plpone from "../../assets/images/plp-01.png";
 import plptwo from "../../assets/images/plp-02.png";
+import API from "../../app/api";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ const ProductsPage = () => {
   const [selected, setSelected] = useState("Recommended");
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
+  const [customerfavourite, setCustomerfavourite] = useState();
   const { data, filters, loading } = useSelector((state) => state.products);
 
   useEffect(() => {
@@ -55,9 +57,21 @@ const ProductsPage = () => {
   // const products = Array.isArray(data) ? data : [];
 
   useEffect(() => {
-    dispatch(fetchTopPicks()); //
+    dispatch(fetchTopPicks());
+    getPLPbotton();
   }, [dispatch]);
 
+  const getPLPbotton = async () => {
+    try {
+      const res = await API.get("banners/product-listing-bottom");
+      if (res.data.status === 200) {
+        // Simulate delay only if you really want it
+        setCustomerfavourite(res?.data?.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     document.title = "Obsession - Product List";
     const token = localStorage.getItem("token");
@@ -656,38 +670,27 @@ const ProductsPage = () => {
               What makes Obsessions <br /> a customer <em>favourite</em>.
             </h2>
             <div className="obsession-columns">
-              <div className="obsession-col">
-                <h4>CRAFT</h4>
-                <p>
-                  It’s never just about products it’s about how they make our
-                  customers feel.
-                </p>
-              </div>
-              <div className="obsession-col">
-                <h4>PURPOSE</h4>
-                <p>
-                  From elegant design to practical use, every detail is
-                  obsessively crafted for the life you love living.
-                </p>
-              </div>
-              <div className="obsession-col">
-                <h4>STYLE</h4>
-                <p>
-                  We design with empathy; for how people live, love, and gather.
-                </p>
-              </div>
+              {customerfavourite?.content?.map((item, index) => {
+                const [title, description] = Object.entries(item)[0]; // extract key and value
+                return (
+                  <div className="obsession-col" key={index}>
+                    <h4>{title}</h4>
+                    <p>{description}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
           <div className="obsession-images">
             <div className="obsession-img-wrapper">
-              <img className="on-image-one" src={plpone} alt="Laundry" />
-              <span className="obsession-tag top-left">Designed for life</span>
-              <span className="obsession-tag top-right">Usability</span>
+              <img className="on-image-one" src={customerfavourite?.media[0]?.large} alt="Laundry" />
+              <span className="obsession-tag top-left">{customerfavourite?.tags[0]?.top_left}</span>
+              <span className="obsession-tag top-right">{customerfavourite?.tags[1]?.top_right}</span>
             </div>
             <div className="obsession-img-wrapper">
-              <img className="on-image-two" src={plptwo} alt="Cooking" />
-              <span className="obsession-tag bottom">Effortless function</span>
+              <img className="on-image-two" src={customerfavourite?.media[1]?.small} alt="Cooking" />
+              <span className="obsession-tag bottom">{customerfavourite?.tags[2]?.bottom_right}</span>
             </div>
           </div>
         </div>

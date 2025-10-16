@@ -21,10 +21,11 @@ import {
   makeDefaultAddress,
 } from "./addressSlice";
 import { useLocation } from "react-router-dom";
+import { checkPincode } from "../Productdetails/pincodeSlice";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
-   const location = useLocation();
+  const location = useLocation();
   const savedTab = localStorage.getItem("activeTab");
   const [activeTab, setActiveTab] = useState(savedTab || "profile");
   const [showEditModal, setShowEditModal] = useState(false);
@@ -35,8 +36,11 @@ const ProfilePage = () => {
   const [otp, setOtp] = useState("");
   const [otpSession, setOtpSession] = useState(null);
   const [dob, setDob] = useState("");
-  const [localLoading, setLocalLoading] = useState(true); 
+  const [localLoading, setLocalLoading] = useState(true);
   const [errors, setErrors] = useState({});
+  const { pinset, pinloading, pinerror } = useSelector(
+    (state) => state.pincode
+  );
 
   const [newAddress, setNewAddress] = useState({
     first_name: "",
@@ -102,12 +106,12 @@ const ProfilePage = () => {
     dispatch(getAddress());
   }, [dispatch]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (profileData && Object.keys(profileData).length > 0) {
-      setLocalLoading(false); 
+      setLocalLoading(false);
     }
   }, [profileData]);
-  
+
   // Send OTP API
   const handleSendOtp = async () => {
     try {
@@ -323,15 +327,37 @@ const ProfilePage = () => {
     return `${year}-${month}-${day}`;
   };
 
+  // ✅ When pincode API gives data, auto-fill state & city
+  useEffect(() => {
+    if (pinset) {
+      setNewAddress((prev) => ({
+        ...prev,
+        city: pinset.city,
+        state: pinset.state,
+      }));
+      setEditAddressData((prev) => ({
+        ...prev,
+        city: pinset.city,
+        state: pinset.state,
+      }));
+    }
+  }, [pinset, setNewAddress, setEditAddressData]);
+
   const handleNewAddressChange = (e) => {
     const { name, value } = e.target;
     setNewAddress((prev) => ({ ...prev, [name]: value }));
+    if (name === "pincode" && value.length === 6) {
+      dispatch(checkPincode(value));
+    }
   };
 
   // Address chnage
   const handleEditAddressChange = (e) => {
     const { name, value } = e.target;
     setEditAddressData((prev) => ({ ...prev, [name]: value }));
+    if (name === "pincode" && value.length === 6) {
+      dispatch(checkPincode(value));
+    }
   };
 
   const deteteAddress = (id) => {
@@ -364,98 +390,94 @@ const ProfilePage = () => {
         </div>
 
         <div className="content-wrapper">
-        {activeTab === "profile" && (
-  <div className="profile-section">
-    <div className="set_box">
-      {/* <div>
-        <h5>MY DETAILS</h5>
-        <p>Update your details below to keep your account current.</p>
-      </div> */}
-    </div>
+          {activeTab === "profile" && (
+            <div className="profile-section">
+              <div className="set_box">
+              </div>
 
-    <div>
-      <p className="txt_level">Name</p>
-      <div className="track_septor">
-        {localLoading ? (
-          <Skeleton width={180} />
-        ) : (
-          <>
-            {profileData?.first_name} {profileData?.last_name}
-          </>
-        )}
-      </div>
-    </div>
+              <div>
+                <p className="txt_level">Name</p>
+                <div className="track_septor">
+                  {localLoading ? (
+                    <Skeleton width={180} />
+                  ) : (
+                    <>
+                      {profileData?.first_name} {profileData?.last_name}
+                    </>
+                  )}
+                </div>
+              </div>
 
-    <div>
-      <p className="txt_level">Email</p>
-      <div
-        className="track_septor"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          justifyContent: "space-between",
-        }}
-      >
-        {localLoading ? (
-          <Skeleton width={200} />
-        ) : (
-          <>
-            {profileData?.email}
-            {profileData?.email_verified == 0 ? (
-              <u
-                onClick={handleSendOtp}
-                style={{ fontWeight: "bold", cursor: "pointer" }}
-              >
-                Verify
-              </u>
-            ) : profileData?.email_verified == 1 ? (
-              <span className="track_ver">
-                <span style={{ position: "relative", right: "5px" }}>
-                  <CircleCheckBig size={20} color="green" />
-                </span>
-                Email Verified
-              </span>
-            ) : null}
-          </>
-        )}
-      </div>
-    </div>
+              <div>
+                <p className="txt_level">Email</p>
+                <div
+                  className="track_septor"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {localLoading ? (
+                    <Skeleton width={200} />
+                  ) : (
+                    <>
+                      {profileData?.email}
+                      {profileData?.email_verified == 0 ? (
+                        <u
+                          onClick={handleSendOtp}
+                          style={{ fontWeight: "bold", cursor: "pointer" }}
+                        >
+                          Verify
+                        </u>
+                      ) : profileData?.email_verified == 1 ? (
+                        <span className="track_ver">
+                          <span style={{ position: "relative", right: "5px" }}>
+                            <CircleCheckBig size={20} color="green" />
+                          </span>
+                          Email Verified
+                        </span>
+                      ) : null}
+                    </>
+                  )}
+                </div>
+              </div>
 
-    <div>
-      <p className="txt_level">Phone</p>
-      <div className="track_septor">
-        {localLoading ? <Skeleton width={120} /> : profileData?.mobile}
-      </div>
-    </div>
+              <div>
+                <p className="txt_level">Phone</p>
+                <div className="track_septor">
+                  {localLoading ? <Skeleton width={120} /> : profileData?.mobile}
+                </div>
+              </div>
 
-    <div>
-      <p className="txt_level">Date of Birth</p>
-      <div className="track_septor">
-        {localLoading ? (
-          <Skeleton width={100} />
-        ) : (
-          profileData?.dob &&
-          new Date(profileData.dob)
-            .toLocaleDateString("en-GB")
-            .replaceAll("/", "-")
-        )}
-      </div>
-    </div>
+              <div>
+                <p className="txt_level">Date of Birth</p>
+                <div className="track_septor">
+                  {localLoading ? (
+                    <Skeleton width={100} />
+                  ) : (
+                    profileData?.dob &&
+                    new Date(profileData.dob)
+                      .toLocaleDateString("en-GB")
+                      .replaceAll("/", "-")
+                  )}
+                </div>
+              </div>
 
-    <div>
-      {localLoading ? (
-        <Skeleton height={40} width={150} borderRadius={10} />
-      ) : (
-        <div className="edit-btn" onClick={() => setShowEditModal(true)}>
-          <p>
-            <span className="edit_text"> EDIT DETAILS </span>
-          </p>
-        </div>
-      )}
-    </div>
-  </div>
-)}
+              <div>
+                {localLoading ? (
+                  <Skeleton height={40} width={150} borderRadius={10} />
+                ) : (
+                  <div className="edit-btn" onClick={() => setShowEditModal(true)}>
+                    <p>
+                      <span className="edit_text"> EDIT DETAILS </span>
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {activeTab === "address" && (
             <div className="address-section">
@@ -764,7 +786,7 @@ const ProfilePage = () => {
                   setErrors({});
                 }}
               >
-                <IoMdClose  size={25}/>
+                <IoMdClose size={25} />
               </button>
               <h3>Edit Address</h3>
 

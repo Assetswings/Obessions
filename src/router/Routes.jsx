@@ -34,9 +34,11 @@ import ReturnExchange from "../pages/ReturnExchange/Returnexchange";
 import Otherpage from "../pages/Otherproductlist/Otherpage";
 import VideoGallery from "../pages/VideoGallery/VideoGallery";
 import Failedpage from "../pages/Payment/Failedpage";
+import SizeGuide from "../pages/Sizeguid/SizeGuide";
+import StyleGuide from "../pages/Styleguid/StyleGuide";
 const AppRoutes = () => {
   return (
-    <ScrollToTopWrapper>
+    // <ScrollToTopWrapper>
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
@@ -76,9 +78,11 @@ const AppRoutes = () => {
           <Route path="bestseller" element={<Otherpage />} />
           <Route path="offer-spot" element={<Otherpage />} />
           <Route path="videogallery" element={<VideoGallery />} />
+          <Route path="size-guide" element={<SizeGuide/>} />
+          <Route path="style-guide" element={<StyleGuide/>} />
         </Route>
       </Routes>
-    </ScrollToTopWrapper>
+    // </ScrollToTopWrapper>
   );
 };
 

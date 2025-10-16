@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./CarpetFinder.css";
 import { ToastContainer, toast } from "react-toastify";
 import { ArrowDown, ArrowUp } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
 
 const CarpetFinder = () => {
   const dispatch = useDispatch();
@@ -114,10 +115,56 @@ const CarpetFinder = () => {
   if (loading) {
     return (
       <div className="finder-wrapper">
-        <p>Loading Carpet Finder...</p>
+        <div className="finder-main">
+          {/* Simulated title */}
+          <h2 className="finder-title">
+            <Skeleton width={400} height={25} />
+          </h2>
+
+          {/* Simulated grid */}
+          <div className="track-desk">
+            <div className="finder-grid">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="finder-card">
+                  <Skeleton height={140} />
+                  <div className="card-label">
+                    <Skeleton width={100} height={15} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="finder-buttons">
+            <div className="arrow-stack">
+              <Skeleton width={100} height={35} />
+            </div>
+            <div className="arrow-stack">
+              <Skeleton width={100} height={35} />
+            </div>
+          </div>
+        </div>
+
+        {/* Stepper skeleton */}
+        <div className="stepper-right">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="stepper-line-wrapper">
+              <Skeleton circle width={30} height={30} />
+              {i < 3 && <div className="stepper-line"><Skeleton height={30} /></div>}
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
+  // if (loading) {
+  //   return (
+  //     <div className="finder-wrapper">
+  //       <p>Loading Carpet Finder...</p>
+  //     </div>
+  //   );
+  // }
 
   // Error state
   if (error) {
@@ -139,54 +186,53 @@ const CarpetFinder = () => {
 
   return (
     <>
-      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
       <div className="finder-wrapper">
         <div className="finder-main">
           <h2 className="finder-title">{steps[currentStep]?.title}</h2>
-            <div className="track-desk"> 
-  <div className="finder-grid">
-            {steps[currentStep]?.options.map(({ label, image, key }) => (
-              <div
-                key={label}
-                className={`finder-card ${
-                  isSelected(currentStep, label) ? "selected" : ""
-                }`}
-                onClick={() => toggleOption(currentStep, label, key)}
-              >
-                {image ? (
-                  <img src={image} alt={label} />
-                ) : (
-                  <div className="img-placeholder">No Image</div>
-                )}
-                <span className="card-label">{label}</span>
-                {isSelected(currentStep, label) && (
-                  <div className="checkmark">✔</div>
-                )}
-              </div>
-            ))}
-          </div>
+          <div className="track-desk">
+            <div className="finder-grid">
+              {steps[currentStep]?.options.map(({ label, image, key }) => (
+                <div
+                  key={label}
+                  className={`finder-card ${isSelected(currentStep, label) ? "selected" : ""
+                    }`}
+                  onClick={() => toggleOption(currentStep, label, key)}
+                >
+                  {image ? (
+                    <img src={image} alt={label} />
+                  ) : (
+                    <div className="img-placeholder">No Image</div>
+                  )}
+                  <span className="card-label">{label}</span>
+                  {isSelected(currentStep, label) && (
+                    <div className="checkmark">✔</div>
+                  )}
+                </div>
+              ))}
             </div>
-        
+          </div>
+
           <div className="finder-buttons">
             <div
               className="arrow-stack"
               onClick={() => setCurrentStep((prev) => prev - 1)}
               disabled={currentStep === 0}>
-          <span> Back </span>  <span> <ArrowUp size={15}/> </span> 
+              <span> Back </span>  <span> <ArrowUp size={15} /> </span>
             </div>
             {currentStep < steps.length - 1 ? (
               <div
-                 className="arrow-stack"
+                className="arrow-stack"
                 onClick={() => {
                   if (!selections[currentStep]?.length) {
                     toast.error(
-                    "Please select at least one option to proceed."
+                      "Please select at least one option to proceed."
                     );
                     return;
                   }
                   setCurrentStep((prev) => prev + 1);
                 }}>
-              <span> Next </span>  <span>  <ArrowDown size={15} /></span> 
+                <span> Next </span>  <span>  <ArrowDown size={15} /></span>
               </div>
             ) : (
               <div className="submit-btn" onClick={handelseeresult}>
@@ -200,9 +246,8 @@ const CarpetFinder = () => {
           {steps.map((_, index) => (
             <div key={index} className="stepper-line-wrapper">
               <div
-                className={`stepper-circle ${
-                  index === currentStep ? "active" : ""
-                }`}
+                className={`stepper-circle ${index === currentStep ? "active" : ""
+                  }`}
               >
                 {index + 1}
               </div>

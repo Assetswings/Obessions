@@ -14,12 +14,16 @@ import { fetchUserProfile } from "../Profile/profileSlice";
 import { useNavigate } from "react-router-dom";
 import { Info, X } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
+import { checkPincode } from "../Productdetails/pincodeSlice";
 
 const CheckoutPage = () => {
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
+  const { pinset, pinloading, pinerror } = useSelector(
+    (state) => state.pincode
+  );
   const [newAddress, setNewAddress] = useState({
     first_name: "",
     last_name: "",
@@ -32,6 +36,16 @@ const CheckoutPage = () => {
     pincode: "",
   });
 
+  // ✅ When pincode API gives data, auto-fill state & city
+  useEffect(() => {
+    if (pinset) {
+      setNewAddress((prev) => ({
+        ...prev,
+        city: pinset.city,
+        state: pinset.state,
+      }));
+    }
+  }, [pinset, setNewAddress]);
   // GSTIN State
   const [gstinEnabled, setGstinEnabled] = useState(false);
   const [gstinData, setGstinData] = useState({
@@ -84,7 +98,10 @@ const CheckoutPage = () => {
 
   const handleNewAddressChange = (e) => {
     const { name, value } = e.target;
-    setNewAddress((prev) => ({ ...prev, [name]: value }));
+    setNewAddress((prev) => ({ ...prev, [name]: value }));  
+    if (name === "pincode" && value.length === 6) {
+      dispatch(checkPincode(value));
+    }
   };
 
   const handleGstinChange = (e) => {
@@ -247,7 +264,7 @@ const CheckoutPage = () => {
 
   return (
     <>
-      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
       <div className="root-title-chk">
         <h2 className="title_chk">Checkout</h2>
       </div>
@@ -394,7 +411,7 @@ const CheckoutPage = () => {
                   />
                 </div>
                 <div>
-                  <h6 className="gstin_title">GSTIN for Business</h6>
+                  <h6 className="gstin_title pointer-crusser" onClick={handleGstinToggle}>GSTIN for Business</h6>
                 </div>
               </div>
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./OrderTrackingPage.css";
 import { Check } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { fetchOrderHistory } from "../Orderhistory/orderhistorySlice";
 import API from "../../app/api";
 import Footer from "../../components/Footer/Footer";
@@ -124,29 +124,29 @@ const OrderTrackingPage = () => {
                 <p>₹{item.mrp}</p>
                 <p>Quantity : {item.quantity}</p>
                 <div className="actions">
-                  <span
-                    onClick={() => handleSimilarProductClick(item.action_url)}
-                  >
-                    Buy Again
-                  </span>
-                  <span
-                    onClick={() => {
-                      setSelectedItem({
-                        itemId: item.id,
-                        product_name: item.product_name,
-                        product_media: item.product_media,
-                        price: item.mrp,
-                        qty: item.quantity,
-                        order_no: order.order_no,
-                        allow_exchange: item.allow_exchange,
-                        allow_return: item.allow_return,
-                      });
-                      setSelectedOrder(order.order_no);
-                      setShowModal(true);
-                    }}
-                  >
-                    Exchange / Return
-                  </span>
+                  <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                  <span >Buy Again </span>
+                  </Link>
+                  {(item.allow_exchange || item.allow_return) && (
+                    <span
+                      onClick={() => {
+                        setSelectedItem({
+                          itemId: item.id,
+                          product_name: item.product_name,
+                          product_media: item.product_media,
+                          price: item.mrp,
+                          qty: item.quantity,
+                          order_no: order.order_no,
+                          allow_exchange: item.allow_exchange,
+                          allow_return: item.allow_return,
+                        });
+                        setSelectedOrder(order.order_no);
+                        setShowModal(true);
+                      }}
+                    >
+                      Exchange / Return
+                    </span>
+                  )}
                 </div>
               </div>
             </div>

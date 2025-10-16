@@ -79,10 +79,10 @@ body {
   background: rgba(0, 0, 0, 0.6);
   z-index: 99999;
 }
-.mobile_logo_track{
+/* .mobile_logo_track{
   position: relative;
   left: 10px;
-}
+} */
 
 .iteam_main{
   display: flex;

@@ -53,16 +53,6 @@ const Footer = () => {
     }
   };
 
-  // 🧭 Navigation Page
-  const handleNavigate = (route) => {
-    navigate("/" + route);
-  };
-
-  const handleCategoryClick = (categorySlug) => {
-    window.scrollTo({ top: 0, behavior: "auto" });
-    navigate("/products", { state: { category: categorySlug } });
-  };
-
   const handleSubscribe = async () => {
     if (!email.trim()) {
       setMessage("Please enter your email address.");

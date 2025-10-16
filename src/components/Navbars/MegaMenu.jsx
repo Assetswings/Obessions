@@ -3,7 +3,7 @@ import "./Megamenu.css";
 import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMegamenuData } from "./megamenuSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MegaMenu = ({ closeMenu }) => {
   const dispatch = useDispatch();
@@ -26,24 +26,6 @@ const MegaMenu = ({ closeMenu }) => {
     };
   }, []);
 
-  const handleSubcategoryClick = (categorySlug, subcategorySlug) => {
-    navigate("/products", {
-      state: {
-        category: categorySlug,
-        subcategory: subcategorySlug,
-      },
-    });
-    closeMenu();
-  };
-
-  const handleCategoryClick = (categorySlug) => {
-    navigate("/products", {
-      state: {
-        category: categorySlug,
-      },
-    });
-    closeMenu();
-  };
   if (loading || menuList.length === 0) {
     return <div className="mega-modal"></div>;
   }
@@ -78,7 +60,7 @@ const MegaMenu = ({ closeMenu }) => {
             <div className="menu-section" key={cat.id}>
               <h4
                 className="category-header"
-                // onClick={() => handleCategoryClick(cat.action_url)}
+              // onClick={() => handleCategoryClick(cat.action_url)}
               >
                 {cat.name}
               </h4>
@@ -86,12 +68,9 @@ const MegaMenu = ({ closeMenu }) => {
                 {cat.subcategories.map((sub) => (
                   <li
                     key={sub.id}
-                    onClick={() =>
-                      handleSubcategoryClick(cat.action_url, sub.action_url)
-                    }
                     className="mega-subcategory-link"
                   >
-                    {sub.name}
+                    <Link to={`/products/${cat.action_url}/${sub.action_url}`}>{sub.name}</Link>
                   </li>
                 ))}
               </ul>

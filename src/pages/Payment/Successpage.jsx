@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CheckCircle } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import "./Successpage.css"; // ✅ import CSS file
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAddOns } from "../Products/otherproductSlice";
@@ -19,16 +19,6 @@ const Successpage = () => {
     document.title = "Obsession - Payment Success";
     dispatch(fetchAddOns());
   }, [dispatch]);
-
-  const redirectProduct = (action_url) => {
-    const parts = action_url.replace(/^\/+/, "").split("/");
-
-    const categorySlug = parts[0];      // "bath Care"
-    const subcategorySlug = parts[1];   // "bath Set"
-
-    // Navigate with state
-    navigate("/products", { state: { category: categorySlug, subcategory: subcategorySlug } });
-  }
 
   return (
     <>
@@ -64,16 +54,13 @@ const Successpage = () => {
 
         {/* ✅ Buttons */}
         <div className="button-group">
-          <button
-            onClick={() =>
-              navigate("/OrderTrackingPage", {
-                state: { order_no: verifyResponse?.data?.order_no },
-              })
-            }
-            className="btn-outline"
-          >
-            TRACK ORDER
-          </button> &nbsp;
+          <Link to={`/OrderTrackingPage/${verifyResponse?.data?.order_no}`}>
+            <button
+              className="btn-outline"
+            >
+              TRACK ORDER
+            </button>
+          </Link>&nbsp;
           <button onClick={() => navigate("/")} className="btn-primary">
             CONTINUE SHOPPING
           </button>
@@ -100,13 +87,14 @@ const Successpage = () => {
         <div className="top-picks-grid">
           {addOns?.map((item) => (
             <div key={item.id} className="top-pick-card pointer-crusser">
-              <img
-                src={item.media}
-                alt={item.name}
-                className="top-pick-image"
-                onClick={() => redirectProduct(item.action_url)}
-              />
-              <p className="top-pick-title" onClick={() => redirectProduct(item.action_url)}>{item.name}</p>
+              <Link to={`/products${item.action_url}`}>
+                <img
+                  src={item.media}
+                  alt={item.name}
+                  className="top-pick-image"
+                />
+                <p className="top-pick-title" >{item.name}</p>
+              </Link>
             </div>
           ))}
         </div>

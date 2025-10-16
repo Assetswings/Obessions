@@ -4,7 +4,7 @@ import "../Products/ProductsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import productsSlice, { fetchProducts } from "../Products/productsSlice";
 import { Expand, Heart } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProductQuickViewModal from "../Products/ProductQuickViewModal";
@@ -248,25 +248,15 @@ const Searchlist = () => {
                     <div
                       key={item.id}
                       className="custom-product-card"
-                      onClick={(e) => {
-                        const isQuickView = e.target.closest(".qucick_dv");
-                        const isWishlist = e.target.closest(
-                          ".wishlist-btn_products"
-                        );
-                        if (!isQuickView && !isWishlist) {
-                          navigate("/productsdetails", {
-                            state: { product: item.action_url },
-                          });
-                        }
-                      }}
                       style={{ cursor: "pointer" }}
                     >
                       <div className="custom-product-image">
-                        <img
-                          src={item.media_list?.main?.file}
-                          alt={item.name}
-                        />
-
+                        <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                          <img
+                            src={item.media_list?.main?.file}
+                            alt={item.name}
+                          />
+                        </Link>
                         {/* wishlist_track */}
                         <button
                           className="wishlist-btn_products"
@@ -323,20 +313,24 @@ const Searchlist = () => {
                           </span>
                         </div>
                       </div>
-                      <p className="custom-product-title">{item.name}</p>
-                      <p className="custom-product-price">
-                        ₹{item.selling_price}
-                        {item.mrp && item.mrp !== item.selling_price && (
-                          <>
-                            <span className="custom-old-price">
-                              ₹{item.mrp}
-                            </span>
-                            <span className="custom-discount">
-                              (-{item.discount_percent}%)
-                            </span>
-                          </>
-                        )}
+                      <p className="custom-product-title">
+                        <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
                       </p>
+                      <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                        <p className="custom-product-price">
+                          ₹{item.selling_price}
+                          {item.mrp && item.mrp !== item.selling_price && (
+                            <>
+                              <span className="custom-old-price">
+                                ₹{item.mrp}
+                              </span>
+                              <span className="custom-discount">
+                                (-{item.discount_percent}%)
+                              </span>
+                            </>
+                          )}
+                        </p>
+                      </Link>
                     </div>
                   );
                 })

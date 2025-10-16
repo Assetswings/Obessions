@@ -6,6 +6,8 @@ import "./CarpetFinder.css";
 import { ToastContainer, toast } from "react-toastify";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
+import arrowleft from "../../assets/icons/Vector_left.png";
+import arrowright from "../../assets/icons/Vector_right.png";
 
 const CarpetFinder = () => {
   const dispatch = useDispatch();
@@ -218,7 +220,7 @@ const CarpetFinder = () => {
               className="arrow-stack"
               onClick={() => setCurrentStep((prev) => prev - 1)}
               disabled={currentStep === 0}>
-              <span> Back </span>  <span> <ArrowUp size={15} /> </span>
+              <img src={arrowleft} alt="arrowleft" /> <span> BACK </span>
             </div>
             {currentStep < steps.length - 1 ? (
               <div
@@ -232,7 +234,7 @@ const CarpetFinder = () => {
                   }
                   setCurrentStep((prev) => prev + 1);
                 }}>
-                <span> Next </span>  <span>  <ArrowDown size={15} /></span>
+                <span> NEXT </span> <img src={arrowright} alt="arrowright" />
               </div>
             ) : (
               <div className="submit-btn" onClick={handelseeresult}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ReturnExchange.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import API from "../../app/api";
 import Footer from "../../components/Footer/Footer";
@@ -278,7 +278,9 @@ const ReturnExchange = () => {
           {item ? (
             <div className="order-box">
               <div className="order-info">
-                <p className="order-title pointer-crusser" onClick={() => navigate("/productsdetails", { state: { product: item.action_url } })}>{item.product_name}</p>
+                <p className="order-title pointer-crusser" >
+                  <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.product_name}</Link>
+                </p>
                 <p>Qty : {item.qty}</p>
                 <p>Size : {item.size}</p>
                 <p>Color : {item.color}</p>

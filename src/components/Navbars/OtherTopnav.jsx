@@ -8,7 +8,7 @@ import {
   LogOut,
   Search,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MegaMenu from "./MegaMenu";
 import MegamenuDuo from "./MegamenuDuo";
 import WishlistModal from "../Wishtlist/WishlistModal";
@@ -149,7 +149,7 @@ const OtherTopnav = () => {
 
   return (
     <>
-      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
       <nav className="other-topnav">
 
         <div
@@ -293,20 +293,20 @@ const OtherTopnav = () => {
                     className="search-card"
                     onClick={() => {
                       claersearch();
-                      navigate("/productsdetails", {
-                        state: { product: item.action_url },
-                      });
                     }}>
-                    <img
-                      src={item.media_list?.main?.file}
-                      alt={item.name}
-                      className="search-card-img"
-                    />
-                    <div className="search-card-body">
-                      <h6 className="search-card-title">
-                        {item.name.split(" ").slice(0, 5).join(" ")}
-                      </h6>
-                    </div>
+                    <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                      <img
+                        src={item.media_list?.main?.file}
+                        alt={item.name}
+                        className="search-card-img"
+                      />
+                      <div className="search-card-body">
+                        <h6 className="search-card-title">
+                          {item.name.split(" ").slice(0, 5).join(" ")}
+                        </h6>
+                      </div>
+
+                    </Link>
                   </div>
                 ))}
               </div>

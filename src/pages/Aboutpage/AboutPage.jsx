@@ -9,7 +9,7 @@ import { Lightbulb, Palette, Recycle } from "lucide-react";
 const AboutPage = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.about);
-  console.log(data,'about us data');
+  console.log(data, 'about us data');
   useEffect(() => {
     document.title = "Obsession - About Us";
     dispatch(fetchAboutUs());
@@ -18,7 +18,7 @@ const AboutPage = () => {
     <>
       <div className="about-wrapper">
         {/* Hero Section */}
-        <section className="about-hero" style={{backgroundImage: `url(${data?.bg_media})`,}}>
+        <section className="about-hero" style={{ backgroundImage: `url(${data?.bg_media})`, }}>
           <div className="hero-overlay">
             <h1>
               Our <span className="italic">passion</span> lies in <br />
@@ -30,21 +30,21 @@ const AboutPage = () => {
         {/* Text Content Section */}
         {/* Styled Text Section */}
         <section className="about-text-section">
-            <img
-              src="https://i.ibb.co/Y71fcG8C/noun-diamond-4705189-1.png"
-              alt="Philosophy Detail"
-              className="top-left-icon"
-            />
-            <div className="about-text-content">
+          <img
+            src="https://i.ibb.co/Y71fcG8C/noun-diamond-4705189-1.png"
+            alt="Philosophy Detail"
+            className="top-left-icon"
+          />
+          <div className="about-text-content">
             <p>
               {data?.description}
             </p>
           </div>
           <img
-              src="https://i.ibb.co/JFcb1Fyk/noun-quality-6975416-2.png"
-              alt="Philosophy Detail"
-              className="bottom-right-icon"
-            />
+            src="https://i.ibb.co/JFcb1Fyk/noun-quality-6975416-2.png"
+            alt="Philosophy Detail"
+            className="bottom-right-icon"
+          />
         </section>
 
         <section className="philosophy-section">
@@ -70,7 +70,7 @@ const AboutPage = () => {
           </div>
         </section>
       </div>
-{/* 
+      {/* 
       <div className="tr_div">
         <img
           src="https://i.ibb.co/zWJZCQLL/Frame-1513.png"
@@ -78,7 +78,45 @@ const AboutPage = () => {
         />
       </div> */}
 
-   
+      <section className="thirty-years-section">
+        <div className="container">
+          <div className="row align-items-center">
+            {/* Left Image Columns */}
+            <div className="col-md-6">
+              <div className="row">
+                {/* Left Column */}
+                <div className="col-lg-6 col-md-6">
+                  <div className="photo-col">
+                    {Object.values(data?.thirty_years?.left || {}).map((url, index) => (
+                      <img key={index} src={url} alt="Thirty Years Left" />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="col-lg-6 col-md-6">
+                  <div className="photo-col">
+                    {Object.values(data?.thirty_years?.right || {}).map((url, index) => (
+                      <img key={index} src={url} alt="Thirty Years Right" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Text Section */}
+            <div className="col-md-6">
+              <div className="text-section">
+                <p>{data?.thirty_years?.other?.description || ""}</p>
+                <div className="divider-line"></div>
+                <h1>30 Years</h1>
+                <h4>of Transforming Spaces</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
       {/* <div className="tr_div2">
         <img
@@ -87,47 +125,47 @@ const AboutPage = () => {
         />
       </div> */}
 
-      <div className="root_track_pr"> 
-      <section className="promise-section">
-      <div className="promise-header">
-        <h2>
-          The Obsession <span>Promise</span>
-        </h2>
-        <p>
-          We design with you in mind; your lifestyle, your home, your needs. From sleek designs to clever functionality, every Obsessions product is made to make your everyday feel a little more beautiful and a lot more effortless.
-        </p>
+      <div className="root_track_pr">
+        <section className="promise-section">
+          <div className="promise-header">
+            <h2>
+              The Obsession <span>Promise</span>
+            </h2>
+            <p>
+              We design with you in mind; your lifestyle, your home, your needs. From sleek designs to clever functionality, every Obsessions product is made to make your everyday feel a little more beautiful and a lot more effortless.
+            </p>
+          </div>
+
+          <div className="promise-features">
+            <div className="feature-item">
+              <Palette className="feature-icon" strokeWidth={1.2} />
+              <h3>CRAFTSMANSHIP</h3>
+              <p>
+                Every detail matters; our products are carefully made to reflect precision, passion, and skill.
+              </p>
+            </div>
+
+            <div className="feature-item">
+              <Lightbulb className="feature-icon" strokeWidth={1.2} />
+              <h3>INNOVATION</h3>
+              <p>
+                We believe innovation should feel effortless; and look good doing it.
+              </p>
+            </div>
+
+            <div className="feature-item">
+              <Recycle className="feature-icon" strokeWidth={1.2} />
+              <h3>SUSTAINABILITY</h3>
+              <p>
+                From sustainable materials to minimal packaging, we’re committed to reducing waste.
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
 
-      <div className="promise-features">
-        <div className="feature-item">
-          <Palette className="feature-icon" strokeWidth={1.2} />
-          <h3>CRAFTSMANSHIP</h3>
-          <p>
-            Every detail matters; our products are carefully made to reflect precision, passion, and skill.
-          </p>
-        </div>
 
-        <div className="feature-item">
-          <Lightbulb className="feature-icon" strokeWidth={1.2} />
-          <h3>INNOVATION</h3>
-          <p>
-            We believe innovation should feel effortless; and look good doing it.
-          </p>
-        </div>
-
-        <div className="feature-item">
-          <Recycle className="feature-icon" strokeWidth={1.2} />
-          <h3>SUSTAINABILITY</h3>
-          <p>
-            From sustainable materials to minimal packaging, we’re committed to reducing waste.
-          </p>
-        </div>
-      </div>
-    </section>
-    </div> 
-
-
-       <Footer/>
+      <Footer />
     </>
   );
 };

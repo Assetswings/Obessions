@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCartDetails, removeCartItem, updateCartItem } from "./cartSlice";
 import { addToWishlist } from "../../components/Wishtlist/WishlistSlice";
 import Footer from "../../components/Footer/Footer";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import blankcart from "../../assets/images/blank-cart.png";
 import { fetchAddOns } from "../Products/otherproductSlice";
 import { ToastContainer, toast } from "react-toastify";
@@ -139,17 +139,19 @@ const CartPage = () => {
             items.map((item) => (
               <div className="cart-item" key={item.id}>
                 <div className="item-image">
+                  <Link to={`/productsdetails/${item.product?.action_url}`} target="_blank" rel="noopener noreferrer">
                   <img
                     className="img-cart-page pointer-crusser"
                     src={item.product?.media}
                     alt={item.product?.name || "product"}
-                    onClick={() => navigate("/productsdetails", { state: { product: item.product?.action_url } })}
                   />
+                  </Link>
                 </div>
 
                 <div className="item-details">
-                  <h4 className="item-title pointer-crusser"
-                    onClick={() => navigate("/productsdetails", { state: { product: item.product?.action_url } })}>{item.product?.name}</h4>
+                  <h4 className="item-title pointer-crusser">
+                    <Link to={`/productsdetails/${item.product?.action_url}`} target="_blank" rel="noopener noreferrer">{item.product?.name}</Link>
+                  </h4>
                   <span className="price_details_cart">
                     ₹{item.product?.selling_price}
                     {item.product?.mrp && item.product?.mrp !== item.product?.selling_price && (

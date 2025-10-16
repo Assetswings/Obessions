@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./OrderTrackingPage.css";
 import { Check } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
 import { fetchOrderHistory } from "../Orderhistory/orderhistorySlice";
 import API from "../../app/api";
 import Footer from "../../components/Footer/Footer";
@@ -15,10 +15,11 @@ const OrderTrackingPage = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
-  const { order_no } = location.state || {};
+  const { orderNo: order_no } = useParams();
+  // const { order_no } = orderNo || null;
   const { results, loading, error } = useSelector((state) => state.orders);
-
+  // console.log('url order no',orderNo, order_no);
+  
   const order = results[0]; // ✅ take first order safely
   const trackingUpdates = [
     { label: "Order Placed", time: null, status: "done", type: "major" },
@@ -72,10 +73,6 @@ const OrderTrackingPage = () => {
       // toast.error(err.response?.data?.message || "Failed to send OTP");
       console.log(err);
     }
-  };
-
-  const handleSimilarProductClick = (slug) => {
-    navigate("/productsdetails", { state: { product: slug } });
   };
 
   const handleProceed = () => {

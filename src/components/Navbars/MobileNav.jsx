@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./MobileNav.css";
-import {Heart,CircleUser,ShoppingCart,ChevronRight,ChevronLeft,Plus,Minus,User,LogOut,} from "lucide-react";
+import { Heart, CircleUser, ShoppingCart, ChevronRight, ChevronLeft, Plus, Minus, User, LogOut, } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import mobilelogo from "../../assets/images/Logomobile.png";
 import { fetchMegamenuData } from "./megamenuSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
 
@@ -102,16 +102,6 @@ const MobileNav = () => {
     };
   }, [isOpen]);
 
-  const handleSubcategoryClick = (categorySlug, subcategorySlug) => {
-    navigate("/products", {
-      state: {
-        category: categorySlug,
-        subcategory: subcategorySlug,
-      },
-    });
-    toggleDrawer();
-  };
-
   const handelroute = (route) => {
     navigate(route);
   };
@@ -173,7 +163,7 @@ const MobileNav = () => {
           <span></span>
           <span></span>
 
-          
+
         </div>
         <div className="mobile_logo_track" onClick={() => handelroute("/")}>
           <img src={mobilelogo} width={120} alt="logo" />
@@ -209,14 +199,14 @@ const MobileNav = () => {
             </span>
           )}
 
-  <>  
+          <>
 
-  <div className="track_sector_close"> 
-  <span onClick={toggleDrawer} className="close-btn-mlb" >
-            ✕
-          </span>
-   </div> 
-  </>
+            <div className="track_sector_close">
+              <span onClick={toggleDrawer} className="close-btn-mlb" >
+                ✕
+              </span>
+            </div>
+          </>
         </div>
 
         <div className="menu-container">
@@ -287,14 +277,8 @@ const MobileNav = () => {
                     <ul className="submenu">
                       {category.subcategories.map((sub) => (
                         <li
-                          key={sub.id}
-                          onClick={() =>
-                            handleSubcategoryClick(
-                              category.action_url,
-                              sub.action_url
-                            )
-                          }>
-                          {sub.name}
+                          key={sub.id}>
+                          <Link to={`/products/${category.action_url}/${sub.action_url}`}>{sub.name}</Link>
                         </li>
                       ))}
                     </ul>
@@ -312,8 +296,8 @@ const MobileNav = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-        {isLoggedIn && showUserPopup && (
-            <>
+      {isLoggedIn && showUserPopup && (
+        <>
           <div className="popup-triangle"></div>
           <div className="user-popup">
             <div className="popup-item" onClick={handleProfile}>

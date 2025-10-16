@@ -200,12 +200,6 @@ const ProductDetailPage = () => {
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
   const productId = data?.id || productSlug;
 
-  // ping the wishlist
-  const handleSimilarProductClick = (slug) => {
-    window.scrollTo({ top: 0, behavior: "auto" });
-    navigate("/productsdetails", { state: { product: slug } });
-  };
-
   const handlefinder = () => {
     navigate("/carpet-finder");
   };

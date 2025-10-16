@@ -366,22 +366,19 @@ const HomePage = () => {
                     <div
                       key={index}
                       className="search-card"
-                      onClick={() =>
-                        navigate("/productsdetails", {
-                          state: { product: item.action_url },
-                        })
-                      }
                     >
-                      <img
-                        src={item.media_list?.main?.file}
-                        alt={item.name}
-                        className="search-card-img"
-                      />
-                      <div className="search-card-body">
-                        <h6 className="search-card-title">
-                          {item.name.split(" ").slice(0, 5).join(" ")}
-                        </h6>
-                      </div>
+                      <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                        <img
+                          src={item.media_list?.main?.file}
+                          alt={item.name}
+                          className="search-card-img"
+                        />
+                        <div className="search-card-body">
+                          <h6 className="search-card-title">
+                            {item.name.split(" ").slice(0, 5).join(" ")}
+                          </h6>
+                        </div>
+                      </Link>
                     </div>
                   ))}
                 </div>

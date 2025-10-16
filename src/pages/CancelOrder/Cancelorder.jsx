@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./CancelOrder.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import API from "../../app/api";
 import { ToastContainer, toast } from "react-toastify";
 import Footer from "../../components/Footer/Footer";
@@ -110,7 +110,7 @@ const CancelOrder = () => {
 
   return (
     <>
-      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
       <div className="cancel-order-container">
         {/* Left Section */}
         <div className="cancel-order-form">
@@ -186,7 +186,11 @@ const CancelOrder = () => {
           {item ? (
             <div className="order-box">
               <div className="order-info">
-                <p className="order-title pointer-crusser" onClick={()=>navigate("/productsdetails", { state: { product: item.action_url } })}>{item.product_name}</p>
+                <p className="order-title pointer-crusser">
+                  <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                    {item.product_name}
+                  </Link>
+                </p>
                 <p>Qty : {item.qty}</p>
                 <p>Size : {item.size}</p>
                 <p>Color : {item.color}</p>

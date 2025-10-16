@@ -606,7 +606,7 @@ const ProductsPage = () => {
                     <p className="product-title">
                       <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
                     </p>
-                    <Link to={`/productsdetails/${item.action_url}`}>
+                    <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
                       <div className="product-price">
                         <span>₹{item.selling_price}</span>
                         {item.mrp && item.mrp !== item.selling_price && (

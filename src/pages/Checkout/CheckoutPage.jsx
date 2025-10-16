@@ -11,7 +11,7 @@ import {
   editAddress,
 } from "../Profile/addressSlice";
 import { fetchUserProfile } from "../Profile/profileSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Info, X } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import { checkPincode } from "../Productdetails/pincodeSlice";
@@ -98,7 +98,7 @@ const CheckoutPage = () => {
 
   const handleNewAddressChange = (e) => {
     const { name, value } = e.target;
-    setNewAddress((prev) => ({ ...prev, [name]: value }));  
+    setNewAddress((prev) => ({ ...prev, [name]: value }));
     if (name === "pincode" && value.length === 6) {
       dispatch(checkPincode(value));
     }
@@ -276,15 +276,18 @@ const CheckoutPage = () => {
           {checkoutData?.data?.items.map((item) => (
             <div className="cart-item" key={item.id}>
               <div className="item-image">
-                <img
-                  className="img-cart-page pointer-crusser"
-                  src={item.product.media}
-                  alt="product"
-                  onClick={() => navigate("/productsdetails", { state: { product: item.product?.action_url } })}
-                />
+                <Link to={`/productsdetails/${item.product?.action_url}`} target="_blank" rel="noopener noreferrer">
+                  <img
+                    className="img-cart-page pointer-crusser"
+                    src={item.product.media}
+                    alt="product"
+                  />
+                </Link>
               </div>
               <div className="item-details">
-                <h4 className="item-title pointer-crusser" onClick={() => navigate("/productsdetails", { state: { product: item.product?.action_url } })}>{item.product.name}</h4>
+                <h4 className="item-title pointer-crusser">
+                  <Link to={`/productsdetails/${item.product?.action_url}`} target="_blank" rel="noopener noreferrer">{item.product?.name}</Link>
+                </h4>
                 <p className="price_details">
                   ₹{item.product.selling_price}{" "}
                   {item.mrp && item.mrp !== item.selling_price && (

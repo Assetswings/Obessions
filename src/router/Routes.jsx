@@ -52,8 +52,8 @@ const AppRoutes = () => {
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="orderhistory" element={<OrderHistoryPage />} />
           <Route path="OrderTrackingPage" element={<OrderTrackingPage />} />
+          <Route path="OrderTrackingPage/:orderNo" element={<OrderTrackingPage />} />
           <Route path="login" element={<LoginPage />} />
-          {/* <Route path="OrderTrackingPage" element={<OrderTrackingPage />} /> */}
           <Route path="ProfilePage" element={<ProfilePage />} />
           <Route path="paymentgetway" element={<PaymentPage />} />
           <Route path="ordersuccess" element={<Successpage />} />
@@ -78,8 +78,8 @@ const AppRoutes = () => {
           <Route path="bestseller" element={<Otherpage />} />
           <Route path="offer-spot" element={<Otherpage />} />
           <Route path="videogallery" element={<VideoGallery />} />
-          <Route path="size-guide" element={<SizeGuide/>} />
-          <Route path="style-guide" element={<StyleGuide/>} />
+          <Route path="style-guide" element={<SizeGuide/>} />
+          <Route path="size-guide" element={<StyleGuide/>} />
         </Route>
       </Routes>
     // </ScrollToTopWrapper>

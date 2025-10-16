@@ -21,6 +21,7 @@ import { fetchTopPicks } from "./otherproductSlice";
 import plpone from "../../assets/images/plp-01.png";
 import plptwo from "../../assets/images/plp-02.png";
 import API from "../../app/api";
+import Pagination from "../../components/Pagination/Pagination";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
@@ -49,12 +50,16 @@ const ProductsPage = () => {
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
   const [customerfavourite, setCustomerfavourite] = useState();
-  const { data, filters, loading } = useSelector((state) => state.products);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, filters, pagination, loading } = useSelector((state) => state.products);
+
+  const total = pagination?.total || 0;
+  const limit = pagination?.limit || 20;
+  const totalPages = Math.ceil(total / limit);
 
   useEffect(() => {
     setProducts(Array.isArray(data) ? data : []);
   }, [data]);
-  // const products = Array.isArray(data) ? data : [];
 
   useEffect(() => {
     dispatch(fetchTopPicks());
@@ -85,13 +90,28 @@ const ProductsPage = () => {
         fetchProducts({
           category,
           subcategory,
-          page: 1,
+          page: currentPage,
           limit: 20,
           filters: selectedFilters,
         })
       );
     }
-  }, [dispatch, category, subcategory, selectedFilters]);
+  }, [dispatch, category, subcategory, selectedFilters, currentPage]);
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+
+      // 👇 Scroll smoothly to the top after changing page
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }, 200);
+    }
+  };
+
 
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
@@ -408,32 +428,6 @@ const ProductsPage = () => {
               </>
             )}
           </div>
-
-          {/* {loading ? (
-            <>
-              <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div className="custom-filter-group" key={i}>
-                  <Skeleton
-                    height={14}
-                    width={100}
-                    style={{ marginBottom: 10 }}
-                  />
-                  <Skeleton
-                    count={4}
-                    height={16}
-                    width={120}
-                    style={{ marginBottom: 8 }}
-                  />
-                </div>
-              ))}
-            </>
-          ) : (
-            filters &&
-            Object.entries(filters).map(([filterKey, values]) =>
-              renderFilterGroup(filterKey.replace(/_/g, " "), values, filterKey)
-            )
-          )} */}
           {loading ? (
             // 🔄 Skeleton loader while fetching data
             <>
@@ -641,28 +635,30 @@ const ProductsPage = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-<nav aria-label="Page navigation example">
-  <ul class="pagination custom-pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&lsaquo;</span>
-      </a>
-    </li>
-    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">...</a></li>
-    <li class="page-item"><a class="page-link" href="#">10</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&rsaquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-
-
-
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
+      {/* <nav aria-label="Page navigation example">
+        <ul class="pagination custom-pagination">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&lsaquo;</span>
+            </a>
+          </li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">...</a></li>
+          <li class="page-item"><a class="page-link" href="#">10</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&rsaquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav> */}
 
       <section className="top-picks-section">
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>

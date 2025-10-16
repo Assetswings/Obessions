@@ -641,6 +641,29 @@ const ProductsPage = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
+<nav aria-label="Page navigation example">
+  <ul class="pagination custom-pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&lsaquo;</span>
+      </a>
+    </li>
+    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">...</a></li>
+    <li class="page-item"><a class="page-link" href="#">10</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&rsaquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+
+
+
       <section className="top-picks-section">
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
         <div className="top-picks-grid">

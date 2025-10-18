@@ -320,8 +320,9 @@
     font-family: 'Segoe UI', sans-serif;
   }
 }
- /* thirty year section css  */
-.thirty-years-section {
+
+
+ .thirty-years-section {
   padding: 60px 0;
   background-color: #fff;
 }
@@ -364,6 +365,9 @@
   font-style: italic;
   font-weight: 400;
   margin-top: 10px;
+}
+.container{
+   display: flex;
 }
 
 @media (max-width: 991px) {

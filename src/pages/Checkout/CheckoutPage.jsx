@@ -361,7 +361,7 @@ const CheckoutPage = () => {
             <br />
             <h4 className="title_roolt_checkout">Personal Information</h4>
             <div className="root_track">
-              <div className="row">
+              <div className="row trackrow">
                 <div className="per-row-input">
                   <input
                     type="text"

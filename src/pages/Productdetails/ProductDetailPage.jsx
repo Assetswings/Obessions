@@ -46,16 +46,17 @@ const ProductDetailPage = () => {
   const sectionsRef = useRef({});
   const prevSlugRef = useRef(null);
   const [pincodeDetails, setPincodeDetails] = useState({});
+  const [selectedMedia, setSelectedMedia] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { itemSlug } = useParams();
   const productSlug = location.state?.product || itemSlug || null;
   const { data, loading, error } = useSelector((state) => state.productDetail);
   const { pinset, pinloading, pinerror } = useSelector(
-    (state) => state.pincode
+  (state) => state.pincode
   );
 
-  useEffect(() => {
+     useEffect(() => {
     document.title = "Obsession - Products Details ";
     if (!productSlug) return;
     // Only run when slug actually changes
@@ -433,85 +434,165 @@ const ProductDetailPage = () => {
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">
+  {/* Main Image or Video Section */}
+  <div className="image_track" style={{ width: "100%", minHeight: "750px" }}>
+    {loading || !selectedImage ? (
+      <div style={{ width: "100%", height: "100%" }}>
+        <Skeleton
+          height="100%"
+          width="100%"
+          baseColor="#e0e0e0"
+          highlightColor="#f5f5f5"
+        />
+      </div>
+    ) : selectedImage === "video" ? (
+      <video
+        controls
+        autoPlay
+        muted
+        style={{
+          width: "100%",
+          height: "auto",
+          objectFit: "cover",
+          borderRadius: "10px",
+        }}
+      >
+        <source
+          src="https://videos.pexels.com/video-files/856799/856799-hd_1920_1080_25fps.mp4"
+          type="video/mp4"
+        />
+        Your browser does not support the video tag.
+      </video>
+    ) : (
+      <img
+        src={selectedImage}
+        alt="Main Product"
+        className="main-image"
+        style={{
+          width: "100%",
+          height: "auto",
+          mixBlendMode: "darken",
+          objectFit: "cover",
+        }}
+      />
+    )}
+  </div>
+
+  {/* Mobile view */}
+  <div
+    className="image_track_mobile"
+    style={{ width: "100%", minHeight: "250px" }}
+  >
+    {loading || !selectedImage ? (
+      <div style={{ width: "100%", height: "100%" }}>
+        <Skeleton
+          height="100%"
+          width="100%"
+          baseColor="#e0e0e0"
+          highlightColor="#f5f5f5"
+        />
+      </div>
+    ) : selectedImage === "video" ? (
+      <video
+        controls
+        autoPlay
+        muted
+        style={{
+          width: "100%",
+          height: "auto",
+          objectFit: "cover",
+          borderRadius: "10px",
+        }}
+      >
+        <source
+          src="https://videos.pexels.com/video-files/856799/856799-hd_1920_1080_25fps.mp4"
+          type="video/mp4"
+        />
+      </video>
+    ) : (
+      <img
+        src={selectedImage}
+        alt="Main Product"
+        className="main-image"
+        style={{
+          width: "100%",
+          height: "auto",
+          mixBlendMode: "darken",
+          objectFit: "cover",
+        }}
+      />
+    )}
+  </div>
+
+  {/* Thumbnail Row */}
+  <div className="thumbnail-row">
+    {localLoading
+      ? Array(4)
+          .fill(0)
+          .map((_, index) => (
+            <Skeleton
+              key={index}
+              height={70}
+              width={70}
+              style={{ marginRight: 10 }}
+            />
+          ))
+      : (
+        <>
+          {selectedColor?.product_media?.map((img, index) => (
+            <img
+              key={index}
+              src={img.media}
+              alt={`Thumbnail ${index + 1}`}
+              className={`thumbnail ${
+                selectedImage === img.media ? "selected-thumb" : ""
+              }`}
+              onClick={() => setSelectedImage(img.media)}
+            />
+          ))}
+
+          {/* Static video thumbnail (at the end) */}
           <div
-            className="image_track"
-            style={{ width: "100%", minHeight: "750px" }}
+            className={`thumbnail video-thumb ${
+              selectedImage === "video" ? "selected-thumb" : ""
+            }`}
+            onClick={() => setSelectedImage("video")}
+            style={{
+              width: "65px",
+              height: "60px",
+              position: "relative",
+              overflow: "hidden",
+              cursor: "pointer",
+            }}
           >
-            {loading || !selectedImage ? (
-              <div style={{ width: "100%", height: "100%" }}>
-                <Skeleton
-                  height="100%"
-                  width="100%"
-                  baseColor="#e0e0e0"
-                  highlightColor="#f5f5f5"
-                />
-              </div>
-            ) : (
-              <img
-                src={selectedImage}
-                alt="Main Product"
-                className="main-image"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  mixBlendMode: "darken",
-                  objectFit: "cover",
-                }}
-              />
-            )}
+            <img
+              src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
+              alt="Video Thumbnail"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                top: "0",
+                left: "0",
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.3)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#fff",
+                fontSize: "22px",
+                fontWeight: "bold",
+              }}
+            >
+              ▶
+            </div>
           </div>
-          <div
-            className="image_track_mobile"
-            style={{ width: "100%", minHeight: "250px" }}
-          >
-            {loading || !selectedImage ? (
-              <div style={{ width: "100%", height: "100%" }}>
-                <Skeleton
-                  height="100%"
-                  width="100%"
-                  baseColor="#e0e0e0"
-                  highlightColor="#f5f5f5"
-                />
-              </div>
-            ) : (
-              <img
-                src={selectedImage}
-                alt="Main Product"
-                className="main-image"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  mixBlendMode: "darken",
-                  objectFit: "cover",
-                }}
-              />
-            )}
-          </div>
-          {/* Thumbnails */}
-          <div className="thumbnail-row">
-            {localLoading
-              ? Array(4)
-                .fill(0)
-                .map((_, index) => (
-                  <Skeleton
-                    key={index}
-                    height={70}
-                    width={70}
-                    style={{ marginRight: 10 }}
-                  />
-                ))
-              : selectedColor?.product_media?.map((img, index) => (
-                <img
-                  key={index}
-                  src={img.media}
-                  alt={`Thumbnail ${index + 1}`}
-                  className={`thumbnail ${selectedImage === img.media ? "selected-thumb" : ""
-                    }`}
-                  onClick={() => setSelectedImage(img.media)}
-                />
-              ))}
-          </div>
-        </div>
+        </>
+      )}
+  </div>
+</div>
 
         {/* Product Info */}
         <div className="product-info">

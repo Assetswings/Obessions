@@ -53,10 +53,10 @@ const ProductDetailPage = () => {
   const productSlug = location.state?.product || itemSlug || null;
   const { data, loading, error } = useSelector((state) => state.productDetail);
   const { pinset, pinloading, pinerror } = useSelector(
-  (state) => state.pincode
+    (state) => state.pincode
   );
 
-     useEffect(() => {
+  useEffect(() => {
     document.title = "Obsession - Products Details ";
     if (!productSlug) return;
     // Only run when slug actually changes
@@ -404,7 +404,7 @@ const ProductDetailPage = () => {
     return <div className="error">Error: {error}</div>;
   }
 
-  if(pinerror){
+  if (pinerror) {
     toast.error("Invalid or unavailable pincode!");
   }
 
@@ -434,165 +434,176 @@ const ProductDetailPage = () => {
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">
-  {/* Main Image or Video Section */}
-  <div className="image_track" style={{ width: "100%", minHeight: "750px" }}>
-    {loading || !selectedImage ? (
-      <div style={{ width: "100%", height: "100%" }}>
-        <Skeleton
-          height="100%"
-          width="100%"
-          baseColor="#e0e0e0"
-          highlightColor="#f5f5f5"
-        />
-      </div>
-    ) : selectedImage === "video" ? (
-      <video
-        controls
-        autoPlay
-        muted
-        style={{
-          width: "100%",
-          height: "auto",
-          objectFit: "cover",
-          borderRadius: "10px",
-        }}
-      >
-        <source
-          src="https://videos.pexels.com/video-files/856799/856799-hd_1920_1080_25fps.mp4"
-          type="video/mp4"
-        />
-        Your browser does not support the video tag.
-      </video>
-    ) : (
-      <img
-        src={selectedImage}
-        alt="Main Product"
-        className="main-image"
-        style={{
-          width: "100%",
-          height: "auto",
-          mixBlendMode: "darken",
-          objectFit: "cover",
-        }}
-      />
-    )}
-  </div>
+          {/* Main Image or Video Section */}
+          <div className="image_track" style={{ width: "100%", minHeight: "750px" }}>
+            {loading || !selectedImage ? (
+              <div style={{ width: "100%", height: "100%" }}>
+                <Skeleton
+                  height="100%"
+                  width="100%"
+                  baseColor="#e0e0e0"
+                  highlightColor="#f5f5f5"
+                />
+              </div>
+            ) : selectedImage === "video" ? (
+              selectedColor?.video_source?.includes("youtube.com") ? (
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={`${selectedColor.video_source}?autoplay=1&mute=1`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  style={{ borderRadius: "10px", width: "100%", height: "100%" }}
+                ></iframe>
+              ) : (
+                <video
+                  controls
+                  autoPlay
+                  muted
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <source src={selectedColor?.video_source} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )
 
-  {/* Mobile view */}
-  <div
-    className="image_track_mobile"
-    style={{ width: "100%", minHeight: "250px" }}
-  >
-    {loading || !selectedImage ? (
-      <div style={{ width: "100%", height: "100%" }}>
-        <Skeleton
-          height="100%"
-          width="100%"
-          baseColor="#e0e0e0"
-          highlightColor="#f5f5f5"
-        />
-      </div>
-    ) : selectedImage === "video" ? (
-      <video
-        controls
-        autoPlay
-        muted
-        style={{
-          width: "100%",
-          height: "auto",
-          objectFit: "cover",
-          borderRadius: "10px",
-        }}
-      >
-        <source
-          src="https://videos.pexels.com/video-files/856799/856799-hd_1920_1080_25fps.mp4"
-          type="video/mp4"
-        />
-      </video>
-    ) : (
-      <img
-        src={selectedImage}
-        alt="Main Product"
-        className="main-image"
-        style={{
-          width: "100%",
-          height: "auto",
-          mixBlendMode: "darken",
-          objectFit: "cover",
-        }}
-      />
-    )}
-  </div>
-
-  {/* Thumbnail Row */}
-  <div className="thumbnail-row">
-    {localLoading
-      ? Array(4)
-          .fill(0)
-          .map((_, index) => (
-            <Skeleton
-              key={index}
-              height={70}
-              width={70}
-              style={{ marginRight: 10 }}
-            />
-          ))
-      : (
-        <>
-          {selectedColor?.product_media?.map((img, index) => (
-            <img
-              key={index}
-              src={img.media}
-              alt={`Thumbnail ${index + 1}`}
-              className={`thumbnail ${
-                selectedImage === img.media ? "selected-thumb" : ""
-              }`}
-              onClick={() => setSelectedImage(img.media)}
-            />
-          ))}
-
-          {/* Static video thumbnail (at the end) */}
-          <div
-            className={`thumbnail video-thumb ${
-              selectedImage === "video" ? "selected-thumb" : ""
-            }`}
-            onClick={() => setSelectedImage("video")}
-            style={{
-              width: "65px",
-              height: "60px",
-              position: "relative",
-              overflow: "hidden",
-              cursor: "pointer",
-            }}
-          >
-            <img
-              src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
-              alt="Video Thumbnail"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                top: "0",
-                left: "0",
-                width: "100%",
-                height: "100%",
-                backgroundColor: "rgba(0, 0, 0, 0.3)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-                fontSize: "22px",
-                fontWeight: "bold",
-              }}
-            >
-              ▶
-            </div>
+            ) : (
+              <img
+                src={selectedImage}
+                alt="Main Product"
+                className="main-image"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  mixBlendMode: "darken",
+                  objectFit: "cover",
+                }}
+              />
+            )}
           </div>
-        </>
-      )}
-  </div>
-</div>
+
+          {/* Mobile view */}
+          <div
+            className="image_track_mobile"
+            style={{ width: "100%", minHeight: "250px" }}
+          >
+            {loading || !selectedImage ? (
+              <div style={{ width: "100%", height: "100%" }}>
+                <Skeleton
+                  height="100%"
+                  width="100%"
+                  baseColor="#e0e0e0"
+                  highlightColor="#f5f5f5"
+                />
+              </div>
+            ) : selectedImage === "video" ? (
+              <video
+                controls
+                autoPlay
+                muted
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  objectFit: "cover",
+                  borderRadius: "10px",
+                }}
+              >
+                <source
+                  src={selectedColor?.video_source}
+                  type="video/mp4"
+                />
+              </video>
+            ) : (
+              <img
+                src={selectedImage}
+                alt="Main Product"
+                className="main-image"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  mixBlendMode: "darken",
+                  objectFit: "cover",
+                }}
+              />
+            )}
+          </div>
+
+          {/* Thumbnail Row */}
+          <div className="thumbnail-row">
+            {localLoading
+              ? Array(4)
+                .fill(0)
+                .map((_, index) => (
+                  <Skeleton
+                    key={index}
+                    height={70}
+                    width={70}
+                    style={{ marginRight: 10 }}
+                  />
+                ))
+              : (
+                <>
+                  {selectedColor?.product_media?.map((img, index) => (
+                    <img
+                      key={index}
+                      src={img.media}
+                      alt={`Thumbnail ${index + 1}`}
+                      className={`thumbnail ${selectedImage === img.media ? "selected-thumb" : ""
+                        }`}
+                      onClick={() => setSelectedImage(img.media)}
+                    />
+                  ))}
+
+                  {/* Static video thumbnail (at the end) */}
+                  {selectedColor?.video_source &&
+                    <div
+                      className={`thumbnail video-thumb ${selectedImage === "video" ? "selected-thumb" : ""
+                        }`}
+                      onClick={() => setSelectedImage("video")}
+                      style={{
+                        width: "65px",
+                        height: "60px",
+                        position: "relative",
+                        overflow: "hidden",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <img
+                        src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
+                        alt="Video Thumbnail"
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "0",
+                          left: "0",
+                          width: "100%",
+                          height: "100%",
+                          backgroundColor: "rgba(0, 0, 0, 0.3)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "#fff",
+                          fontSize: "22px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        ▶
+                      </div>
+                    </div>
+                  }
+                </>
+              )}
+          </div>
+        </div>
 
         {/* Product Info */}
         <div className="product-info">

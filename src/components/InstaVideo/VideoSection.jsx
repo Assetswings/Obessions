@@ -14,7 +14,7 @@ const VideoSection = () => {
 
   const galleries = useSelector((state) => state.home?.data?.galleries || []);
 
-  // Horizontal slider scroll
+  // Horizontal slider scroll hello
   const scroll = (direction) => {
     const { current } = sliderRef;
     if (current) {

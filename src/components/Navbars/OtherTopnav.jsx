@@ -162,10 +162,18 @@ const OtherTopnav = () => {
 
         <ul className="nav-links">
           <li onMouseEnter={() => setShowMegaMenu(true)}>SHOP</li>
-          <li onClick={() => handelroute("/new-arrivals")}>NEW ARRIVALS</li>
-          <li onClick={() => handelroute("/bestseller")}>BEST SELLERS</li>
-          <li onClick={() => handelroute("/offer-spot")}>OFFERS SPOT</li>
-          <li onClick={() => handelroute("/carpet-finder")}>CARPET FINDER</li>
+          <li>
+            <Link to='/new-arrivals'>NEW ARRIVALS</Link>
+          </li>
+          <li>
+            <Link to='/bestseller'>BEST SELLERS</Link>
+          </li>
+          <li>
+            <Link to='/offer-spot'>OFFERS SPOT</Link>
+          </li>
+          <li>
+            <Link to='/carpet-finder'>FLOOR MATCHER</Link>
+          </li>
         </ul>
 
         <div className="nav-actions">
@@ -181,6 +189,7 @@ const OtherTopnav = () => {
             className="user-click-wrapper"
             onClick={handleUserClick}
             style={{ position: "relative" }}
+            title="User Profile"
           >
             <CircleUser
               strokeWidth={1}
@@ -217,12 +226,14 @@ const OtherTopnav = () => {
           <Heart
             strokeWidth={1}
             size={25}
+            title="Wish List"
             onClick={handleWishlistClick}
             style={{ cursor: "pointer" }}
           />
           <ShoppingCart
             onClick={handleCartClick}
             strokeWidth={1}
+            title="Shopping Cart"
             size={25}
             style={{ cursor: "pointer" }}
           />

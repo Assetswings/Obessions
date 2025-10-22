@@ -124,43 +124,43 @@ const TopAnnouncementBar = () => {
       />
 
       <div className="top-announcement-bar">
-           <div className="box_domain"> 
+        <div className="box_domain">
 
-   {/* Left Arrow */}
-   {banners.length > 1 && (
-          <div className="arrow-btn " onClick={handlePrev}>
-              <ChevronLeft strokeWidth={1}/>
-          </div>
-        )}
-
-        {/* Announcement Text */}
-        <div
-          key={currentIndex}
-          className={`announce-text slide-${slideDirection}`}
-        >
-          {banners.length > 0 ? (
-            <a
-              href={banners[currentIndex]?.action_url}
-              rel="noopener noreferrer"
-            >
-              {banners[currentIndex]?.title}
-            </a>
-          ) : (
-            "Loading announcements..."
+          {/* Left Arrow */}
+          {banners.length > 1 && (
+            <div className="arrow-btn " onClick={handlePrev}>
+              <ChevronLeft strokeWidth={1} />
+            </div>
           )}
+
+          {/* Announcement Text */}
+          <div
+            key={currentIndex}
+            className={`announce-text slide-${slideDirection}`}
+          >
+            {banners.length > 0 ? (
+              <a
+                href={`#${banners[currentIndex]?.action_url}`}
+                rel="noopener noreferrer"
+              >
+                {banners[currentIndex]?.title}
+              </a>
+            ) : (
+              "Loading announcements..."
+            )}
+          </div>
+
+          {/* Right Arrow */}
+          {banners.length > 1 && (
+            <div className="arrow-btn " onClick={handleNext}>
+              <ChevronRight strokeWidth={1} />
+            </div>
+
+
+          )}
+
         </div>
 
-        {/* Right Arrow */}
-        {banners.length > 1 && (
-          <div className="arrow-btn " onClick={handleNext}>
-       <ChevronRight strokeWidth={1}/>
-          </div>
-
-
-        )}
-
-           </div>
-     
 
         {/* Right-side icons */}
         <div className="icons">

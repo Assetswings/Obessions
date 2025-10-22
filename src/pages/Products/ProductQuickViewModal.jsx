@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ProductQuickViewModal.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchProductDetail,
@@ -51,6 +51,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const wishlist = useSelector((state) => state.wishlist);
 
   useEffect(() => {
+    let storagePin = localStorage.getItem('pincode');
     if (actionurl) {
       setLocalLoading(true);
       setSelectedImage(null);
@@ -61,6 +62,12 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       setMatchingFound([]);
       dispatch(clearProductDetail());
       dispatch(fetchProductDetail(actionurl));
+    }
+    if (storagePin) {
+      console.log('pin', storagePin);
+      setPincode(storagePin);
+      dispatch(checkPincode(storagePin));
+      // handleCheck();
     }
   }, [dispatch, actionurl]);
   // Set image when data loads
@@ -142,6 +149,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const handleCheck = () => {
     if (pincode.trim()) {
       dispatch(checkPincode(pincode));
+      localStorage.setItem('pincode',pincode);
     }
   };
 
@@ -298,10 +306,10 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
             product_sizes: prev?.product_sizes?.map((p) =>
               p.id === product.id
                 ? {
-                    ...p,
-                    is_wishlisted: 0,
-                    wishlist: [],
-                  }
+                  ...p,
+                  is_wishlisted: 0,
+                  wishlist: [],
+                }
                 : p
             ),
           }));
@@ -329,10 +337,10 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
         setSelectedSize((prev) =>
           prev.id === product.id
             ? {
-                ...prev,
-                is_wishlisted: 1,
-                wishlist: [{ wishlist_id: wishlist.id }],
-              }
+              ...prev,
+              is_wishlisted: 1,
+              wishlist: [{ wishlist_id: wishlist.id }],
+            }
             : prev
         );
         setProductsDetails((prev) => ({
@@ -340,10 +348,10 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
           product_sizes: prev?.product_sizes?.map((p) =>
             p.id === product.id
               ? {
-                  ...p,
-                  is_wishlisted: 1,
-                  wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
-                }
+                ...p,
+                is_wishlisted: 1,
+                wishlist: wishlist ? [{ wishlist_id: wishlist.id }] : [],
+              }
               : p
           ),
         }));
@@ -365,7 +373,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
     <>
       <ToastContainer
         position="top-right"
-       style={{zIndex:9999999999999}} 
+        style={{ zIndex: 9999999999999 }}
         autoClose={3000}
       />
       <div className="quickview-modal-overlay" onClick={handleOutsideClick}>
@@ -419,26 +427,25 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 <div className="thumbnail-row">
                   {localLoading
                     ? Array(4)
-                        .fill(0)
-                        .map((_, index) => (
-                          <Skeleton
-                            key={index}
-                            height={70}
-                            width={70}
-                            style={{ marginRight: 10 }}
-                          />
-                        ))
-                    : selectedColor?.product_media?.map((img, index) => (
-                        <img
+                      .fill(0)
+                      .map((_, index) => (
+                        <Skeleton
                           key={index}
-                          src={img.media}
-                          alt={`Thumbnail ${index + 1}`}
-                          className={`thumbnail ${
-                            selectedImage === img.media ? "selected-thumb" : ""
-                          }`}
-                          onClick={() => setSelectedImage(img.media)}
+                          height={70}
+                          width={70}
+                          style={{ marginRight: 10 }}
                         />
-                      ))}
+                      ))
+                    : selectedColor?.product_media?.map((img, index) => (
+                      <img
+                        key={index}
+                        src={img.media}
+                        alt={`Thumbnail ${index + 1}`}
+                        className={`thumbnail ${selectedImage === img.media ? "selected-thumb" : ""
+                          }`}
+                        onClick={() => setSelectedImage(img.media)}
+                      />
+                    ))}
                 </div>
               </div>
             </div>
@@ -501,9 +508,8 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                         {productDetails.product_sizes.map((size) => (
                           <div
                             key={size.id}
-                            className={`size-btn ${
-                              selectedSize?.id === size.id ? "active-size" : ""
-                            }`}
+                            className={`size-btn ${selectedSize?.id === size.id ? "active-size" : ""
+                              }`}
                             onClick={() => {
                               setSelectedSize(size);
                               sizeSelection(size);
@@ -542,9 +548,8 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     <div className="color-options">
                       {selectedSize?.product_colors?.map((color, idx) => (
                         <div
-                          className={`selected-color ${
-                            selectedColor?.id === color.id ? "active-size" : ""
-                          }`}
+                          className={`selected-color ${selectedColor?.id === color.id ? "active-size" : ""
+                            }`}
                           key={idx}
                           onClick={() => {
                             setSelectedColor(color);
@@ -566,159 +571,161 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 )}
               </div>
 
-               {/* 🟡 Quantity Selector */}
-      <div className="quantity-selector">
-        {loading ? (
-          <>
-            <Skeleton height={18} width={100} style={{ marginBottom: 10 }} />
-            <div className="qty-control">
-              <Skeleton height={35} width={100} borderRadius={8} />
-            </div>
-          </>
-        ) : (
-          <>
-            <p>QUANTITY</p>
-            <div className="qty-control">
-              <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>−</button>
-              <span className="order_track_count">{quantity}</span>
-              <button onClick={() => setQuantity((q) => q + 1)}>+</button>
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* 🟡 Pincode Check */}
-      <div className={`pincode-check ${loading ? "no-border" : ""}`}>
-  {loading ? (
-    <>
-      <Skeleton height={18} width={160} style={{ marginBottom: 10 }} />
-    </>
-  ) : (
-    <>
-      <p className="check-heading">CHECK AVAILABILITY</p>
-      <div className="input-wrapper-quick-2">
-        <input
-          className="checkup_track_txt"
-          type="text"
-          placeholder="Enter Delivery Pincode"
-          value={pincode}
-          onChange={(e) => setPincode(e.target.value)}
-        />
-        <button onClick={handleReset} className="check-btn-2">
-          Reset
-        </button>
-        <button onClick={handleCheck} className="check-btn-2">
-          Check
-        </button>
-      </div>
-
-      {pinloading && <p>Checking...</p>}
-      {pinerror && (
-        <p style={{ color: "red", marginTop: "15px" }}>
-          Not serviceable for your area
-        </p>
-      )}
-      {pincodeDetails?.pincode && pincodeDetails?.is_active && (
-        <p style={{ color: "green", marginTop: "15px" }}>
-          ✅ Delivery available at {pincodeDetails?.city}, {pincodeDetails?.state} (
-          {pincodeDetails?.delivery_tat})
-        </p>
-      )}
-    </>
-  )}
-</div>
-
-      {/* 🟡 Cart & Wishlist */}
-      <div className="add-cart-section">
-        {loading ? (
-          <>
-            <Skeleton height={45} width={180} borderRadius={8} style={{ marginRight: 20 }} />
-       
-          </>
-        ) : (
-          <>
-            <button className="add-to-cart-btn_qucick" onClick={handleAddToCart}>
-              ADD TO CART
-            </button>
-            <div className="wst_box_quick" onClick={(e) => toggleWishlist(e, selectedSize)}>
-              {selectedSize?.is_wishlisted == 1 ? (
-                <Player
-                  autoplay
-                  keepLastFrame
-                  src={heartAnimation}
-                  style={{ width: 102, height: 102 }}
-                />
-              ) : (
-                <Heart
-                  size={27}
-                  color={selectedSize?.is_wishlisted ? "#FF0000" : "#000"}
-                  fill={selectedSize?.is_wishlisted ? "#FF0000" : "none"}
-                />
-              )}
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* 🟡 Return Info */}
-      <div className="root_return_details">
-        {loading ? (
-          <>
-            <Skeleton height={50} width={"100%"} style={{ marginBottom: 10 }} />
-            <Skeleton height={20} width={"80%"} />
-          </>
-        ) : (
-          <>
-            <div className="details_flx">
-              <div>
-                <img
-                  src="https://i.ibb.co/twnnXYxQ/truck.png"
-                  className="img-truck"
-                  alt="Free Shipping"
-                />
-                <span className="txt-sub-info-pdp">Free Shipping</span>
+              {/* 🟡 Quantity Selector */}
+              <div className="quantity-selector">
+                {loading ? (
+                  <>
+                    <Skeleton height={18} width={100} style={{ marginBottom: 10 }} />
+                    <div className="qty-control">
+                      <Skeleton height={35} width={100} borderRadius={8} />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p>QUANTITY</p>
+                    <div className="qty-control">
+                      <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>−</button>
+                      <span className="order_track_count">{quantity}</span>
+                      <button onClick={() => setQuantity((q) => q + 1)}>+</button>
+                    </div>
+                  </>
+                )}
               </div>
-              <div>
-                <img
-                  src="https://i.ibb.co/SDsg21mX/Frame-2763.png"
-                  className="img-ruppee"
-                  alt="Prepaid only"
-                />
-                <span className="txt-sub-info-pdp">Prepaid orders only</span>
-              </div>
-            </div>
-            <div className="txt-exchange">
-              <img
-                src="https://i.ibb.co/PsNnXB2G/package.png"
-                className="img-exchange"
-                alt="Returns"
-              />
-              <span className="txt-sub-info-pdp">
-                5 days return and exchange available
-              </span>
-            </div>
-            <p className="txt-Carpet-Finder">
-              Not sure which carpet fits your space? Try our{" "}
-              <span className="txt_crp">Carpet Finder</span>
-            </p>
-          </>
-        )}
-      </div>
 
-      {/* 🟡 Product Description */}
-      <div className="product-description">
-        {loading ? (
-          <>
-            <Skeleton height={20} width={180} style={{ marginBottom: 10 }} />
-            <Skeleton count={3} />
-          </>
-        ) : (
-          <>
-            <h3 className="txt-des">PRODUCT DESCRIPTION</h3>
-            <p>{data?.product_info?.description}</p>
-          </>
-        )}
-      </div>
+              {/* 🟡 Pincode Check */}
+              <div className={`pincode-check ${loading ? "no-border" : ""}`}>
+                {loading ? (
+                  <>
+                    <Skeleton height={18} width={160} style={{ marginBottom: 10 }} />
+                  </>
+                ) : (
+                  <>
+                    <p className="check-heading">CHECK AVAILABILITY</p>
+                    <div className="input-wrapper-quick-2">
+                      <input
+                        className="checkup_track_txt"
+                        type="text"
+                        placeholder="Enter Delivery Pincode"
+                        value={pincode}
+                        onChange={(e) => setPincode(e.target.value)}
+                      />
+                      <button onClick={handleReset} className="check-btn-2">
+                        Reset
+                      </button>
+                      <button onClick={handleCheck} className="check-btn-2">
+                        Check
+                      </button>
+                    </div>
+
+                    {pinloading && <p>Checking...</p>}
+                    {pinerror && (
+                      <p style={{ color: "red", marginTop: "15px" }}>
+                        Not serviceable for your area
+                      </p>
+                    )}
+                    {pincodeDetails?.pincode && pincodeDetails?.is_active && (
+                      <p style={{ color: "green", marginTop: "15px" }}>
+                        ✅ Delivery available at {pincodeDetails?.city}, {pincodeDetails?.state} (
+                        {pincodeDetails?.delivery_tat})
+                      </p>
+                    )}
+                  </>
+                )}
+              </div>
+
+              {/* 🟡 Cart & Wishlist */}
+              <div className="add-cart-section">
+                {loading ? (
+                  <>
+                    <Skeleton height={45} width={180} borderRadius={8} style={{ marginRight: 20 }} />
+
+                  </>
+                ) : (
+                  <>
+                    <button className="add-to-cart-btn_qucick" onClick={handleAddToCart}>
+                      ADD TO CART
+                    </button>
+                    <div className="wst_box_quick" onClick={(e) => toggleWishlist(e, selectedSize)}>
+                      {selectedSize?.is_wishlisted == 1 ? (
+                        <Player
+                          autoplay
+                          keepLastFrame
+                          src={heartAnimation}
+                          style={{ width: 102, height: 102 }}
+                        />
+                      ) : (
+                        <Heart
+                          size={27}
+                          color={selectedSize?.is_wishlisted ? "#FF0000" : "#000"}
+                          fill={selectedSize?.is_wishlisted ? "#FF0000" : "none"}
+                        />
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* 🟡 Return Info */}
+              <div className="root_return_details">
+                {loading ? (
+                  <>
+                    <Skeleton height={50} width={"100%"} style={{ marginBottom: 10 }} />
+                    <Skeleton height={20} width={"80%"} />
+                  </>
+                ) : (
+                  <>
+                    <div className="details_flx">
+                      <div>
+                        <img
+                          src="https://i.ibb.co/twnnXYxQ/truck.png"
+                          className="img-truck"
+                          alt="Free Shipping"
+                        />
+                        <span className="txt-sub-info-pdp">Free Shipping</span>
+                      </div>
+                      <div>
+                        <img
+                          src="https://i.ibb.co/SDsg21mX/Frame-2763.png"
+                          className="img-ruppee"
+                          alt="Prepaid only"
+                        />
+                        <span className="txt-sub-info-pdp">Prepaid orders only</span>
+                      </div>
+                    </div>
+                    <div className="txt-exchange">
+                      <img
+                        src="https://i.ibb.co/PsNnXB2G/package.png"
+                        className="img-exchange"
+                        alt="Returns"
+                      />
+                      <span className="txt-sub-info-pdp">
+                        5 days return and exchange available
+                      </span>
+                    </div>
+                    <p className="txt-Carpet-Finder">
+                      Not sure which carpet fits your space? Try our{" "}
+                      <span className="txt_crp">
+                        <Link to='/carpet-finder' target="_blank" rel="noopener noreferrer">Floor Matcher</Link>
+                      </span>
+                    </p>
+                  </>
+                )}
+              </div>
+
+              {/* 🟡 Product Description */}
+              <div className="product-description">
+                {loading ? (
+                  <>
+                    <Skeleton height={20} width={180} style={{ marginBottom: 10 }} />
+                    <Skeleton count={3} />
+                  </>
+                ) : (
+                  <>
+                    <h3 className="txt-des">PRODUCT DESCRIPTION</h3>
+                    <p>{data?.product_info?.description}</p>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>

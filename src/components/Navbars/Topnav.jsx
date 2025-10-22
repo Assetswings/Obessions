@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./HorizontalNavBar.css";
 import MegaMenu from "./MegaMenu";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Topnav = () => {
   const [showMegaMenu, setShowMegaMenu] = useState(false);
@@ -18,10 +18,18 @@ const Topnav = () => {
         >
           SHOP
         </div>
-        <div className="nav-item" onClick={()=>handelroute("/new-arrivals")}>NEW ARRIVALS</div>
-        <div className="nav-item" onClick={()=>handelroute("/bestseller")}>BESTSELLERS</div>
-        <div className="nav-item" onClick={()=>handelroute("/offer-spot")}>OFFERS SPOT</div>
-        <div className="nav-item" onClick={()=>handelroute("/carpet-finder")}>FLOOR MATCHER</div>
+        <div className="nav-item">
+          <Link to='/new-arrivals'>NEW ARRIVALS</Link>
+        </div>
+        <div className="nav-item">
+          <Link to='/bestseller'>BEST SELLERS</Link>
+        </div>
+        <div className="nav-item">
+          <Link to='/offer-spot'>OFFERS SPOT</Link>
+        </div>
+        <div className="nav-item">
+          <Link to='/carpet-finder'>FLOOR MATCHER</Link>
+        </div>
       </nav>
       {showMegaMenu && <MegaMenu closeMenu={() => setShowMegaMenu(false)} />}
     </>

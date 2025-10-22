@@ -58,6 +58,7 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     document.title = "Obsession - Products Details ";
+    let storagePin = localStorage.getItem('pincode');
     if (!productSlug) return;
     // Only run when slug actually changes
     if (prevSlugRef.current !== productSlug) {
@@ -74,6 +75,12 @@ const ProductDetailPage = () => {
       setPincodeChecked(false);
       dispatch(fetchProductDetail(productSlug));
       dispatch(resetPincodeState());
+    }
+    if(storagePin){
+      console.log('pin',storagePin);
+      setPincode(storagePin);
+      dispatch(checkPincode(storagePin));
+      // handleCheck();
     }
     return () => {
       dispatch(clearProductDetail());
@@ -110,9 +117,9 @@ const ProductDetailPage = () => {
 
   // Scroll tracking (for highlights/description tabs)
   useEffect(() => {
-    setPincodeDetails({});
-    setPincode("");
-    setPincodeChecked(false);
+    // setPincodeDetails({});
+    // setPincode("");
+    // setPincodeChecked(false);
 
     if (productDetails?.sub_category_action_url === "carpet") {
       const observer = new IntersectionObserver(
@@ -411,6 +418,7 @@ const ProductDetailPage = () => {
   const handleCheck = () => {
     if (pincode.trim()) {
       dispatch(checkPincode(pincode));
+      localStorage.setItem('pincode',pincode);
     }
   };
 
@@ -504,22 +512,33 @@ const ProductDetailPage = () => {
                 />
               </div>
             ) : selectedImage === "video" ? (
-              <video
-                controls
-                autoPlay
-                muted
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  objectFit: "cover",
-                  borderRadius: "10px",
-                }}
-              >
-                <source
-                  src={selectedColor?.video_source}
-                  type="video/mp4"
-                />
-              </video>
+              selectedColor?.video_source?.includes("youtube.com") ? (
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={`${selectedColor.video_source}?autoplay=1&mute=1`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  style={{ borderRadius: "10px", width: "100%", height: "100%" }}
+                ></iframe>
+              ) : (
+                <video
+                  controls
+                  autoPlay
+                  muted
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <source src={selectedColor?.video_source} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )
             ) : (
               <img
                 src={selectedImage}
@@ -675,11 +694,15 @@ const ProductDetailPage = () => {
                       }}
                     >
                       <div className="set_btn_trcak">
-                        <img
-                          src="https://i.ibb.co/x86bSjV6/Frame-7.png"
-                          className="size-image"
-                          alt={size.size}
-                        />
+                        {size?.size_vector_media ? (
+                          <img
+                            src={size?.size_vector_media}
+                            className="size-image"
+                            alt={size.size}
+                          />
+                        ) : (
+                          <></>
+                        )}
                       </div>
                       {/* <div className="lbl-track">{size.size}</div> */}
                       {productDetails?.category_action_url === "dustbins" ? (
@@ -896,127 +919,105 @@ const ProductDetailPage = () => {
                 <p className="txt-Carpet-Finder">
                   Not sure which carpet fits your space? Try our{" "}
                   <span onClick={handlefinder} className="txt_crp">
-                    Floor Matcher
+                    <Link to='/carpet-finder' target="_blank" rel="noopener noreferrer">Floor Matcher</Link>
                   </span>
                 </p>
               </>
             )}
           </div>
 
-          {/* Description */}
-          <div className="pdp-accordion">
-            <div
-              className="pdp-accordion-header"
-              onClick={() => setShowDesc((prev) => !prev)}
-            >
-              <h3>
-                {localLoading ? <Skeleton width={180} /> : "PRODUCT DESCRIPTION"}
-              </h3>
-              {!localLoading && <span>{showDesc ? "−" : "+"}</span>}
-            </div>
-
-            {!localLoading && showDesc && (
-              <div className="pdp-accordion-content">
-                <p className="pdp-care-text">{data?.product_info?.description}</p>
-              </div>
-            )}
-
-            {localLoading && (
-              <div className="pdp-accordion-content">
-                <Skeleton count={3} />
-              </div>
-            )}
-          </div>
-
-          {/* SPECIFICATIONS */}
-          <div className="pdp-accordion">
-            <div className="pdp-accordion-header" onClick={() => setShowSpecs(!showSpecs)}>
-              <h3>SPECIFICATIONS</h3>
-              <span>{showSpecs ? "−" : "+"}</span>
-            </div>
-
-            {showSpecs && (
-              <div className="pdp-accordion-content">
-                <table className="pdp-specs-table">
-                  <tbody>
-                    <tr>
-                      <td>Product Type</td>
-                      <td>Step Bin</td>
-                    </tr>
-                    <tr>
-                      <td>Box Content</td>
-                      <td>1 Step Bin with Liner</td>
-                    </tr>
-                    <tr>
-                      <td>Capacity</td>
-                      <td>12 Litre</td>
-                    </tr>
-                    <tr>
-                      <td>Liner</td>
-                      <td>1</td>
-                    </tr>
-                    <tr>
-                      <td>Material</td>
-                      <td>Stainless Steel</td>
-                    </tr>
-                    <tr>
-                      <td>Size in Inch</td>
-                      <td>NA</td>
-                    </tr>
-                    <tr>
-                      <td>Features</td>
-                      <td>
-                        Soft square unique shape. Bi-force damper soft close. Stay open lid.
-                        Fingerprint resistant. Durable cantilever foot-operated pedal mechanism.
-                        Plastic bag stabilizer.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Ideal For</td>
-                      <td>Home, Office, Kitchen, Restaurant, Commercial Places, Hospital</td>
-                    </tr>
-                    <tr>
-                      <td>Approx. Weight (In Kg)</td>
-                      <td>2.75</td>
-                    </tr>
-                    <tr>
-                      <td>Origin</td>
-                      <td>China</td>
-                    </tr>
-                    <tr>
-                      <td>Warranty</td>
-                      <td>NA</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            )}
-
-            {/* CARE INSTRUCTIONS */}
-            <div className="pdp-accordion">
-              <div className="pdp-accordion-header" onClick={() => setShowCare(!showCare)}>
-                <h3>CARE INSTRUCTIONS</h3>
-                <span>{showCare ? "−" : "+"}</span>
-              </div>
-
-              {showCare && (
-                <div className="pdp-accordion-content">
-                  <p className="pdp-care-text">
-                    Transform your space with our luxurious Chamois Carpet, made from 100% premium
-                    Acrylic fibers. Designed for both elegance and resilience, this high-quality
-                    carpet offers the perfect balance of sophistication and durability, making it an
-                    ideal choice for any living room, office, or hallway. Whether you’re looking to
-                    enhance your home or workplace, our Chamois Carpet brings timeless style and
-                    lasting comfort to any room.
-                  </p>
+          {productDetails?.product_info &&
+            Object.keys(productDetails.product_info).length > 0 ? (
+            <>
+              {/* DESCRIPTION */}
+              <div className="pdp-accordion">
+                <div
+                  className="pdp-accordion-header"
+                  onClick={() => setShowDesc((prev) => !prev)}
+                >
+                  <h3>
+                    {localLoading ? <Skeleton width={180} /> : "PRODUCT DESCRIPTION"}
+                  </h3>
+                  {!localLoading && <span>{showDesc ? "−" : "+"}</span>}
                 </div>
-              )}
-            </div>
 
-          </div>
+                {!localLoading && showDesc && (
+                  <div className="pdp-accordion-content">
+                    <p className="pdp-care-text">
+                      {productDetails?.product_info?.description}
+                    </p>
+                  </div>
+                )}
+
+                {localLoading && (
+                  <div className="pdp-accordion-content">
+                    <Skeleton count={3} />
+                  </div>
+                )}
+              </div>
+
+              {/* SPECIFICATIONS */}
+              <div className="pdp-accordion">
+                <div
+                  className="pdp-accordion-header"
+                  onClick={() => setShowSpecs((prev) => !prev)}
+                >
+                  <h3>SPECIFICATIONS</h3>
+                  <span>{showSpecs ? "−" : "+"}</span>
+                </div>
+
+                {showSpecs && (
+                  <div className="pdp-accordion-content">
+                    <table className="pdp-specs-table">
+                      <tbody>
+                        {Object.entries(productDetails.product_info)
+                          .filter(([key]) => key !== "description") // Exclude 'description'
+                          .map(([key, value]) => (
+                            <tr key={key}>
+                              <td style={{ textTransform: "capitalize" }}>
+                                {key.replace(/_/g, " ")}
+                              </td>
+                              <td>{value}</td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              {/* CARE INSTRUCTIONS */}
+              <div className="pdp-accordion">
+                <div
+                  className="pdp-accordion-header"
+                  onClick={() => setShowCare((prev) => !prev)}
+                >
+                  <h3>CARE INSTRUCTIONS</h3>
+                  <span>{showCare ? "−" : "+"}</span>
+                </div>
+
+                {showCare && (
+                  <div className="pdp-accordion-content">
+                    <p className="pdp-care-text">
+                      Transform your space with our luxurious Chamois Carpet, made from
+                      100% premium Acrylic fibers. Designed for both elegance and
+                      resilience, this high-quality carpet offers the perfect balance of
+                      sophistication and durability, making it an ideal choice for any
+                      living room, office, or hallway. Whether you’re looking to enhance
+                      your home or workplace, our Chamois Carpet brings timeless style and
+                      lasting comfort to any room.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+
 
         </div>
-      </div>
+      </div >
 
 
 
@@ -1170,110 +1171,29 @@ const ProductDetailPage = () => {
 
                   <div className="size-guide-block">
                     {/* Living Room */}
-                    <div className="size_sction_root">
-                      <div>
-                        <img
-                          className="img-guild-section"
-                          src="https://i.ibb.co/C3hfGFfT/l-room.png"
-                          alt="living-room"
-                        />
-                      </div>
-                      <div className="sector_group_txt">
-                        <h4 className="title-size-gid">LIVING ROOM</h4>
+                    {productDetails?.product_other_info[0]?.size_guide.map((det, idx) => (
+                      <div className="size_sction_root">
                         <div>
-                          <span className="txt-ft">Medium (5x8 ft):</span>{" "}
-                          <span className="txt-ft2">
-                            {" "}
-                            Front legs of furniture on the carpet
-                          </span>
+                          <img
+                            className="img-guild-section"
+                            src={det?.media}
+                            alt={det?.title}
+                          />
                         </div>
-                        <div>
-                          <span className="txt-ft">Large (8x10 ft+):</span>{" "}
-                          <span className="txt-ft2">
-                            {" "}
-                            Full furniture fits for a unified look
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Bedroom */}
-                    <div className="size_sction_root">
-                      <div>
-                        <img
-                          className="img-guild-section"
-                          src="https://i.ibb.co/yFB0m3LZ/b-room.png"
-                          alt="bedroom"
-                        />
-                      </div>
-                      <div className="sector_group_txt">
-                        <h4 className="title-size-gid">BEDROOM</h4>
-                        <div>
-                          <span className="txt-ft">Medium (5x8 ft):</span>{" "}
-                          <span className="txt-ft2"> Covers bedside area</span>
-                        </div>
-                        <div>
-                          <span className="txt-ft">Large (8x10 ft+):</span>{" "}
-                          <span className="txt-ft2">
-                            {" "}
-                            Extends under bed and nightstands{" "}
-                          </span>
+                        <div className="sector_group_txt">
+                          <h4 className="title-size-gid">{det?.titel}</h4>
+                          {det?.content?.map((con, idx) => (
+                            <div>
+                              <span className="txt-ft">{con?.size}:</span>{" "}
+                              <span className="txt-ft2">
+                                {" "}
+                                {con?.description}
+                              </span>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    </div>
-
-                    {/* Kitchen */}
-                    <div className="size_sction_root">
-                      <div>
-                        <img
-                          className="img-guild-section"
-                          src="https://i.ibb.co/xq3Sx3WB/k-room.png"
-                          alt="kitchen"
-                        />
-                      </div>
-                      <div className="sector_group_txt">
-                        <h4 className="title-size-gid">KITCHEN</h4>
-                        <div>
-                          <span className="txt-ft">
-                            Runner (2.5x6 ft / 2.5x8 ft):
-                          </span>
-                          <span className="txt-ft2">
-                            {" "}
-                            Perfect between counters or alongside islands{" "}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="txt-ft">Small (3x5 ft):</span>{" "}
-                          <span className="txt-ft2">
-                            {" "}
-                            Great near the sink or stove to soften
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Entryway & Hallway */}
-                    <div className="size_sction_root">
-                      <div>
-                        <img
-                          className="img-guild-section"
-                          src="https://i.ibb.co/V03SvfC8/hall-room.png"
-                          alt="entryway-hallway"
-                        />
-                      </div>
-                      <div className="sector_group_txt">
-                        <h4 className="title-size-gid">ENTRYWAY & HALLWAY</h4>
-                        <div>
-                          <span className="txt-ft">
-                            Runners (2x6 ft or 2.5x8 ft):
-                          </span>{" "}
-                          <span className="txt-ft2"> Add warmth and flow </span>
-                        </div>
-                        <div className="txt-ft2">
-                          Use anti-slip backings for safety
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                     <div>
                       <span className="pp-mc-txt">
                         Not sure which size fits best? Explore our{" "}
@@ -1334,7 +1254,8 @@ const ProductDetailPage = () => {
             </div>
           </div>
         </>
-      ) : null}
+      ) : null
+      }
 
       {/* Similar Products */}
       <div className="similar-styles-section">
@@ -1523,9 +1444,11 @@ const ProductDetailPage = () => {
       </div>
 
       <Footer />
-      {showLoginPrompt && (
-        <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
-      )}
+      {
+        showLoginPrompt && (
+          <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
+        )
+      }
     </>
   );
 };

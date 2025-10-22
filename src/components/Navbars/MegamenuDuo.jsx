@@ -69,7 +69,7 @@ const MegamenuDuo = ({ closeMenu }) => {
                     key={sub.id}
                     className="mega-subcategory-link"
                   >
-                    <Link to={`/products/${cat.action_url}/${sub.action_url}`}>{sub.name}</Link>
+                    <Link to={`/products/${cat.action_url}/${sub.action_url}`} onClick={closeMenu}>{sub.name}</Link>
                   </li>
                 ))}
               </ul>

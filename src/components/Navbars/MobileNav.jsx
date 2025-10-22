@@ -221,11 +221,23 @@ const MobileNav = () => {
                   </div>
                 </div>
               </li>
-              <li onClick={() => handelroute("/new-arrivals")}>New Arrivals</li>
+              {/* <li onClick={() => handelroute("/new-arrivals")}>New Arrivals</li>
               <li onClick={() => handelroute("/bestseller")}>Best Sellers</li>
               <li onClick={() => handelroute("/offer-spot")}>Offers Spot</li>
               <li onClick={() => handelroute("/carpet-finder")}>
                 Floor Matcher
+              </li> */}
+              <li>
+                <Link to='/new-arrivals'>NEW ARRIVALS</Link>
+              </li>
+              <li>
+                <Link to='/bestseller'>BEST SELLERS</Link>
+              </li>
+              <li>
+                <Link to='/offer-spot'>OFFERS SPOT</Link>
+              </li>
+              <li>
+                <Link to='/carpet-finder'>FLOOR MATCHER</Link>
               </li>
             </ul>
             <ul>

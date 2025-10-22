@@ -32,7 +32,6 @@ const productDetailSlice = createSlice({
       })
       .addCase(fetchProductDetail.fulfilled, (state, action) => {
         //the responce of this line
-        console.log("API Product Detail Response 👉", action.payload);
         state.loading = false;
         state.data = action.payload;
       })

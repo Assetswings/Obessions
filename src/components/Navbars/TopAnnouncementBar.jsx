@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Heart, CircleUser, ShoppingCart, User, LogOut, ChevronRight, ChevronLeft } from "lucide-react";
+import {
+  Heart,
+  CircleUser,
+  ShoppingCart,
+  User,
+  LogOut,
+  ChevronRight,
+  ChevronLeft,
+} from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
@@ -20,11 +28,18 @@ const TopAnnouncementBar = () => {
   const location = useLocation();
   const userWrapperRef = useRef(null);
 
+  // ✅ Check login status
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, [location.pathname]);
+    const checkLogin = () => {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(!!token);
+    };
+    checkLogin();
+    window.addEventListener("storage", checkLogin);
+    return () => window.removeEventListener("storage", checkLogin);
+  }, []);
 
+  // ✅ Close popup when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -38,25 +53,21 @@ const TopAnnouncementBar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Fetch banner data
+  // ✅ Fetch banner data
   useEffect(() => {
     axios
       .get("https://apis-staging.obsessions.co.in/v1/banners/announce-bar", {
-        headers: {
-          accept: "application/json",
-        },
+        headers: { accept: "application/json" },
       })
       .then((response) => {
         if (response.data?.data) {
           setBanners(response.data.data);
         }
       })
-      .catch((error) => {
-        console.error("Error fetching banner:", error);
-      });
+      .catch((error) => console.error("Error fetching banner:", error));
   }, []);
 
-  // Auto change every 4 seconds (slide to right)
+  // ✅ Auto slide every 6s
   useEffect(() => {
     if (banners.length > 1) {
       const interval = setInterval(() => {
@@ -79,7 +90,9 @@ const TopAnnouncementBar = () => {
     );
   };
 
-  const handleUserClick = () => {
+  // ✅ Show user menu
+  const handleUserClick = (e) => {
+    e.stopPropagation(); // prevent outside click event
     if (!isLoggedIn) {
       navigate("/login");
     } else {
@@ -98,6 +111,7 @@ const TopAnnouncementBar = () => {
       closeButton: true,
       icon: true,
     });
+    window.dispatchEvent(new Event("storage"));
   };
 
   const handleProfile = () => {
@@ -125,15 +139,12 @@ const TopAnnouncementBar = () => {
 
       <div className="top-announcement-bar">
         <div className="box_domain">
-
-          {/* Left Arrow */}
           {banners.length > 1 && (
-            <div className="arrow-btn " onClick={handlePrev}>
+            <div className="arrow-btn" onClick={handlePrev}>
               <ChevronLeft strokeWidth={1} />
             </div>
           )}
 
-          {/* Announcement Text */}
           <div
             key={currentIndex}
             className={`announce-text slide-${slideDirection}`}
@@ -150,47 +161,44 @@ const TopAnnouncementBar = () => {
             )}
           </div>
 
-          {/* Right Arrow */}
           {banners.length > 1 && (
-            <div className="arrow-btn " onClick={handleNext}>
+            <div className="arrow-btn" onClick={handleNext}>
               <ChevronRight strokeWidth={1} />
             </div>
-
-
           )}
-
         </div>
 
-
-        {/* Right-side icons */}
         <div className="icons">
           <div
             ref={userWrapperRef}
             className="user-click-wrapper"
-            onClick={handleUserClick}
-            title="User Profile"
+            style={{ position: "relative" }}
           >
             <CircleUser
               color="#FFFFFF"
               size={22}
-              style={{ cursor: "pointer" }}
               strokeWidth={1}
+              style={{ cursor: "pointer" }}
+              onClick={handleUserClick}
+              title="User Profile"
             />
 
+            {/* ✅ Fixed Popup */}
             {isLoggedIn && showUserPopup && (
-              <>
-                <div className="popup-triangle"></div>
-                <div className="user-popup_AN">
-                  <div className="popup-item" onClick={handleProfile}>
-                    <User size={20} style={{ marginRight: 8 }} />
-                    <span>Profile</span>
-                  </div>
-                  <div className="popup-item" onClick={handleLogout}>
-                    <LogOut size={20} style={{ marginRight: 8 }} />
-                    <span>Logout</span>
-                  </div>
+              <div
+                className="user-popup_AN"
+                onClick={(e) => e.stopPropagation()} // prevent close on inside click
+              >
+                <div className="popup-triangle_an"></div>
+                <div className="popup-item" onClick={handleProfile}>
+                  <User size={20} style={{ marginRight: 8 }} />
+                  <span>Profile</span>
                 </div>
-              </>
+                <div className="popup-item" onClick={handleLogout}>
+                  <LogOut size={20} style={{ marginRight: 8 }} />
+                  <span>Logout</span>
+                </div>
+              </div>
             )}
           </div>
 

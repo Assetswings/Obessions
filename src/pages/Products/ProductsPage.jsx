@@ -509,7 +509,7 @@ const ProductsPage = () => {
               ? Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="custom-product-card">
                   <div className="custom-product-image">
-                    <Skeleton height={250} width={275} />
+                    <Skeleton height={250} width={230} />
                   </div>
                   <p className="custom-product-title">
                     <Skeleton width={180} height={16} />

@@ -209,9 +209,11 @@ const BestsellersSlider = ({ onQuickView }) => {
                   <span className="price">₹{item.selling_price}</span>
                   {item.mrp && item.mrp !== item.selling_price && (
                     <>
+                     &nbsp;
                       <span className="original">
-                        <del>₹{item.mrp}</del>{" "}
+                     <del>₹{item.mrp}</del>{" "}
                       </span>
+                  
                       <span className="discount">
                         ({item?.discount_percent}% OFF)
                       </span>
@@ -304,6 +306,7 @@ const BestsellersSlider = ({ onQuickView }) => {
                     <span className="price">₹{item.selling_price}</span>
                     {item.mrp && item.mrp !== item.selling_price && (
                       <>
+                        &nbsp;
                         <span className="original">
                           <del>₹{item.mrp}</del>{" "}
                         </span>

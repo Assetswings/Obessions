@@ -704,7 +704,6 @@ const ProductDetailPage = () => {
                           <></>
                         )}
                       </div>
-                      {/* <div className="lbl-track">{size.size}</div> */}
                       {productDetails?.category_action_url === "dustbins" ? (
                         <div className="lbl-track">{size.capacity}</div>
                       ) : (
@@ -918,7 +917,7 @@ const ProductDetailPage = () => {
                 </div>
                 <p className="txt-Carpet-Finder">
                   Not sure which carpet fits your space? Try our{" "}
-                  <span onClick={handlefinder} className="txt_crp">
+                  <span className="txt_crp">
                     <Link to='/carpet-finder' target="_blank" rel="noopener noreferrer">Floor Matcher</Link>
                   </span>
                 </p>

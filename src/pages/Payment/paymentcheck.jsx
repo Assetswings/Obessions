@@ -12,6 +12,7 @@ const PaymentCheck = () => {
 
   const orderId = searchParams.get("order_id");
   const transactionId = searchParams.get("transaction_id");
+console.log(orderId,transactionId);
 
   useEffect(() => {
     document.title = "Obsession - Payment Check";

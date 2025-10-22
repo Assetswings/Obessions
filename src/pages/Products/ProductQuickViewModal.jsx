@@ -149,7 +149,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const handleCheck = () => {
     if (pincode.trim()) {
       dispatch(checkPincode(pincode));
-      localStorage.setItem('pincode',pincode);
+      localStorage.setItem('pincode', pincode);
     }
   };
 
@@ -499,10 +499,17 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 ) : (
                   productDetails?.product_sizes?.length > 0 && (
                     <>
-                      <p className="selected-size-label">
-                        CHOOSE A SIZE:
-                        {selectedSize && <strong>{selectedSize.size}</strong>}
-                      </p>
+                      {productDetails?.category_action_url === "dustbins" ? (
+                        <p className="selected-size-label">
+                          CHOOSE A Capacity:&nbsp;
+                          {selectedSize && <strong>{selectedSize.capacity}</strong>}
+                        </p>
+                      ) : (
+                        <p className="selected-size-label">
+                          CHOOSE A SIZE:
+                          {selectedSize && <strong>{selectedSize.size}</strong>}
+                        </p>
+                      )}
 
                       <div className="size-options">
                         {productDetails.product_sizes.map((size) => (
@@ -513,16 +520,25 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                             onClick={() => {
                               setSelectedSize(size);
                               sizeSelection(size);
+                              setQuantity(1);
                             }}
                           >
                             <div className="set_btn_trcak">
-                              <img
-                                src="https://i.ibb.co/x86bSjV6/Frame-7.png"
-                                className="size-image"
-                                alt={size.size}
-                              />
+                              {size?.size_vector_media ? (
+                                <img
+                                  src={size?.size_vector_media}
+                                  className="size-image"
+                                  alt={size.size}
+                                />
+                              ) : (
+                                <></>
+                              )}
                             </div>
-                            <div className="lbl-track">{size.size}</div>
+                            {productDetails?.category_action_url === "dustbins" ? (
+                              <div className="lbl-track">{size.capacity}</div>
+                            ) : (
+                              <div className="lbl-track">{size.size}</div>
+                            )}
                           </div>
                         ))}
                       </div>

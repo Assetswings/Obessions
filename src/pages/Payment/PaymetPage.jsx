@@ -47,9 +47,10 @@ const PaymentPage = () => {
         ref_id: orderResponse?.data?.ref_id,
         provider: gateway.provider,
         secret: gateway.secret,
-        redirect_url: `${window.location.origin}/paymentcheck`,
+        redirect_url: `${window.location.origin}/#/paymentcheck`,
       };
-
+      console.log('??????????',payload);
+      // return false;
       const orderData = await initiatePayment(payload);
       if (!orderData?.success) {
         toast.error(orderData?.message, {

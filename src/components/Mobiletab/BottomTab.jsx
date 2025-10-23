@@ -3,13 +3,13 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { Home, LayoutGrid, ShoppingCart, Heart, X } from "lucide-react";
 import "./BottomTab.css";
 
- const categories = [
-    { name: "Bath Care" },
-    { name: "Dustbins"},
-    { name: "Floor Coverings" },
-    { name: "Kitchen & Dining"},
-    { name: "Storage & Organization" },
-    { name: "Tableware & Serve ware"},
+const categories = [
+    { name: "Bath Care", img: "https://i.ibb.co/9Rk33kn/image-648.png" },
+    { name: "Dustbins", img: "https://i.ibb.co/R8R9Ndp/image-649.png" },
+    { name: "Floor Coverings", img: "https://i.ibb.co/ZRzVmFrL/image-650.png" },
+    { name: "Kitchen & Dining", img: "https://i.ibb.co/3yvJ8sTw/image-651.png"  },
+    { name: "Storage & Organization", img: "https://i.ibb.co/4gTM7FLd/image-653.png" },
+    { name: "Tableware & Serve ware", img: "https://i.ibb.co/sp96bfBX/image-652.png" },
   ];
 
 const BottomTab = () => {
@@ -85,7 +85,7 @@ const BottomTab = () => {
           </button>
         </div>
 
-        <div className="category-list">
+        <div className="category-list_mlb">
           {categories.map((cat, index) => (
             <div
               key={index}
@@ -95,7 +95,8 @@ const BottomTab = () => {
                 navigate("/collections");
               }}
             >
-              <span>{cat?.name}</span>
+              <img src={cat.img} alt={cat.name} />
+              <span>{cat.name}</span>
             </div>
           ))}
         </div>

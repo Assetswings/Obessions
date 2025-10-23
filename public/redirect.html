@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script>
+      // Extract query parameters
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get("order_id");
+      const transactionId = params.get("transaction_id");
+
+      // Redirect to the hash route
+      window.location.href = `/#/paymentcheck?order_id=${orderId}&transaction_id=${transactionId}`;
+    </script>
+  </head>
+  <body>
+    Redirecting, please wait...
+  </body>
+</html>

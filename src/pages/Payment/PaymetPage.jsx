@@ -47,7 +47,7 @@ const PaymentPage = () => {
         ref_id: orderResponse?.data?.ref_id,
         provider: gateway.provider,
         secret: gateway.secret,
-        redirect_url: `${window.location.origin}/#/paymentcheck`,
+        redirect_url: `${window.location.origin}/redirect.html`
       };
       console.log('??????????',payload);
       // return false;

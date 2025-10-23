@@ -672,7 +672,7 @@ const ProductDetailPage = () => {
               <>
                 {productDetails?.category_action_url === "dustbins" ? (
                   <p className="selected-size-label">
-                    CHOOSE A Capacity:&nbsp;
+                    CHOOSE A CAPACITY:&nbsp;
                     {selectedSize && <strong>{selectedSize.capacity}</strong>}
                   </p>
                 ) : (

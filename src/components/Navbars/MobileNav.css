@@ -140,7 +140,7 @@ body {
 
 .drawer li {
   padding: 14px 0;
-  border-bottom: 1px solid #ddd;
+  /* border-bottom: 1px solid #ddd; */
   cursor: pointer;
   font-size: 14px;
   text-transform: uppercase;
@@ -173,7 +173,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+  /* border-bottom: 1px solid #eee; */
 }
 
 /* Scrollable area */

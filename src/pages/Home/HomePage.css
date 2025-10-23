@@ -142,6 +142,7 @@ background: white;
   transition: all 0.3s ease;
   width: 100%;
   font-size: 12px; /* prevent Safari zoom */
+  
 }
 
 .input_home.input-shrink {
@@ -1127,6 +1128,7 @@ background-color: #F2F2F2;
   width: 90%;
   bottom: 33%;
   position:fixed;
+  display: none;
 
  }
 

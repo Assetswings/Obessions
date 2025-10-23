@@ -228,16 +228,16 @@ const MobileNav = () => {
                 Floor Matcher
               </li> */}
               <li>
-                <Link to='/new-arrivals'>NEW ARRIVALS</Link>
+                <Link to='/new-arrivals' onClick={toggleDrawer}>NEW ARRIVALS</Link>
               </li>
               <li>
-                <Link to='/bestseller'>BEST SELLERS</Link>
+                <Link to='/bestseller' onClick={toggleDrawer}>BEST SELLERS</Link>
               </li>
               <li>
-                <Link to='/offer-spot'>OFFERS SPOT</Link>
+                <Link to='/offer-spot' onClick={toggleDrawer}>OFFERS SPOT</Link>
               </li>
               <li>
-                <Link to='/carpet-finder'>FLOOR MATCHER</Link>
+                <Link to='/carpet-finder' onClick={toggleDrawer}>FLOOR MATCHER</Link>
               </li>
             </ul>
             <ul>
@@ -290,7 +290,7 @@ const MobileNav = () => {
                       {category.subcategories.map((sub) => (
                         <li
                           key={sub.id}>
-                          <Link to={`/products/${category.action_url}/${sub.action_url}`}>{sub.name}</Link>
+                          <Link to={`/products/${category.action_url}/${sub.action_url}`} onClick={toggleDrawer}>{sub.name}</Link>
                         </li>
                       ))}
                     </ul>

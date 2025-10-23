@@ -157,7 +157,7 @@ const MobileNav = () => {
   return (
     <>
       {/* Top bar */}
-      <header className="topbar">
+      {/* <header className="topbar">
         <div className="hamburger" onClick={toggleDrawer}>
           <span></span>
           <span></span>
@@ -182,6 +182,35 @@ const MobileNav = () => {
             size={25}
             onClick={handleWishlistClickHeader}
           />
+          <ShoppingCart
+            strokeWidth={1}
+            size={25}
+            onClick={() => handelroute("/cart")}
+          />
+        </div>
+      </header> */}
+      <header className="topbar">
+        <div className="topbar-left">
+          <div className="hamburger" onClick={toggleDrawer}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div className="mobile_logo_track" onClick={() => handelroute("/")}>
+            <img src={mobilelogo} width={120} alt="logo" />
+          </div>
+        </div>
+
+        <div className="icons">
+          <CircleUser
+            ref={userWrapperRef}
+            strokeWidth={1}
+            color="#FFFFFF"
+            size={25}
+            onClick={handleUserClick}
+          />
+          <Heart strokeWidth={1} size={25} onClick={handleWishlistClickHeader} />
           <ShoppingCart
             strokeWidth={1}
             size={25}

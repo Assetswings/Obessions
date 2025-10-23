@@ -12,6 +12,7 @@ const PaymentPage = () => {
   const location = useLocation();
   const { orderResponse, orderPayload, checkoutData } = location.state || {};
   const [selectedPayment, setSelectedPayment] = useState(null);
+  console.log(orderResponse?.data?.business_details?.gst_number);
 
   // Default selection logic
   useEffect(() => {
@@ -49,7 +50,6 @@ const PaymentPage = () => {
         secret: gateway.secret,
         redirect_url: `${window.location.origin}/redirect.html`
       };
-      console.log('??????????',payload);
       // return false;
       const orderData = await initiatePayment(payload);
       if (!orderData?.success) {
@@ -109,7 +109,7 @@ const PaymentPage = () => {
   };
   return (
     <>
-      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
       <div className="root-title-chk">
         <h2 className="title_chk">Payment</h2>
       </div>
@@ -196,7 +196,7 @@ const PaymentPage = () => {
 
           <div className="section">
             <h6 style={{ fontWeight: "bold" }}>DELIVERY ADDRESS</h6>
-            <p style={{color: "#625E55"}}>
+            <p style={{ color: "#625E55" }}>
               {orderPayload.billing_first_name} {orderPayload.billing_last_name}{" "}
               <br />
               {orderPayload.billing_mobile}
@@ -207,10 +207,16 @@ const PaymentPage = () => {
               {orderPayload.billing_pincode}, {orderPayload.billing_city},{" "}
               {orderPayload.billing_state}
             </p>
+            {orderResponse?.data?.business_details &&
+              <p style={{ color: "#625E55" }}>
+                Company Name :{orderResponse?.data?.business_details?.company_name} <br />
+                GSTIN : {orderResponse?.data?.business_details?.gst_number}
+              </p>
+            }
           </div>
 
           <div className="section">
-            <h6 style={{fontWeight:"bold"}}>SELECT A PAYMENT METHOD</h6>
+            <h6 style={{ fontWeight: "bold" }}>SELECT A PAYMENT METHOD</h6>
             {/* <div className="payment-options">
               {orderResponse?.data?.payment_gateways?.map((pg, idx) => (
                 <label key={idx}>

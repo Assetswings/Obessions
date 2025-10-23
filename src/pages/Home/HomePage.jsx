@@ -100,6 +100,9 @@ const HomePage = () => {
         );
         setShopByItems(formattedItems);
       }
+      if(data?.hero_banner_categories){
+        localStorage.setItem('hero_banner_categories',JSON.stringify(data?.hero_banner_categories));
+      }
     }
   }, [data]);
 

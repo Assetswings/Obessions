@@ -47,7 +47,7 @@ const CarpetFinder = () => {
           options:
             carpet.sizes?.map((item) => ({
               label: item?.size || "Unknown Size",
-              image: item?.media || "",
+              image: "",
               key: item?.size_filter,
             })) || [],
         },
@@ -193,7 +193,13 @@ const CarpetFinder = () => {
         <div className="finder-main">
           <h2 className="finder-title">{steps[currentStep]?.title}</h2>
           <div className="track-desk">
-            <div className="finder-grid">
+            {/* <div className="finder-grid"> */}
+            <div
+              className={`finder-grid ${steps[currentStep]?.title === "Which Size or Shape fits your Space?"
+                  ? "finder-grid-full"
+                  : ""
+                }`}
+            >
               {steps[currentStep]?.options.map(({ label, image, key }) => (
                 <div
                   key={label}
@@ -204,7 +210,7 @@ const CarpetFinder = () => {
                   {image ? (
                     <img src={image} alt={label} />
                   ) : (
-                    <div className="img-placeholder">No Image</div>
+                    <></>
                   )}
                   <span className="card-label">{label}</span>
                   {isSelected(currentStep, label) && (

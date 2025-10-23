@@ -61,6 +61,10 @@ const CheckoutPage = () => {
   useEffect(() => {
     document.title = "Obsession - Checkout";
     dispatch(fetchCheckout());
+    let storagePin = localStorage.getItem('pincode');
+    if (storagePin) {
+      dispatch(checkPincode(storagePin));
+    }
   }, [dispatch]);
 
   const { data: profileData } = useSelector((state) => state.profile);
@@ -313,6 +317,14 @@ const CheckoutPage = () => {
                 </p>
                 <p className="item-qtn">
                   Quantity: <u>{item.cart_qty}</u>
+                </p>
+                <p>
+                  {" "}
+                  Return & Exchange day : <span>{item.product?.return_non_return_days_label}</span>{" "}
+                </p>
+                <p>
+                  {" "}
+                  TAT Delivery : <span>{pinset?.delivery_tat}</span>{" "}
                 </p>
               </div>
             </div>

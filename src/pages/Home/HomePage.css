@@ -608,7 +608,7 @@ background-color: #F2F2F2;
 }
 
  /* _______ Tbltop section end ________*/
-.promo-section {
+ .promo-section {
   display: flex;
   justify-content: space-between;
   gap: 1.5rem;
@@ -650,12 +650,73 @@ background-color: #F2F2F2;
   }
 }
 
-/* Mobile view: 1 per row */
+/* ✅ Mobile view: horizontal scroll */
 @media (max-width: 480px) {
+  .promo-section {
+    flex-wrap: nowrap;            /* no wrapping */
+    overflow-x: auto;             /* enable horizontal scroll */
+    gap: 1rem;
+    scroll-behavior: smooth;      /* smooth scroll */
+    -webkit-overflow-scrolling: touch; /* better iOS scroll */
+  }
+
+  .promo-card {
+    flex: 0 0 80%;                /* show ~80% of each card */
+    min-width: 80%;               /* ensure visible width */
+  }
+
+  .promo-section::-webkit-scrollbar {
+    display: none;                /* hide scrollbar */
+  }
+}
+/* .promo-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 3rem 1rem;
+  background: #fff;
+  flex-wrap: wrap;
+}
+
+.promo-card {
+  flex: 1 1 calc(33.333% - 1rem);
+  box-sizing: border-box;
+  text-align: center;
+  background: #fff;
+}
+
+.promo-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.promo-title {
+  margin-top: 0rem;
+  font-family: 'Canela Trial', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #111;
+  text-transform: uppercase;
+  line-height: 1.4;
+  text-align: start;
+  width: 100%;
+  letter-spacing: 0.02em;
+} */
+
+/* Tablet view: 2 per row */
+/* @media (max-width: 768px) {
+  .promo-card {
+    flex: 1 1 calc(50% - 1rem);
+  }
+} */
+
+/* Mobile view: 1 per row */
+/* @media (max-width: 480px) {
   .promo-card {
     flex: 1 1 100%;
   }
-}
+} */
 
 /* Carpet css */
 .carpet-section {

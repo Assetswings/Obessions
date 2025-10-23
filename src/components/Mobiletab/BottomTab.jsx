@@ -1,25 +1,43 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate, useLocation, Link } from "react-router-dom";
 import { Home, LayoutGrid, ShoppingCart, Heart, X } from "lucide-react";
 import "./BottomTab.css";
 
 const categories = [
-    { name: "Bath Care", img: "https://i.ibb.co/9Rk33kn/image-648.png" },
-    { name: "Dustbins", img: "https://i.ibb.co/R8R9Ndp/image-649.png" },
-    { name: "Floor Coverings", img: "https://i.ibb.co/ZRzVmFrL/image-650.png" },
-    { name: "Kitchen & Dining", img: "https://i.ibb.co/3yvJ8sTw/image-651.png"  },
-    { name: "Storage & Organization", img: "https://i.ibb.co/4gTM7FLd/image-653.png" },
-    { name: "Tableware & Serve ware", img: "https://i.ibb.co/sp96bfBX/image-652.png" },
-  ];
+  { name: "Bath Care", img: "https://i.ibb.co/9Rk33kn/image-648.png" },
+  { name: "Dustbins", img: "https://i.ibb.co/R8R9Ndp/image-649.png" },
+  { name: "Floor Coverings", img: "https://i.ibb.co/ZRzVmFrL/image-650.png" },
+  { name: "Kitchen & Dining", img: "https://i.ibb.co/3yvJ8sTw/image-651.png" },
+  { name: "Storage & Organization", img: "https://i.ibb.co/4gTM7FLd/image-653.png" },
+  { name: "Tableware & Serve ware", img: "https://i.ibb.co/sp96bfBX/image-652.png" },
+];
 
 const BottomTab = () => {
   const [showCategories, setShowCategories] = useState(false);
+  const [mergedCategories, setmergedCategories] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
 
-  
+
   useEffect(() => {
     setShowCategories(false);
+    // get data from localStorage
+    const hero_banner_categories = JSON.parse(localStorage.getItem('hero_banner_categories') || '[]');
+    // map and append image
+    const mergedCategoriesdata = hero_banner_categories.map((item) => {
+      // try to find a matching category by name (case-insensitive & partial match)
+      const matched = categories.find(cat =>
+        cat.name.toLowerCase().includes(item.name.toLowerCase()) ||
+        item.name.toLowerCase().includes(cat.name.toLowerCase())
+      );
+      return {
+        ...item,
+        img: matched ? matched.img : null, // add image if found, else null
+      };
+    });
+    setmergedCategories(mergedCategoriesdata);
+    console.log(mergedCategoriesdata);
+
   }, [location.pathname]);
 
   return (
@@ -86,17 +104,15 @@ const BottomTab = () => {
         </div>
 
         <div className="category-list_mlb">
-          {categories.map((cat, index) => (
+          {mergedCategories.map((cat, index) => (
             <div
               key={index}
               className="category-item"
-              onClick={() => {
-                setShowCategories(false);
-                navigate("/collections");
-              }}
             >
-              <img src={cat.img} alt={cat.name} />
-              <span>{cat.name}</span>
+              <Link to={`/products/${cat.action_url}`}>
+                <img src={cat.img} alt={cat.name} />
+                <span>{cat.name}</span>
+              </Link>
             </div>
           ))}
         </div>

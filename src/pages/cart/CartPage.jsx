@@ -10,6 +10,7 @@ import blankcart from "../../assets/images/blank-cart.png";
 import { fetchAddOns } from "../Products/otherproductSlice";
 import { ToastContainer, toast } from "react-toastify";
 import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
+import { checkPincode } from "../Productdetails/pincodeSlice";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -18,12 +19,19 @@ const CartPage = () => {
   const [updatingId, setUpdatingId] = useState(null);
   const navigate = useNavigate();
   const { addOns } = useSelector((state) => state.toppick);
+  const { pinset, pinloading, pinerror } = useSelector(
+    (state) => state.pincode
+  );
 
   const lastErrorRef = useRef(null);
 
   useEffect(() => {
     document.title = "Obsession - Cart";
     dispatch(fetchAddOns());
+    let storagePin = localStorage.getItem('pincode');
+    if (storagePin) {
+      dispatch(checkPincode(storagePin));
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -104,7 +112,7 @@ const CartPage = () => {
 
   return (
     <>
-      <ToastContainer style={{zIndex:9999999999999}}  position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
       <div className="root-title-chk">
         <span className="title_chk">My Cart ({items?.length})</span>
       </div>
@@ -140,11 +148,11 @@ const CartPage = () => {
               <div className="cart-item" key={item.id}>
                 <div className="item-image">
                   <Link to={`/productsdetails/${item.product?.action_url}`} target="_blank" rel="noopener noreferrer">
-                  <img
-                    className="img-cart-page pointer-crusser"
-                    src={item.product?.media}
-                    alt={item.product?.name || "product"}
-                  />
+                    <img
+                      className="img-cart-page pointer-crusser"
+                      src={item.product?.media}
+                      alt={item.product?.name || "product"}
+                    />
                   </Link>
                 </div>
 
@@ -172,6 +180,14 @@ const CartPage = () => {
                   <p style={{ textTransform: "capitalize" }}>
                     {" "}
                     color : <span>{item.product?.color}</span>{" "}
+                  </p>
+                  <p style={{ textTransform: "capitalize" }}>
+                    {" "}
+                    Return & Exchange day : <span>{item.product?.return_non_return_days_label}</span>{" "}
+                  </p>
+                  <p style={{ textTransform: "capitalize" }}>
+                    {" "}
+                    TAT Delivery : <span>{pinset?.delivery_tat}</span>{" "}
                   </p>
 
                   <div className="root_qtn_cart">

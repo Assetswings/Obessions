@@ -111,17 +111,37 @@ font-family: "Playfair Display", serif; */
     text-align: left;
   }
 
-  .sidebar {
+  /* .sidebar {
     display: none;
   }
 
-  /* Responsive: 1 column on small screens */
   .products-grid {
     grid-template-columns: 1fr;
     width: 100%;
   }
 
   .product-card {
-    grid-column: span 1 !important; /* reset on mobile */
+    grid-column: span 1 !important; 
+  } */
+
+  .sidebar {
+    display: none;
+  }
+
+  /* Keep same layout, just tighten spacing */
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+
+  .product-card img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Optional: slightly smaller text for mobile */
+  .product-card p {
+    font-size: 16px;
   }
 }

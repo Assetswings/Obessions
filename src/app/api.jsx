@@ -18,25 +18,25 @@ API.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// API.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (
-//       error.response &&
-//       (error.response.status === 401 || error.response.status === 403) && // check both
-//       (
-//         error.response.data?.message === "Invalid authentication token." ||
-//         error.response.data?.message === "Token is Expired" ||
-//         error.response.data?.message === "Token is Invalid" ||
-//         error.response.data?.message === "No token provided." ||
-//         error.response.data?.message === "Authorization Token not found"
-//       )
-//     ) {
-//       localStorage.clear();
-//       window.location.href = "/login";
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403) && // check both
+      (
+        error.response.data?.message === "Invalid authentication token." ||
+        error.response.data?.message === "Token is Expired" ||
+        error.response.data?.message === "Token is Invalid" ||
+        error.response.data?.message === "No token provided." ||
+        error.response.data?.message === "Authorization Token not found"
+      )
+    ) {
+      localStorage.clear();
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default API;

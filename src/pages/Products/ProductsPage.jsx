@@ -22,6 +22,7 @@ import plpone from "../../assets/images/plp-01.png";
 import plptwo from "../../assets/images/plp-02.png";
 import API from "../../app/api";
 import Pagination from "../../components/Pagination/Pagination";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
@@ -394,10 +395,19 @@ const ProductsPage = () => {
   const handleSelect = (option) => {
     setSelected(option);
   };
-
+  const breadcrumbPaths = [
+    {
+      label: subcategory ? (
+        formatTitle(subcategory)
+      ) : (
+        formatTitle(category)
+      ), to: ""
+    }, // last one (no link)
+  ];
   return (
     <>
       <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} />
+      <Breadcrumbs paths={breadcrumbPaths} />
       {/* MOBILE FILTER BUTTON */}
       <div className="custom-products-page">
         <aside className="custom-filters">

@@ -1,32 +1,26 @@
+// Breadcrumbs.jsx
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Breadcrumbs.css";
 
-  const Breadcrumbs = () => {
-  const location = useLocation();
-  const pathnames = location.pathname.split("/").filter((x) => x);
-
+const Breadcrumbs = ({ paths = [] }) => {
   return (
     <nav className="breadcrumb-wrapper">
       <Link to="/" className="breadcrumb-item">
         HOME
       </Link>
-      {pathnames.map((value, index) => {
-        const to = `/${pathnames.slice(0, index + 1).join("/")}`;
-        const isLast = index === pathnames.length - 1;
 
-        const formatted = decodeURIComponent(value)
-          .replace(/-/g, " ")
-          .toUpperCase();
+      {paths.map((item, index) => {
+        const isLast = index === paths.length - 1;
 
         return (
-          <span key={to} className="breadcrumb-segment">
+          <span key={index} className="breadcrumb-segment">
             <span className="breadcrumb-separator">›</span>
             {isLast ? (
-              <span className="breadcrumb-item active">{formatted}</span>
+              <span className="breadcrumb-item active">{item.label}</span>
             ) : (
-              <Link to={to} className="breadcrumb-item">
-                {formatted}
+              <Link to={item.to} className="breadcrumb-item">
+                {item.label}
               </Link>
             )}
           </span>

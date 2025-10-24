@@ -70,13 +70,14 @@ const ProfilePage = () => {
 
   // ✅ Step 3: When user LEAVES this page, clear saved tab
   useEffect(() => {
-    // Run when route changes away from /profile
-    return () => {
-      if (!location.pathname.includes("/profile")) {
-        localStorage.removeItem("activeTab");
-      }
-    };
-  }, [location.pathname]);
+    if (
+      !location.hash.includes("/profile") &&
+      !location.hash.includes("/OrderTrackingPage")
+    ) {
+      localStorage.removeItem("activeTab");
+    }
+  }, [location.hash]);
+
 
   // ✅ Step 4 (Optional): Re-sync when component mounts
   useEffect(() => {

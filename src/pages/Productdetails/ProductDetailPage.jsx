@@ -18,6 +18,7 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
 import { checkPincode, resetPincodeState } from "./pincodeSlice";
 import CartToast from "../../components/AddtoCartToster/CartToast";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const tabs = [
   { id: "highlights", label: "HIGHLIGHTS" },
@@ -148,6 +149,7 @@ const ProductDetailPage = () => {
   }, [pinset]);
 
   const handleAddToCart = () => {
+    toast.dismiss();
     const token = localStorage.getItem("token");
     if (!token) {
       setShowLoginPrompt(true);
@@ -208,10 +210,8 @@ const ProductDetailPage = () => {
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
   const productId = data?.id || productSlug;
 
-  const handlefinder = () => {
-    navigate("/carpet-finder");
-  };
   const toggleWishlist = async (e, product) => {
+    toast.dismiss();
     e.stopPropagation();
     const token = localStorage.getItem("token");
     if (!token) {
@@ -303,6 +303,7 @@ const ProductDetailPage = () => {
   };
 
   const toggleWishlistReleted = async (e, product, key) => {
+    toast.dismiss();
     e.stopPropagation();
     const token = localStorage.getItem("token");
     if (!token) {
@@ -412,6 +413,7 @@ const ProductDetailPage = () => {
   }
 
   if (pinerror) {
+    toast.dismiss();
     toast.error("Invalid or unavailable pincode!");
   }
 
@@ -435,10 +437,14 @@ const ProductDetailPage = () => {
     setSelectedColor(size?.product_colors[0]);
     setSelectedImage(size?.product_colors[0]?.product_media[0]?.media);
   };
-
+  const breadcrumbPaths = [
+    { label: data?.sub_category_action_url, to: `/products/${data?.category_action_url}/${data?.sub_category_action_url}` },
+    { label: selectedSize?.name, to: "" }, // last one (no link)
+  ];
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
+      <Breadcrumbs paths={breadcrumbPaths}/>
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">

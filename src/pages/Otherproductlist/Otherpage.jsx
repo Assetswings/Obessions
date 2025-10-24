@@ -19,6 +19,7 @@ import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "../Products/otherproductSlice";
 import { ToastContainer } from "react-toastify";
 import { Expand, Heart, SlidersHorizontal, X } from "lucide-react";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const Otherpage = () => {
   const dispatch = useDispatch();
@@ -360,10 +361,13 @@ const Otherpage = () => {
       </div>
     );
   };
-
+  const breadcrumbPaths = [
+    { label: Titelslug, to: "" }, // last one (no link)
+  ];
   return (
     <>
       <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">{slug ? formatTitle(slug) : ""}</h2>

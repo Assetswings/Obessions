@@ -22,6 +22,7 @@ import { filterCarpet } from "./carpetFinderSlice";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "../Products/otherproductSlice";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const Carpetfinderserch = () => {
   const dispatch = useDispatch();
@@ -160,9 +161,12 @@ const Carpetfinderserch = () => {
       </div>
     );
   };
-
+  const breadcrumbPaths = [
+    { label: "Floor Matcher", to: "" }, // last one (no link)
+  ];
   return (
     <>
+    <Breadcrumbs paths={breadcrumbPaths} />
       <div className="custom-products-page">
         <aside className="custom-filters">
           <h2 className="title_prd_roots">

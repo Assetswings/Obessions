@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./Blog.css";
 import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const Blog = () => {
   const [data, setData] = useState("");
@@ -24,11 +25,12 @@ const Blog = () => {
     BlogList();
   }, []);
 
-  const handleBlogClick = (slug) => {
-    navigate("/blog-details", { state: { blog: slug } });
-  };
+    const breadcrumbPaths = [
+    { label: "Blog", to: "" }, // last one (no link)
+  ];
   return (
     <>
+    <Breadcrumbs paths={breadcrumbPaths} />
       <div className="blog-container">
         {/* BLOG HEADER */}
         <header className="blog-header">
@@ -38,8 +40,10 @@ const Blog = () => {
 
         {/* FEATURED POST */}
         <section className="featured-post pointer-crusser">
-          <div onClick={() => handleBlogClick(data?.top_first?.slug)}>
-            <img src={data?.top_first?.media} alt="Featured" />
+          <div>
+            <Link to={`/blog-details/${data?.top_first?.slug}`}>
+            <img src={data?.top_first?.media} alt={data?.top_first?.slug} />
+            </Link>
           </div>
 
           <div className="featured-info">
@@ -61,8 +65,10 @@ const Blog = () => {
                   )}
                 </span>
               </div>
-              <div onClick={() => handleBlogClick(data?.top_first?.slug)}>
+              <div>
+                <Link to={`/blog-details/${data?.top_first?.slug}`}>
                 <h2>{data?.top_first?.name}</h2>
+                </Link>
               </div>
             </div>
           </div>
@@ -73,7 +79,8 @@ const Blog = () => {
           <h3>Latest Posts</h3>
           <div className="posts-grid">
             {data?.latest_blogs?.data.map((post, index) => (
-              <div className="post-card pointer-crusser" key={index} onClick={() => handleBlogClick(post?.action_url)}>
+              <div className="post-card pointer-crusser" key={index}>
+                <Link to={`/blog-details/${post?.action_url}`}>
                 <img src={post.media} alt={post.name} />
                 <div className="post-info">
                   <div className="post-meta">
@@ -92,6 +99,7 @@ const Blog = () => {
                   </div>
                   <h4>{post.name}</h4>
                 </div>
+                </Link>
               </div>
             ))}
           </div>

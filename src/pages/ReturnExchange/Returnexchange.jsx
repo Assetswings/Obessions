@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import API from "../../app/api";
 import Footer from "../../components/Footer/Footer";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const ReturnExchange = () => {
   const [option, setOption] = useState("return");
@@ -159,9 +160,13 @@ const ReturnExchange = () => {
       }
     }
   };
-
+  const breadcrumbPaths = [
+    { label: "orders", to: "/profilepage" },
+    { label: "Return / Exchange Order", to: "" }, // last one (no link)
+  ];
   return (
     <>
+    <Breadcrumbs paths={breadcrumbPaths} />
       <div className="return-exchange-container">
         {/* Left Section */}
         <div className="return-exchange-form">

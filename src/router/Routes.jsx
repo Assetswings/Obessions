@@ -69,6 +69,7 @@ const AppRoutes = () => {
           <Route path="faq" element={<Faq />} />
           <Route path="blog" element={<Blog />} />
           <Route path="blog-details" element={<BlogPost />} />
+          <Route path="blog-details/:blog" element={<BlogPost />} />
           <Route path="tc-of-sale" element={<TermsAndConditions />} />
           <Route path="cancellation-return-refund-policy" element={<Cancellation />} />
           <Route path="terms-of-use" element={<Returnrefund />} />

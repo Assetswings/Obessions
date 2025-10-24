@@ -8,6 +8,7 @@ import { ArrowDown, ArrowUp } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import arrowleft from "../../assets/icons/Vector_left.png";
 import arrowright from "../../assets/icons/Vector_right.png";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const CarpetFinder = () => {
   const dispatch = useDispatch();
@@ -16,8 +17,6 @@ const CarpetFinder = () => {
   const [selections, setSelections] = useState({});
   const [steps, setSteps] = useState([]);
   const navigate = useNavigate();
-
-  console.log("filter_the_object-------->", selections);
 
   // Fetch data when mounted
   useEffect(() => {
@@ -185,10 +184,13 @@ const CarpetFinder = () => {
       </div>
     );
   }
-
+  const breadcrumbPaths = [
+    { label: "Floor Matcher", to: "" }, // last one (no link)
+  ];
   return (
     <>
       <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="finder-wrapper">
         <div className="finder-main">
           <h2 className="finder-title">{steps[currentStep]?.title}</h2>

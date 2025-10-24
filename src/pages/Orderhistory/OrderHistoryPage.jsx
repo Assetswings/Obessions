@@ -143,15 +143,15 @@ const OrderHistoryPage = () => {
                 <div className="order-card" key={idx}>
                   <div className="order-header">
                     <div>
-                      <div>Estimated Delivery</div>
+                      <div>Order Placed</div>
                       <div>
                         {/* Format date here if needed */}
-                        {/* {new Date(order.order_placed_at).toLocaleDateString("en-US", {
+                        {new Date(order.order_placed_at).toLocaleDateString("en-US", {
                     weekday: "short",
                     day: "2-digit",
                     month: "short",
                     timeZone: "Asia/Kolkata",
-                  })} */}
+                  })}
                       </div>
                     </div>
 

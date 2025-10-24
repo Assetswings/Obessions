@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchCollections } from "./collectionsSlice";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const CollectionPage = () => {
   const navigate = useNavigate();
@@ -34,9 +35,12 @@ const CollectionPage = () => {
   };
 
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
-
+  const breadcrumbPaths = [
+    { label: "Collections", to: "" }, // last one (no link)
+  ];
   return (
     <>
+    <Breadcrumbs paths={breadcrumbPaths} />
       <div className="collection-container">
         {/* 🧱 Sidebar */}
         <aside className="sidebar">

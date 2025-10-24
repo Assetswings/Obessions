@@ -11,6 +11,7 @@ import { fetchAddOns } from "../Products/otherproductSlice";
 import { ToastContainer, toast } from "react-toastify";
 import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
 import { checkPincode } from "../Productdetails/pincodeSlice";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -109,10 +110,13 @@ const CartPage = () => {
   }
 
   if (loading) return <p>Loading cart...</p>;
-
+  const breadcrumbPaths = [
+    { label: "Cart", to: "" }, // last one (no link)
+  ];
   return (
     <>
       <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="root-title-chk">
         <span className="title_chk">My Cart ({items?.length})</span>
       </div>

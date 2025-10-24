@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import API from "../../app/api";
 import { ToastContainer, toast } from "react-toastify";
 import Footer from "../../components/Footer/Footer";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const CancelOrder = () => {
   const [reason, setReason] = useState("");
@@ -107,10 +108,14 @@ const CancelOrder = () => {
       navigate("/orderhistory");
     }
   };
-
+  const breadcrumbPaths = [
+    { label: "orders", to: "/profilepage" },
+    { label: "Cancel Order", to: "" }, // last one (no link)
+  ];
   return (
     <>
       <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="cancel-order-container">
         {/* Left Section */}
         <div className="cancel-order-form">

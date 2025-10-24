@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import "./BlogPost.css";
 import Footer from "../Footer/Footer";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import API from "../../app/api";
+import Breadcrumbs from "../Breadcum/Breadcrumbs";
 
 const BlogPost = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const blugSlug = location.state?.blog;
+  const { blog } = useParams();
+  const blugSlug = location.state?.blog || blog || null;
   const [data, setData] = useState("");
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -34,36 +36,42 @@ const BlogPost = () => {
   const handleBlogClick = (slug) => {
     navigate("/blog-details", { state: { blog: slug } });
   };
+  const breadcrumbPaths = [
+    { label: "Blog", to: "/blog" },
+    { label: "Blog Details", to: "" }, // last one (no link)
+  ];
   return (
-    <div className="blog-post">
-      {/* Hero */}
-      <section className="hero">
-        <img
-          src={data?.blog?.media}
-          alt={data?.blog?.name}
-          className="hero-image"
-        />
-      </section>
+    <>
+      <Breadcrumbs paths={breadcrumbPaths} />
+      <div className="blog-post">
+        {/* Hero */}
+        <section className="hero">
+          <img
+            src={data?.blog?.media}
+            alt={data?.blog?.name}
+            className="hero-image"
+          />
+        </section>
 
-      {/* Main Section */}
-      <section className="post-wrapper">
-        {/* Left Blog Content */}
-        <div className="post-main">
-          <p className="post-date">
-            Posted on{" "}
-            {new Date(data?.blog?.created_at).toLocaleDateString("en-GB", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-            })}
-          </p>
+        {/* Main Section */}
+        <section className="post-wrapper">
+          {/* Left Blog Content */}
+          <div className="post-main">
+            <p className="post-date">
+              Posted on{" "}
+              {new Date(data?.blog?.created_at).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
+            </p>
 
-          <div className="terms-container">
-            <div dangerouslySetInnerHTML={{ __html: data.blog?.description }} />
-          </div>
+            <div className="terms-container">
+              <div dangerouslySetInnerHTML={{ __html: data.blog?.description }} />
+            </div>
 
-          {/* <h1 className="post-title">{data?.blog?.name}</h1> */}
-          {/* <div className="sector_image">
+            {/* <h1 className="post-title">{data?.blog?.name}</h1> */}
+            {/* <div className="sector_image">
             <div>
               <img
                 src="https://i.ibb.co/cV6M9j4/image-396.png"
@@ -147,82 +155,67 @@ const BlogPost = () => {
             comfort and style.
           </p> */}
 
-          {/* <div className="connect-footer">
+            {/* <div className="connect-footer">
             <p>Connect With Us :</p>
             <div className="social-icons">
               <i className="fa-brands fa-facebook"></i>
               <i className="fa-brands fa-instagram"></i>
               <i className="fa-brands fa-youtube"></i>
             </div> */}
-        </div>
+          </div>
 
-        {/* Right Sidebar */}
-        <aside className="post-sidebar">
-          <h4 className="sidebar-title">Related Posts</h4>
-          <ul className="related-list">
-            {data?.related?.map((post, index) => (
-              <li key={index}>
-                <img src={post?.media} alt="Related 1" onClick={() => handleBlogClick(post?.action_url)} className="pointer-crusser"/>
-                <div className="pointer-crusser">
-                  <p onClick={() => handleBlogClick(post?.action_url)}>{post?.name}</p>
-                  <span>
-                    {post?.description?.split(" ").slice(0, 15).join(" ")}
-                    {post?.description?.split(" ").length > 15 ? "..." : ""}
-                  </span>
-                </div>
-              </li>
-            ))}
-            {/* {data?.related?.map((post, index) => {
-              // Remove HTML tags safely
-              const plainText = post?.description?.replace(/<[^>]+>/g, "");
-              const words = plainText?.split(" ") || [];
-
-              return (
+          {/* Right Sidebar */}
+          <aside className="post-sidebar">
+            <h4 className="sidebar-title">Related Posts</h4>
+            <ul className="related-list">
+              {data?.related?.map((post, index) => (
                 <li key={index}>
-                  <img src={post?.media} alt={`Related ${index + 1}`} />
-                  <div>
-                    <p onClick={() => handleBlogClick(post?.action_url)}>
-                      {post?.name}
-                    </p>
-                    <span>
-                      {words.slice(0, 15).join(" ")}
-                      {words.length > 15 ? "..." : ""}
-                    </span>
-                  </div>
+                  <Link to={`/blog-details/${post?.action_url}`}>
+                    <img src={post?.media} alt="Related 1" className="pointer-crusser" />
+                    <div className="pointer-crusser">
+                      <p>{post?.name}</p>
+                      <span>
+                        {post?.description?.split(" ").slice(0, 15).join(" ")}
+                        {post?.description?.split(" ").length > 15 ? "..." : ""}
+                      </span>
+                    </div>
+                  </Link>
                 </li>
-              );
-            })} */}
-          </ul>
-        </aside>
-      </section>
-      {/* Recommended Posts */}
-      <section className="recommended-posts">
-        <h2 className="recommended-title">Recommended Posts</h2>
-        <div className="recommended-grid">
-          {data?.recommended?.map((post, index) => (
-            <div className="recommended-card pointer-crusser" key={index}>
-              <img src={post?.media} alt="Post 1" onClick={() => handleBlogClick(post?.action_url)}/>
-              <p>{post?.name}</p>
-              <div className="txt_btn_recomend">
-                <p>
-                  Posted on{" "}
-                  {new Date(post?.created_at).toLocaleDateString("en-GB", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </p>
-                <a onClick={() => handleBlogClick(post?.action_url)}>
-                  Read More
-                </a>
+              ))}
+            </ul>
+          </aside>
+        </section>
+        {/* Recommended Posts */}
+        <section className="recommended-posts">
+          <h2 className="recommended-title">Recommended Posts</h2>
+          <div className="recommended-grid">
+            {data?.recommended?.map((post, index) => (
+              <div className="recommended-card pointer-crusser" key={index}>
+                <Link to={`/blog-details/${post?.action_url}`}>
+                  <img src={post?.media} alt="Post 1" />
+                </Link>
+                <p>{post?.name}</p>
+                <div className="txt_btn_recomend">
+                  <p>
+                    Posted on{" "}
+                    {new Date(post?.created_at).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
+                  <Link to={`/blog-details/${post?.action_url}`}>
+                    <u>Read More</u>
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
-      {/* Footer */}
-      <Footer />
-    </div>
+            ))}
+          </div>
+        </section>
+        {/* Footer */}
+        <Footer />
+      </div>
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
 import { fetchOrderHistory } from "../Orderhistory/orderhistorySlice";
 import API from "../../app/api";
 import Footer from "../../components/Footer/Footer";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const OrderTrackingPage = () => {
   const navigate = useNavigate();
@@ -87,9 +88,13 @@ const OrderTrackingPage = () => {
   if (loading) return <p>Loading order details...</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
   if (!order) return <p>No order found.</p>;
-
+  const breadcrumbPaths = [
+    { label: "Orders", to: "/ProfilePage" },
+    { label: "Order Tracking", to: "" }, // last one (no link)
+  ];
   return (
     <>
+    <Breadcrumbs paths={breadcrumbPaths} />
       <div className="order-tracking-container">
         <div className="order-left">
           <h2>Order Details</h2>

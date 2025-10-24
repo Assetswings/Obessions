@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { initiatePayment, verifyPayment } from "./paymentService";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -107,9 +108,15 @@ const PaymentPage = () => {
       console.error("Payment error:", err);
     }
   };
+    const breadcrumbPaths = [
+    { label: "Cart", to: "/cart" },
+    { label: "Checkout", to: "/checkout" }, // last one (no link)
+    { label: "Payment", to: "" },
+  ];
   return (
     <>
       <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="root-title-chk">
         <h2 className="title_chk">Payment</h2>
       </div>

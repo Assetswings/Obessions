@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Info, X } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import { checkPincode } from "../Productdetails/pincodeSlice";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const CheckoutPage = () => {
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
@@ -123,6 +124,7 @@ const CheckoutPage = () => {
   const displayedAddresses = expanded ? addressdata : addressdata.slice(0, 2);
 
   const handlePlaceOrder = () => {
+    toast.dismiss();
     let formErrors = {};
     if (defuktAddr) {
       if (gstinEnabled) {
@@ -265,10 +267,14 @@ const CheckoutPage = () => {
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0; // ✅ valid if no errors
   };
-
+  const breadcrumbPaths = [
+    { label: "Cart", to: "/cart" },
+    { label: "Checkout", to: "" }, // last one (no link)
+  ];
   return (
     <>
       <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="root-title-chk">
         <h2 className="title_chk">Checkout</h2>
       </div>

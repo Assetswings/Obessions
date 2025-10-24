@@ -75,7 +75,7 @@
 .about-text-section {
   position: relative;
   background: #fff;
-  min-height: 80vh;
+  min-height: 95vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -130,7 +130,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5rem 2rem;
+  padding: 0rem 2rem;
   background-color: #fff;
   flex-wrap: wrap;
 }
@@ -319,11 +319,10 @@
     font-weight: 400;
     font-family: 'Segoe UI', sans-serif;
   }
-}
+    }
 
 
  .thirty-years-section {
-  padding: 60px 0;
   background-color: #fff;
 }
 
@@ -347,23 +346,28 @@
 
 .divider-line {
   width: 1px;
-  height: 200px;
+  height: 350px;
   background-color: #999;
   margin: 30px auto;
 }
 
 .text-section h1 {
-  font-size: 60px;
-  font-weight: 700;
+  font-size: 80px;
+  font-weight: 500;
   line-height: 1;
   margin: 0;
+  font-family: 'Canela Trial', sans-serif;
 }
 
 .text-section h4 {
-  font-size: 22px;
+  font-size: 33px;
   font-style: italic;
   font-weight: 400;
   margin-top: 10px;
+  font-family: "Playfair Display", serif;
+}
+.sub_txt{
+  font-size: 30px;
 }
 .container{
    display: flex;

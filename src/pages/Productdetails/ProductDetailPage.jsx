@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./ProductDetailPage.css";
-import { Heart } from "lucide-react";
+import { Heart, Share2 } from "lucide-react";
 import Footer from "../../components/Footer/Footer";
 import { fetchProductDetail, clearProductDetail } from "./productDetailSlice";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -443,8 +443,11 @@ const ProductDetailPage = () => {
   ];
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
-      <Breadcrumbs paths={breadcrumbPaths}/>
+    <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
+    <div className="root_br_head"> 
+    <div> <Breadcrumbs paths={breadcrumbPaths}/></div> 
+     <div className="share_btn"> <span><Share2 /></span> share</div> 
+     </div> 
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">

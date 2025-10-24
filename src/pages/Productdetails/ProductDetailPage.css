@@ -7,6 +7,16 @@ font-family: 'Canela Trial', sans-serif;
 font-family: 'Helvetica Neue', sans-serif;
 font-family: "Playfair Display", serif; */
 
+ .root_br_head{
+ display:flex;
+ justify-content: space-between;
+
+}
+.share_btn{
+  margin-top: 10px;
+    margin-right: 10px;
+}
+
 .product-page {
   display: flex;
   flex-wrap: wrap;

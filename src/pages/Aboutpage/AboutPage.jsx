@@ -109,7 +109,7 @@ const AboutPage = () => {
               <div className="text-section">
                 <p>{data?.thirty_years?.other?.description || ""}</p>
                 <div className="divider-line"></div>
-                <h1>30 Years</h1>
+                <h1>30 <span className="sub_txt"> Years</span></h1>
                 <h4>of Transforming Spaces</h4>
               </div>
             </div>

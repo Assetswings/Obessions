@@ -1,21 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./MobileNav.css";
+import "./MobileOtherNav.css";
 import { Heart, CircleUser, ShoppingCart, ChevronRight, ChevronLeft, Plus, Minus, User, LogOut, Search, } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
-import mobilelogo from "../../assets/icons/Black.png";
+import mobilelogo from "../../assets/icons/White.png";
 import { fetchMegamenuData } from "./megamenuSlice";
 import { Link, useNavigate } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
 
-const MobileNav = () => {
+const MobileOtherNav  = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("main");
   const [prevMenu, setPrevMenu] = useState(null);
   const [direction, setDirection] = useState("forward");
-  const [currentSection, setCurrentSection] = useState(null); // selected section
-  const [openCategory, setOpenCategory] = useState(null); // expanded category
+  const [currentSection, setCurrentSection] = useState(null); 
+  const [openCategory, setOpenCategory] = useState(null); 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
@@ -24,10 +24,10 @@ const MobileNav = () => {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.megamenu);
 
-  useEffect(() => {
+    useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
-  }, []);
+    }, []);
 
   // useEffect(() => {
   //   const handleClickOutside = (event) => {
@@ -42,6 +42,7 @@ const MobileNav = () => {
   //   document.addEventListener("mousedown", handleClickOutside);
   //   return () => document.removeEventListener("mousedown", handleClickOutside);
   // }, []);
+
   useEffect(() => {
     dispatch(fetchMegamenuData());
   }, [dispatch]);
@@ -156,9 +157,9 @@ const MobileNav = () => {
 
   return (
     <>
-        <header className="topbar">
+        <header className="topbar_other">
         <div className="topbar-left">
-          <div className="hamburger" onClick={toggleDrawer}>
+          <div className="hamburger_other" onClick={toggleDrawer}>
             <span></span>
             <span></span>
           </div>
@@ -169,15 +170,14 @@ const MobileNav = () => {
         </div>
 
         <div className="icons">
-
-           <Search 
-                 color="black"
+               <Search 
+                 color="white"
                  strokeWidth={1.5}
            />
           <CircleUser
             ref={userWrapperRef}
             strokeWidth={1.5}
-            color="black"
+            color="white"
             size={25}
             onClick={handleUserClick}
           />
@@ -329,4 +329,4 @@ const MobileNav = () => {
   );
 };
 
-export default MobileNav;
+export default MobileOtherNav;

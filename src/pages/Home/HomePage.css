@@ -1098,6 +1098,10 @@ background-color: #F2F2F2;
 }
 
 @media (max-width: 480px) {
+
+  .img-left-logo{
+    display: none;
+  }
   .obsessed-grid {
     grid-template-columns: repeat(2, 1fr);
   }

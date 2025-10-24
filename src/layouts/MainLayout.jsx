@@ -4,6 +4,7 @@ import TopAnnouncementBar from "../components/Navbars/TopAnnouncementBar";
 import Topnav from "../components/Navbars/Topnav";
 import OtherTopnav from "../components/Navbars/OtherTopnav";
 import MobileNav from "../components/Navbars/MobileNav";
+import MobileOtherNav from "../components/Navbars/MobileOtherNav";
 import BottomTab from "../components/Mobiletab/BottomTab";
 
 const MainLayout = () => {
@@ -13,18 +14,18 @@ const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
     <>
-      {/* Top Navbar Logic */}
+      {/* ✅ Top Navbar Logic */}
       {isMobile ? (
-        <MobileNav />
+        <>
+          {isHome ? <MobileNav /> : <MobileOtherNav />}
+        </>
       ) : (
         <>
           {isHome && <TopAnnouncementBar />}
@@ -32,10 +33,10 @@ const MainLayout = () => {
         </>
       )}
 
-      {/* Page content */}
+      {/* ✅ Page content */}
       <Outlet />
 
-      {/* 👇 Sticky bottom tab only for mobile */}
+      {/* ✅ Sticky bottom tab only for mobile */}
       {isMobile && <BottomTab />}
     </>
   );

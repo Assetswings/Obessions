@@ -363,7 +363,7 @@ const ProductsPage = () => {
 
   const handleSelect = (option) => {
     setSelected(option);
-    handleFilterChange('sort_by',option);
+    handleFilterChange('sort_by', option);
   };
   const breadcrumbPaths = [
     {
@@ -447,6 +447,30 @@ const ProductsPage = () => {
 
         <main className="custom-product-list">
           <div className="track_filter">
+            {/* <div className="sortby-container">
+              <div className="dropdown">
+                <div
+                  className="dropdown-toggle sortby-btn"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  SORT BY
+                </div>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {Object.entries(sorting).map(([key, label]) => (
+                    <li key={key}>
+                      <button
+                        className={`dropdown-item ${selected === key ? "active-option" : ""}`}
+                        onClick={() => handleSelect(key)}
+                      >
+                        {label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div> */}
             <button
               className="mobile-filter-btn"
               onClick={() => setIsFilterOpen(true)}
@@ -459,7 +483,7 @@ const ProductsPage = () => {
             </button>
           </div>
 
-          <div className="sortby-container">
+          <div className="sortby-container-mlb">
             <div className="dropdown">
               <div
                 className="dropdown-toggle sortby-btn"

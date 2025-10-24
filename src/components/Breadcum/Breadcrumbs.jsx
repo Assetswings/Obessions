@@ -2,6 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Breadcrumbs.css";
+import { ChevronRight } from "lucide-react";
 
 const Breadcrumbs = ({ paths = [] }) => {
   return (
@@ -15,7 +16,9 @@ const Breadcrumbs = ({ paths = [] }) => {
 
         return (
           <span key={index} className="breadcrumb-segment">
-            <span className="breadcrumb-separator"></span>
+            <span className="breadcrumb-separator">
+              <ChevronRight size={20} />
+            </span>
             {isLast ? (
               <span className="breadcrumb-item active">{item.label}</span>
             ) : (

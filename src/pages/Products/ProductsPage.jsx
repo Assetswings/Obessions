@@ -52,7 +52,7 @@ const ProductsPage = () => {
   const [maxPrice, setMaxPrice] = useState();
   const [customerfavourite, setCustomerfavourite] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, filters, pagination, loading } = useSelector((state) => state.products);
+  const { data, filters, sorting, pagination, loading } = useSelector((state) => state.products);
 
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 20;
@@ -265,13 +265,6 @@ const ProductsPage = () => {
       <div className="custom-filter-group" key="categories">
         <h4>Categories</h4>
         <label>
-          <input
-            type="checkbox"
-            checked={
-              currentFilters.categories?.includes(categories.name) || false
-            }
-            onChange={() => onChangeHandler("categories", categories.name)}
-          />
           <span className="txt_checkbox">{categories.name}</span>
         </label>
 
@@ -281,9 +274,9 @@ const ProductsPage = () => {
               <input
                 type="checkbox"
                 checked={
-                  currentFilters.subcategories?.includes(sub.name) || false
+                  currentFilters.categories?.includes(sub.name) || false
                 }
-                onChange={() => onChangeHandler("subcategories", sub.name)}
+                onChange={() => onChangeHandler("categories", sub.name)}
               />
               <span className="txt_checkbox">{sub.name}</span>
             </label>
@@ -293,46 +286,31 @@ const ProductsPage = () => {
     );
   };
 
-  useEffect(() => {
-    if (filters?.price_filter) {
-      setMinPrice(filters.price_filter.min_price);
-      setMaxPrice(filters.price_filter.max_price);
-    }
-  }, [filters?.price_filter]);
-
+  // Render price range filter
   // Render price range filter
   const renderPriceFilter = (priceFilter, isMobile = false) => {
-    // setMinPrice(priceFilter.min_price);
-    // setMaxPrice(priceFilter.max_price);
-    const onApplyPrice = () => {
-      const onChangeHandler = isMobile
-        ? handleMobileFilterChange
-        : handleFilterChange;
-      onChangeHandler("price_min", minPrice);
-      onChangeHandler("price_max", maxPrice);
+    const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
+    const onChangeHandler = isMobile ? handleMobileFilterChange : handleFilterChange;
+
+    const handlePriceChange = (filterValue) => {
+      onChangeHandler("price_filter", filterValue);
     };
 
     return (
       <div className="custom-filter-group" key="price_filter">
-        <h4>Price</h4>
-        <div className="price-inputs">
-          <input
-            type="number"
-            min={priceFilter.min_price}
-            max={priceFilter.max_price}
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-          />
-          <span> - </span>
-          <input
-            type="number"
-            min={priceFilter.min_price}
-            max={priceFilter.max_price}
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-          />
-          <button onClick={onApplyPrice}>Apply</button>
-        </div>
+        <h4>Price Range</h4>
+        {priceFilter.map((price, i) => (
+          <label key={i}>
+            <input
+              type="checkbox"
+              checked={
+                currentFilters.price_filter?.includes(price.filter_value) || false
+              }
+              onChange={() => handlePriceChange(price.filter_value)}
+            />
+            <span className="txt_checkbox">{price.range_lebel}</span>
+          </label>
+        ))}
       </div>
     );
   };
@@ -383,17 +361,9 @@ const ProductsPage = () => {
     }
   }, [isFilterOpen]);
 
-  const options = [
-    "Recommended",
-    "What's New",
-    "Popularity",
-    "Better Discount",
-    "Price: High to Low",
-    "Price: Low to High",
-  ];
-
   const handleSelect = (option) => {
     setSelected(option);
+    handleFilterChange('sort_by',option);
   };
   const breadcrumbPaths = [
     {
@@ -500,14 +470,13 @@ const ProductsPage = () => {
                 SORT BY
               </div>
               <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {options.map((option) => (
-                  <li key={option}>
+                {Object.entries(sorting).map(([key, label]) => (
+                  <li key={key}>
                     <button
-                      className={`dropdown-item ${selected === option ? "active-option" : ""
-                        }`}
-                      onClick={() => handleSelect(option)}
+                      className={`dropdown-item ${selected === key ? "active-option" : ""}`}
+                      onClick={() => handleSelect(key)}
                     >
-                      {option}
+                      {label}
                     </button>
                   </li>
                 ))}

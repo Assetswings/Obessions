@@ -28,6 +28,9 @@ const CartPage = () => {
 
   useEffect(() => {
     document.title = "Obsession - Cart";
+    if(!token){
+      navigate("/login");
+    }
     dispatch(fetchAddOns());
     let storagePin = localStorage.getItem('pincode');
     if (storagePin) {

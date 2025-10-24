@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { fetchMoreLike, fetchTopPicks } from "../Products/otherproductSlice";
 import blankcart from "../../assets/images/empty-order-history.png";
 import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
+import Pagination from "../../components/Pagination/Pagination";
 
 const STATUS_OPTIONS = [
   { key: "ORDER_PLACED", label: "Order Placed" },
@@ -20,7 +21,7 @@ const OrderHistoryPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedStatus, setSelectedStatus] = useState("ORDER_PLACED");
-  const { results, loading, error } = useSelector((state) => state.orders);
+  const { results, pagination, loading, error } = useSelector((state) => state.orders);
   const { items } = useSelector((state) => state.toppick);
 
   // modal state
@@ -28,7 +29,24 @@ const OrderHistoryPage = () => {
   const [showcnModal, setShowcnModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const total = pagination?.total || 0;
+  const limit = pagination?.limit || 20;
+  const totalPages = Math.ceil(total / limit);
 
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+
+      // 👇 Scroll smoothly to the top after changing page
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }, 200);
+    }
+  };
   useEffect(() => {
     document.title = "Obsession - Order History";
     dispatch(fetchTopPicks());
@@ -36,11 +54,15 @@ const OrderHistoryPage = () => {
 
   useEffect(() => {
     if (selectedStatus) {
-      dispatch(fetchOrderHistory({ status: selectedStatus }));
+      dispatch(fetchOrderHistory({
+        status: selectedStatus,
+        page: currentPage,
+        limit: 5,
+      }));
     } else {
       dispatch(fetchOrderHistory({}));
     }
-  }, [dispatch, selectedStatus]);
+  }, [dispatch, selectedStatus, currentPage]);
 
   useEffect(() => {
     if (showModal || showcnModal) {
@@ -86,6 +108,32 @@ const OrderHistoryPage = () => {
   return (
     <>
       <div className="order-history">
+        {/* Sidebar Filters */}
+        <aside className="sidebar">
+          <div className="filters">
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <h4>Filters</h4>
+              {selectedStatus.length > 0 && (
+                <a href="#" className="clear-all" onClick={handleClearAll}>
+                  Clear all
+                </a>
+              )}
+            </div>
+
+            <p>ORDER STATUS</p>
+
+            {STATUS_OPTIONS.map((status) => (
+              <label key={status.key}>
+                <input
+                  type="checkbox"
+                  checked={selectedStatus === status.key}
+                  onChange={() => handleStatusChange(status.key)}
+                />
+                <span className="status_key">{status.label}</span>
+              </label>
+            ))}
+          </div>
+        </aside>
         {results.length === 0 ? (
           <>
             <div className="empty-orderhistory">
@@ -110,33 +158,6 @@ const OrderHistoryPage = () => {
           </>
         ) : (
           <>
-            {/* Sidebar Filters */}
-            <aside className="sidebar">
-              <div className="filters">
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <h4>Filters</h4>
-                  {selectedStatus.length > 0 && (
-                    <a href="#" className="clear-all" onClick={handleClearAll}>
-                      Clear all
-                    </a>
-                  )}
-                </div>
-
-                <p>ORDER STATUS</p>
-
-                {STATUS_OPTIONS.map((status) => (
-                  <label key={status.key}>
-                    <input
-                      type="checkbox"
-                      checked={selectedStatus === status.key}
-                      onChange={() => handleStatusChange(status.key)}
-                    />
-                    <span className="status_key">{status.label}</span>
-                  </label>
-                ))}
-              </div>
-            </aside>
-
             {/* Order List */}
             <main className="order-list">
               {results.map((order, idx) => (
@@ -147,11 +168,11 @@ const OrderHistoryPage = () => {
                       <div>
                         {/* Format date here if needed */}
                         {new Date(order.order_placed_at).toLocaleDateString("en-US", {
-                    weekday: "short",
-                    day: "2-digit",
-                    month: "short",
-                    timeZone: "Asia/Kolkata",
-                  })}
+                          weekday: "short",
+                          day: "2-digit",
+                          month: "short",
+                          timeZone: "Asia/Kolkata",
+                        })}
                       </div>
                     </div>
 
@@ -255,10 +276,15 @@ const OrderHistoryPage = () => {
                   ))}
                 </div>
               ))}
+
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
             </main>
           </>
         )}
-
         {/* Return / Exchange Modal */}
         {showModal && (
           <div className="modal-overlay-history">

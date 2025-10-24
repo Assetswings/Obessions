@@ -359,7 +359,7 @@
 /* Slide-in filter modal */
 .mobile-filter-modal {
   position: fixed;
-  top: 0;
+  top: 50px;
   right: -100%;
   width: 100%;
   height: 100%;
@@ -397,6 +397,7 @@
   background: #fff;
   position: sticky;
   bottom: 0;
+  margin-bottom: 100px;
 }
 
 .apply-filter-btn {

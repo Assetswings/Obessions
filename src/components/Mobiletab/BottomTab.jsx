@@ -3,6 +3,7 @@ import { NavLink, useNavigate, useLocation, Link } from "react-router-dom";
 import { Home, LayoutGrid, ShoppingCart, Heart, X } from "lucide-react";
 import "./BottomTab.css";
 import { ReactComponent as HomeIcon } from "../../assets/icons/homeicon.svg";
+import WishlistModal from "../Wishtlist/WishlistModal";
 
 const categories = [
   { name: "Bath Care", img: "https://i.ibb.co/9Rk33kn/image-648.png" },
@@ -15,10 +16,16 @@ const categories = [
 
 const BottomTab = () => {
   const [showCategories, setShowCategories] = useState(false);
+  const [showwishlist, setShowwishlist] = useState(false);
   const [mergedCategories, setmergedCategories] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
 
   useEffect(() => {
     setShowCategories(false);
@@ -41,6 +48,13 @@ const BottomTab = () => {
 
   }, [location.pathname]);
 
+  const handleWishlistClick = () => {
+    if (isLoggedIn) {
+      setShowwishlist(true);
+    } else {
+      navigate("/login");
+    }
+  };
   return (
     <>
       <div className="bottom-tab">
@@ -56,7 +70,7 @@ const BottomTab = () => {
                 width={25}
                 height={25}
                 fill={isActive ? "#000" : "none"} // change fill dynamically
-                // stroke={isActive ? "#000" : "#000"} // optional stroke
+              // stroke={isActive ? "#000" : "#000"} // optional stroke
               />
               <span className={isActive ? "active" : ""}>Home</span>
             </>
@@ -65,7 +79,7 @@ const BottomTab = () => {
 
         <div
           className={`tab-item ${showCategories ? "active-tab" : ""}`}
-          onClick={() => setShowCategories(true)}
+          onClick={() => setShowCategories(!showCategories)}
         >
           <LayoutGrid
             size={22}
@@ -88,20 +102,19 @@ const BottomTab = () => {
           )}
         </NavLink>
 
-        <NavLink to="/wishlist" className="tab-item">
-          {({ isActive }) => (
-            <>
-              <Heart
-                size={22}
-                color={isActive ? "#000" : "#999"}
-                fill={isActive ? "#000" : "none"}
-              />
-              <span className={isActive ? "active" : ""}>Wishlist</span>
-            </>
-          )}
-        </NavLink>
+        <div
+          className={`tab-item ${showwishlist ? "active-tab" : ""}`}
+          onClick={() => handleWishlistClick()}
+        >
+          <Heart
+            size={22}
+            color={showwishlist ? "#000" : "#999"}
+            fill={showwishlist ? "#000" : "none"}
+          />
+          <span className={showwishlist ? "active" : ""}>Wishlist</span>
+        </div>
       </div>
-
+      {showwishlist && <WishlistModal onClose={() => setShowwishlist(false)} />}
       <div className={`category-drawer ${showCategories ? "open" : ""}`}>
         <div className="drawer-header">
           <h3>Categories</h3>

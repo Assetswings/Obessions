@@ -42,6 +42,7 @@ const productSlice = createSlice({
   initialState: {
     data: [],
     filters: {},
+    sorting:{},
     pagination: {},
     loading: false,
     error: null,
@@ -62,6 +63,7 @@ const productSlice = createSlice({
           limit: action.payload.limit,
         };
         state.filters = action.payload.filters || {};
+        state.sorting = action.payload.sorting.sort_by || {};
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;

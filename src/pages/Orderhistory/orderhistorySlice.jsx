@@ -14,7 +14,7 @@ export const fetchOrderHistory = createAsyncThunk(
       const response = await API.get(url);
 
       console.log("orderHistory--->", response?.data?.data?.order_header);
-      return response?.data?.data?.order_header || [];
+      return response?.data?.data || [];
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -25,6 +25,7 @@ const orderHistorySlice = createSlice({
   name: "orders",
   initialState: {
     results: [], 
+    pagination: {},
     loading: false,
     error: null,
   },
@@ -42,7 +43,12 @@ const orderHistorySlice = createSlice({
       })
       .addCase(fetchOrderHistory.fulfilled, (state, action) => {
         state.loading = false;
-        state.results = action.payload; 
+        state.results = action.payload?.order_header; 
+        state.pagination = {
+          total: action.payload.total,
+          current_page: action.payload.current_page,
+          limit: action.payload.limit,
+        };
       })
       .addCase(fetchOrderHistory.rejected, (state, action) => {
         state.loading = false;

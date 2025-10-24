@@ -51,6 +51,20 @@ const CollectionPage = () => {
   return (
     <>
       <Breadcrumbs paths={breadcrumbPaths} />
+       <div>
+          <div className="track_filter">
+            <button
+              className="mobile-filter-btn"
+              onClick={() => setIsFilterOpen(true)}
+            >
+              <span>
+                {" "}
+                <SlidersHorizontal size={20} />
+              </span>{" "}
+              Filters
+            </button>
+          </div>
+        </div>
       <div className="collection-container">
         {/* 🧱 Sidebar */}
         <aside className="sidebar">
@@ -122,21 +136,9 @@ const CollectionPage = () => {
               );
             })}
         </aside>
-
+       
         {/* 🖼️ Main Products Grid */}
         <main className="products-grid">
-          {/* <div className="track_filter">
-            <button
-              className="mobile-filter-btn"
-              onClick={() => setIsFilterOpen(true)}
-            >
-              <span>
-                {" "}
-                <SlidersHorizontal size={20} />
-              </span>{" "}
-              Filters
-            </button>
-          </div> */}
           {loading
             ? // 🔄 Product Grid Skeleton
             Array.from({ length: 8 }).map((_, idx) => (
@@ -238,18 +240,6 @@ const CollectionPage = () => {
                 )}
             </>
           )} */}
-        </div>
-        {/* ✅ Sticky Footer Apply Button */}
-        <div className="mobile-filter-footer">
-          <button
-            className="apply-filter-btn"
-          // onClick={() => {
-          //   setSelectedFilters(tempMobileFilters);
-          //   setIsFilterOpen(false);
-          // }}
-          >
-            APPLY
-          </button>
         </div>
       </div>
 

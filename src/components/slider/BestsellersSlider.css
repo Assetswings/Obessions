@@ -31,12 +31,7 @@
   transition: transform 0.3s ease;
 }
 
-.bestseller-card:hover {
-  transform: translateY(-5px);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, 
-              rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
-  cursor: pointer;
-}
+
 .image-wrapper {
   position: relative;
   width: 100%;
@@ -207,7 +202,8 @@
     -webkit-overflow-scrolling: touch; /* ✅ smooth scrolling on iOS */
     scroll-behavior: smooth;  
     scrollbar-width: none; 
-    -ms-overflow-style: none; 
+    -ms-overflow-style: none;
+    padding: 1.5rem 1rem; 
   }
 
   /* ✅ Hide scrollbar (Chrome, Safari, Opera) */
@@ -215,6 +211,11 @@
     display: none;
   }
 
+   bestseller-card:hover {
+  transform: none;
+  box-shadow:none
+
+}
   .bestseller-slider {
     flex-wrap: nowrap; 
   }
@@ -238,7 +239,8 @@
     background-color:#F2F2F2;
   }
   .txt_mlb_haed {
-    width: 120px;
+    
+    font-size: 30px;
   }
 
   .slider-strip {

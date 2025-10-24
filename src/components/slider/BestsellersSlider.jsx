@@ -20,6 +20,7 @@ const BestsellersSlider = ({ onQuickView }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [bestsellers, setBestsellers] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setBestsellers(data?.bestSellers?.products || []);
@@ -33,6 +34,16 @@ const BestsellersSlider = ({ onQuickView }) => {
       prev === 0 ? Math.max(bestsellers.length - 5, 0) : prev - 1
     );
   };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+  
+    handleResize(); // initial check
+    window.addEventListener("resize", handleResize);
+  
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // ✅ Infinite right scroll
   const handleNext = () => {
@@ -127,9 +138,170 @@ const BestsellersSlider = ({ onQuickView }) => {
       <div className="bestseller-fixed-card-mlb">
         <div>
           <h2 className="txt_mlb_haed">
-            Get the <em>Bestsellers</em>
+          Get the <em>Bestsellers</em>
           </h2>
         </div>
+      </div>
+
+      <div className="bestseller-container">
+        <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+        <div className="bestseller-slider">
+  {isMobile ? (
+    // ✅ Mobile version: show all data in horizontal scroll (no arrow, no slicing)
+    <div className="slider-strip">
+      {bestsellers?.map((item) => (
+        <div className="bestseller-card" key={item.id}>
+          <div className="image-wrapper">
+            <Link to={`/productsdetails/${item.action_url}`}>
+              <img src={item?.media_list?.main?.file} alt={item.name} />
+            </Link>
+
+            <button
+              className="wishlist-btn_products"
+              onClick={(e) => toggleWishlist(e, item)}
+            >
+              {animatedWish === item.id ? (
+                <div
+                  style={{
+                    width: 20,
+                    height: 24,
+                    overflow: "hidden",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Player
+                    autoplay
+                    keepLastFrame
+                    src={heartAnimation}
+                    style={{
+                      width: 139,
+                      height: 139,
+                      transform: "scale(0.5)",
+                      transformOrigin: "center",
+                    }}
+                  />
+                </div>
+              ) : (
+                <Heart
+                  color={item.is_wishlisted ? "#FF0000" : "#000"}
+                  fill={item.is_wishlisted ? "#FF0000" : "none"}
+                  size={20}
+                  strokeWidth={2}
+                />
+              )}
+            </button>
+          </div>
+
+          <div className="product-info">
+            <span className="title">
+              <Link to={`/productsdetails/${item.action_url}`}>{item.name}</Link>
+            </span>
+            <span className="price">₹{item.selling_price}</span>
+            {item.mrp && item.mrp !== item.selling_price && (
+              <>
+                &nbsp;
+                <span className="original">
+                  <del>₹{item.mrp}</del>
+                </span>
+                <span className="discount">
+                  ({item?.discount_percent}% OFF)
+                </span>
+              </>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : (
+    // ✅ Desktop version (keep your old structure)
+    <>
+      {/* Left Card */}
+      <div className="slider-strip">
+        {bestsellers?.slice(startIndex, startIndex + 1).map((item) => (
+          <div className="bestseller-card" key={item.id}>
+            <div className="image-wrapper">
+              <Link to={`/productsdetails/${item.action_url}`}>
+                <img src={item?.media_list?.main?.file} alt={item.name} />
+              </Link>
+              <div className="order_view_btn">
+                <button
+                  className="quick-view"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    LogsIcon(item);
+                  }}
+                >
+                  Quick View&nbsp;
+                  <span>
+                    <Expand color="#000000" size={15} strokeWidth={1.25} />
+                  </span>
+                </button>
+              </div>
+              <button
+                className="wishlist-btn_products"
+                onClick={(e) => toggleWishlist(e, item)}
+              >
+                {animatedWish === item.id ? (
+                  <div
+                    style={{
+                      width: 20,
+                      height: 24,
+                      overflow: "hidden",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Player
+                      autoplay
+                      keepLastFrame
+                      src={heartAnimation}
+                      style={{
+                        width: 139,
+                        height: 139,
+                        transform: "scale(0.5)",
+                        transformOrigin: "center",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <Heart
+                    color={item.is_wishlisted ? "#FF0000" : "#000"}
+                    fill={item.is_wishlisted ? "#FF0000" : "none"}
+                    size={20}
+                    strokeWidth={2}
+                  />
+                )}
+              </button>
+            </div>
+            <div className="product-info">
+              <span className="title">
+                <Link to={`/productsdetails/${item.action_url}`}>{item.name}</Link>
+              </span>
+              <span className="price">₹{item.selling_price}</span>
+              {item.mrp && item.mrp !== item.selling_price && (
+                <>
+                  &nbsp;
+                  <span className="original">
+                    <del>₹{item.mrp}</del>
+                  </span>
+                  <span className="discount">
+                    ({item?.discount_percent}% OFF)
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Center Fixed Card */}
+      <div className="bestseller-fixed-card">
+        <h3>
+          Get the <em>Bestsellers</em>
+        </h3>
         <div className="arrow-controls">
           <button onClick={handlePrev}>
             <img className="btn_left_arrow" src={arrowleft} alt="prev" />
@@ -140,186 +312,89 @@ const BestsellersSlider = ({ onQuickView }) => {
         </div>
       </div>
 
-      <div className="bestseller-container">
-        <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
-        <div className="bestseller-slider">
-          {/* Left Card */}
-          <div className="slider-strip">
-            {bestsellers?.slice(startIndex, startIndex + 1).map((item) => (
-              <div className="bestseller-card" key={item.id}>
-                <div
-                  className="image-wrapper"
+      {/* Right Cards */}
+      <div className="slider-strip">
+        {bestsellers
+          ?.concat(bestsellers)
+          .slice(startIndex + 1, startIndex + 6)
+          .map((item, index) => (
+            <div className="bestseller-card" key={`${item.id}-${index}`}>
+              <div className="image-wrapper">
+                <Link to={`/productsdetails/${item.action_url}`}>
+                  <img src={item?.media_list?.main?.file} alt={item.name} />
+                </Link>
+                <button
+                  className="quick-view"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    LogsIcon(item);
+                  }}
                 >
-                  <Link to={`/productsdetails/${item.action_url}`}>
-                    <img src={item?.media_list?.main?.file} alt={item.name} />
-                  </Link>
-                  <div className="order_view_btn">
-                    <button
-                      className="quick-view"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        LogsIcon(item);
+                  Quick View&nbsp;
+                  <span>
+                    <Expand color="#000000" size={15} strokeWidth={1.25} />
+                  </span>
+                </button>
+                <button
+                  className="wishlist-btn_products"
+                  onClick={(e) => toggleWishlist(e, item)}
+                >
+                  {animatedWish === item.id ? (
+                    <div
+                      style={{
+                        width: 20,
+                        height: 24,
+                        overflow: "hidden",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
-                      Quick View&nbsp;
-                      <span>
-                        <Expand color="#000000" size={15} strokeWidth={1.25} />
-                      </span>
-                    </button>
-                  </div>
-                  <button
-                    className="wishlist-btn_products"
-                    onClick={(e) => toggleWishlist(e, item)}
-                  >
-                    {animatedWish === item.id ? (
-                      <div
+                      <Player
+                        autoplay
+                        keepLastFrame
+                        src={heartAnimation}
                         style={{
-                          width: 20,
-                          height: 24,
-                          overflow: "hidden",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
+                          width: 139,
+                          height: 139,
+                          transform: "scale(0.5)",
+                          transformOrigin: "center",
                         }}
-                      >
-                        <Player
-                          autoplay
-                          keepLastFrame
-                          src={heartAnimation}
-                          style={{
-                            width: 139,
-                            height: 139,
-                            transform: "scale(0.5)",
-                            transformOrigin: "center",
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <Heart
-                        color={item.is_wishlisted ? "#FF0000" : "#000"}
-                        fill={item.is_wishlisted ? "#FF0000" : "none"}
-                        size={20}
-                        strokeWidth={2}
                       />
-                    )}
-                  </button>
-                </div>
-                <div className="product-info">
-                  <span className="title"><Link to={`/productsdetails/${item.action_url}`}>{item.name}</Link></span>
-                  <span className="price">₹{item.selling_price}</span>
-                  {item.mrp && item.mrp !== item.selling_price && (
-                    <>
-                     &nbsp;
-                      <span className="original">
-                     <del>₹{item.mrp}</del>{" "}
-                      </span>
-                  
-                      <span className="discount">
-                        ({item?.discount_percent}% OFF)
-                      </span>
-                    </>
+                    </div>
+                  ) : (
+                    <Heart
+                      color={item.is_wishlisted ? "#FF0000" : "#000"}
+                      fill={item.is_wishlisted ? "#FF0000" : "none"}
+                      size={20}
+                      strokeWidth={2}
+                    />
                   )}
-                </div>
+                </button>
               </div>
-            ))}
-          </div>
-
-          {/* Center Fixed Card */}
-          <div className="bestseller-fixed-card">
-            <h3>
-              Get the <em>Bestsellers</em>
-            </h3>
-            <div className="arrow-controls">
-              <button onClick={handlePrev}>
-                <img className="btn_left_arrow" src={arrowleft} alt="prev" />
-              </button>
-              <button onClick={handleNext}>
-                <img className="btn_right_arrow" src={arrowright} alt="next" />
-              </button>
+              <div className="product-info">
+                <span className="title">
+                  <Link to={`/productsdetails/${item.action_url}`}>{item.name}</Link>
+                </span>
+                <span className="price">₹{item.selling_price}</span>
+                {item.mrp && item.mrp !== item.selling_price && (
+                  <>
+                    &nbsp;
+                    <span className="original">
+                      <del>₹{item.mrp}</del>
+                    </span>
+                    <span className="discount">
+                      ({item?.discount_percent}% OFF)
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-
-          {/* Right Cards */}
-          <div className="slider-strip">
-            {bestsellers
-              ?.concat(bestsellers) // ✅ duplicate for smooth looping
-              .slice(startIndex + 1, startIndex + 6)
-              .map((item, index) => (
-                <div className="bestseller-card" key={`${item.id}-${index}`}>
-                  <div
-                    className="image-wrapper"
-                  >
-                    <Link to={`/productsdetails/${item.action_url}`}>
-                      <img src={item?.media_list?.main?.file} alt={item.name} />
-                    </Link>
-                    <button
-                      className="quick-view"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        LogsIcon(item);
-                      }}
-                    >
-                      Quick View&nbsp;
-                      <span>
-                        <Expand color="#000000" size={15} strokeWidth={1.25} />
-                      </span>
-                    </button>
-                    <button
-                      className="wishlist-btn_products"
-                      onClick={(e) => toggleWishlist(e, item)}
-                    >
-                      {animatedWish === item.id ? (
-                        <div
-                          style={{
-                            width: 20,
-                            height: 24,
-                            overflow: "hidden",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <Player
-                            autoplay
-                            keepLastFrame
-                            src={heartAnimation}
-                            style={{
-                              width: 139,
-                              height: 139,
-                              transform: "scale(0.5)",
-                              transformOrigin: "center",
-                            }}
-                          />
-                        </div>
-                      ) : (
-                        <Heart
-                          color={item.is_wishlisted ? "#FF0000" : "#000"}
-                          fill={item.is_wishlisted ? "#FF0000" : "none"}
-                          size={20}
-                          strokeWidth={2}
-                        />
-                      )}
-                    </button>
-                  </div>
-                  <div className="product-info">
-                    <span className="title"><Link to={`/productsdetails/${item.action_url}`}>{item.name}</Link></span>
-                    <span className="price">₹{item.selling_price}</span>
-                    {item.mrp && item.mrp !== item.selling_price && (
-                      <>
-                        &nbsp;
-                        <span className="original">
-                          <del>₹{item.mrp}</del>{" "}
-                        </span>
-                        <span className="discount">
-                          ({item?.discount_percent}% OFF)
-                        </span>
-                      </>
-                    )}
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
+          ))}
+      </div>
+    </>
+  )}
+</div>
 
         {showLoginPrompt && (
           <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />

@@ -232,9 +232,16 @@ background: white;
 .button_track_more p{
  cursor: pointer;
 }
+
+.txt_dynamic_betlt{
+       display: flex;
+      justify-content: center;
+      margin-left: 25%;
+      margin-top: 40px;
+   
+}
 .footer-note {
-  bottom: 10px;
-  left: 50%;
+  bottom: -25px;
   transform: translateX(-50%);
   color: #333;
   z-index: 2;
@@ -244,7 +251,6 @@ background: white;
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
 }
-
 
 .fade-in {
   opacity: 1;
@@ -481,8 +487,6 @@ background-color: #F2F2F2;
   gap: 0px;
 }
 
-
-
 /* "VIEW" tag */
 .view-tag {
   position: absolute;
@@ -567,6 +571,17 @@ background-color: #F2F2F2;
   font-family: "Helvetica Neue", sans-serif;
 }
 
+.hero-button-table{
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #111;
+  background: transparent;
+  color: black;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
 .hero-button:hover {
   background-color: #111;
   color: #fff;
@@ -582,7 +597,13 @@ background-color: #F2F2F2;
   height: auto;
   object-fit: contain;
 }
-
+.hero-text-table p {
+  font-size: 14px;
+  color: #625E55;
+  margin-bottom: 2rem;
+  font-family: "Helvetica Neue", sans-serif;
+  font-weight: 400;
+}
 /* ✅ Mobile view adjustments */
 @media (max-width: 768px) {
   .hero-container {
@@ -601,6 +622,31 @@ background-color: #F2F2F2;
   .hero-text h1 {
     font-size: 2rem; /* smaller heading for mobile */
   }
+
+  .hero-text-table h1 {
+    font-size: 33px; /* smaller heading for mobile */
+    font-family: "Canela Trial", sans-serif;
+    font-weight: 400;
+  }
+
+  .hero-text-table p {
+  font-size: 14px;
+  color: #625E55;
+  margin-bottom: 2rem;
+  font-family: "Helvetica Neue", sans-serif;
+  font-weight: 400;
+}
+  .hero-button-table{
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #111;
+    background: black;
+    color: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    font-family: "Helvetica Neue", sans-serif;
+  }
+  
 
   .hero-text p {
     font-size: 0.9rem;
@@ -631,9 +677,9 @@ background-color: #F2F2F2;
 }
 
 .promo-title {
-  margin-top: 0rem;
+  margin-top: 0.5rem;
   font-family: 'Canela Trial', sans-serif;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 400;
   color: #111;
   text-transform: uppercase;
@@ -900,35 +946,41 @@ background-color: #F2F2F2;
   .imgf1 {
     top: 5%;
     left: 2%;
+    display: none;
   }
   .imgf2 {
-    top: 2%;
-    right: 5%;
+    top: 10%;
+    right: 20%;
+    height: 13%;
+    width: 17%;
   }
   .imgf3 {
-    top: 15%;
-    left: 30%;
+    top: 3%;
+    left: 10%;
+    height: 25%;
+    width:35%;
   }
   .imgf4 {
-    bottom: 15%;
-    left: 5%;
-    height: 15%;
+   top: 66%;
+   left: -10%;
+    height: 30%;
+    width: 30%;
   }
 
   .imgf5 {
     bottom: 10%;
-    right: 35%;
-    width: 20%;
+    right: 50%;
+    width: 12%;
   }
   .imgf6 {
-    top: 60%;
+    top: 75%;
     right: 2%;
-    height: 20%;
-    width: 10%;
+    height: 30%;
+    width: 30%;
   }
 
   .matcher-content h2 {
-    font-size: 1.5rem;
+    font-size: 2.3rem;
   }
 
   .matcher-content p {
@@ -938,6 +990,18 @@ background-color: #F2F2F2;
   .matcher-btn {
     padding: 0.5rem 1rem;
   }
+   .floor-matcher {
+  position: relative;
+  background: url("../../assets/images/Background_image.jpg") center/cover
+    no-repeat;
+  min-height: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  overflow: hidden;
+  text-align: center;
+}
 }
 
 /* Obession css */
@@ -979,8 +1043,13 @@ background-color: #F2F2F2;
     text-align: start;
     font-family: 'Canela Trial', sans-serif;
     text-align: center;
+    text-transform: uppercase;
+    
 }
-   
+  
+.obsession-image_mlb{
+  display: none;
+}
 /* OUR OBSESSIONS css*/
 .obsession-section {
   padding: 45px 20px;
@@ -1036,7 +1105,6 @@ background-color: #F2F2F2;
     margin-bottom: 20px;
     font-family: 'Helvetica Neue', sans-serif;
     color:#625E55;
-
     font-size: 15px;
   }
   
@@ -1057,10 +1125,7 @@ background-color: #F2F2F2;
   }
   
     @media (max-width: 768px) {
-  .obsession-title {
-    font-size: 10vw;
-  }
-
+      
   .obsession-content {
     flex-direction: column-reverse; /* ✅ text first, image last */
     align-items: center;
@@ -1069,12 +1134,24 @@ background-color: #F2F2F2;
 
   .obsession-text {
     max-width: 90%;
+    text-align: left;
   }
 
-  .obsession-image img {
-    width: 100%; /* make image wider for mobile */
-    max-width: 350px; /* optional cap */
+  
+   .obsession-image_mlb {
+    display: inline !important;
+ 
+
   }
+   .obsession-image_mlb img{
+    width: 75%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    position: relative;
+    left: 4%;
+   }
+  
 }
   
    /* Responsive */
@@ -1093,7 +1170,23 @@ background-color: #F2F2F2;
   }
 
   .obsessed-section h2 {
-    font-size: 1.5rem;
+    font-size: 2rem;
+  }
+  .track_obsd{
+    font-weight: 600;
+  }
+  .obsession-title {
+    font-size: 40px;
+    width: 10%;
+    text-align: left;
+    /* font-family: 'Playfair Display', serif; */
+    font-family: 'Canela Trial', sans-serif;
+       font-weight: 100;
+    letter-spacing: -2px;
+    margin-bottom: 40px;
+  }
+  .obsession-image{
+    display: none;
   }
 }
 
@@ -1109,9 +1202,25 @@ background-color: #F2F2F2;
     display: none;
   }
   .txt_dynamic_betlt{
-    display: none;
-  }
+    display: flex;
+   justify-content: center;
+   margin-left:100%;
+   margin-top: 30px;
 
+}
+
+.shopby-item:hover {
+  border-bottom: 0px solid #ccd1d1;
+  border-top: 0px solid #ccd1d1;
+}
+.footer-note {
+bottom: 5px;
+transform: translateX(-50%);
+color: #333;
+z-index: 2;
+font-size: 10px;
+width: 250px;
+}
   .collection-img.img-left {
     left: 0;
     top: 120vh;
@@ -1121,7 +1230,7 @@ background-color: #F2F2F2;
   }
   .collection-img.img-right {
     right: 0;
-    top: 90px;
+    top: 30px;
     width: 205px;
     height: 300px;
   }
@@ -1129,10 +1238,13 @@ background-color: #F2F2F2;
     padding: 20rem 0;
     position: relative;
 }
+.view-tag {
+  display: none;
+}
 .collection-content {
   max-width: 300px;
   z-index: 2;
-  margin-top: 7rem;
+  margin-top: 0rem;
   text-align: center;
 }
   .lead-copy{
@@ -1156,6 +1268,9 @@ background-color: #F2F2F2;
     z-index: 20;
   }
  
+
+
+
    /* ─── Set 0 ─── */
 .set-0 .img-center { top: 55%; left: 33%; width: 25vw; z-index: 25;transform: rotate(-8deg); }
 .set-0 .img-left   { top: 32%; left: 6%; width: 16vw; transform: rotate(-3deg);}

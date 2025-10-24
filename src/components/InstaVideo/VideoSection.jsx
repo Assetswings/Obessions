@@ -112,13 +112,16 @@ const VideoSection = () => {
       {/* Header */}
       <div className="video-header">
         <h2 className="video-heading">
-          Obsessions in <em>Action</em>
+         <span className="track_ost"> Obsessions in</span>   <em>Action</em>
         </h2>
         <p className="txt_sub_video_tag">
           See how our products blend into real homes, real moods, and real lifestyles.
         </p>
         <Link to={`/videogallery`}>
-          <button className="matcher-btn">VIEW THE GALLERY</button>
+           <div className="track_btn_glr">
+           <button className="matcher-btn">VIEW THE GALLERY</button>
+           </div>
+        
         </Link>
       </div>
 

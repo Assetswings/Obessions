@@ -251,9 +251,9 @@ const CarpetFinder = () => {
                 <span> NEXT </span> <img src={arrowright} alt="arrowright" />
               </div>
             ) : (
-              <div className="submit-btn" onClick={handelseeresult}>
+              <button className="submit-btn" onClick={handelseeresult}>
                 See Results
-              </div>
+              </button>
             )}
           </div>
         </div>

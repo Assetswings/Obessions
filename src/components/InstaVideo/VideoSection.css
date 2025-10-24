@@ -108,9 +108,27 @@
   .txt_sub_video_tag {
     font-size: 15px;
     width: 90%;
+    text-align: left;
   }
   .video-heading {
-    font-size: 2rem;
+    font-size: 32px;
+    text-align: left;
+  }
+  .track_ost{
+    font-weight: 600;
+  }
+  .matcher-btn {
+    border: 1px solid #000;
+    padding: 10px 20px;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s;
+   
+  }
+  .track_btn_glr{
+    display: flex;
+    justify-content: start;
   }
 }
 

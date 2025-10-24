@@ -7,6 +7,7 @@ import { fetchMegamenuData } from "./megamenuSlice";
 import { Link, useNavigate } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
+import Mobileansbar from "./Mobileansbar";
 
 const MobileNav = () => {
   const navigate = useNavigate();
@@ -156,6 +157,7 @@ const MobileNav = () => {
 
   return (
     <>
+      
         <header className="topbar">
         <div className="topbar-left">
           <div className="hamburger" onClick={toggleDrawer}>
@@ -184,6 +186,7 @@ const MobileNav = () => {
         </div>
       </header>
 
+     <Mobileansbar/>
       {/* Drawer */}
       <div className={`drawer ${isOpen ? "open" : ""}`}>
         <div className="drawer-header">

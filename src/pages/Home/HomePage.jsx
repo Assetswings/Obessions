@@ -488,13 +488,13 @@ const HomePage = () => {
       {/* ────────────────── 🥀💎💎 🐉 Tablesection BY SECTION 🐉 💎💎🥀 ────────────────── */}
       <section className="tabletop">
         <div className="hero-container">
-          <div className="hero-text">
+          <div className="hero-text-table">
             <h1>SALE ON THE TABLE</h1>
             <p>
               Stylish tabletop finds now discounted for meals & special moments.
             </p>
             <Link to={`/products/${tableSectionImage?.action_url}`}>
-              <button className="hero-button" >
+              <button className="hero-button-table" >
                 ELEVATE YOUR TABLETOP
               </button>
             </Link>
@@ -588,7 +588,7 @@ const HomePage = () => {
       {/* ────────────────── 🥀💎💎 🐉 Floor BY SECTION 🐉 💎💎🥀 ────────────────── */}
       < section className="obsessed-section" >
         <h2>
-          <em>Obsessed</em> Right Now
+          <em>Obsessed</em> <span className="track_obsd">Right Now</span>  
         </h2>
         <div className="obsessed-grid">
           {obsessedItems.map((item, idx) => (
@@ -598,8 +598,9 @@ const HomePage = () => {
             >
               <Link to={`/products${item.url}`}>
                 <img className="img_right_now" src={item.src} alt={item.title} />
-                <p className="pointer-crusser">{item.title}</p>
+                <p className="obs_track_text">{item.title?.toLowerCase()}</p>
               </Link>
+                
             </div>
           ))}
         </div>
@@ -611,7 +612,14 @@ const HomePage = () => {
 
       {/* ────────────────── 🥀💎💎 🐉 OUR OBSESSIONS BY SECTION 🐉 💎💎🥀 ────────────────── */}
       < section className="obsession-section" >
-        <h2 className="obsession-title">OUR OBSESSIONS</h2>
+         <div className="txt_root_warp">
+              <h2 className="obsession-title">OUR OBSESSIONS</h2>
+          </div> 
+          <div className="obsession-image_mlb">
+            <img src={data?.bottom_content?.media} className="img_video_track" alt="Our team" />
+            {/* <img src={videoimage} className="img_video_track" alt="Our team" /> */}
+          </div>
+
         <div className="obsession-content">
           <div className="obsession-image">
             <img src={data?.bottom_content?.media} className="img_video_track" alt="Our team" />
@@ -619,25 +627,6 @@ const HomePage = () => {
           </div>
           <div className="obsession-text">
             <div dangerouslySetInnerHTML={{ __html: data?.bottom_content?.content }} />
-            {/* <p>
-              Because your home deserves more than just functional products. It
-              deserves thoughtful design, lasting quality, and pieces that
-              effortlessly blend into your lifestyle. At the heart of everything
-              we offer is a commitment to intentional living; curated
-              collections that not only look beautiful but serve a purpose in
-              your day-to-day life.
-            </p>
-            <p>
-              From elegant tableware that elevates your hosting game to clever
-              storage solutions that bring order to your everyday, our range is
-              crafted to add both utility and charm.
-            </p>
-            <p>
-              Whether it’s a cozy carpet underfoot, a yoga mat that centers your
-              day, or a waste bin that’s anything but ordinary, each product is
-              chosen with care, designed to make your home feel more personal,
-              more inspired, and more you.
-            </p> */}
 
             <Link to={data?.bottom_content?.action_url}>
               <button

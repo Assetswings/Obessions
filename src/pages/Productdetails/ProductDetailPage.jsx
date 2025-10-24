@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./ProductDetailPage.css";
-import { Heart, Share2 } from "lucide-react";
+import { Facebook, Heart, Instagram, MessageCircle, Share2, Twitter } from "lucide-react";
 import Footer from "../../components/Footer/Footer";
 import { fetchProductDetail, clearProductDetail } from "./productDetailSlice";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -48,6 +48,7 @@ const ProductDetailPage = () => {
   const prevSlugRef = useRef(null);
   const [pincodeDetails, setPincodeDetails] = useState({});
   const [selectedMedia, setSelectedMedia] = useState(null);
+  const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { itemSlug } = useParams();
@@ -77,8 +78,8 @@ const ProductDetailPage = () => {
       dispatch(fetchProductDetail(productSlug));
       dispatch(resetPincodeState());
     }
-    if(storagePin){
-      console.log('pin',storagePin);
+    if (storagePin) {
+      console.log('pin', storagePin);
       setPincode(storagePin);
       dispatch(checkPincode(storagePin));
       // handleCheck();
@@ -420,7 +421,7 @@ const ProductDetailPage = () => {
   const handleCheck = () => {
     if (pincode.trim()) {
       dispatch(checkPincode(pincode));
-      localStorage.setItem('pincode',pincode);
+      localStorage.setItem('pincode', pincode);
     }
   };
 
@@ -441,13 +442,56 @@ const ProductDetailPage = () => {
     { label: data?.sub_category_action_url, to: `/products/${data?.category_action_url}/${data?.sub_category_action_url}` },
     { label: selectedSize?.name, to: "" }, // last one (no link)
   ];
+
+  // Build full product URL (works with #/ hash routing)
+  const productUrl = window.location.href;
+  const encodedUrl = encodeURIComponent(productUrl);
+  const encodedText = encodeURIComponent(`Check out this product: ${selectedSize?.name}`);
+
+  const shareLinks = {
+    whatsapp: `https://api.whatsapp.com/send?text=${encodedUrl}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    instagram: `https://www.instagram.com/?url=${encodedUrl}`,
+  };
   return (
     <>
-    <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
-    <div className="root_br_head"> 
-    <div> <Breadcrumbs paths={breadcrumbPaths}/></div> 
-     <div className="share_btn"> <span><Share2 /></span> share</div> 
-     </div> 
+      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
+      <div className="root_br_head">
+        <div> <Breadcrumbs paths={breadcrumbPaths} /></div>
+        {!open &&
+          <div className="share_btn" onMouseEnter={() => setOpen(!open)}> <span><Share2 /></span> share</div>
+        }
+        {/* Fallback share options */}
+        {open && (
+          <div className="absolute bg-white shadow-lg rounded-lg p-2 mt-2 z-50" onMouseLeave={() => setOpen(false)}>
+            <a
+              href={shareLinks.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded"
+            >
+              <MessageCircle size={16} className="text-green-600" />
+            </a>
+            <a
+              href={shareLinks.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              titel="FaceBook"
+              className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded"
+            >
+              <Facebook size={16} className="text-blue-600" />
+            </a>
+            <a
+              href={shareLinks.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded"
+            >
+              <Instagram size={16} className="text-sky-500" />
+            </a>
+          </div>
+        )}
+      </div>
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">

@@ -15,7 +15,7 @@ const Breadcrumbs = ({ paths = [] }) => {
 
         return (
           <span key={index} className="breadcrumb-segment">
-            <span className="breadcrumb-separator">›</span>
+            <span className="breadcrumb-separator"></span>
             {isLast ? (
               <span className="breadcrumb-item active">{item.label}</span>
             ) : (

@@ -209,6 +209,16 @@
   .finder-card {
     width: 140px;
   }
+  .finder-title {
+    font-size: 22px;
+    font-weight: 400;
+  }
+  .finder-wrapper {
+    padding: 0px;
+  }
+  .finder-grid {
+    gap: 1rem;
+  }
 }
 
 .pointer-crusser {

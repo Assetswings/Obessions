@@ -6,8 +6,8 @@ import "./CarpetFinder.css";
 import { ToastContainer, toast } from "react-toastify";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
-import arrowleft from "../../assets/icons/Vector_left.png";
-import arrowright from "../../assets/icons/Vector_right.png";
+import arrowleft from "../../assets/icons/Vector_left.svg";
+import arrowright from "../../assets/icons/Vector_right.svg";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const CarpetFinder = () => {
@@ -198,8 +198,8 @@ const CarpetFinder = () => {
             {/* <div className="finder-grid"> */}
             <div
               className={`finder-grid ${steps[currentStep]?.title === "Which Size or Shape fits your Space?"
-                  ? "finder-grid-full"
-                  : ""
+                ? "finder-grid-full"
+                : ""
                 }`}
             >
               {steps[currentStep]?.options.map(({ label, image, key }) => (
@@ -207,6 +207,12 @@ const CarpetFinder = () => {
                   key={label}
                   className={`finder-card ${isSelected(currentStep, label) ? "selected" : ""
                     }`}
+                  style={{
+                    width:
+                      steps[currentStep]?.title === "Which Size or Shape fits your Space?"
+                        ? "300px"
+                        : "140px",
+                  }}
                   onClick={() => toggleOption(currentStep, label, key)}
                 >
                   {image ? (

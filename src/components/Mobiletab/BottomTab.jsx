@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate, useLocation, Link } from "react-router-dom";
 import { Home, LayoutGrid, ShoppingCart, Heart, X } from "lucide-react";
 import "./BottomTab.css";
+import { ReactComponent as HomeIcon } from "../../assets/icons/homeicon.svg";
 
 const categories = [
   { name: "Bath Care", img: "https://i.ibb.co/9Rk33kn/image-648.png" },
@@ -46,10 +47,16 @@ const BottomTab = () => {
         <NavLink to="/" end className="tab-item">
           {({ isActive }) => (
             <>
-              <Home
+              {/* <Home
                 size={22}
                 color={isActive ? "#000" : "#999"}
                 fill={isActive ? "#000" : "none"}
+              /> */}
+              <HomeIcon
+                width={25}
+                height={25}
+                fill={isActive ? "#000" : "none"} // change fill dynamically
+                // stroke={isActive ? "#000" : "#000"} // optional stroke
               />
               <span className={isActive ? "active" : ""}>Home</span>
             </>

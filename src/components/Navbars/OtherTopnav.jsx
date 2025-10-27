@@ -37,9 +37,12 @@ const OtherTopnav = () => {
   const searchState = useSelector((state) => state.search || {});
   const { results = [], loading, error } = searchState;
 
-  useEffect(() => {
+  const checkSession = () => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
+  }
+  useEffect(() => {
+    checkSession();
   }, []);
 
   useEffect(() => {
@@ -88,6 +91,7 @@ const OtherTopnav = () => {
   }, [showSearch]);
   const handleLogoClick = () => navigate("/");
   const handleCartClick = () => {
+    checkSession();
     if (isLoggedIn) {
       navigate("/cart");
     } else {
@@ -96,6 +100,7 @@ const OtherTopnav = () => {
   };
 
   const handleWishlistClick = () => {
+    checkSession();
     if (isLoggedIn) {
       setShowWishlist(true);
     } else {
@@ -130,6 +135,7 @@ const OtherTopnav = () => {
   };
 
   const handleUserClick = () => {
+    checkSession();
     if (!isLoggedIn) {
       navigate("/login");
     } else {

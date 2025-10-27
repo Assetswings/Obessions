@@ -39,6 +39,7 @@ const otherproductSlice = createSlice({
   initialState: {
     data: [],
     filters: {},
+    pagination: {},
     loading: false,
     error: null,
   },
@@ -56,7 +57,13 @@ const otherproductSlice = createSlice({
       .addCase(fetchOtherProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload.products || [];
+        state.pagination = {
+          total: action.payload.total,
+          current_page: action.payload.current_page,
+          limit: action.payload.limit,
+        };
         state.filters = action.payload.filters || {};
+
       })
       .addCase(fetchOtherProducts.rejected, (state, action) => {
         state.loading = false;

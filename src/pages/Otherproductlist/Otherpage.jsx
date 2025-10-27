@@ -20,6 +20,7 @@ import { fetchTopPicks } from "../Products/otherproductSlice";
 import { ToastContainer } from "react-toastify";
 import { Expand, Heart, SlidersHorizontal, X } from "lucide-react";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
+import Pagination from "../../components/Pagination/Pagination";
 
 const Otherpage = () => {
   const dispatch = useDispatch();
@@ -44,11 +45,7 @@ const Otherpage = () => {
           ? "Offer Spots"
           : "";
 
-  const {
-    data: otherproduct,
-    filters,
-    loading,
-  } = useSelector((state) => state.otherproduct);
+  const {data: otherproduct,filters,pagination,loading,} = useSelector((state) => state.otherproduct);
   // const wishlist = useSelector((state) => state.wishlist);
   const [products, setProducts] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({});
@@ -63,6 +60,11 @@ const Otherpage = () => {
   const [tempMobileFilters, setTempMobileFilters] = useState({});
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const total = pagination?.total || 0;
+  const limit = pagination?.limit || 20;
+  const totalPages = Math.ceil(total / limit);
 
   useEffect(() => {
     document.title = `Obsession - ${Titelslug}`;
@@ -87,17 +89,27 @@ const Otherpage = () => {
       dispatch(
         fetchOtherProducts({
           slug,
-          page: 1,
+          page: currentPage,
           limit: 20,
           filters: selectedFilters,
         })
       );
     }
-  }, [dispatch, slug, selectedFilters]);
+  }, [dispatch, slug, selectedFilters,currentPage]);
 
-  // useEffect(() => {
-  //   dispatch(fetchWishlist());
-  // }, [dispatch]);
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+
+      // 👇 Scroll smoothly to the top after changing page
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }, 200);
+    }
+  };
 
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
@@ -298,37 +310,28 @@ const Otherpage = () => {
 
   // Render price range filter
   const renderPriceFilter = (priceFilter, isMobile = false) => {
-    // setMinPrice(priceFilter.min_price);
-    // setMaxPrice(priceFilter.max_price);
-    const onApplyPrice = () => {
-      const onChangeHandler = isMobile
-        ? handleMobileFilterChange
-        : handleFilterChange;
-      onChangeHandler("price_min", minPrice);
-      onChangeHandler("price_max", maxPrice);
+    const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
+    const onChangeHandler = isMobile ? handleMobileFilterChange : handleFilterChange;
+
+    const handlePriceChange = (filterValue) => {
+      onChangeHandler("price_filter", filterValue);
     };
 
     return (
       <div className="custom-filter-group" key="price_filter">
-        <h4>Price</h4>
-        <div className="price-inputs">
-          <input
-            type="number"
-            min={priceFilter.min_price}
-            max={priceFilter.max_price}
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-          />
-          <span> - </span>
-          <input
-            type="number"
-            min={priceFilter.min_price}
-            max={priceFilter.max_price}
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-          />
-          <button onClick={onApplyPrice}>Apply</button>
-        </div>
+        <h4>Price Range</h4>
+        {priceFilter.map((price, i) => (
+          <label key={i}>
+            <input
+              type="checkbox"
+              checked={
+                currentFilters.price_filter?.includes(price.filter_value) || false
+              }
+              onChange={() => handlePriceChange(price.filter_value)}
+            />
+            <span className="txt_checkbox">{price.range_lebel}</span>
+          </label>
+        ))}
       </div>
     );
   };
@@ -544,6 +547,12 @@ const Otherpage = () => {
       {showLoginPrompt && (
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
 
       <section className="top-picks-section">
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>

@@ -57,7 +57,7 @@ const OrderHistoryPage = () => {
       dispatch(fetchOrderHistory({
         status: selectedStatus,
         page: currentPage,
-        limit: 5,
+        limit: 10,
       }));
     } else {
       dispatch(fetchOrderHistory({}));

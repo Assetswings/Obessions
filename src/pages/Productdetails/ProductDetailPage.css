@@ -331,7 +331,7 @@ font-family: "Playfair Display", serif; */
 }
 .check_test{
   position: relative;
-    top: 10px;
+    top: 10px;  
 }
 
 .check-btn {
@@ -535,16 +535,19 @@ font-family: "Playfair Display", serif; */
  }
  .section-txt-pdb{
  padding-top: 8px;
+ font-weight: 500;
  }
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 30px;
   margin-top: 20px;
 }
 .feature-grid-section{
   padding-top: 60px;
 }
+/* 👇 For mobile view (2 columns per row) */
+
 .semi-txt{
   padding-top: 10px;
    color: #000;
@@ -566,7 +569,36 @@ font-family: "Playfair Display", serif; */
   padding-top: 160px;
 }
 
+.good-to-know-section {
+  margin-top: 20vh;
+}
 
+.img_track_runner{
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns in each row */
+    gap: 30px; /* reduce spacing for smaller screens */
+  }
+  .sub-text-semi{
+  color: #625e55;
+
+}
+.good-to-know-section {
+  margin-top: 0vh;
+}
+ .feature-grid-section {
+    padding-top: 37px;
+    width: 100%;
+}
+.img_track_runner{
+  align-items: center;
+  position: relative;
+  top :20px
+}
+
+}
 .recommend-section,
 .good-to-know-section {
   flex: 1;
@@ -827,20 +859,60 @@ font-family: "Playfair Display", serif; */
   }
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .pdp-specs-table td {
-    display: block;
-    width: 100%;
-  }
-  .pdp-specs-table tr {
-    display: block;
-    margin-bottom: 8px;
-  }
-  .pdp-specs-table td:first-child {
-    background: #f5f5f5;
-  }
+
+.video-thumb {
+  width: 65px;
+  height: 60px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
+
+.video-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* 👇 Mobile view (make it smaller) */
+@media (max-width: 768px) {
+  .video-thumb {
+    width: 50px;
+    height: 50px;
+  }
+
+  .thumb-overlay {
+    font-size: 18px; /* slightly smaller play icon */
+  }
+  .similar-styles-section-2 h2 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 30px;
+    font-family: "Canela Trial", sans-serif;
+  }
+  .center-image img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+}
+
+/* Responsive */
 
 
 
@@ -952,7 +1024,7 @@ height: 20px;
 @media (max-width: 480px) {
   .title_details {
     font-size: 18px; 
-    width: 250px;
+    width:100%;
   }
   .image_track{
     display: none;
@@ -969,13 +1041,22 @@ height: 20px;
     gap: 6px;
     padding: 0 10px;  
   }
-  .add-to-cart-btn{
-    width:70%;
+   .add-to-cart-btn{
+    width:77%;
   } 
   
    .input-wrapper input {
     width:100px;
    }
+    .input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #aaa;
+  padding: 15px 12px;
+  max-width: 98%;
+}
+
+
   .product-description  p {
     color: #625e55;
     font-size: 14px;  
@@ -1003,5 +1084,12 @@ height: 20px;
     font-size: 1.6rem;
     margin-bottom: 10px;
   }
- 
+  .msg_track {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 0px;
+    position: relative;
+  bottom: 20px;
+}
 }

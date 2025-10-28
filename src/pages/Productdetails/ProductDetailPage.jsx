@@ -635,42 +635,16 @@ const ProductDetailPage = () => {
 
                   {/* Static video thumbnail (at the end) */}
                   {selectedColor?.video_source &&
-                    <div
-                      className={`thumbnail video-thumb ${selectedImage === "video" ? "selected-thumb" : ""
-                        }`}
-                      onClick={() => setSelectedImage("video")}
-                      style={{
-                        width: "65px",
-                        height: "60px",
-                        position: "relative",
-                        overflow: "hidden",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <img
-                        src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
-                        alt="Video Thumbnail"
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                      />
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                          width: "100%",
-                          height: "100%",
-                          backgroundColor: "rgba(0, 0, 0, 0.3)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          color: "#fff",
-                          fontSize: "22px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        ▶
-                      </div>
-                    </div>
+                <div
+                className={`thumbnail video-thumb ${selectedImage === "video" ? "selected-thumb" : ""}`}
+                onClick={() => setSelectedImage("video")}
+              >
+                <img
+                  src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
+                  alt="Video Thumbnail"
+                />
+                <div className="thumb-overlay">▶</div>
+              </div>
                   }
                 </>
               )}
@@ -851,7 +825,10 @@ const ProductDetailPage = () => {
                     type="text"
                     placeholder="Enter Delivery Pincode"
                     value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
+                    onChange={(e) => {
+                      const onlyNums = e.target.value.replace(/\D/g, '');
+                      setPincode(onlyNums);
+                    }}
                   />
 
                   {pincode ? (
@@ -1144,7 +1121,7 @@ const ProductDetailPage = () => {
                   <div className="feature-grid-section">
                     <h3 className="tab-section-txt">FEATURES: </h3>
                     <div className="feature-grid">
-                      <div>
+                      <div classname="card-non">
                         <img
                           src="https://i.ibb.co/sJWhs530/image-535.png"
                           alt="Easy"
@@ -1157,7 +1134,7 @@ const ProductDetailPage = () => {
                           </span>
                         </p>
                       </div>
-                      <div>
+                      <div className="card-non">
                         <img
                           src="https://i.ibb.co/4w7V4QqL/Snowflake-Streamline-Solar-Linear.png"
                           alt="Soft"
@@ -1170,7 +1147,7 @@ const ProductDetailPage = () => {
                           </span>
                         </p>
                       </div>
-                      <div>
+                      <div classname="card-non">
                         <img
                           src="https://i.ibb.co/6R3CR6DS/Water-Streamline-Solar-Linear.png"
                           alt="Design"
@@ -1183,7 +1160,7 @@ const ProductDetailPage = () => {
                           </span>
                         </p>
                       </div>
-                      <div>
+                      <div classname="card-non">
                         <img
                           src="https://i.ibb.co/6JDjbYsZ/solar-crown-star-linear.png"
                           alt="Allergy"
@@ -1225,7 +1202,7 @@ const ProductDetailPage = () => {
                     {/* Living Room */}
                     {productDetails?.product_other_info[0]?.size_guide.map((det, idx) => (
                       <div className="size_sction_root">
-                        <div>
+                        <div className="img_track_runner">
                           <img
                             className="img-guild-section"
                             src={det?.media}

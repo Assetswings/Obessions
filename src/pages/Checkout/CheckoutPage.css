@@ -358,6 +358,13 @@ root_promo_sector {
   .price {
     margin: 0;
   }
+  .per-row-input {
+    flex-direction: column; /* stack vertically */
+  }
+
+  .input_checkout {
+    width: 100%; /* full width on mobile */
+  }
 }
 
 @media (max-width: 480px) {

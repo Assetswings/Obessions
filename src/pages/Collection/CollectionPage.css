@@ -95,9 +95,7 @@ font-family: "Playfair Display", serif; */
   grid-column: span 2;
 }
 
-.good-to-know-section {
-  margin-top: 20vh;
-}
+
 
 @media (max-width: 768px) {
   .recommend-good-know {

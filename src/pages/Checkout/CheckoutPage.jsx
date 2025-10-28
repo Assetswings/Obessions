@@ -80,13 +80,13 @@ const CheckoutPage = () => {
     dispatch(getAddress());
   }, [dispatch]);
 
-  useEffect(() => {
+    useEffect(() => {
     if (addressdata && addressdata.length > 0) {
       const defAddr = addressdata.find((addr) => addr.is_default === true);
       if (defAddr) {
-        setDefultAddr(defAddr);
+      setDefultAddr(defAddr);
       }
-    }
+      }
   }, [addressdata]);
   useEffect(() => {
     document.body.style.overflow = showAddAddressModal ? "hidden" : "auto";

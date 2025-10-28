@@ -1358,7 +1358,7 @@ const ProductDetailPage = () => {
                       )}
                     </button>
                   </div>
-                  <p className="product-title pointer-crusser">
+                  <p className="product-title pointer-crusser truncate">
                     <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
                   </p>
                   <Link to={`/productsdetails/${item.action_url}`}>
@@ -1367,7 +1367,7 @@ const ProductDetailPage = () => {
                       {item.mrp && item.mrp !== item.selling_price && (
                         <>
                           <span className="original">₹{item.mrp}</span>
-                          <span className="discount">({item.discount_percent}% OFF)</span>
+                          <span className="discount">({item.discount}% OFF)</span>
                         </>
                       )}
                     </div>
@@ -1451,7 +1451,7 @@ const ProductDetailPage = () => {
                     </button>
                   </div>
 
-                  <p className="product-title">
+                  <p className="product-title truncate">
                     <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
                   </p>
                   <Link to={`/productsdetails/${item.action_url}`}>
@@ -1460,7 +1460,7 @@ const ProductDetailPage = () => {
                       {item.mrp && item.mrp !== item.selling_price && (
                         <>
                           <span className="original">₹{item.mrp}</span>
-                          <span className="discount">({item.discount_percent}% OFF)</span>
+                          <span className="discount">({item.discount}% OFF)</span>
                         </>
                       )}
                     </div>

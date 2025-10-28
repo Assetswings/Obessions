@@ -609,7 +609,7 @@ const ProductsPage = () => {
                         )}
                       </p> */}
 
-                    <p className="product-title">
+                    <p className="product-title truncate">
                       <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
                     </p>
                     <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">

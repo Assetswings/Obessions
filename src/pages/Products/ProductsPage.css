@@ -695,3 +695,11 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+.empty-product {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}

@@ -7,7 +7,7 @@ import { addToWishlist } from "../../components/Wishtlist/WishlistSlice";
 import Footer from "../../components/Footer/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import blankcart from "../../assets/images/blank-cart.png";
-import { fetchAddOns } from "../Products/otherproductSlice";
+import { fetchTopPicks } from "../Products/otherproductSlice";
 import { ToastContainer, toast } from "react-toastify";
 import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
 import { checkPincode } from "../Productdetails/pincodeSlice";
@@ -19,7 +19,7 @@ const CartPage = () => {
   const { cartItems, loading, error } = useSelector((state) => state.cart);
   const [updatingId, setUpdatingId] = useState(null);
   const navigate = useNavigate();
-  const { addOns } = useSelector((state) => state.toppick);
+  const { items: toppickItems } = useSelector((state) => state.toppick);
   const { pinset, pinloading, pinerror } = useSelector(
     (state) => state.pincode
   );
@@ -28,10 +28,10 @@ const CartPage = () => {
 
   useEffect(() => {
     document.title = "Obsession - Cart";
-    if(!token){
+    if (!token) {
       navigate("/login");
     }
-    dispatch(fetchAddOns());
+    dispatch(fetchTopPicks());
     let storagePin = localStorage.getItem('pincode');
     if (storagePin) {
       dispatch(checkPincode(storagePin));
@@ -303,14 +303,16 @@ const CartPage = () => {
         <section className="top-picks-section">
           <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
           <div className="top-picks-grid">
-            {addOns?.map((item) => (
+            {toppickItems?.map((item) => (
               <div key={item.id} className="top-pick-card">
-                <img
-                  src={item.media}
-                  alt={item.name}
-                  className="top-pick-image"
-                />
-                <p className="top-pick-title">{item.name}</p>
+                <Link to={`/products${item.action_url}`}>
+                  <img
+                    src={item.media}
+                    alt={item.name}
+                    className="top-pick-image"
+                  />
+                  <p className="top-pick-title">{item.name}</p>
+                </Link>
               </div>
             ))}
           </div>

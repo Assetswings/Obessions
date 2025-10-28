@@ -23,6 +23,8 @@ import plptwo from "../../assets/images/plp-02.png";
 import API from "../../app/api";
 import Pagination from "../../components/Pagination/Pagination";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
+import emptyproduct from "../../assets/images/empty-product.png";
+import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
@@ -508,8 +510,8 @@ const ProductsPage = () => {
             </div>
           </div>
           <div className="custom-products-grid">
-            {loading
-              ? Array.from({ length: 8 }).map((_, i) => (
+            {loading ? (
+              Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="custom-product-card">
                   <div className="custom-product-image">
                     <Skeleton height={250} width={230} />
@@ -519,7 +521,8 @@ const ProductsPage = () => {
                   </p>
                 </div>
               ))
-              : products?.map((item, index) => {
+            ) : products.length > 0 ? (
+              products?.map((item, index) => {
                 const isWishlisted = item.is_wishlisted;
                 return (
                   <div
@@ -622,8 +625,36 @@ const ProductsPage = () => {
                     </Link>
                   </div>
                 );
-              })}
+              })
+            ) : (
+              <></>
+            )}
           </div>
+
+          {products?.length === 0 &&
+            <div className="empty-product">
+              <img
+                src={emptyproduct}
+                alt="Empty cart"
+                className="empty-cart-image"
+              />
+              <p className="empty-cart-subtitle">
+                We couldn’t find a match, but there’s more waiting to be discovered.
+              </p>
+              <button
+                className="empty-cart-btn"
+                onClick={() => navigate("/")} // ✅ send user back to home/shop
+              >
+                EXPLORE &nbsp;
+              </button>
+            </div>
+          }
+          <Pagination
+            className="mt-6"
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </main>
 
         <ProductQuickViewModal
@@ -638,11 +669,7 @@ const ProductsPage = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+
       {/* <nav aria-label="Page navigation example">
         <ul class="pagination custom-pagination">
           <li class="page-item">

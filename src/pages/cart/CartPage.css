@@ -73,6 +73,9 @@
   font-size: 14px;
   color: #404040;
   margin: 2px 0;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ---------- QUANTITY + ACTIONS ---------- */
@@ -205,18 +208,21 @@
 .empty-cart-btn:hover {
   background: #000;
 }
-.actions_mlb{
+
+.actions_mlb {
   display: none;
-}
-.price_details_cart{
- color:#000;
- font-size: 17px;
- font-weight: 500;
 }
 
- .cart_mlb{
+.price_details_cart {
+  color: #000;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.cart_mlb {
   display: none;
- }
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 1024px) {
   .cart-container {
@@ -230,11 +236,13 @@
     flex-direction: column;
     padding: 15px;
   }
-.price_details_cart{
-  color: black;
-  font-size: 20px;
-  font-size: 17px;
-}
+
+  .price_details_cart {
+    color: black;
+    font-size: 20px;
+    font-size: 17px;
+  }
+
   .cart-left {
     border-right: none;
     padding-right: 0;
@@ -272,7 +280,7 @@
     font-size: 15px;
   }
 
-  .item-details  {
+  .item-details {
     font-size: 13px;
   }
 
@@ -291,22 +299,27 @@
     display: none;
   }
 
-   .actions_mlb{
-  display: block;
-  font-size: 12px;
-  margin-top: 10px;
-  text-decoration: underline;
-}
+  .actions_mlb {
+    display: block;
+    font-size: 12px;
+    margin-top: 10px;
+    text-decoration: underline;
+  }
 
   .item-price {
     font-size: 15px;
     font-weight: 600;
     margin-top: 6px;
   }
+
   .root-title-chk {
     margin-top: 40px;
     margin-left: 22px;
-}
+  }
+
+  .item-details p {
+    font-weight: 400;
+  }
 }
 
 @media (max-width: 480px) {
@@ -331,18 +344,21 @@
   .empty-cart-subtitle {
     font-size: 12px;
   }
+
   .root-title-chk {
-   display: none;
-}
-.cart_mlb{
-  display: block;
-  margin-top: 30px;
-}
-.txt_mlb_my{
-  margin-left: 20px;
-  font-size: 20px;
-  font-weight: 500;
-  font-family: "Playfair Display", serif;
-}
+    display: none;
+  }
+
+  .cart_mlb {
+    display: block;
+    margin-top: 30px;
+  }
+
+  .txt_mlb_my {
+    margin-left: 20px;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: "Playfair Display", serif;
+  }
 
 }

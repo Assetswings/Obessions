@@ -950,7 +950,7 @@ font-family: "Playfair Display", serif; */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 280px;
+  width: 230px;
   display: inline-block;
 }
 

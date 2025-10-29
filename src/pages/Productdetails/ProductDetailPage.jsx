@@ -887,7 +887,7 @@ const ProductDetailPage = () => {
                   ADD TO CART
                 </button>
                 <div
-                  className="wst_box"
+                  className="wst_box pointer-crusser"
                   onClick={(e) => toggleWishlist(e, selectedSize)}
                 >
                   {selectedSize?.is_wishlisted == 1 ? (
@@ -1320,7 +1320,7 @@ const ProductDetailPage = () => {
                       />
                     </Link>
                     <button
-                      className="wishlist-btn_products"
+                      className="wishlist-btn_products pointer-crusser"
                       onClick={(e) =>
                         toggleWishlistReleted(e, item, "smiliarstyle")
                       }

@@ -176,6 +176,7 @@ const TopAnnouncementBar = () => {
             style={{ position: "relative" }}
             title="User Profile"
           >
+            <span style={{fontSize:"12px",paddingRight:"7px"}}>Ajit Sahoo</span>
             <CircleUser
               color="#FFFFFF"
               size={22}
@@ -213,6 +214,7 @@ const TopAnnouncementBar = () => {
               strokeWidth={1}
               title="Wishlist"
             />
+            <span className="wishlist-badge" style={{right:"21px"}}>10</span>
           </div>
           <div title="Cart">
             <ShoppingCart
@@ -222,6 +224,7 @@ const TopAnnouncementBar = () => {
               strokeWidth={1}
               title="Cart"
             />
+            <span className="wishlist-badge" style={{left:"93%"}}>20</span>
           </div>
         </div>
       </div>

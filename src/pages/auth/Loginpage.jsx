@@ -46,10 +46,38 @@ const LoginPage = () => {
 
   const handleSendOtp = () => {
     if (!localMobile.trim()) {
-      return alert("Please enter phone number.");
+      toast.error("Please Enter Phone Number.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+        hideProgressBar: true,
+        closeButton: true,
+        icon: true,
+      });
+      return false;
     }
     if (!isValidMobile(localMobile)) {
-      return alert("Mobile number must be exactly 10 digits.");
+      toast.error("Mobile number must be exactly 10 digits.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+        hideProgressBar: true,
+        closeButton: true,
+        icon: true,
+      });
+      return false;
     }
 
     dispatch(sendOtp(localMobile)).then((res) => {
@@ -96,14 +124,43 @@ const LoginPage = () => {
   };
 
   const handleVerifyOtp = () => {
-    if (!otp.trim()) return alert("Please enter the OTP.");
+    if (!otp.trim()) {
+      toast.error("Please enter the OTP.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+        hideProgressBar: true,
+        closeButton: true,
+        icon: true,
+      });
+      return false;
+    }
 
     const otp_requested_id = localStorage.getItem("otp_requested_id");
     const temp_id = localStorage.getItem("temp_id");
 
     if (!otp_requested_id || !temp_id) {
-      alert("Missing OTP session data. Try resending OTP.");
-      return;
+      toast.error("Missing OTP session data. Try resending OTP.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+        hideProgressBar: true,
+        closeButton: true,
+        icon: true,
+      });
+      return false;
     }
     setLoader(true);
     dispatch(verifyOtp({ otp: otp.trim(), otp_requested_id, temp_id })).then(

@@ -472,7 +472,9 @@ const ProductsPage = () => {
 
               {/* 4️⃣ Product Filters */}
               {filters.product_filter &&
-                Object.entries(filters.product_filter).map(([key, values]) =>
+                Object.entries(filters.product_filter)
+                .filter(([key, values]) => Array.isArray(values) && values.length > 0)
+                .map(([key, values]) =>
                   renderFilterGroup(key.replace(/_/g, " "), values, key)
                 )}
             </>
@@ -597,21 +599,6 @@ const ProductsPage = () => {
                         </span>
                       </div>
                     </div>
-                    {/* <p className="custom-product-title">{item.name}</p>
-                      <p className="custom-product-price">
-                        ₹{item.selling_price}
-                        {item.mrp && item.mrp !== item.selling_price && (
-                          <>
-                            <span className="custom-old-price">
-                              ₹{item.mrp}
-                            </span>
-                            <span className="custom-discount">
-                              (-{item.discount_percent}%)
-                            </span>
-                          </>
-                        )}
-                      </p> */}
-
                     <p className="product-title truncate">
                       <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
                     </p>
@@ -657,6 +644,7 @@ const ProductsPage = () => {
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
+            totalitems = {products.length}
           />
         </main>
 
@@ -783,7 +771,9 @@ const ProductsPage = () => {
                 renderDiscountFilter(filters.discount_filter, true)}
 
               {filters.product_filter &&
-                Object.entries(filters.product_filter).map(([key, values]) =>
+                Object.entries(filters.product_filter)
+                .filter(([key, values]) => Array.isArray(values) && values.length > 0)
+                .map(([key, values]) =>
                   renderFilterGroup(key.replace(/_/g, " "), values, key, true)
                 )}
             </>

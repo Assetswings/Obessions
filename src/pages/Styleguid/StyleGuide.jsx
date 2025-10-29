@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from "../../components/Footer/Footer";
 import heroImg from "../../assets/images/stylehero.png";
 import "./StyleGuide.css";
@@ -6,6 +6,8 @@ import rectimage from "../../assets/images/rltimage.png";
 import roomgd from "../../assets/images/roomguid.png";
 import largeimg from "../../assets/icons/largee.png";
 import medimum from "../../assets/icons/medimum.png";
+import API from '../../app/api';
+import Skeleton from 'react-loading-skeleton';
 
 const shapeData = [
   {
@@ -187,116 +189,150 @@ const roomData = {
   },
 };
 const StyleGuide = () => {
-  const [activeShape, setActiveShape] = useState("rectangular");
-  const current = shapeData.find((s) => s.id === activeShape);
-  const [activeRoom, setActiveRoom] = useState("Living Room");
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeShape, setActiveShape] = useState();
+  const [activeRoom, setActiveRoom] = useState();
+  const [shapeData, setShapeData] = useState([]);
+  const [roomData, setRoomData] = useState([]);
+  const handleTerms = async () => {
+    try {
+      const res = await API.get("/pages/size-guide");
+      if (res.data.status === 200) {
+        setTimeout(() => {
+          const newData = res.data?.data;
+          setData(newData);
+          const carpetfirstId = newData?.content?.[0]?.size_guides?.[0]?.id;
+          if (carpetfirstId) {
+            setActiveShape(carpetfirstId);
+            setShapeData(newData?.content?.[0]?.size_guides?.find((s) => s.id === carpetfirstId));
+          }
+          const roomfirstId = newData?.content?.[1]?.size_guides?.[0]?.id;
+          if (roomfirstId) {
+            setActiveRoom(roomfirstId);
+            setRoomData(newData?.content?.[1]?.size_guides?.find((s) => s.id === roomfirstId));
+          }
+          setLoading(false);
+        }, 1000);
+      }
+    } catch (err) {
+      setLoading(false);
+    }
+  };
+
+  const setGuidetabdata = (id) => {
+    if (id) {
+      setActiveShape(id);
+      setShapeData(data?.content[0]?.size_guides.find((s) => s.id === id));
+    }
+  }
+
+  const setRoomtabdata = (id) => {
+    if (id) {
+      setActiveRoom(id);
+      setRoomData(data?.content[1]?.size_guides.find((s) => s.id === id));
+    }
+  }
+  useEffect(() => {
+    document.title = "Obsession - Style Guide";
+    handleTerms();
+  }, []);
+
+  // const current = data?.content[0]?.size_guides.find((s) => s.id === activeShape);
   const room = roomData[activeRoom];
   return (
     <>
-      <div className="styleguide-container">
-        <section className="hero-section">
-          <img src={heroImg} alt="Carpet Style" className="hero-image" />
-          <div className="hero-text-sz">
-            <h1>Carpet Size Guide</h1>
-            <p>
-              Choosing the right carpet size can transform a room.
-              Use this guide to visualize proportions and find the perfect fit for your space.
-            </p>
-          </div>
-        </section>
+      {loading ? (
+        <div className="loading-skeleton" style={{ textAlign: "center" }}>
+          {/* Paragraph-style skeleton */}
+          <Skeleton width="80%" height={30} style={{ marginBottom: 15 }} />
+          <Skeleton count={6} height={18} style={{ marginBottom: 8 }} />
+          <Skeleton width="90%" height={18} style={{ marginBottom: 8 }} />
+          <Skeleton width="80%" height={18} style={{ marginBottom: 8 }} />
+          {/* <Skeleton count={2} height={18} style={{ marginBottom: 8 }} /> */}
+        </div>
+      ) : (
+        <div className="styleguide-container">
+          <section className="hero-section">
+            <img src={data?.size_guide_banners?.media} alt={data?.size_guide_banners?.title} className="hero-image" />
+            <div className="hero-text-sz">
+              <h1>{data?.size_guide_banners?.title}</h1>
+              <p>{data?.size_guide_banners?.description}</p>
+            </div>
+          </section>
 
-        <section className="carpet-guide-container">
-          <h2 className="guide-title">Carpet Shapes Guide</h2>
+          <section className="carpet-guide-container">
+            <h2 className="guide-title">{data?.content[0]?.title}</h2>
 
-          {/* Tabs */}
-          <div className="tab-container">
-            {shapeData.map((shape) => (
-              <button
-                key={shape.id}
-                className={`tab-btn ${activeShape === shape.id ? "active" : ""
-                  }`}
-                onClick={() => setActiveShape(shape.id)}
-              >
-                {shape.title.split(" ")[0].toUpperCase()}
-              </button>
-            ))}
-          </div>
-
-          {/* Content Section */}
-          <div className="guide-content">
-            <div className="guide-image">
-              <img src={current.image} alt={current.title} />
+            {/* Tabs */}
+            <div className="tab-container">
+              {data?.content[0]?.size_guides.map((shape) => (
+                <button
+                  key={shape.id}
+                  className={`tab-btn ${activeShape === shape.id ? "active" : ""
+                    }`}
+                  onClick={() => setGuidetabdata(shape.id)}
+                >
+                  {shape.name.split(" ")[0].toUpperCase()}
+                </button>
+              ))}
             </div>
 
-            <div className="guide-info">
-              <h3>{current.title}</h3>
-              <p className="guide-desc">{current.description}</p>
-
-              <table className="conversion-table">
-                <thead>
-                  <tr>
-                    <th colSpan="3">Conversion Chart</th>
-                  </tr>
-                  <tr>
-                    <th>Size in Cm</th>
-                    <th>Size in Ft.</th>
-                    <th>Recommended For</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {current.chart.map((row, i) => (
-                    <tr key={i}>
-                      <td>{row.cm}</td>
-                      <td>{row.ft}</td>
-                      <td>{row.room}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-              <button className="shop-btn">{current.buttonText}</button>
-            </div>
-          </div>
-        </section>
-        <section className="roomguide-section">
-          <h2 className="roomguide-title">Room to Room Guide</h2>
-
-          <div className="roomguide-tabs">
-            {Object.keys(roomData).map((key) => (
-              <button
-                key={key}
-                className={`roomguide-tab ${activeRoom === key ? "active" : ""
-                  }`}
-                onClick={() => setActiveRoom(key)}>
-                {key.toUpperCase()}
-              </button>
-            ))}
-          </div>
-
-          <div className="roomguide-content">
-            <div className="roomguide-image">
-              <img src={room.image} alt={room.title} />
-            </div>
-            <div className="roomguide-text">
-              <h3 className="roomguide-heading">{room.title}</h3>
-              <p className="roomguide-description">{room.description}</p>
-              <h4 className="roomguide-subtitle">Recommendation</h4>
-              <div className="roomguide-recommendations">
-                {room.recommendations.map((rec, i) => (
-                  <div className="roomguide-recommendation" key={i}>
-                    <img src={rec.img} alt={rec.size} />
-                    <div>
-                      <h5 className="roomguide-size">{rec.size}</h5>
-                      <p className="roomguide-text-desc">{rec.text}</p>
-                    </div>
-                  </div>
-                ))}
+            {/* Content Section */}
+            <div className="guide-content">
+              <div className="guide-image">
+                <img src={shapeData.media} alt={shapeData.name} />
               </div>
-              <button className="roomguide-btn">SHOP NOW</button>
+              <div className="guide-info">
+                <h3>{shapeData.name}</h3>
+                <p className="guide-desc">{shapeData.short_description}</p>
+                <div dangerouslySetInnerHTML={{ __html: shapeData?.description }} />
+                <button className="shop-btn">{shapeData.button_styles}</button>
+              </div>
             </div>
-          </div>
-        </section>
-      </div>
+          </section>
+          <section className="roomguide-section">
+            <h2 className="roomguide-title">Room to Room Guide</h2>
+
+            <div className="roomguide-tabs">
+              {data?.content[1]?.size_guides.map((key) => (
+                <button
+                  key={key.id}
+                  className={`roomguide-tab ${activeRoom === key.id ? "active" : ""
+                    }`}
+                  onClick={() => setRoomtabdata(key.id)}>
+                  {key?.name.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
+            <div className="roomguide-content">
+              <div className="roomguide-image">
+                <img src={roomData.media} alt={roomData.name} />
+              </div>
+              <div className="roomguide-text">
+                <h3 className="roomguide-heading">{roomData.name}</h3>
+                <p className="roomguide-description">{roomData.short_description}</p>
+                {/* <h4 className="roomguide-subtitle">Recommendation</h4> */}
+                <div className="roomguide-recommendations">
+                  {/* {roomData.recommendations.map((rec, i) => (
+                    <div className="roomguide-recommendation" key={i}>
+                      <img src={rec.img} alt={rec.size} />
+                      <div>
+                        <h5 className="roomguide-size">{rec.size}</h5>
+                        <p className="roomguide-text-desc">{rec.text}</p>
+                      </div>
+                    </div>
+                  ))} */}
+                  <div dangerouslySetInnerHTML={{ __html: roomData?.description }} />
+                </div>
+                <button className="roomguide-btn">{roomData?.button_styles}</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      )}
+
       <Footer />
     </>
   )

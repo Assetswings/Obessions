@@ -170,7 +170,7 @@ const OtherTopnav = () => {
           className="nav-logo"
           style={{ cursor: "pointer" }}>
           <Link to='/'>
-            <img src={logo} alt="Logo" />
+            <img src={logo} alt="Obsession" />
           </Link>
         </div>
 
@@ -209,6 +209,7 @@ const OtherTopnav = () => {
             style={{ position: "relative" }}
             title="User Profile"
           >
+            <span style={{fontSize:"12px",paddingRight:"7px"}}>Ajit Sahoo</span>
             <CircleUser
               strokeWidth={1}
               color="#FFFFFF"
@@ -250,6 +251,7 @@ const OtherTopnav = () => {
               onClick={handleWishlistClick}
               style={{ cursor: "pointer" }}
             />
+            <span className="wishlist-badge" style={{right:"65px",top:"10px"}}>10</span>
           </div>
           <div title="Cart">
             <ShoppingCart
@@ -259,6 +261,7 @@ const OtherTopnav = () => {
               size={25}
               style={{ cursor: "pointer" }}
             />
+            <span className="wishlist-badge" style={{right:"22px",top:"10px"}}>20</span>
           </div>
         </div>
       </nav>

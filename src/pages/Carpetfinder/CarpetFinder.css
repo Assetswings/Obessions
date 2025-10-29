@@ -247,3 +247,15 @@
 .show-more-row:hover {
   text-decoration: underline;
 }
+
+.buttonarrawright {
+  position: relative;
+  bottom: 1px;
+  right: 5px;
+}
+
+.buttonarrawleft {
+  position: relative;
+  bottom: 1px;
+  left: 5px;
+}

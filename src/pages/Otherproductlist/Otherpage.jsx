@@ -407,7 +407,9 @@ const Otherpage = () => {
 
               {/* 4️⃣ Product Filters */}
               {filters.product_filter &&
-                Object.entries(filters.product_filter).map(([key, values]) =>
+                Object.entries(filters.product_filter)
+                .filter(([key, values]) => Array.isArray(values) && values.length > 0)
+                .map(([key, values]) =>
                   renderFilterGroup(key.replace(/_/g, " "), values, key)
                 )}
             </>
@@ -602,7 +604,9 @@ const Otherpage = () => {
                 renderDiscountFilter(filters.discount_filter, true)}
 
               {filters.product_filter &&
-                Object.entries(filters.product_filter).map(([key, values]) =>
+                Object.entries(filters.product_filter)
+                .filter(([key, values]) => Array.isArray(values) && values.length > 0)
+                .map(([key, values]) =>
                   renderFilterGroup(key.replace(/_/g, " "), values, key, true)
                 )}
             </>

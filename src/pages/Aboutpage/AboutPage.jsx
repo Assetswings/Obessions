@@ -70,6 +70,8 @@ const AboutPage = () => {
           </div>
         </section>
       </div>
+  
+  
       {/* 
       <div className="tr_div">
         <img
@@ -81,8 +83,52 @@ const AboutPage = () => {
       <section className="thirty-years-section">
         <div className="container">
           <div className="row align-items-center">
+
+
             {/* Left Image Columns */}
+            <div className="col-md-6 ">
+              <div className="row">
+                {/* Left Column */}
+                <div className="col-lg-6 col-md-6">
+                  <div className="photo-col">
+                    {Object.values(data?.thirty_years?.left || {}).map((url, index) => (
+                      <img key={index} src={url} alt="Thirty Years Left" />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="col-lg-6 col-md-6">
+                  <div className="photo-col">
+                    {Object.values(data?.thirty_years?.right || {}).map((url, index) => (
+                      <img key={index} src={url} alt="Thirty Years Right" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Text Section */}
             <div className="col-md-6">
+              <div className="text-section">
+                <p>{data?.thirty_years?.other?.description || ""}</p>
+                <div className="divider-line"></div>
+                <h1>30 <span className="sub_txt"> Years</span></h1>
+                <h4>of Transforming Spaces</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+       
+      <section className="thirty-years-section-mlb ">
+        <div className="container">
+          <div className="row align-items-center">
+
+
+            {/* Left Image Columns */}
+            <div className="col-md-6 ">
               <div className="row">
                 {/* Left Column */}
                 <div className="col-lg-6 col-md-6">

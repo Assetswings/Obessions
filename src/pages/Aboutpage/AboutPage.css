@@ -325,7 +325,10 @@
  .thirty-years-section {
   background-color: #fff;
 }
-
+.track_section{
+  width: 300px;
+  height: 600px;
+}
 .photo-col img {
   width: 100%;
   margin-bottom: 20px;
@@ -373,8 +376,38 @@
    display: flex;
 }
 
-@media (max-width: 991px) {
-  .photo-col {
-    margin-bottom: 30px;
+
+@media (max-width: 768px) {
+  .thirty-years-section {
+   display: none;
   }
+
 }
+
+.thirty-years-section-mlb{
+  display:none ;
+}
+   /* Force 2-column collage layout on all devices */
+.thirty-years-section-mlb .row > .col-md-6:first-child .row {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* Make images responsive and uniform */
+.thirty-years-section-mlb .photo-col img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Optional: tighten spacing for mobile */
+@media (max-width: 768px) {
+  .thirty-years-section-mlb{
+    display:inline;
+  }
+  .thirty-years-section-mlb .row > .col-md-6:first-child .row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+   }

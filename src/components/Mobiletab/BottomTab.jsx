@@ -5,7 +5,7 @@ import "./BottomTab.css";
 import { ReactComponent as HomeIcon } from "../../assets/icons/homeicon.svg";
 import WishlistModal from "../Wishtlist/WishlistModal";
 
-const categories = [
+  const categories = [
   { name: "Bath Care", img: "https://i.ibb.co/9Rk33kn/image-648.png" },
   { name: "Dustbins", img: "https://i.ibb.co/R8R9Ndp/image-649.png" },
   { name: "Floor Coverings", img: "https://i.ibb.co/ZRzVmFrL/image-650.png" },

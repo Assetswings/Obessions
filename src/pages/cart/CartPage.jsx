@@ -32,7 +32,7 @@ const CartPage = () => {
       navigate("/login");
     }
     dispatch(fetchTopPicks());
-    let storagePin = localStorage.getItem('pincode');
+    let storagePin = localStorage.getItem("pincode");
     if (storagePin) {
       dispatch(checkPincode(storagePin));
     }
@@ -118,7 +118,11 @@ const CartPage = () => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <ToastContainer
+        style={{ zIndex: 9999999999999 }}
+        position="top-right"
+        autoClose={3000}
+      />
       <Breadcrumbs paths={breadcrumbPaths} />
       <div className="root-title-chk">
         <span className="title_chk">My Cart ({items?.length})</span>
@@ -131,7 +135,7 @@ const CartPage = () => {
         <div className="cart-left">
           {items.length === 0 ? (
             <div className="empty-cart">
-              <img
+               <img
                 src={blankcart}
                 alt="Empty cart"
                 className="empty-cart-image"
@@ -147,14 +151,19 @@ const CartPage = () => {
                 className="empty-cart-btn"
                 onClick={() => navigate("/")} // ✅ send user back to home/shop
               >
-                EXPLORE &nbsp; <img src={rightarrawwhite} height={25} width={25} />
+                EXPLORE &nbsp;{" "}
+                <img src={rightarrawwhite} height={25} width={25} />
               </button>
             </div>
           ) : (
             items.map((item) => (
               <div className="cart-item" key={item.id}>
                 <div className="item-image">
-                  <Link to={`/productsdetails/${item.product?.action_url}`} target="_blank" rel="noopener noreferrer">
+                  <Link
+                    to={`/productsdetails/${item.product?.action_url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <img
                       className="img-cart-page pointer-crusser"
                       src={item.product?.media}
@@ -165,34 +174,40 @@ const CartPage = () => {
 
                 <div className="item-details">
                   <h4 className="item-title pointer-crusser">
-                    <Link to={`/productsdetails/${item.product?.action_url}`} target="_blank" rel="noopener noreferrer">{item.product?.name}</Link>
+                    <Link
+                      to={`/productsdetails/${item.product?.action_url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {item.product?.name}
+                    </Link>
                   </h4>
                   <span className="price_details_cart">
                     ₹{item.product?.selling_price}
-                    {item.product?.mrp && item.product?.mrp !== item.product?.selling_price && (
-                      <>
-                        <span className="sub-1">
-                          <del>₹{item.product?.mrp}</del> &nbsp;
-                          <span className="dis-sub">
-                            (-{item.product?.discount}%)
+                    {item.product?.mrp &&
+                      item.product?.mrp !== item.product?.selling_price && (
+                        <>
+                          <span className="sub-1">
+                            <del>₹{item.product?.mrp}</del> &nbsp;
+                            <span className="dis-sub">
+                              (-{item.product?.discount}%)
+                            </span>
                           </span>
-                        </span>
-                      </>
-                    )}
+                        </>
+                      )}
                   </span>
-                  <p style={{ textTransform: "capitalize" }}>
-                    {" "}
-                    size : <span>{item.product?.size}</span>{" "}
+                  <p className="item-size">Size : {item.product?.size}</p>
+                  <p>
+                    Color : <span>{item.product?.color}</span>{" "}
                   </p>
-                  <p style={{ textTransform: "capitalize" }}>
+                  <p>
                     {" "}
-                    color : <span>{item.product?.color}</span>{" "}
+                    Return & Exchange day :{" "}
+                    <span>
+                      {item.product?.return_non_return_days_label}
+                    </span>{" "}
                   </p>
-                  <p style={{ textTransform: "capitalize" }}>
-                    {" "}
-                    Return & Exchange day : <span>{item.product?.return_non_return_days_label}</span>{" "}
-                  </p>
-                  <p style={{ textTransform: "capitalize" }}>
+                  <p>
                     {" "}
                     TAT Delivery : <span>{pinset?.delivery_tat}</span>{" "}
                   </p>
@@ -294,7 +309,12 @@ const CartPage = () => {
               <button onClick={handleCheckout} className="checkout">
                 CHECKOUT
               </button>
-              <button className="continue_shoping" onClick={() => navigate("/")}>CONTINUE SHOPPING</button>
+              <button
+                className="continue_shoping"
+                onClick={() => navigate("/")}
+              >
+                CONTINUE SHOPPING
+              </button>
             </div>
           </div>
         )}

@@ -365,6 +365,7 @@ root_promo_sector {
   .input_checkout {
     width: 100%; /* full width on mobile */
   }
+ 
 }
 
 @media (max-width: 480px) {
@@ -397,4 +398,5 @@ root_promo_sector {
   .price-summary {
     margin-top: -10px !important;
   }
+ 
 }

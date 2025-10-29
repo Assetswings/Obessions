@@ -64,18 +64,17 @@
 }
 
 .item-title {
-  font-size: 18px;
+  font-size: 20px;
   font-family: "Helvetica Neue", sans-serif;
   margin-bottom: 6px;
+  color:#1B170E;
 }
 
 .item-details p {
   font-size: 14px;
   color: #404040;
   margin: 2px 0;
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
 }
 
 /* ---------- QUANTITY + ACTIONS ---------- */
@@ -276,13 +275,8 @@
     margin-top: 0;
   }
 
-  .item-title {
-    font-size: 15px;
-  }
+ 
 
-  .item-details {
-    font-size: 13px;
-  }
 
   .root_qtn_cart {
     flex-direction: row;
@@ -318,8 +312,18 @@
   }
 
   .item-details p {
-    font-weight: 400;
+  font-size: 14px;
+  color: #8a8585;
+  margin: 2px 0;
+
   }
+ 
+  .empty-cart-image {
+    width: 200px;
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+  
 }
 
 @media (max-width: 480px) {
@@ -328,7 +332,7 @@
   }
 
   .item-title {
-    font-size: 14px;
+    font-size: 17px;
   }
 
   .checkout,
@@ -338,7 +342,7 @@
   }
 
   .empty-cart-title {
-    font-size: 16px;
+    font-size: 25px;
   }
 
   .empty-cart-subtitle {
@@ -356,7 +360,7 @@
 
   .txt_mlb_my {
     margin-left: 20px;
-    font-size: 20px;
+    font-size: 28px;
     font-weight: 500;
     font-family: "Playfair Display", serif;
   }

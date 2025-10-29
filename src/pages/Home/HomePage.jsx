@@ -34,11 +34,12 @@ import Tableimage from "../../assets/images/Kitchen1.png";
 // video section
 import videoimage from "../../assets/images/videoimage.png";
 import { Search } from "lucide-react";
+import useMeta from "../../app/useMeta";
 
 
 const HomePage = () => {
   const token = localStorage.getItem("token");
-  // console.log("token----->", token);
+  useMeta("https://www.obsessions.co.in");
   const [active, setActive] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();

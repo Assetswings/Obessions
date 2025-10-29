@@ -36,6 +36,7 @@ import VideoGallery from "../pages/VideoGallery/VideoGallery";
 import Failedpage from "../pages/Payment/Failedpage";
 import SizeGuide from "../pages/Sizeguid/SizeGuide";
 import StyleGuide from "../pages/Styleguid/StyleGuide";
+import TrackOrder from "../pages/Trackorder/TrackOrder";
 const AppRoutes = () => {
   return (
     // <ScrollToTopWrapper>
@@ -81,6 +82,7 @@ const AppRoutes = () => {
           <Route path="videogallery" element={<VideoGallery />} />
           <Route path="style-guide" element={<SizeGuide/>} />
           <Route path="size-guide" element={<StyleGuide/>} />
+          <Route path="track-order" element={<TrackOrder/>} />
         </Route>
       </Routes>
     // </ScrollToTopWrapper>

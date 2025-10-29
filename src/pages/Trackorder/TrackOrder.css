@@ -1,0 +1,76 @@
+.track-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    background-color: #fff;
+}
+
+.track-box {
+    text-align: left;
+    width: 400px;
+}
+
+.track-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.track-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    outline: none;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.track-btn {
+    width: 100%;
+    background-color: #1c1b17;
+    color: white;
+    font-size: 15px;
+    padding: 12px 0;
+    border: none;
+    cursor: pointer;
+}
+
+.track-btn:hover {
+    background-color: #000;
+}
+
+.track-benefits {
+    margin-top: 30px;
+}
+
+.track-benefits h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.track-benefits ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.track-benefits li {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.track-benefits li svg {
+    color: #1c1b17;
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .track-box {
+        padding: 15px;
+    }
+}

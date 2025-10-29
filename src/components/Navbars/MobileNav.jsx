@@ -8,6 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
 import Mobileansbar from "./Mobileansbar";
+import { IoLogoWhatsapp } from "react-icons/io";
+import API from "../../app/api";
 
 const MobileNav = () => {
   const navigate = useNavigate();
@@ -24,7 +26,22 @@ const MobileNav = () => {
   const userWrapperRef = useRef(null);
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.megamenu);
-
+  const [wdata, setData] = useState("");
+  useEffect(() => {
+    chatsupport();
+  }, []);
+  const chatsupport = async () => {
+    try {
+      const res = await API.get("/chat/support");
+      if (res.data.status === 200) {
+        setTimeout(() => {
+          setData(res.data?.data);
+        }, 1000); // reduce delay (10s is too long for UX)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
@@ -157,8 +174,8 @@ const MobileNav = () => {
 
   return (
     <>
-      
-        <header className="topbar">
+
+      <header className="topbar">
         <div className="topbar-left">
           <div className="hamburger" onClick={toggleDrawer}>
             <span></span>
@@ -166,16 +183,16 @@ const MobileNav = () => {
           </div>
 
           <div className="mobile_logo_track" onClick={() => handelroute("/")}>
-          <img src={mobilelogo} width={105} alt="logo" />
+            <img src={mobilelogo} width={105} alt="logo" />
           </div>
         </div>
 
         <div className="icons">
 
-           <Search 
-                 color="black"
-                 strokeWidth={1.5}
-           />
+          <Search
+            color="black"
+            strokeWidth={1.5}
+          />
           <CircleUser
             ref={userWrapperRef}
             strokeWidth={1.5}
@@ -186,7 +203,7 @@ const MobileNav = () => {
         </div>
       </header>
 
-     <Mobileansbar/>
+      <Mobileansbar />
       {/* Drawer */}
       <div className={`drawer ${isOpen ? "open" : ""}`}>
         <div className="drawer-header">
@@ -328,6 +345,15 @@ const MobileNav = () => {
           </div>
         </>
       )}
+      {/* ✅ Floating WhatsApp Icon */}
+      <a
+        href={`https://api.whatsapp.com/send?phone=${wdata?.phone}&text=${wdata?.text}`}
+        className="floating-whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <IoLogoWhatsapp className="whatsapp-icon" />
+      </a>
     </>
   );
 };

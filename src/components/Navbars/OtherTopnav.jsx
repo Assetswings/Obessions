@@ -21,6 +21,8 @@ import {
 } from "../../pages/Home/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
+import { IoLogoWhatsapp } from "react-icons/io";
+import API from "../../app/api";
 
 const OtherTopnav = () => {
   const dispatch = useDispatch();
@@ -37,6 +39,23 @@ const OtherTopnav = () => {
   const inputRef = useRef(null);
   const searchState = useSelector((state) => state.search || {});
   const { results = [], loading, error } = searchState;
+
+  const [data, setData] = useState("");
+  useEffect(() => {
+    chatsupport();
+  }, []);
+  const chatsupport = async () => {
+    try {
+      const res = await API.get("/chat/support");
+      if (res.data.status === 200) {
+        setTimeout(() => {
+          setData(res.data?.data);
+        }, 1000); // reduce delay (10s is too long for UX)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const checkSession = () => {
     const token = localStorage.getItem("token");
@@ -209,7 +228,7 @@ const OtherTopnav = () => {
             style={{ position: "relative" }}
             title="User Profile"
           >
-            <span style={{fontSize:"12px",paddingRight:"7px"}}>Ajit Sahoo</span>
+            <span style={{ fontSize: "12px", paddingRight: "7px" }}>Ajit Sahoo</span>
             <CircleUser
               strokeWidth={1}
               color="#FFFFFF"
@@ -251,7 +270,7 @@ const OtherTopnav = () => {
               onClick={handleWishlistClick}
               style={{ cursor: "pointer" }}
             />
-            <span className="wishlist-badge" style={{right:"65px",top:"10px"}}>10</span>
+            <span className="wishlist-badge" style={{ right: "65px", top: "10px" }}>10</span>
           </div>
           <div title="Cart">
             <ShoppingCart
@@ -261,7 +280,7 @@ const OtherTopnav = () => {
               size={25}
               style={{ cursor: "pointer" }}
             />
-            <span className="wishlist-badge" style={{right:"22px",top:"10px"}}>20</span>
+            <span className="wishlist-badge" style={{ right: "22px", top: "10px" }}>20</span>
           </div>
         </div>
       </nav>
@@ -376,6 +395,15 @@ const OtherTopnav = () => {
           </div>
         </div>
       )}
+      {/* ✅ Floating WhatsApp Icon */}
+      <a
+        href={`https://api.whatsapp.com/send?phone=${data?.phone}&text=${data?.text}`}
+        className="floating-whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <IoLogoWhatsapp className="whatsapp-icon" />
+      </a>
     </>
   );
 };

@@ -7,15 +7,17 @@ import { fetchMegamenuData } from "./megamenuSlice";
 import { Link, useNavigate } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
+import { IoLogoWhatsapp } from "react-icons/io";
+import API from "../../app/api";
 
-const MobileOtherNav  = () => {
+const MobileOtherNav = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("main");
   const [prevMenu, setPrevMenu] = useState(null);
   const [direction, setDirection] = useState("forward");
-  const [currentSection, setCurrentSection] = useState(null); 
-  const [openCategory, setOpenCategory] = useState(null); 
+  const [currentSection, setCurrentSection] = useState(null);
+  const [openCategory, setOpenCategory] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
@@ -23,11 +25,26 @@ const MobileOtherNav  = () => {
   const userWrapperRef = useRef(null);
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.megamenu);
-
-    useEffect(() => {
+  const [wdata, setData] = useState("");
+  useEffect(() => {
+    chatsupport();
+  }, []);
+  const chatsupport = async () => {
+    try {
+      const res = await API.get("/chat/support");
+      if (res.data.status === 200) {
+        setTimeout(() => {
+          setData(res.data?.data);
+        }, 1000); // reduce delay (10s is too long for UX)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
-    }, []);
+  }, []);
 
   // useEffect(() => {
   //   const handleClickOutside = (event) => {
@@ -157,8 +174,8 @@ const MobileOtherNav  = () => {
 
   return (
     <>
- 
-        <header className="topbar_other">
+
+      <header className="topbar_other">
         <div className="topbar-left">
           <div className="hamburger_other" onClick={toggleDrawer}>
             <span></span>
@@ -166,15 +183,15 @@ const MobileOtherNav  = () => {
           </div>
 
           <div className="mobile_logo_track" onClick={() => handelroute("/")}>
-          <img src={mobilelogo} width={105} alt="logo" />
+            <img src={mobilelogo} width={105} alt="logo" />
           </div>
         </div>
 
         <div className="icons">
-               <Search 
-                 color="white"
-                 strokeWidth={1.5}
-           />
+          <Search
+            color="white"
+            strokeWidth={1.5}
+          />
           <CircleUser
             ref={userWrapperRef}
             strokeWidth={1.5}
@@ -326,6 +343,15 @@ const MobileOtherNav  = () => {
           </div>
         </>
       )}
+      {/* ✅ Floating WhatsApp Icon */}
+      <a
+        href={`https://api.whatsapp.com/send?phone=${wdata?.phone}&text=${wdata?.text}`}
+        className="floating-whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <IoLogoWhatsapp className="whatsapp-icon" />
+      </a>
     </>
   );
 };

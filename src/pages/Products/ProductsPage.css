@@ -388,15 +388,18 @@
   right: 20px;
   background: white;
   color: black;
-  padding: 10px 16px;
+  height: 40px;
+  width: 130px;
   border-radius: 30px;
   border: none;
   font-size: 14px;
   cursor: pointer;
   z-index: 1000;
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 6px;
+  box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
 }
 
 .track_filter {
@@ -490,12 +493,32 @@
     display: flex;
   }
 
+  /* .track_filter {
+    display: flex;
+    justify-content: flex-end;
+    position: sticky;
+    top: 48px;
+    width: 100%;
+    z-index: 1000;
+   padding:5px;
+    background-color: #d7dbdd;
+  } */
+
   .track_filter {
     display: flex;
     justify-content: flex-end;
     position: sticky;
-    top: 54px;
+    top: 48px;
+    width: 100%;
+    height: 55px;
     z-index: 1000;
+    padding: 8px 12px;
+    /* ✨ Glass effect */
+    background: rgba(255, 255, 255, 0.15); /* light transparent layer */
+    backdrop-filter: blur(3px); /* frosted blur */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* subtle border */
+    border-radius: 10px;
   }
 
   .top-picks-heading {
@@ -529,6 +552,7 @@
   display: flex;
   justify-content: flex-end;
   width: 98%;
+ 
 }
 
 .sortby-container-mlb {
@@ -545,9 +569,18 @@
   font-weight: 500;
   font-size: 14px;
   color: #333;
-  font-size: 14px;
+  font-size: 13px;
   margin-bottom: 8px;
-
+  background-color: white;
+  border-radius: 50px;
+  position: relative;
+  right: 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 40px;
+  width: 100px;
+  box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
 }
 
 .selected-text {

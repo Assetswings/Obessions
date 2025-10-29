@@ -32,19 +32,19 @@ const BottomTab = () => {
     // get data from localStorage
     const hero_banner_categories = JSON.parse(localStorage.getItem('hero_banner_categories') || '[]');
     // map and append image
-    const mergedCategoriesdata = hero_banner_categories.map((item) => {
-      // try to find a matching category by name (case-insensitive & partial match)
-      const matched = categories.find(cat =>
-        cat.name.toLowerCase().includes(item.name.toLowerCase()) ||
-        item.name.toLowerCase().includes(cat.name.toLowerCase())
-      );
-      return {
-        ...item,
-        img: matched ? matched.img : null, // add image if found, else null
-      };
-    });
-    setmergedCategories(mergedCategoriesdata);
-    console.log(mergedCategoriesdata);
+    // const mergedCategoriesdata = hero_banner_categories.map((item) => {
+    //   // try to find a matching category by name (case-insensitive & partial match)
+    //   const matched = categories.find(cat =>
+    //     cat.name.toLowerCase().includes(item.name.toLowerCase()) ||
+    //     item.name.toLowerCase().includes(cat.name.toLowerCase())
+    //   );
+    //   return {
+    //     ...item,
+    //     img: matched ? matched.img : null, // add image if found, else null
+    //   };
+    // });
+    setmergedCategories(hero_banner_categories);
+    console.log('??????',hero_banner_categories);
 
   }, [location.pathname]);
 
@@ -130,7 +130,7 @@ const BottomTab = () => {
               className="category-item"
             >
               <Link to={`/products/${cat.action_url}`}>
-                <img src={cat.img} alt={cat.name} />
+                <img src={cat.media} alt={cat.name} />
                 <span>{cat.name}</span>
               </Link>
             </div>

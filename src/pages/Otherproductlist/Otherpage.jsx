@@ -552,6 +552,7 @@ const Otherpage = () => {
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
+        totalitems = {products.length}
       />
 
       <section className="top-picks-section">

@@ -281,6 +281,7 @@ const OrderHistoryPage = () => {
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
+                totalitems = {results.length}
               />
             </main>
           </>

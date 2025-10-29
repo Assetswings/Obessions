@@ -8,7 +8,7 @@ import {
   LogOut,
   Search,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import MegaMenu from "./MegaMenu";
 import MegamenuDuo from "./MegamenuDuo";
 import WishlistModal from "../Wishtlist/WishlistModal";
@@ -47,7 +47,7 @@ const OtherTopnav = () => {
   }, []);
 
   useEffect(() => {
-    if(results.length > 0){
+    if (results.length > 0) {
       setSearchResult(results);
     }
   }, [results]);
@@ -168,25 +168,29 @@ const OtherTopnav = () => {
 
         <div
           className="nav-logo"
-          onClick={handleLogoClick}
           style={{ cursor: "pointer" }}>
-          <img src={logo} alt="Logo" />
+          <Link to='/'>
+            <img src={logo} alt="Logo" />
+          </Link>
         </div>
 
 
         <ul className="nav-links">
           <li onMouseEnter={() => setShowMegaMenu(true)}>SHOP</li>
-          <li>
+          {/* <li>
             <Link to='/new-arrivals'>NEW ARRIVALS</Link>
+          </li> */}
+          <li>
+            <NavLink to="/new-arrivals" className={({ isActive }) => (isActive ? "active-tab" : "")}>NEW ARRIVALS</NavLink>
           </li>
           <li>
-            <Link to='/bestseller'>BEST SELLERS</Link>
+            <NavLink to='/bestseller' className={({ isActive }) => (isActive ? "active-tab" : "")}>BEST SELLERS</NavLink>
           </li>
           <li>
-            <Link to='/offer-spot'>OFFERS SPOT</Link>
+            <NavLink to='/offer-spot' className={({ isActive }) => (isActive ? "active-tab" : "")}>OFFERS SPOT</NavLink>
           </li>
           <li>
-            <Link to='/carpet-finder'>FLOOR MATCHER</Link>
+            <NavLink to='/carpet-finder' className={({ isActive }) => (isActive ? "active-tab" : "")}>FLOOR MATCHER</NavLink>
           </li>
         </ul>
 
@@ -216,9 +220,11 @@ const OtherTopnav = () => {
               <>
                 <div className="popup-triangle"></div>
                 <div className="user-popup">
-                  <div className="popup-item" onClick={handleProfile}>
-                    <User size={22} style={{ marginRight: 8 }} />
-                    <span>Profile</span>
+                  <div className="popup-item">
+                    <Link to='/ProfilePage'>
+                      <User size={22} style={{ marginRight: 8 }} />
+                      <span>Profile</span>
+                    </Link>
                   </div>
                   <div className="popup-item" onClick={handleLogout}>
                     <span
@@ -236,21 +242,24 @@ const OtherTopnav = () => {
               </>
             )}
           </div>
-
-          <Heart
-            strokeWidth={1}
-            size={25}
-            title="Wish List"
-            onClick={handleWishlistClick}
-            style={{ cursor: "pointer" }}
-          />
-          <ShoppingCart
-            onClick={handleCartClick}
-            strokeWidth={1}
-            title="Shopping Cart"
-            size={25}
-            style={{ cursor: "pointer" }}
-          />
+          <div title="Wish List">
+            <Heart
+              strokeWidth={1}
+              size={25}
+              title="Wish List"
+              onClick={handleWishlistClick}
+              style={{ cursor: "pointer" }}
+            />
+          </div>
+          <div title="Cart">
+            <ShoppingCart
+              onClick={handleCartClick}
+              strokeWidth={1}
+              title="Shopping Cart"
+              size={25}
+              style={{ cursor: "pointer" }}
+            />
+          </div>
         </div>
       </nav>
 

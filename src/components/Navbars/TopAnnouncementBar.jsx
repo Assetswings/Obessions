@@ -8,7 +8,7 @@ import {
   ChevronRight,
   ChevronLeft,
 } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
 import { toast, ToastContainer } from "react-toastify";
@@ -174,6 +174,7 @@ const TopAnnouncementBar = () => {
             ref={userWrapperRef}
             className="user-click-wrapper"
             style={{ position: "relative" }}
+            title="User Profile"
           >
             <CircleUser
               color="#FFFFFF"
@@ -181,7 +182,6 @@ const TopAnnouncementBar = () => {
               strokeWidth={1}
               style={{ cursor: "pointer" }}
               onClick={handleUserClick}
-              title="User Profile"
             />
 
             {/* ✅ Fixed Popup */}
@@ -191,9 +191,11 @@ const TopAnnouncementBar = () => {
                 onClick={(e) => e.stopPropagation()} // prevent close on inside click
               >
                 <div className="popup-triangle_an"></div>
-                <div className="popup-item" onClick={handleProfile}>
-                  <User size={20} style={{ marginRight: 8 }} />
-                  <span>Profile</span>
+                <div className="popup-item">
+                  <Link to='/ProfilePage'>
+                    <User size={22} style={{ marginRight: 8 }} />
+                    <span>Profile</span>
+                  </Link>
                 </div>
                 <div className="popup-item" onClick={handleLogout}>
                   <LogOut size={20} style={{ marginRight: 8 }} />
@@ -203,20 +205,24 @@ const TopAnnouncementBar = () => {
             )}
           </div>
 
-          <Heart
-            size={22}
-            onClick={handleWishlistClick}
-            style={{ cursor: "pointer" }}
-            strokeWidth={1}
-            title="Wishlist"
-          />
-          <ShoppingCart
-            size={22}
-            onClick={handleCartClick}
-            style={{ cursor: "pointer" }}
-            strokeWidth={1}
-            title="Cart"
-          />
+          <div title="Wish List">
+            <Heart
+              size={22}
+              onClick={handleWishlistClick}
+              style={{ cursor: "pointer" }}
+              strokeWidth={1}
+              title="Wishlist"
+            />
+          </div>
+          <div title="Cart">
+            <ShoppingCart
+              size={22}
+              onClick={handleCartClick}
+              style={{ cursor: "pointer" }}
+              strokeWidth={1}
+              title="Cart"
+            />
+          </div>
         </div>
       </div>
 

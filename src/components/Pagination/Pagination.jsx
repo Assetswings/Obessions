@@ -1,8 +1,14 @@
 import React from "react";
 import "./Pagination.css";
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+const Pagination = ({ currentPage, totalPages, onPageChange, totalitems }) => {
   if (totalPages <= 1) return null;
+
+  const pageSize = totalitems || 0;  // count of current items
+  const totalItems = totalPages * pageSize; // approximate total (if consistent)
+
+  const rangeStart = (currentPage - 1) * pageSize + 1;
+  const rangeEnd = Math.min(currentPage * pageSize, totalItems);
 
   const pages = [];
   const maxVisible = 5; // number of visible pages in middle
@@ -21,6 +27,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   return (
     <nav aria-label="Page navigation example">
+      <p className="pagination-count">
+        {`Showing ${rangeStart} – ${rangeEnd} of ${totalItems}`}
+      </p>
       <ul className="pagination custom-pagination">
         {/* Previous */}
         <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>

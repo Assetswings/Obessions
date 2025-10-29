@@ -31,6 +31,7 @@ const OtherTopnav = () => {
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [query, setQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
   const navigate = useNavigate();
   const userWrapperRef = useRef(null);
   const inputRef = useRef(null);
@@ -44,6 +45,12 @@ const OtherTopnav = () => {
   useEffect(() => {
     checkSession();
   }, []);
+
+  useEffect(() => {
+    if(results.length > 0){
+      setSearchResult(results);
+    }
+  }, [results]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -126,7 +133,7 @@ const OtherTopnav = () => {
       closeButton: true,
       icon: true,
     });
-    // navigate("/");
+    navigate("/");
   };
 
   const handleProfile = () => {
@@ -149,8 +156,9 @@ const OtherTopnav = () => {
 
   const claersearch = () => {
     setShowSearch(false);
-    dispatch(clearSearchResults);
+    // dispatch(clearSearchResults());
     setQuery("");
+    setSearchResult([]);
   };
 
   return (
@@ -274,7 +282,21 @@ const OtherTopnav = () => {
                 className="form-control border-0 input_global"
                 placeholder="WHAT ARE YOU LOOKING FOR?"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  // Allow only letters, numbers, and spaces (no special characters)
+                  let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
+
+                  // Remove leading spaces
+                  value = value.replace(/^\s+/, "");
+
+                  setQuery(value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && query.trim()) {
+                    claersearch();
+                    navigate("/searchlist", { state: { query } });
+                  }
+                }}
               // onFocus={handleFocus}
               />
               {loading && (
@@ -302,31 +324,42 @@ const OtherTopnav = () => {
               </button>
             </div>
 
-            {Array.isArray(results) && results.length > 0 && (
-              <div className="search-results-grid-other">
-                {results.slice(0, 8).map((item, index) => (
-                  <div
-                    key={index}
-                    className="search-card"
-                    onClick={() => {
-                      claersearch();
-                    }}>
-                    <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
-                      <img
-                        src={item.media_list?.main?.file}
-                        alt={item.name}
-                        className="search-card-img"
-                      />
-                      <div className="search-card-body">
-                        <h6 className="search-card-title">
-                          {item.name.split(" ").slice(0, 5).join(" ")}
-                        </h6>
-                      </div>
+            {Array.isArray(searchResult) && (
+              <>
+                {searchResult.length > 0 ? (
+                  <div className="search-results-grid-other">
+                    {searchResult.slice(0, 8).map((item, index) => (
+                      <div
+                        key={index}
+                        className="search-card"
+                        onClick={() => {
+                          claersearch();
+                        }}>
+                        <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                          <img
+                            src={item.media_list?.main?.file}
+                            alt={item.name}
+                            className="search-card-img"
+                          />
+                          <div className="search-card-body">
+                            <h6 className="search-card-title">
+                              {item.name.split(" ").slice(0, 5).join(" ")}
+                            </h6>
+                          </div>
 
-                    </Link>
+                        </Link>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                ) : (
+                  // ✅ No Data Found message 
+                  !loading && query?.trim() && (
+                    <div className="no-data-found-top">
+                      <p>No Result found</p>
+                    </div>
+                  )
+                )}
+              </>
             )}
           </div>
         </div>

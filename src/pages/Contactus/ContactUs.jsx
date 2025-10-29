@@ -111,6 +111,90 @@ const ContactUs = () => {
         />
 
         <section className="contact-section">
+          <div className="mobileres contact-form">
+            <h2>Send Us a Message</h2>
+            <form onSubmit={handleSubmit} noValidate>
+              <div className="form-row two-column">
+                <div>
+                  <input
+                    type="text"
+                    name="first_name"
+                    placeholder="First name"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                  />
+                  {errors.first_name && <p className="error-text">{errors.first_name}</p>}
+                </div>
+
+                <div>
+                  <input
+                    type="text"
+                    name="last_name"
+                    placeholder="Last name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                  />
+                  {errors.last_name && <p className="error-text">{errors.last_name}</p>}
+                </div>
+              </div>
+
+              <div className="form-row two-column">
+                <div>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="E-mail"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                  {errors.email && <p className="error-text">{errors.email}</p>}
+                </div>
+
+                <div>
+                  <input
+                    type="text"
+                    name="mobile"
+                    placeholder="Phone Number"
+                    value={formData.mobile}
+                    onChange={handleChange}
+                  />
+                  {errors.mobile && <p className="error-text">{errors.mobile}</p>}
+                </div>
+              </div>
+
+              <div className="form-row full-width">
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                >
+                  <option value="">Category</option>
+                  <option value="Bulk Enquiry / Corporate Order">
+                    Bulk Enquiry / Corporate Order
+                  </option>
+                  <option value="Order Cancellation">Order Cancellation</option>
+                  <option value="Return & Exchange">Return & Exchange</option>
+                  <option value="Careers">Careers</option>
+                  <option value="Others">Others</option>
+                </select>
+                {errors.category && <p className="error-text">{errors.category}</p>}
+              </div>
+
+              <div className="form-row full-width">
+                <textarea
+                  name="message"
+                  placeholder="Message"
+                  value={formData.message}
+                  onChange={handleChange}
+                />
+                {errors.message && <p className="error-text">{errors.message}</p>}
+              </div>
+
+              <button type="submit" disabled={loading}>
+                {loading ? "Submitting..." : "SEND MESSAGE"}
+              </button>
+            </form>
+          </div>
           <div className="contact-info">
             <h2>Get in Touch</h2>
             <p>
@@ -167,7 +251,7 @@ const ContactUs = () => {
             </div>
           </div>
 
-          <div className="contact-form">
+          <div className="webres contact-form">
             <h2>Send Us a Message</h2>
             <form onSubmit={handleSubmit} noValidate>
               <div className="form-row two-column">

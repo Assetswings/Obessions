@@ -66,6 +66,14 @@
   padding: 1rem 2rem;
 }
 
+.mobileres {
+  display: none;
+}
+
+.webres {
+  display: block;
+}
+
 .contact-form h2 {
   font-family: 'Canela Trial', sans-serif;
   font-size: 44px;
@@ -201,6 +209,31 @@ button[type="submit"]:hover {
 
   .guides-container {
     /* flex-direction: column; */
-    gap: 1.5rem;
+    gap: 15%
+  }
+
+  .contact-info {
+    padding: 0px;
+  }
+
+  .contact-form {
+    padding: 0px;
+  }
+
+  .mobileres {
+    display: block;
+    padding-bottom: 10%;
+  }
+
+  .webres {
+    display: none;
+  }
+
+  .contact-hero {
+    height: 225px;
+  }
+
+  .help-guides {
+    padding: 5rem 0rem;
   }
 }

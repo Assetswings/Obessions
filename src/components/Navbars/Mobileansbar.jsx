@@ -113,6 +113,7 @@ const Mobileansbar = () => {
       icon: true,
     });
     window.dispatchEvent(new Event("storage"));
+    navigate("/");
   };
 
   const handleProfile = () => {

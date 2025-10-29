@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendOtp, verifyOtp, registerUser } from "../auth/authSlice";
 import Footer from "../../components/Footer/Footer";
 import "./LoginPage.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 const LoginPage = () => {
@@ -109,20 +109,20 @@ const LoginPage = () => {
     dispatch(verifyOtp({ otp: otp.trim(), otp_requested_id, temp_id })).then(
       (res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          toast.success("Login successful!", {
-            style: {
-              border: "1px solid #713200",
-              padding: "16px",
-              color: "#713200",
-            },
-            iconTheme: {
-              primary: "#713200",
-              secondary: "#FFFAEE",
-            },
-            hideProgressBar: true,
-            closeButton: true,
-            icon: true,
-          });
+          // toast.success("Login successful!", {
+          //   style: {
+          //     border: "1px solid #713200",
+          //     padding: "16px",
+          //     color: "#713200",
+          //   },
+          //   iconTheme: {
+          //     primary: "#713200",
+          //     secondary: "#FFFAEE",
+          //   },
+          //   hideProgressBar: true,
+          //   closeButton: true,
+          //   icon: true,
+          // });
           setTimeout(() => {
             navigate(-1);
           }, 2000);
@@ -185,8 +185,10 @@ const LoginPage = () => {
                 {loading ? "Sending..." : "CONTINUE"}
               </button>
               <p className="terms">
-                <a href="/tc-of-sale">Terms of Service</a> and{" "}
-                <a href="/privacy-policy">Privacy Policy</a>
+                <Link to={`/tc-of-sale`}>Terms of Service</Link> and{" "}
+                <Link to={`/privacy-policy`}>Privacy Policy</Link>
+                {/* <a href="/tc-of-sale">Terms of Service</a> and{" "}
+                <a href="/privacy-policy">Privacy Policy</a> */}
               </p>
             </>
           )}

@@ -83,11 +83,29 @@
 
 @media (max-width: 768px) {
   .faq-content h1 {
-    font-size: 2rem;
+    font-size: 23px;
   }
 
-  .faq-decor {
+  .faq-content p {
+    font-size: 12px;
+  }
+
+  /* .faq-decor {
     display: none;
+  } */
+
+  .faq-decor.left {
+    left: 0rem;
+    width: 58px;
+    height: 29px;
+    height: 40px;
+  }
+
+  .faq-decor.right {
+    right: 1rem;
+    top: 11rem;
+    width: 50px;
+    height: 50px;
   }
 
   .faq-search-bar {
@@ -186,7 +204,7 @@
 
 @media (max-width: 600px) {
   .faq-tab-buttons {
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     gap: 1rem;
   }
 }
@@ -269,7 +287,7 @@
     height: auto;
     position: relative;
     bottom: 525px;
-    left: 89px;
+    left: 80px;
   }
 
   .faq-help-img-1 img {
@@ -281,6 +299,4 @@
   }
 }
 
-@media (max-width: 480px) {
-
-}
+@media (max-width: 480px) {}

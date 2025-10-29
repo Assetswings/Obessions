@@ -158,7 +158,7 @@ const CancelOrder = () => {
               <p>Refund will be processed to your original payment method.</p>
               <small>
                 By clicking “Cancel Order”, I agree to{" "}
-                <a href="/tc-of-sale">Terms and Condition</a> of refunds
+                <Link to={`/tc-of-sale`}>Terms of Service</Link> of refunds
               </small>
             </div>
             <button className="cancel-btn">Cancel Order</button>

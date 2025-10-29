@@ -152,9 +152,15 @@ const BestsellersSlider = ({ onQuickView }) => {
       {bestsellers?.map((item) => (
         <div className="bestseller-card" key={item.id}>
           <div className="image-wrapper">
-            <Link to={`/productsdetails/${item.action_url}`}>
-              <img src={item?.media_list?.main?.file} alt={item.name} />
+
+
+              <div className="wrp_main">
+                
+              <Link to={`/productsdetails/${item.action_url}`}>
+              <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.name} />
             </Link>
+                </div> 
+        
 
             <button
               className="wishlist-btn_products"
@@ -223,7 +229,7 @@ const BestsellersSlider = ({ onQuickView }) => {
           <div className="bestseller-card" key={item.id}>
             <div className="image-wrapper">
               <Link to={`/productsdetails/${item.action_url}`}>
-                <img src={item?.media_list?.main?.file} alt={item.name} />
+                <img  className="img_main_asp" src={item?.media_list?.main?.file} alt={item.name} />
               </Link>
               <div className="order_view_btn">
                 <button
@@ -321,7 +327,7 @@ const BestsellersSlider = ({ onQuickView }) => {
             <div className="bestseller-card" key={`${item.id}-${index}`}>
               <div className="image-wrapper">
                 <Link to={`/productsdetails/${item.action_url}`}>
-                  <img src={item?.media_list?.main?.file} alt={item.name} />
+                  <img  className="img_main_asp" src={item?.media_list?.main?.file} alt={item.name} />
                 </Link>
                 <button
                   className="quick-view"

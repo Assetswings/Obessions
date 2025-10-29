@@ -31,6 +31,9 @@
   transition: transform 0.3s ease;
 }
 
+.img_main_asp{
+  height: 200px;
+}
 
 .image-wrapper {
   position: relative;
@@ -40,10 +43,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.image-wrapper img {
-  height: 100%;
-      object-fit: cover;
 }
 
 .quick-view {

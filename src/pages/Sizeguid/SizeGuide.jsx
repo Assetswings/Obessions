@@ -94,7 +94,7 @@ const SizeGuide = () => {
                   }`}
               >
                 <div className="style-image">
-                  <img src={setone} alt={style.name} />
+                  <img src={style?.main_media} alt={style.name} />
                 </div>
 
                 <div className="style-content">

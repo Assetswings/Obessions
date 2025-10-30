@@ -102,6 +102,7 @@ const TopAnnouncementBar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userName");
     setIsLoggedIn(false);
     setShowUserPopup(false);
     toast.success("Logout Successfully.", {
@@ -176,7 +177,7 @@ const TopAnnouncementBar = () => {
             style={{ position: "relative" }}
             title="User Profile"
           >
-            <span style={{fontSize:"12px",paddingRight:"7px"}}>Ajit Sahoo</span>
+            <span style={{fontSize:"12px",paddingRight:"7px"}}>{localStorage.getItem('userName') ?? ''}</span>
             <CircleUser
               color="#FFFFFF"
               size={22}

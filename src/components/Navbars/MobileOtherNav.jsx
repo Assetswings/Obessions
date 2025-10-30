@@ -153,6 +153,7 @@ const MobileOtherNav = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userName");
     setIsLoggedIn(false);
     setShowUserPopup(false);
     alert("Logout successful");

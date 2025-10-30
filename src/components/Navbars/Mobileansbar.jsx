@@ -103,6 +103,7 @@ const Mobileansbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userName");
     setIsLoggedIn(false);
     setShowUserPopup(false);
     toast.success("Logout Successfully.", {

@@ -166,6 +166,12 @@ const LoginPage = () => {
     dispatch(verifyOtp({ otp: otp.trim(), otp_requested_id, temp_id })).then(
       (res) => {
         if (res.meta.requestStatus === "fulfilled") {
+          console.log(res?.payload?.addresses[0]?.name);
+          if (res?.payload?.addresses.length > 0) {
+            localStorage.setItem('userName', res?.payload?.addresses[0]?.name);
+            localStorage.setItem('pincode', res?.payload?.addresses[0]?.pincode);
+          }
+          // return false;
           // toast.success("Login successful!", {
           //   style: {
           //     border: "1px solid #713200",

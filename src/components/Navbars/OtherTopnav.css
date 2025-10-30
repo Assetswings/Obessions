@@ -210,7 +210,6 @@
 .active-tab {
   color: #e63946; /* Highlight color */
   font-weight: bold;
-  border-bottom: 2px solid #e63946; /* Optional underline */
 }
 
 .wishlist-badge {

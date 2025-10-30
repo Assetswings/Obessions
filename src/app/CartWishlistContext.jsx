@@ -8,13 +8,16 @@ export const CartWishlistProvider = ({ children }) => {
   const [countData, setCountData] = useState({ cart_count: 0, wishlist_count: 0 });
 
   const getCartWishlistCount = async () => {
-    try {
-      const res = await API.get("/cart-wishlist/count");
-      if (res.data.status === 200) {
-        setCountData(res.data.data);
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const res = await API.get("/cart-wishlist/count");
+        if (res.data.status === 200) {
+          setCountData(res.data.data);
+        }
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
     }
   };
 

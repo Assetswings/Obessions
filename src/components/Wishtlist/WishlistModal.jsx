@@ -7,8 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchWishlist, removeFromWishlist, moveToCart } from "./WishlistSlice";
 import imgbag from "../../assets/images/empty_bag.png";
 import ArrowLeft from "../../assets/icons/ArrowLeft.png";
+import { useCartWishlist } from "../../app/CartWishlistContext";
+import { Link } from "react-router-dom";
 
 const WishlistModal = ({ onClose }) => {
+  const { getCartWishlistCount } = useCartWishlist();
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.wishlist);
 
@@ -24,6 +27,7 @@ const WishlistModal = ({ onClose }) => {
     dispatch(removeFromWishlist(wishlistId))
       .unwrap()
       .then(() => {
+        getCartWishlistCount(); // refresh count after add
         dispatch(fetchWishlist());
       });
   };
@@ -141,10 +145,11 @@ const WishlistModal = ({ onClose }) => {
                 <p className="sub_title_whistlist">
                   Love something? Hit the heart to add it to your favourites.
                 </p>
-
+                <Link to={`/bestseller`}>
                 <button className="empty-wishlist-btn">
                   Explore Bestsellers &nbsp; <img src={ArrowLeft} height={16} width={16} />
                 </button>
+                </Link>
               </div>
             </div>
           )}
@@ -165,18 +170,22 @@ const WishlistModal = ({ onClose }) => {
                     alignItems: "center",
                   }}
                 >
-                  <img
-                    src={product.media}
-                    alt={product.name}
-                    style={{ width: 110, height: 119, objectFit: "cover" }}
-                  />
+                  <Link to={`/productsdetails/${wishlistItem.action_url}`} target="_blank" rel="noopener noreferrer">
+                    <img
+                      src={product.media}
+                      alt={product.name}
+                      style={{ width: 110, height: 119, objectFit: "cover" }}
+                    />
+                  </Link>
                   <div className="wishlist-details" style={{ flex: 1 }}>
                     <div>
-                      <p>
-                        {product.name.length > 40
-                          ? product.name.substring(0, 40) + "..."
-                          : product.name}
-                      </p>
+                      <Link to={`/productsdetails/${wishlistItem.action_url}`} target="_blank" rel="noopener noreferrer">
+                        <p>
+                          {product.name.length > 40
+                            ? product.name.substring(0, 40) + "..."
+                            : product.name}
+                        </p>
+                      </Link>
                       <span>₹{product.selling_price}</span>
                       &nbsp;
                       <span>

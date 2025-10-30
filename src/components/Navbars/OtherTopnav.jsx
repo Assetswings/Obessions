@@ -8,7 +8,7 @@ import {
   LogOut,
   Search,
 } from "lucide-react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import MegaMenu from "./MegaMenu";
 import MegamenuDuo from "./MegamenuDuo";
 import WishlistModal from "../Wishtlist/WishlistModal";
@@ -27,6 +27,7 @@ import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const OtherTopnav = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { countData } = useCartWishlist();
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
@@ -41,11 +42,18 @@ const OtherTopnav = () => {
   const inputRef = useRef(null);
   const searchState = useSelector((state) => state.search || {});
   const { results = [], loading, error } = searchState;
-
   const [data, setData] = useState("");
+
+  const currentPath = location.pathname;
+  const hideIconPaths = ["/searchlist"];
+  const shouldHideIcon = hideIconPaths.includes(currentPath);
   useEffect(() => {
     chatsupport();
   }, []);
+  useEffect(() => {
+    setShowSearch(false);
+    setQuery("");
+  }, [location]);
   const chatsupport = async () => {
     try {
       const res = await API.get("/chat/support");
@@ -217,11 +225,13 @@ const OtherTopnav = () => {
         </ul>
 
         <div className="nav-actions">
-          <div className="search-bar">
-            <button onClick={() => setShowSearch(true)}>
-              <FaSearch />
-            </button>
-          </div>
+          {!shouldHideIcon && (
+            <div className="search-bar">
+              <button onClick={() => setShowSearch(true)}>
+                <FaSearch />
+              </button>
+            </div>
+          )}
 
           {/* User Icon */}
           <div

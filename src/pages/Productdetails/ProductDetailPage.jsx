@@ -642,16 +642,16 @@ const ProductDetailPage = () => {
 
                   {/* Static video thumbnail (at the end) */}
                   {selectedColor?.video_source &&
-                <div
-                className={`thumbnail video-thumb ${selectedImage === "video" ? "selected-thumb" : ""}`}
-                onClick={() => setSelectedImage("video")}
-              >
-                <img
-                  src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
-                  alt="Video Thumbnail"
-                />
-                <div className="thumb-overlay">▶</div>
-              </div>
+                    <div
+                      className={`thumbnail video-thumb ${selectedImage === "video" ? "selected-thumb" : ""}`}
+                      onClick={() => setSelectedImage("video")}
+                    >
+                      <img
+                        src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
+                        alt="Video Thumbnail"
+                      />
+                      <div className="thumb-overlay">▶</div>
+                    </div>
                   }
                 </>
               )}
@@ -836,6 +836,12 @@ const ProductDetailPage = () => {
                       const onlyNums = e.target.value.replace(/\D/g, '');
                       setPincode(onlyNums);
                     }}
+                    onKeyDown={(e) => {
+                      const onlyNums = e.target.value.replace(/\D/g, '');
+                      if (e.key === "Enter" && onlyNums.trim()) {
+                        handleCheck();
+                      }
+                    }}
                   />
 
                   {pincode ? (
@@ -872,7 +878,7 @@ const ProductDetailPage = () => {
                     Not serviceable for your area
                   </p>
                 )} */}
-                {pincodeDetails?.pincode && pincodeDetails?.is_active && (
+                {!pinloading && pincodeDetails?.pincode && pincodeDetails?.is_active && (
                   <p style={{ color: "green", marginTop: "15px" }}>
                     ✅ Delivery available at {pincodeDetails?.city},{" "}
                     {pincodeDetails?.state} ({pincodeDetails?.delivery_tat})

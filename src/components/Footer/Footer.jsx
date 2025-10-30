@@ -136,12 +136,12 @@ const Footer = () => {
         </div>
 
         {message && (
-  <div className="response-container">
-       <div className="sub-track-res"> 
-       <p className="response-message">{message}</p>
-       </div> 
-  </div>
-)}
+          <div className="response-container">
+            <div className="sub-track-res">
+              <p className="response-message">{message}</p>
+            </div>
+          </div>
+        )}
         <Link to={`/tc-of-sale`}>
           <p className="sub_text mt-2">
             By signing up you agree with our <u className="pointer-crusser">Terms & Conditions</u>.
@@ -156,10 +156,10 @@ const Footer = () => {
           <h4>SHOP</h4>
           <ul>
             {SHOP?.slice(0, 7).map((item, idx) => (
-              <li
+              <li style={{textTransform:"capitalize"}}
                 key={idx}
               >
-                <Link to={`/products/${item.action_url}`}>{item.title}</Link>
+                <Link to={`/products/${item.action_url}`}>{item.title.toLowerCase()}</Link>
               </li>
             ))}
           </ul>
@@ -167,10 +167,10 @@ const Footer = () => {
         <div><br />
           <ul>
             {SHOP?.slice(7, 15).map((item, idx) => (
-              <li
+              <li style={{textTransform:"capitalize"}}
                 key={idx}
               >
-                <Link to={`/products/${item.action_url}`}>{item.title}</Link>
+                <Link to={`/products/${item.action_url}`}>{item.title.toLowerCase()}</Link>
               </li>
             ))}
           </ul>

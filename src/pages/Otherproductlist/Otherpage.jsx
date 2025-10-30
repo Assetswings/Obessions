@@ -11,18 +11,19 @@ import {
   fetchWishlist,
   removeFromWishlist,
 } from "../../components/Wishtlist/WishlistSlice";
-import { toast } from "react-hot-toast";
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "../Products/otherproductSlice";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { Expand, Heart, SlidersHorizontal, X } from "lucide-react";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 import Pagination from "../../components/Pagination/Pagination";
+import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const Otherpage = () => {
+  const { getCartWishlistCount } = useCartWishlist();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -149,6 +150,7 @@ const Otherpage = () => {
             closeButton: true,
             icon: true,
           });
+          getCartWishlistCount(); // refresh count after add
           setProducts((prev) =>
             prev.map((p) =>
               p.id === product.id
@@ -176,6 +178,7 @@ const Otherpage = () => {
           closeButton: true,
           icon: true,
         });
+        getCartWishlistCount(); // refresh count after add
         setAnimatedWish(product.id);
 
         // If your API returns the whole wishlist array:

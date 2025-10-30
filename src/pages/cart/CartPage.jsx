@@ -12,9 +12,11 @@ import { ToastContainer, toast } from "react-toastify";
 import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
 import { checkPincode } from "../Productdetails/pincodeSlice";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
+import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const { getCartWishlistCount } = useCartWishlist();
   const [token] = useState(localStorage.getItem("token"));
   const { cartItems, loading, error } = useSelector((state) => state.cart);
   const [updatingId, setUpdatingId] = useState(null);
@@ -77,7 +79,7 @@ const CartPage = () => {
     try {
       const response = await dispatch(removeCartItem(cartId)).unwrap();
       if (response?.success) {
-        // dispatch(fetchCartDetails());
+        getCartWishlistCount(); // refresh count after add
         toast.success(response.message || "Item removed from cart!");
       }
     } catch (err) {

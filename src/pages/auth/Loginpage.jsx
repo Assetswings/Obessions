@@ -142,6 +142,25 @@ const LoginPage = () => {
       return false;
     }
 
+    // ✅ Validate 6-digit number (only digits, exactly 6)
+    if (!/^\d{6}$/.test(otp)) {
+      toast.error("Please enter a valid 6-digit OTP.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+        hideProgressBar: true,
+        closeButton: true,
+        icon: true,
+      });
+      return false;
+    }
+
     const otp_requested_id = localStorage.getItem("otp_requested_id");
     const temp_id = localStorage.getItem("temp_id");
 
@@ -295,9 +314,9 @@ const LoginPage = () => {
                 {timer > 0 ? (
                   <span>00:{timer.toString().padStart(2, "0")}</span>
                 ) : (
-                  <a href="#" onClick={handleSendOtp}>
-                    Resend OTP
-                  </a>
+                  <span onClick={handleSendOtp} className="pointer-crusser">
+                    <u>Resend OTP</u>
+                  </span>
                 )}
               </p>
             </>

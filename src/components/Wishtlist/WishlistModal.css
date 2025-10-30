@@ -43,6 +43,7 @@
   position: relative;
   bottom: 12px !important;
 }
+
 /* .wishlist-content {
     margin-top: 6rem;
   } */
@@ -116,7 +117,7 @@
     font-weight: 300; */
 }
 
-.empty-wishlist-btn{
+.empty-wishlist-btn {
   padding: 10px 28px;
   background: #ffffff;
   color: #000000;
@@ -126,6 +127,7 @@
   cursor: pointer;
   transition: background 0.2s ease;
 }
+
 @media (max-width: 480px) {
   .wishlist-modal {
     position: absolute;
@@ -146,6 +148,10 @@
     font-size: 18px;
     position: relative;
     bottom: 12px !important;
+  }
+
+  .move-to-cart {
+    padding: 0px 8px;
   }
 
 }

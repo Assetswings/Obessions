@@ -27,7 +27,7 @@ const OrderHistoryPage = () => {
   // modal state
   const [showModal, setShowModal] = useState(false);
   const [showcnModal, setShowcnModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const total = pagination?.total || 0;
@@ -95,6 +95,8 @@ const OrderHistoryPage = () => {
 
   const handleProceedcn = () => {
     setShowcnModal(false);
+    console.log(selectedItem,selectedOrder);
+    // return false
     if (selectedItem) {
       navigate("/cancelorder", {
         state: { item: selectedItem, orderNo: selectedOrder },
@@ -201,6 +203,54 @@ const OrderHistoryPage = () => {
                   {/* Order Items */}
                   {order?.order_items?.map((item, i) => (
                     <div className="order-item" key={i}>
+                      <input
+                        type="checkbox"
+                        checked={selectedItem.some((it) => it.itemId === item.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            // If different order is selected, reset previous selection
+                            if (selectedOrder && selectedOrder !== order.order_no) {
+                              setSelectedItem([
+                                {
+                                  itemId: item.id,
+                                  product_name: item.product_name,
+                                  product_media: item.product_media,
+                                  price: item.mrp,
+                                  qty: item.quantity,
+                                  order_no: order.order_no,
+                                  action_url: item.action_url,
+                                  size: item.size,
+                                  color: item.color,
+                                },
+                              ]);
+                              setSelectedOrder(order.order_no);
+                            } else {
+                              // Same order, add item
+                              setSelectedItem((prev) => [
+                                ...prev,
+                                {
+                                  itemId: item.id,
+                                  product_name: item.product_name,
+                                  product_media: item.product_media,
+                                  price: item.mrp,
+                                  qty: item.quantity,
+                                  order_no: order.order_no,
+                                  action_url: item.action_url,
+                                  size: item.size,
+                                  color: item.color,
+                                },
+                              ]);
+                              setSelectedOrder(order.order_no);
+                            }
+                          } else {
+                            // Remove item if unchecked
+                            setSelectedItem((prev) =>
+                              prev.filter((it) => it.itemId !== item.id)
+                            );
+                            if (selectedItem.length === 1) setSelectedOrder(null); // reset if last removed
+                          }
+                        }}
+                      />
                       <img src={item.product_media} alt={item.product_name} />
                       <div className="item-info">
                         <p>{item.product_name}</p>
@@ -210,18 +260,6 @@ const OrderHistoryPage = () => {
                           <div
                             className="link-btn"
                             onClick={() => {
-                              setSelectedItem({
-                                itemId: item.id,
-                                product_name: item.product_name,
-                                product_media: item.product_media,
-                                price: item.mrp,
-                                qty: item.quantity,
-                                order_no: order.order_no,
-                                action_url: item.action_url,
-                                size: item.size,
-                                color: item.color,
-                              });
-                              setSelectedOrder(order.order_no);
                               setShowcnModal(true);
                             }}
                           >
@@ -230,7 +268,7 @@ const OrderHistoryPage = () => {
                         )}
 
                         {/* Return / Exchange Option */}
-                        {(item.allow_exchange || item.allow_return) && (
+                        {/* {(item.allow_exchange || item.allow_return) && ( */}
                           <div className="actions">
                             <div className="link-btn">
                               <p
@@ -242,27 +280,13 @@ const OrderHistoryPage = () => {
                             <div
                               className="link-btn"
                               onClick={() => {
-                                setSelectedItem({
-                                  itemId: item.id,
-                                  product_name: item.product_name,
-                                  product_media: item.product_media,
-                                  price: item.mrp,
-                                  qty: item.quantity,
-                                  order_no: order.order_no,
-                                  allow_exchange: item.allow_exchange,
-                                  allow_return: item.allow_return,
-                                  action_url: item.action_url,
-                                  size: item.size,
-                                  color: item.color,
-                                });
-                                setSelectedOrder(order.order_no);
                                 setShowModal(true);
                               }}
                             >
                               <span className="cancel-order">Return / Exchange</span>
                             </div>
                           </div>
-                        )}
+                        {/* )} */}
                       </div>
 
                       <div className="arrow">
@@ -281,7 +305,7 @@ const OrderHistoryPage = () => {
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
-                totalitems = {results.length}
+                totalitems={results.length}
               />
             </main>
           </>

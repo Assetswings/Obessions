@@ -21,7 +21,9 @@ const OrderHistoryPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedStatus, setSelectedStatus] = useState("ORDER_PLACED");
-  const { results, pagination, loading, error } = useSelector((state) => state.orders);
+  const { results, pagination, loading, error } = useSelector(
+    (state) => state.orders
+  );
   const { items } = useSelector((state) => state.toppick);
 
   // modal state
@@ -54,11 +56,13 @@ const OrderHistoryPage = () => {
 
   useEffect(() => {
     if (selectedStatus) {
-      dispatch(fetchOrderHistory({
-        status: selectedStatus,
-        page: currentPage,
-        limit: 10,
-      }));
+      dispatch(
+        fetchOrderHistory({
+          status: selectedStatus,
+          page: currentPage,
+          limit: 10,
+        })
+      );
     } else {
       dispatch(fetchOrderHistory({}));
     }
@@ -95,7 +99,7 @@ const OrderHistoryPage = () => {
 
   const handleProceedcn = () => {
     setShowcnModal(false);
-    console.log(selectedItem,selectedOrder);
+    console.log(selectedItem, selectedOrder);
     // return false
     if (selectedItem) {
       navigate("/cancelorder", {
@@ -154,7 +158,8 @@ const OrderHistoryPage = () => {
                 className="empty-cart-btn"
                 onClick={() => navigate("/")} // ✅ send user back to home/shop
               >
-                EXPLORE &nbsp; <img src={rightarrawwhite} height={25} width={25} />
+                EXPLORE &nbsp;{" "}
+                <img src={rightarrawwhite} height={25} width={25} />
               </button>
             </div>
           </>
@@ -164,38 +169,66 @@ const OrderHistoryPage = () => {
             <main className="order-list">
               {results.map((order, idx) => (
                 <div className="order-card" key={idx}>
-                  <div className="order-header">
-                    <div>
-                      <div>Order Placed</div>
+                  <div className="root_new">
+                    <div className="order-header">
                       <div>
-                        {/* Format date here if needed */}
-                        {new Date(order.order_placed_at).toLocaleDateString("en-US", {
-                          weekday: "short",
-                          day: "2-digit",
-                          month: "short",
-                          timeZone: "Asia/Kolkata",
-                        })}
+                        <div>Order Placed</div>
+                        <div>
+                          {/* Format date here if needed */}
+                          {new Date(order.order_placed_at).toLocaleDateString(
+                            "en-US",
+                            {
+                              weekday: "short",
+                              day: "2-digit",
+                              month: "short",
+                              timeZone: "Asia/Kolkata",
+                            }
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="trac">
+                        <div>
+                          <div>Order ID</div>
+                          {order.order_no}
+                        </div>
+                      </div>
+
+                      <div className="order-actions">
+                        <Link to={`/OrderTrackingPage/${order.order_no}`}>
+                          <span
+                            className="txt_cation"
+                            style={{ color: "#1B170E" }}
+                          >
+                            Track Order
+                          </span>
+                        </Link>
+                        <div>
+                          <span
+                            className="txt_cation"
+                            style={{ color: "#1B170E" }}
+                          >
+                            View Invoice
+                          </span>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="trac">
+                    <div className="order-header_2">
                       <div>
-                        <div>Order ID</div>
-                        {order.order_no}
+                        <div>Return / Exchange</div>
                       </div>
-                    </div>
 
-                    <div className="order-actions">
-                      <Link to={`/OrderTrackingPage/${order.order_no}`}>
-                        <span
-                          className="pointer-crusser"
-                          style={{ color: "#1B170E" }}
-                        >
-                          Track Order
-                        </span>
-                      </Link>
-                      <div>
-                        <span style={{ color: "#1B170E" }}>View Invoice</span>
+                      <div className="trac">
+                        <div>
+                          <div>Buy Again</div>
+                        </div>
+                      </div>
+
+                      <div className="order-actions">
+                        <div>
+                          <p className="cancel-order">Cancel Order</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -205,11 +238,16 @@ const OrderHistoryPage = () => {
                     <div className="order-item" key={i}>
                       <input
                         type="checkbox"
-                        checked={selectedItem.some((it) => it.itemId === item.id)}
+                        checked={selectedItem.some(
+                          (it) => it.itemId === item.id
+                        )}
                         onChange={(e) => {
                           if (e.target.checked) {
                             // If different order is selected, reset previous selection
-                            if (selectedOrder && selectedOrder !== order.order_no) {
+                            if (
+                              selectedOrder &&
+                              selectedOrder !== order.order_no
+                            ) {
                               setSelectedItem([
                                 {
                                   itemId: item.id,
@@ -251,7 +289,8 @@ const OrderHistoryPage = () => {
                             setSelectedItem((prev) =>
                               prev.filter((it) => it.itemId !== item.id)
                             );
-                            if (selectedItem.length === 1) setSelectedOrder(null); // reset if last removed
+                            if (selectedItem.length === 1)
+                              setSelectedOrder(null); // reset if last removed
                           }
                         }}
                       />
@@ -273,31 +312,35 @@ const OrderHistoryPage = () => {
 
                         {/* Return / Exchange Option */}
                         {/* {(item.allow_exchange || item.allow_return) && ( */}
-                          <div className="actions">
-                            <div className="link-btn">
-                              <p
-                                className="cancel-order"
+                        <div className="actions">
+                          <div className="link-btn">
+                            <p className="cancel-order">
+                              <Link
+                                to={`/productsdetails/${item.action_url}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
                               >
-                                <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">Buy Again</Link>
-                              </p>
-                            </div>
-                            <div
-                              className="link-btn"
-                              onClick={() => {
-                                setShowModal(true);
-                              }}
-                            >
-                              <span className="cancel-order">Return / Exchange</span>
-                            </div>
+                                Buy Again
+                              </Link>
+                            </p>
                           </div>
+                          <div
+                            className="link-btn"
+                            onClick={() => {
+                              setShowModal(true);
+                            }}
+                          >
+                            <span className="cancel-order">
+                              Return / Exchange
+                            </span>
+                          </div>
+                        </div>
                         {/* )} */}
                       </div>
 
                       <div className="arrow">
                         <Link to={`/OrderTrackingPage/${order.order_no}`}>
-                          <ChevronRight
-                            size={24}
-                          />
+                          <ChevronRight size={24} />
                         </Link>
                       </div>
                     </div>
@@ -374,11 +417,7 @@ const OrderHistoryPage = () => {
                     alt={item.name}
                     className="top-pick-image pointer-crusser"
                   />
-                  <p
-                    className="top-pick-title pointer-crusser"
-                  >
-                    {item.name}
-                  </p>
+                  <p className="top-pick-title pointer-crusser">{item.name}</p>
                 </Link>
               </div>
             ))}

@@ -108,13 +108,13 @@ const TopAnnouncementBar = () => {
     localStorage.removeItem("userName");
     setIsLoggedIn(false);
     setShowUserPopup(false);
-    toast.success("Logout Successfully.", {
-      style: { border: "1px solid #713200", padding: "16px", color: "#713200" },
-      iconTheme: { primary: "#713200", secondary: "#FFFAEE" },
-      hideProgressBar: true,
-      closeButton: true,
-      icon: true,
-    });
+    // toast.success("Logout Successfully.", {
+    //   style: { border: "1px solid #713200", padding: "16px", color: "#713200" },
+    //   iconTheme: { primary: "#713200", secondary: "#FFFAEE" },
+    //   hideProgressBar: true,
+    //   closeButton: true,
+    //   icon: true,
+    // });
     window.dispatchEvent(new Event("storage"));
     navigate("/");
   };
@@ -136,11 +136,11 @@ const TopAnnouncementBar = () => {
 
   return (
     <>
-      <ToastContainer
+      {/* <ToastContainer
         style={{ zIndex: 9999999999999 }}
         position="top-right"
         autoClose={3000}
-      />
+      /> */}
 
       <div className="top-announcement-bar">
         <div className="box_domain">

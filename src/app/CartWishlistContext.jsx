@@ -14,6 +14,8 @@ export const CartWishlistProvider = ({ children }) => {
         const res = await API.get("/cart-wishlist/count");
         if (res.data.status === 200) {
           setCountData(res.data.data);
+          console.log('call',res.data.data);
+          
         }
       } catch (err) {
         console.error(err);

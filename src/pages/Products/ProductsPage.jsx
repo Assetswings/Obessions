@@ -25,11 +25,13 @@ import Pagination from "../../components/Pagination/Pagination";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 import emptyproduct from "../../assets/images/empty-product.png";
 import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
+import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { getCartWishlistCount } = useCartWishlist();
   const { categorySlug, subcategorySlug } = useParams();
   // Try to get from location.state first, else fallback to params
   const category = location.state?.category || categorySlug || null;
@@ -115,7 +117,6 @@ const ProductsPage = () => {
     }
   };
 
-
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
       const current = prev[filterKey] || [];
@@ -153,6 +154,7 @@ const ProductsPage = () => {
             closeButton: true,
             icon: true,
           });
+          getCartWishlistCount(); // refresh count after add
           setProducts((prev) =>
             prev.map((p) =>
               p.id === product.id
@@ -180,6 +182,7 @@ const ProductsPage = () => {
           closeButton: true,
           icon: true,
         });
+        getCartWishlistCount(); // refresh count after add
         setAnimatedWish(product.id);
 
         // If your API returns the whole wishlist array:
@@ -288,7 +291,6 @@ const ProductsPage = () => {
     );
   };
 
-  // Render price range filter
   // Render price range filter
   const renderPriceFilter = (priceFilter, isMobile = false) => {
     const currentFilters = isMobile ? tempMobileFilters : selectedFilters;

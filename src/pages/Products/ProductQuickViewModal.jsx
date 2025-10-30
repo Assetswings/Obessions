@@ -23,8 +23,10 @@ import {
   resetPincodeState,
 } from "../Productdetails/pincodeSlice";
 import CartToast from "../../components/AddtoCartToster/CartToast";
+import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const ProductQuickViewModal = ({ show, product, onHide }) => {
+  const { getCartWishlistCount } = useCartWishlist();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
@@ -212,65 +214,13 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
             icon: false,
           }
         );
+        getCartWishlistCount(); // refresh count after add
       })
       .catch((error) => {
         toast.error(error?.error || "Failed to add to cart");
       });
   };
 
-  // const toggleWishlist = async (e, product) => {
-  //   e.stopPropagation();
-
-  //   // 🔑 check login first
-  //   const token = localStorage.getItem("token");
-  //   if (!token) {
-  //     setShowLoginPrompt(true);
-  //     return;
-  //   }
-
-  //   const isInWishlist = wishlist.productIds.includes(product.id);
-
-  //   try {
-  //     if (isInWishlist) {
-  //       const wishlistItem = wishlist.items.find(
-  //         (item) => item.product_id === product.id
-  //       );
-  //       if (wishlistItem?.id) {
-  //         await dispatch(removeFromWishlist(wishlistItem.id)).unwrap();
-  //         toast.success("Removed from wishlist", {
-  //           style: {
-  //             border: "1px solid #713200",
-  //             padding: "16px",
-  //             color: "#713200",
-  //           },
-  //           iconTheme: {
-  //             primary: "#713200",
-  //             secondary: "#FFFAEE",
-  //           },
-  //         });
-  //         dispatch(fetchWishlist());
-  //       }
-  //     } else {
-  //       await dispatch(addToWishlist({ product_id: product.id })).unwrap();
-  //       toast.success("Added to wishlist", {
-  //         style: {
-  //           border: "1px solid #713200",
-  //           padding: "16px",
-  //           color: "#713200",
-  //         },
-  //         iconTheme: {
-  //           primary: "#713200",
-  //           secondary: "#FFFAEE",
-  //         },
-  //       });
-  //       setAnimatedWish(product.id);
-  //       dispatch(fetchWishlist());
-  //       setTimeout(() => setAnimatedWish(null), 1500);
-  //     }
-  //   } catch (err) {
-  //     toast.error("Something went wrong");
-  //   }
-  // };
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
     const token = localStorage.getItem("token");
@@ -295,7 +245,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
               secondary: "#FFFAEE",
             },
           });
-          // dispatch(fetchWishlist());
+          getCartWishlistCount(); // refresh count after add
           setSelectedSize((prev) =>
             prev.id === product.id
               ? { ...prev, is_wishlisted: 0, wishlist: [] }
@@ -329,6 +279,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
             secondary: "#FFFAEE",
           },
         });
+        getCartWishlistCount(); // refresh count after add
         setAnimatedWish(product.id);
         const wishlist = Array.isArray(addedWishlistItem)
           ? addedWishlistItem.find((w) => w.product_id === product.id)

@@ -19,6 +19,7 @@ import heartAnimation from "../../assets/icons/Heart.json";
 import { checkPincode, resetPincodeState } from "./pincodeSlice";
 import CartToast from "../../components/AddtoCartToster/CartToast";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
+import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const tabs = [
   { id: "highlights", label: "HIGHLIGHTS" },
@@ -27,6 +28,7 @@ const tabs = [
 ];
 
 const ProductDetailPage = () => {
+  const { getCartWishlistCount } = useCartWishlist();
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("highlights");
   const [selectedImage, setSelectedImage] = useState(null);
@@ -201,6 +203,7 @@ const ProductDetailPage = () => {
             icon: false,
           }
         );
+        getCartWishlistCount(); // refresh count after add
       })
       .catch((error) => {
         toast.error(error?.error || "Failed to add to cart");
@@ -236,6 +239,7 @@ const ProductDetailPage = () => {
               secondary: "#FFFAEE",
             },
           });
+          getCartWishlistCount(); // refresh count after add
           // dispatch(fetchWishlist());
           setSelectedSize((prev) =>
             prev.id === product.id
@@ -270,6 +274,7 @@ const ProductDetailPage = () => {
             secondary: "#FFFAEE",
           },
         });
+        getCartWishlistCount(); // refresh count after add
         setAnimatedWish(product.id);
         const wishlist = Array.isArray(addedWishlistItem)
           ? addedWishlistItem.find((w) => w.product_id === product.id)
@@ -331,6 +336,7 @@ const ProductDetailPage = () => {
             closeButton: true,
             icon: true,
           });
+          getCartWishlistCount(); // refresh count after add
           if (key === "smiliarstyle") {
             setSimilarStyle((prev) =>
               prev.map((p) =>
@@ -368,6 +374,7 @@ const ProductDetailPage = () => {
           closeButton: true,
           icon: true,
         });
+        getCartWishlistCount(); // refresh count after add
         setAnimatedWish(product.id);
 
         // If your API returns the whole wishlist array:

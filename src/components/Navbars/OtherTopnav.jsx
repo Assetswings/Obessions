@@ -23,9 +23,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { IoLogoWhatsapp } from "react-icons/io";
 import API from "../../app/api";
+import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const OtherTopnav = () => {
   const dispatch = useDispatch();
+  const { countData } = useCartWishlist();
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
@@ -271,7 +273,7 @@ const OtherTopnav = () => {
               onClick={handleWishlistClick}
               style={{ cursor: "pointer" }}
             />
-            <span className="wishlist-badge" style={{ right: "65px", top: "10px" }}>10</span>
+            <span className="wishlist-badge" style={{ right: "65px", top: "10px" }}>{countData?.wishlist_count ?? ''}</span>
           </div>
           <div title="Cart">
             <ShoppingCart
@@ -281,7 +283,7 @@ const OtherTopnav = () => {
               size={25}
               style={{ cursor: "pointer" }}
             />
-            <span className="wishlist-badge" style={{ right: "22px", top: "10px" }}>20</span>
+            <span className="wishlist-badge" style={{ right: "22px", top: "10px" }}>{countData?.cart_count ?? ''}</span>
           </div>
         </div>
       </nav>

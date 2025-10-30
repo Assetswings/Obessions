@@ -14,8 +14,11 @@ import LoginPromptModal from "../LoginModal/LoginPromptModal";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import "./TopAnnouncementBar.css";
+import API from "../../app/api";
+import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const TopAnnouncementBar = () => {
+  const { countData } = useCartWishlist();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
@@ -177,7 +180,7 @@ const TopAnnouncementBar = () => {
             style={{ position: "relative" }}
             title="User Profile"
           >
-            <span style={{fontSize:"12px",paddingRight:"7px"}}>{localStorage.getItem('userName') ?? ''}</span>
+            <span style={{ fontSize: "12px", paddingRight: "7px" }}>{localStorage.getItem('userName') ?? ''}</span>
             <CircleUser
               color="#FFFFFF"
               size={22}
@@ -215,7 +218,7 @@ const TopAnnouncementBar = () => {
               strokeWidth={1}
               title="Wishlist"
             />
-            <span className="wishlist-badge" style={{right:"21px"}}>10</span>
+            <span className="wishlist-badge" style={{ right: "21px" }}>{countData?.wishlist_count ?? ''}</span>
           </div>
           <div title="Cart">
             <ShoppingCart
@@ -225,7 +228,7 @@ const TopAnnouncementBar = () => {
               strokeWidth={1}
               title="Cart"
             />
-            <span className="wishlist-badge" style={{left:"93%"}}>20</span>
+            <span className="wishlist-badge" style={{ left: "93%" }}>{countData?.cart_count ?? ''}</span>
           </div>
         </div>
       </div>

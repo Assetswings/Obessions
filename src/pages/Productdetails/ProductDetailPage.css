@@ -8,9 +8,11 @@ font-family: 'Helvetica Neue', sans-serif;
 font-family: "Playfair Display", serif; */
 
 .root_br_head {
-  display: flex;
-  justify-content: space-between;
-
+      display: flex;
+      justify-content: space-between;
+      height: 20px;
+      margin-top: 5px;
+      padding: 20px;
 }
 
 .share_btn {

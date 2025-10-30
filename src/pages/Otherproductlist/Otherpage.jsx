@@ -453,89 +453,114 @@ const Otherpage = () => {
                 const isWishlisted = item.is_wishlisted;
                 return (
                   <div
-                    key={item.id}
-                    className="custom-product-card"
-                    style={{ cursor: "pointer" }}
-                  >
-                    <div className="custom-product-image">
-                      <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                  key={item.id}
+                  className="product-card-dtl pointer-crusser"
+                  style={{ cursor: "pointer" }}
+                >
+                  <div className="product-img-box">
+                    <Link
+                      to={`/productsdetails/${item.action_url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                         <img
-                          src={item.media_list?.main?.file}
-                          alt={item.name}
-                          title={item.name}
-                        />
-                      </Link>
-                      {/* wishliat_track */}
-                      <button
-                        className="wishlist-btn_products"
-                        onClick={(e) => toggleWishlist(e, item)}
-                      >
-                        {animatedWish === item.id ? (
-                          <div
-                            style={{
-                              width: 20,
-                              height: 24,
-                              overflow: "hidden",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <Player
-                              autoplay
-                              keepLastFrame
-                              src={heartAnimation}
-                              style={{
-                                width: 139,
-                                height: 139,
-                                transform: "scale(0.5)",
-                                transformOrigin: "center",
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <Heart
-                            color={isWishlisted ? "#FF0000" : "#000"}
-                            fill={isWishlisted ? "#FF0000" : "none"}
-                            size={20}
-                            strokeWidth={2}
-                          />
-                        )}
-                      </button>
-
-                      <div className="qucick_dv">
-                        <span
-                          className="quick-view_pd"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setQuickViewProduct(item);
-                            setShowModal(true);
+                        src={item.media_list?.main?.file}
+                        alt={item.name}
+                        title={item.name}
+                         className="main_image"
+                      />
+                      <img
+                        src={item.media_list?.hover?.file}
+                        alt={item.name}
+                        title={item.name}
+                         className="hover_image"
+                      />
+                    </Link>
+        
+                    {/* Wishlist Button */}
+                    <button
+                      className="wishlist-btn_products pointer-crusser"
+                      onClick={(e) => toggleWishlist(e, item)}
+                    >
+                      {animatedWish === item.id ? (
+                        <div
+                          style={{
+                            width: 20,
+                            height: 24,
+                            overflow: "hidden",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                           }}
                         >
-                          Quick View &nbsp;
-                          <Expand
-                            color="#000000"
-                            size={15}
-                            strokeWidth={1.25}
+                          <Player
+                            autoplay
+                            keepLastFrame
+                            src={heartAnimation}
+                            style={{
+                              width: 139,
+                              height: 139,
+                              transform: "scale(0.5)",
+                              transformOrigin: "center",
+                            }}
                           />
-                        </span>
-                      </div>
+                        </div>
+                      ) : (
+                        <Heart
+                          color={isWishlisted ? "#FF0000" : "#000"}
+                          fill={isWishlisted ? "#FF0000" : "none"}
+                          size={20}
+                          strokeWidth={2}
+                        />
+                      )}
+                    </button>
+        
+                    {/* Quick View */}
+                    <div className="qucick_dv">
+                      <span
+                        className="quick-view_pd"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setQuickViewProduct(item);
+                          setShowModal(true);
+                        }}
+                      >
+                        Quick View &nbsp;
+                        <Expand color="#000000" size={15} strokeWidth={1.25} />
+                      </span>
                     </div>
-                    <p className="product-title">
-                      <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
-                    </p>
-                    <Link to={`/productsdetails/${item.action_url}`}>
-                      <div className="product-price">
-                        <span>₹{item.selling_price}</span>
-                        {item.mrp && item.mrp !== item.selling_price && (
-                          <>
-                            <span className="original">₹{item.mrp}</span>
-                            <span className="discount">({item.discount_percent}% OFF)</span>
-                          </>
-                        )}
-                      </div>
-                    </Link>
                   </div>
+        
+                  {/* Product Title */}
+                  <p className="product-title truncate pointer-crusser">
+                    <Link
+                      to={`/productsdetails/${item.action_url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {item.name}
+                    </Link>
+                  </p>
+        
+                  {/* Product Price */}
+                  <Link
+                    to={`/productsdetails/${item.action_url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <div className="product-price">
+                      <span>₹{item.selling_price}</span>
+                      {item.mrp && item.mrp !== item.selling_price && (
+                        <>
+                          <span className="original">₹{item.mrp}</span>
+                          <span className="discount">
+                            ({item.discount_percent}% OFF)
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </Link>
+                </div>
                 );
               })}
           </div>

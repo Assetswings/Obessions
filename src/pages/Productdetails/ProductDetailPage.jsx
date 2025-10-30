@@ -1326,11 +1326,18 @@ const ProductDetailPage = () => {
                 >
                   <div className="product-img-box">
                     <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
-                      <img
-                        src={item.media_list?.main?.file}
-                        alt={item.name}
-                        title={item.name}
-                      />
+                    <img
+                src={item.media_list?.main?.file}
+                alt={item.name}
+                title={item.name}
+                 className="main_image"
+              />
+              <img
+                src={item.media_list?.hover?.file}
+                alt={item.name}
+                title={item.name}
+                 className="hover_image"
+              />
                     </Link>
                     <button
                       className="wishlist-btn_products pointer-crusser"
@@ -1418,11 +1425,18 @@ const ProductDetailPage = () => {
                 >
                   <div className="product-img-box">
                     <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
-                      <img
-                        src={item.media_list?.main?.file}
-                        alt={item.name}
-                        title={item.name}
-                      />
+                    <img
+                src={item.media_list?.main?.file}
+                alt={item.name}
+                title={item.name}
+                 className="main_image"
+              />
+              <img
+                src={item.media_list?.hover?.file}
+                alt={item.name}
+                title={item.name}
+                 className="hover_image"
+              />
                     </Link>
                     <button
                       className="wishlist-btn_products"

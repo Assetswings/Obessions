@@ -29,6 +29,7 @@ const OtherTopnav = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { countData } = useCartWishlist();
+  const { getCartWishlistCount } = useCartWishlist();
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
@@ -149,20 +150,21 @@ const OtherTopnav = () => {
     localStorage.removeItem("userName");
     setIsLoggedIn(false);
     setShowUserPopup(false);
-    toast.success("Logout Successfully.", {
-      style: {
-        border: "1px solid #713200",
-        padding: "16px",
-        color: "#713200",
-      },
-      iconTheme: {
-        primary: "#713200",
-        secondary: "#FFFAEE",
-      },
-      hideProgressBar: true,
-      closeButton: true,
-      icon: true,
-    });
+    // toast.success("Logout Successfully.", {
+    //   style: {
+    //     border: "1px solid #713200",
+    //     padding: "16px",
+    //     color: "#713200",
+    //   },
+    //   iconTheme: {
+    //     primary: "#713200",
+    //     secondary: "#FFFAEE",
+    //   },
+    //   hideProgressBar: true,
+    //   closeButton: true,
+    //   icon: true,
+    // });
+    getCartWishlistCount();
     navigate("/");
   };
 

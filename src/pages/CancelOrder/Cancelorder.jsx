@@ -36,8 +36,13 @@ const CancelOrder = () => {
     e.preventDefault();
     // Validation errors
     const errors = {};
-
-    if (!item?.itemId) {
+    const item_ids = [];
+    item.forEach(element => {
+      if (element.itemId) {
+        item_ids.push(element.itemId);
+      }
+    });
+    if (item_ids.length === 0) {
       errors.itemId = "Item is required";
     }
 
@@ -73,7 +78,7 @@ const CancelOrder = () => {
     }
     try {
       const res = await API.put(`/orders/${orderNo}/cancel`, {
-        item_ids: [item.itemId], // e.g. ["item123", "item456"]
+        item_ids: item_ids, // e.g. ["item123", "item456"]
         reason_id: reason, // e.g. 123
         remarks: comments || "Cancel items",
       });
@@ -188,25 +193,27 @@ const CancelOrder = () => {
         {/* Right Section */}
         <div className="cancel-order-details">
           <h3>Order Details</h3>
-          {item ? (
-            <div className="order-box">
-              <div className="order-info">
-                <p className="order-title pointer-crusser">
-                  <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
-                    {item.product_name}
-                  </Link>
-                </p>
-                <p>Qty : {item.qty}</p>
-                <p>Size : {item.size}</p>
-                <p>Color : {item.color}</p>
-                <p className="order-price">₹{item.price}</p>
+          {item.length > 0 ? (
+            item.map((order, idx) => (
+              <div className="order-box" key={idx}>
+                <div className="order-info">
+                  <p className="order-title pointer-crusser">
+                    <Link to={`/productsdetails/${order.action_url}`} target="_blank" rel="noopener noreferrer">
+                      <b>  {order.product_name.length > 30 ? order.product_name.slice(0, 30) + "..." : order.product_name}</b>
+                    </Link>
+                  </p>
+                  <p><b>Qty</b> : {order.qty}</p>
+                  <p><b>Size</b> : {order.size}</p>
+                  <p><b>Color</b> : {order.color}</p>
+                  <p className="order-price"><b>Price</b> : ₹{order.price}</p>
+                </div>
+                <img
+                  className="img_cancel"
+                  src={order.product_media}
+                  alt={order.product_name}
+                />
               </div>
-              <img
-                className="img_cancel"
-                src={item.product_media}
-                alt={item.product_name}
-              />
-            </div>
+            ))
           ) : (
             <p>No item details found.</p>
           )}

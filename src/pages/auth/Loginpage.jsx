@@ -5,12 +5,13 @@ import Footer from "../../components/Footer/Footer";
 import "./LoginPage.css";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+    const { getCartWishlistCount } = useCartWishlist();
   const { mobile, loading } = useSelector((state) => state.auth || {});
-
   const [step, setStep] = useState(1);
   const [timer, setTimer] = useState(30);
   const [localMobile, setLocalMobile] = useState("");
@@ -190,6 +191,7 @@ const LoginPage = () => {
             localStorage.setItem('userName', res?.payload?.addresses[0]?.name);
             localStorage.setItem('pincode', res?.payload?.addresses[0]?.pincode);
           }
+          getCartWishlistCount();
           // return false;
           // toast.success("Login successful!", {
           //   style: {

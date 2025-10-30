@@ -20,6 +20,8 @@ export const CartWishlistProvider = ({ children }) => {
       } catch (err) {
         console.error(err);
       }
+    }else{
+      setCountData({ cart_count: 0, wishlist_count: 0 });
     }
   };
 

@@ -362,7 +362,10 @@ const ProfilePage = () => {
   };
 
   const deteteAddress = (id) => {
-    dispatch(deleteAddress(id));
+    const confirmed = window.confirm("Are you sure you want to Remove this Address?");
+    if (confirmed) {
+      dispatch(deleteAddress(id));
+    }
   };
 
   const mkdaddress = (id) => {

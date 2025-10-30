@@ -86,8 +86,8 @@ textarea {
 }
 
 .img_cancel {
-  height: 200px;
-  width: 200px;
+  height: 145px;
+  width: 145px;
 }
 /* Right Section */
 .cancel-order-details {
@@ -105,6 +105,7 @@ textarea {
   gap: 41px;
   /* justify-content: space-between; */
   align-items: flex-start;
+  margin-bottom: 22px;
   /* border: 1px solid #eee; */
 }
 

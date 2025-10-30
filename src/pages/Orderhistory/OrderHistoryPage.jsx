@@ -21,6 +21,7 @@ const OrderHistoryPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedStatus, setSelectedStatus] = useState("ORDER_PLACED");
+  const [option, setOption] = useState();
   const { results, pagination, loading, error } = useSelector(
     (state) => state.orders
   );
@@ -92,7 +93,7 @@ const OrderHistoryPage = () => {
     setShowModal(false);
     if (selectedItem) {
       navigate("/returnexchange", {
-        state: { item: selectedItem, orderNo: selectedOrder },
+        state: { item: selectedItem, orderNo: selectedOrder,selectOption : option },
       });
     }
   };
@@ -107,6 +108,11 @@ const OrderHistoryPage = () => {
       });
     }
   };
+
+  const allExchangeable = selectedItem.length > 0 && selectedItem.every(item => item.allow_exchange);
+  const allReturnable = selectedItem.length > 0 && selectedItem.every(item => item.allow_return);
+  const allCancellable = selectedItem.length > 0 && selectedItem.every(item => item.allow_cancellation);
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error.msg}</p>;
@@ -167,152 +173,191 @@ const OrderHistoryPage = () => {
           <>
             {/* Order List */}
             <main className="order-list">
-              {results.map((order, idx) => (
-                <div className="order-card" key={idx}>
-                  <div className="root_new">
-                    <div className="order-header">
-                      <div>
-                        <div>Order Placed</div>
+              {results.map((order, idx) => {
+                // ✅ Check if this order is the currently selected one
+                const isCurrentOrderSelected = selectedOrder === order.order_no;
+
+                // ✅ Filter selected items for this specific order
+                const selectedItemsForThisOrder = selectedItem.filter(
+                  (item) => item.order_no === order.order_no
+                );
+
+                // ✅ Define per-order conditions
+                const allExchangeable =
+                  isCurrentOrderSelected &&
+                  selectedItemsForThisOrder.length > 0 &&
+                  selectedItemsForThisOrder.every((item) => item.allow_exchange);
+
+                const allReturnable =
+                  isCurrentOrderSelected &&
+                  selectedItemsForThisOrder.length > 0 &&
+                  selectedItemsForThisOrder.every((item) => item.allow_return);
+
+                const allCancellable =
+                  isCurrentOrderSelected &&
+                  selectedItemsForThisOrder.length > 0 &&
+                  selectedItemsForThisOrder.every((item) => item.allow_cancellation);
+
+                return (
+                  <div className="order-card" key={idx}>
+                    <div className="root_new">
+                      <div className="order-header">
                         <div>
-                          {/* Format date here if needed */}
-                          {new Date(order.order_placed_at).toLocaleDateString(
-                            "en-US",
-                            {
-                              weekday: "short",
-                              day: "2-digit",
-                              month: "short",
-                              timeZone: "Asia/Kolkata",
-                            }
-                          )}
+                          <div>Order Placed</div>
+                          <div>
+                            {/* Format date here if needed */}
+                            {new Date(order.order_placed_at).toLocaleDateString(
+                              "en-US",
+                              {
+                                weekday: "short",
+                                day: "2-digit",
+                                month: "short",
+                                timeZone: "Asia/Kolkata",
+                              }
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="trac">
+                          <div>
+                            <div>Order ID</div>
+                            {order.order_no}
+                          </div>
+                        </div>
+
+                        <div className="order-actions">
+                          <Link to={`/OrderTrackingPage/${order.order_no}`}>
+                            <span
+                              className="txt_cation"
+                              style={{ color: "#1B170E" }}
+                            >
+                              Track Order
+                            </span>
+                          </Link>
+                          <div>
+                            <span
+                              className="txt_cation"
+                              style={{ color: "#1B170E" }}
+                            >
+                              View Invoice
+                            </span>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="trac">
+                      <div className="order-header_2">
                         <div>
-                          <div>Order ID</div>
-                          {order.order_no}
-                        </div>
-                      </div>
-
-                      <div className="order-actions">
-                        <Link to={`/OrderTrackingPage/${order.order_no}`}>
-                          <span
-                            className="txt_cation"
-                            style={{ color: "#1B170E" }}
-                          >
-                            Track Order
-                          </span>
-                        </Link>
-                        <div>
-                          <span
-                            className="txt_cation"
-                            style={{ color: "#1B170E" }}
-                          >
-                            View Invoice
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="order-header_2">
-                      <div>
-                        <div>Return / Exchange</div>
-                      </div>
-
-                      <div className="trac">
-                        <div>
-                          <div>Buy Again</div>
-                        </div>
-                      </div>
-
-                      <div className="order-actions">
-                        <div>
-                          <p className="cancel-order">Cancel Order</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Order Items */}
-                  {order?.order_items?.map((item, i) => (
-                    <div className="order-item" key={i}>
-                      <input
-                        type="checkbox"
-                        checked={selectedItem.some(
-                          (it) => it.itemId === item.id
-                        )}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            // If different order is selected, reset previous selection
-                            if (
-                              selectedOrder &&
-                              selectedOrder !== order.order_no
-                            ) {
-                              setSelectedItem([
-                                {
-                                  itemId: item.id,
-                                  product_name: item.product_name,
-                                  product_media: item.product_media,
-                                  price: item.mrp,
-                                  qty: item.quantity,
-                                  order_no: order.order_no,
-                                  action_url: item.action_url,
-                                  size: item.size,
-                                  color: item.color,
-                                  allow_exchange: item.allow_exchange,
-                                  allow_return: item.allow_return,
-                                },
-                              ]);
-                              setSelectedOrder(order.order_no);
-                            } else {
-                              // Same order, add item
-                              setSelectedItem((prev) => [
-                                ...prev,
-                                {
-                                  itemId: item.id,
-                                  product_name: item.product_name,
-                                  product_media: item.product_media,
-                                  price: item.mrp,
-                                  qty: item.quantity,
-                                  order_no: order.order_no,
-                                  action_url: item.action_url,
-                                  size: item.size,
-                                  color: item.color,
-                                  allow_exchange: item.allow_exchange,
-                                  allow_return: item.allow_return,
-                                },
-                              ]);
-                              setSelectedOrder(order.order_no);
-                            }
-                          } else {
-                            // Remove item if unchecked
-                            setSelectedItem((prev) =>
-                              prev.filter((it) => it.itemId !== item.id)
-                            );
-                            if (selectedItem.length === 1)
-                              setSelectedOrder(null); // reset if last removed
-                          }
-                        }}
-                      />
-                      <img src={item.product_media} alt={item.product_name} />
-                      <div className="item-info">
-                        <p>{item.product_name}</p>
-
-                        {/* Cancel Option */}
-                        {item.allow_cancellation && (
                           <div
-                            className="link-btn"
+                            className={`txt_cation ${!allExchangeable ? "disabled" : ""}`}
                             onClick={() => {
-                              setShowcnModal(true);
+                              if (allExchangeable) setShowModal(true); setOption('exchange');
+                            }}
+                            style={{
+                              cursor: allExchangeable ? "pointer" : "not-allowed",
+                              opacity: allExchangeable ? 1 : 0.5,
                             }}
                           >
-                            <p className="cancel-order">Cancel Order</p>
+                            <u>Exchange</u>
                           </div>
-                        )}
+                        </div>
 
-                        {/* Return / Exchange Option */}
-                        {/* {(item.allow_exchange || item.allow_return) && ( */}
-                        <div className="actions">
+                        <div className="trac">
+                          <div
+                            onClick={() => {
+                              if (allReturnable) setShowModal(true); setOption('return');
+                            }}
+                            style={{
+                              cursor: allReturnable ? "pointer" : "not-allowed",
+                              opacity: allReturnable ? 1 : 0.5,
+                            }}
+                          >
+                            <u>Return</u>
+                          </div>
+                        </div>
+
+                        <div className="order-actions">
+                          <p
+                            className="cancel-order"
+                            onClick={() => {
+                              if (allCancellable) setShowcnModal(true);
+                            }}
+                            style={{
+                              cursor: allCancellable ? "pointer" : "not-allowed",
+                              opacity: allCancellable ? 1 : 0.5,
+                            }}
+                          >
+                            <u>Cancel Order</u>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Order Items */}
+                    {order?.order_items?.map((item, i) => (
+                      <div className="order-item" key={i}>
+                        <input
+                          type="checkbox"
+                          checked={selectedItem.some(
+                            (it) => it.itemId === item.id
+                          )}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              // If different order is selected, reset previous selection
+                              if (
+                                selectedOrder &&
+                                selectedOrder !== order.order_no
+                              ) {
+                                setSelectedItem([
+                                  {
+                                    itemId: item.id,
+                                    product_name: item.product_name,
+                                    product_media: item.product_media,
+                                    price: item.mrp,
+                                    qty: item.quantity,
+                                    order_no: order.order_no,
+                                    action_url: item.action_url,
+                                    size: item.size,
+                                    color: item.color,
+                                    allow_exchange: item.allow_exchange,
+                                    allow_return: item.allow_return,
+                                    allow_cancellation: item.allow_cancellation
+                                  },
+                                ]);
+                                setSelectedOrder(order.order_no);
+                              } else {
+                                // Same order, add item
+                                setSelectedItem((prev) => [
+                                  ...prev,
+                                  {
+                                    itemId: item.id,
+                                    product_name: item.product_name,
+                                    product_media: item.product_media,
+                                    price: item.mrp,
+                                    qty: item.quantity,
+                                    order_no: order.order_no,
+                                    action_url: item.action_url,
+                                    size: item.size,
+                                    color: item.color,
+                                    allow_exchange: item.allow_exchange,
+                                    allow_return: item.allow_return,
+                                    allow_cancellation: item.allow_cancellation
+                                  },
+                                ]);
+                                setSelectedOrder(order.order_no);
+                              }
+                            } else {
+                              // Remove item if unchecked
+                              setSelectedItem((prev) =>
+                                prev.filter((it) => it.itemId !== item.id)
+                              );
+                              if (selectedItem.length === 1)
+                                setSelectedOrder(null); // reset if last removed
+                            }
+                          }}
+                        />
+                        <img src={item.product_media} alt={item.product_name} />
+                        <div className="item-info">
+                          <p>{item.product_name}</p>
                           <div className="link-btn">
                             <p className="cancel-order">
                               <Link
@@ -324,29 +369,18 @@ const OrderHistoryPage = () => {
                               </Link>
                             </p>
                           </div>
-                          <div
-                            className="link-btn"
-                            onClick={() => {
-                              setShowModal(true);
-                            }}
-                          >
-                            <span className="cancel-order">
-                              Return / Exchange
-                            </span>
-                          </div>
                         </div>
-                        {/* )} */}
-                      </div>
 
-                      <div className="arrow">
-                        <Link to={`/OrderTrackingPage/${order.order_no}`}>
-                          <ChevronRight size={24} />
-                        </Link>
+                        <div className="arrow">
+                          <Link to={`/OrderTrackingPage/${order.order_no}`}>
+                            <ChevronRight size={24} />
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
+                    ))}
+                  </div>
+                )
+              })}
 
               <Pagination
                 currentPage={currentPage}

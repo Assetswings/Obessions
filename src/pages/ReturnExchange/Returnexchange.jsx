@@ -16,11 +16,15 @@ const ReturnExchange = () => {
   const navigate = useNavigate();
   const item = state?.item;
   const orderNo = state?.orderNo;
+  const selectOption = state?.selectOption;
 
   useEffect(() => {
     document.title = "Obsession - Return / Exchange";
     getReason("return");
   }, []);
+  useEffect(() => {
+    setOption(selectOption);
+  }, [selectOption]);
   const getReason = async (option) => {
     if (option == "return") {
       try {
@@ -190,7 +194,7 @@ const ReturnExchange = () => {
             setShowcnModal(true);
           }}>
             {/* Radio Buttons */}
-            <div className="radio-options">
+            {/* <div className="radio-options">
               {item[0].allow_return && (
                 <label>
                   <input
@@ -219,7 +223,8 @@ const ReturnExchange = () => {
                   &nbsp; Exchange
                 </label>
               )}
-            </div>
+            </div> */}
+            <span style={{textTransform:"capitalize"}}><b>{option} Order</b></span>
 
             <label>
               Reason for {option} <span className="required">*</span>

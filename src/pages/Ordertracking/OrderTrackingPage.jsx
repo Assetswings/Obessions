@@ -12,15 +12,16 @@ const OrderTrackingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [option, setOption] = useState();
   const [trackingData, setData] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const { orderNo: order_no } = useParams();
   // const { order_no } = orderNo || null;
   const { results, loading, error } = useSelector((state) => state.orders);
   // console.log('url order no',orderNo, order_no);
-  
+
   const order = results[0]; // ✅ take first order safely
   const trackingUpdates = [
     { label: "Order Placed", time: null, status: "done", type: "major" },
@@ -80,10 +81,14 @@ const OrderTrackingPage = () => {
     setShowModal(false);
     if (selectedItem) {
       navigate("/returnexchange", {
-        state: { item: selectedItem, orderNo: selectedOrder },
+        state: { item: selectedItem, orderNo: selectedOrder, selectOption : option },
       });
     }
   };
+
+  // const allCancelable = selectedItems.length > 0 && selectedItems.every(item => item.allow_cancellation);
+  const allReturnable = selectedItem.length > 0 && selectedItem.every(item => item.allow_return);
+  const allExchangeable = selectedItem.length > 0 && selectedItem.every(item => item.allow_exchange);
 
   if (loading) return <p>Loading order details...</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
@@ -94,7 +99,7 @@ const OrderTrackingPage = () => {
   ];
   return (
     <>
-    <Breadcrumbs paths={breadcrumbPaths} />
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="order-tracking-container">
         <div className="order-left">
           <h2>Order Details</h2>
@@ -116,8 +121,123 @@ const OrderTrackingPage = () => {
             </p>
           </div>
 
+          <div className="mobileview order-right">
+            <h3>Updates :</h3>
+            <div className="timeline">
+              {trackingData?.map((step, index) => (
+                <div
+                  className={`timeline-step ${step.type} ${step.status}`}
+                  key={index}
+                >
+                  <div className="dot">
+                    {step.type === "major" && step.status === "done" ? (
+                      <Check size={30} strokeWidth={1.5} />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="line" />
+                  <div className="content">
+                    <p>{step.label}</p>
+                    {step.time && <span>{step.time}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {selectedItem.length > 0 && (
+            <>
+              <span
+                onClick={() => {
+                  if (allExchangeable) setShowModal(true); setOption('exchange');
+                }}
+                style={{
+                  marginRight: "20px",
+                  cursor: allExchangeable ? "pointer" : "not-allowed",
+                  pointerEvents: allExchangeable ? "auto" : "none",
+                  opacity: allExchangeable ? 1 : 0.5,
+                  color: allExchangeable ? "#000" : "#999",
+                  textDecoration: allExchangeable ? "underline" : "none",
+                }}
+              >
+                <u>Exchange</u>
+              </span>
+
+              <span
+                onClick={() => {
+                  if (allReturnable) setShowModal(true); setOption('return');
+                }}
+                style={{
+                  marginRight: "20px",
+                  cursor: allReturnable ? "pointer" : "not-allowed",
+                  pointerEvents: allReturnable ? "auto" : "none",
+                  opacity: allReturnable ? 1 : 0.5,
+                  color: allReturnable ? "#000" : "#999",
+                  textDecoration: allReturnable ? "underline" : "none",
+                }}
+              >
+                <u>Return</u>
+              </span>
+
+            </>
+          )}
           {order.order_items?.map((item, i) => (
             <div className="product-item" key={i}>
+              <input
+                type="checkbox"
+                checked={selectedItem.some((it) => it.itemId === item.id)}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    // If different order is selected, reset previous selection
+                    if (selectedOrder && selectedOrder !== order.order_no) {
+                      setSelectedItem([
+                        {
+                          itemId: item.id,
+                          product_name: item.product_name,
+                          product_media: item.product_media,
+                          price: item.mrp,
+                          qty: item.quantity,
+                          order_no: order.order_no,
+                          action_url: item.action_url,
+                          size: item.size,
+                          color: item.color,
+                          allow_exchange: item.allow_exchange,
+                          allow_return: item.allow_return,
+                          allow_cancellation: item.allow_cancellation
+                        },
+                      ]);
+                      setSelectedOrder(order.order_no);
+                    } else {
+                      // Same order, add item
+                      setSelectedItem((prev) => [
+                        ...prev,
+                        {
+                          itemId: item.id,
+                          product_name: item.product_name,
+                          product_media: item.product_media,
+                          price: item.mrp,
+                          qty: item.quantity,
+                          order_no: order.order_no,
+                          action_url: item.action_url,
+                          size: item.size,
+                          color: item.color,
+                          allow_exchange: item.allow_exchange,
+                          allow_return: item.allow_return,
+                          allow_cancellation: item.allow_cancellation
+                        },
+                      ]);
+                      setSelectedOrder(order.order_no);
+                    }
+                  } else {
+                    // Remove item if unchecked
+                    setSelectedItem((prev) =>
+                      prev.filter((it) => it.itemId !== item.id)
+                    );
+                    if (selectedItem.length === 1) setSelectedOrder(null); // reset if last removed
+                  }
+                }}
+              />
               <img src={item.product_media} alt={item.product_name} />
               <div className="product-details">
                 <p>{item.product_name}</p>
@@ -127,28 +247,8 @@ const OrderTrackingPage = () => {
                 <p>Quantity : {item.quantity}</p>
                 <div className="actions">
                   <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
-                  <span >Buy Again </span>
+                    <span >Buy Again </span>
                   </Link>
-                  {(item.allow_exchange || item.allow_return) && (
-                    <span
-                      onClick={() => {
-                        setSelectedItem({
-                          itemId: item.id,
-                          product_name: item.product_name,
-                          product_media: item.product_media,
-                          price: item.mrp,
-                          qty: item.quantity,
-                          order_no: order.order_no,
-                          allow_exchange: item.allow_exchange,
-                          allow_return: item.allow_return,
-                        });
-                        setSelectedOrder(order.order_no);
-                        setShowModal(true);
-                      }}
-                    >
-                      Exchange / Return
-                    </span>
-                  )}
                 </div>
               </div>
             </div>
@@ -165,7 +265,7 @@ const OrderTrackingPage = () => {
                     className="go-back"
                     onClick={() => {
                       setShowModal(false);
-                      setSelectedItem(null);
+                      setSelectedItem([]);
                     }}
                   >
                     GO BACK
@@ -201,7 +301,7 @@ const OrderTrackingPage = () => {
           </div>
         </div>
 
-        <div className="order-right">
+        <div className="webview order-right">
           <h3>Updates :</h3>
           <div className="timeline">
             {trackingData?.map((step, index) => (

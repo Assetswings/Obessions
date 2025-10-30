@@ -757,11 +757,18 @@ font-family: "Playfair Display", serif; */
 }
 
 
+.product-grid-2{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0px;
+}
+
+
 .product-card-dtl {
   background: #fff;
   border-radius: 8px;
   text-align: left;
-  padding: 27px;
+  padding: 16px;
   position: relative;
 }
 
@@ -1006,13 +1013,28 @@ font-family: "Playfair Display", serif; */
 
 @media (min-width: 1200px) {
   .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+
+  }
+}
+
+@media (min-width: 1200px) {
+  .product-grid-2 {
     grid-template-columns: repeat(5, 1fr);
 
   }
 }
 
+
 @media (max-width: 768px) {
   .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-grid-2{
     grid-template-columns: repeat(2, 1fr);
     gap: 0px;
   }
@@ -1168,6 +1190,12 @@ font-family: "Playfair Display", serif; */
   }
 
   .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0px;
+  }
+
+   
+  .product-grid-2{
     grid-template-columns: repeat(2, 1fr);
     gap: 0px;
   }

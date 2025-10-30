@@ -1302,7 +1302,7 @@ const ProductDetailPage = () => {
               ))}
           </div>
         ) : (
-          <div className="product-grid">
+          <div className="product-grid-2">
             {similarStyle?.map((item) => {
               const isWishlisted = item.is_wishlisted;
 
@@ -1395,7 +1395,7 @@ const ProductDetailPage = () => {
               ))}
           </div>
         ) : (
-          <div className="product-grid">
+          <div className="product-grid-2">
             {matchingFound?.map((item) => {
               const isWishlisted = item.is_wishlisted;
               return (

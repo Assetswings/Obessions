@@ -171,7 +171,11 @@ const BlogPost = () => {
               {data?.related?.map((post, index) => (
                 <li key={index}>
                   <Link to={`/blog-details/${post?.action_url}`}>
-                    <img src={post?.media} alt="Related 1" className="pointer-crusser" />
+                     <div className="finder_track">  
+                     <div>
+                     <img src={post?.media} alt="Related 1" className="pointer-crusser" />
+                     </div> 
+                 
                     <div className="pointer-crusser">
                       <p>{post?.name}</p>
                       <span>
@@ -179,6 +183,9 @@ const BlogPost = () => {
                         {post?.description?.split(" ").length > 15 ? "..." : ""}
                       </span>
                     </div>
+                       </div>  
+                    
+
                   </Link>
                 </li>
               ))}

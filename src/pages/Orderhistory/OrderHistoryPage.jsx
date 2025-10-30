@@ -221,6 +221,8 @@ const OrderHistoryPage = () => {
                                   action_url: item.action_url,
                                   size: item.size,
                                   color: item.color,
+                                  allow_exchange: item.allow_exchange,
+                                  allow_return: item.allow_return,
                                 },
                               ]);
                               setSelectedOrder(order.order_no);
@@ -238,6 +240,8 @@ const OrderHistoryPage = () => {
                                   action_url: item.action_url,
                                   size: item.size,
                                   color: item.color,
+                                  allow_exchange: item.allow_exchange,
+                                  allow_return: item.allow_return,
                                 },
                               ]);
                               setSelectedOrder(order.order_no);

@@ -191,7 +191,7 @@ const ReturnExchange = () => {
           }}>
             {/* Radio Buttons */}
             <div className="radio-options">
-              {item.allow_return && (
+              {item[0].allow_return && (
                 <label>
                   <input
                     type="radio"
@@ -205,7 +205,7 @@ const ReturnExchange = () => {
                   &nbsp; Return
                 </label>
               )}
-              {item.allow_exchange && (
+              {item[0].allow_exchange && (
                 <label>
                   <input
                     type="radio"
@@ -222,14 +222,14 @@ const ReturnExchange = () => {
             </div>
 
             <label>
-              Reason for Exchange <span className="required">*</span>
+              Reason for {option} <span className="required">*</span>
             </label>
             <select
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               required
             >
-              <option value="">Select Reason</option>
+              <option value="">Select {option}</option>
               {reasonList.map((d) => (
                 <option key={d.id} value={d.id}>
                   {d.reason}
@@ -288,12 +288,14 @@ const ReturnExchange = () => {
               <div className="order-box" key={idx}>
                 <div className="order-info">
                   <p className="order-title pointer-crusser" >
-                    <Link to={`/productsdetails/${order.action_url}`} target="_blank" rel="noopener noreferrer">{order.product_name}</Link>
+                    <Link to={`/productsdetails/${order.action_url}`} target="_blank" rel="noopener noreferrer">
+                      <b>  {order.product_name.length > 30 ? order.product_name.slice(0, 30) + "..." : order.product_name}</b>
+                    </Link>
                   </p>
-                  <p>Qty : {order.qty}</p>
-                  <p>Size : {order.size}</p>
-                  <p>Color : {order.color}</p>
-                  <p className="order-price">₹{order.price}</p>
+                  <p><b>Qty</b> : {order.qty}</p>
+                  <p><b>Size</b> : {order.size}</p>
+                  <p><b>Color</b> : {order.color}</p>
+                  <p className="order-price"><b>Price</b> : ₹{order.price}</p>
                 </div>
                 <img
                   className="img_cancel"

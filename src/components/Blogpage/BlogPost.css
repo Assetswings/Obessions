@@ -1,20 +1,19 @@
-/* Wrapper for content + sidebar */
 @import url('https://fonts.cdnfonts.com/css/canela-text-trial');
 @import url('https://fonts.cdnfonts.com/css/helvetica-neue-55');
 @import url('https://fonts.cdnfonts.com/css/playfair-display');
 
-/* Hero Section Full Width */
+/* Hero Section */
 .hero {
   width: 100%;
 }
-
-
 .hero-image {
   width: 100%;
   height: auto;
   object-fit: cover;
   display: block;
 }
+
+/* Main wrapper */
 .post-wrapper {
   display: flex;
   gap: 3rem;
@@ -27,121 +26,14 @@
 .post-main {
   flex: 2;
 }
-.post-title{
-    font-family: 'Canela Trial', sans-serif;
-    font-size: 24px;
-    width: 70%;
-}
-.post-subtitle{
-    /* font-family: 'Canela Trial', sans-serif; */
-    font-size: 14px;
-    margin-bottom: 1.5rem;
-    font-style: italic;
-}
 
-.post-subheading{
-font-family: 'Canela Trial', sans-serif;
-font-size: 12px;
-}
 .post-sidebar {
   flex: 1;
   position: sticky;
   top: 2rem;
 }
-.sector_image {
-  display: flex;
-  justify-content: center;
-}
-.main-img {
-  width: 100%;
-  margin: 1rem 0 0.5rem;
-  border-radius: 4px;
-}
 
-.main-img_2 {
-  width: 100%;
-  margin: 1rem 0 0.5rem;
-  border-radius: 4px;
-}
-
-.img-credit {
-  font-size: 0.8rem;
-  color: #888;
-  margin-bottom: 1.5rem;
-}
-
-.post-subheading {
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  color: #111;
-}
-
-.post-text {
-  font-size: 13px;
-  margin-bottom: 1.2rem;
-  color: #333;
-  font-family: 'Helvetica Neue', sans-serif;
-}
-
-ol.how-to-list {
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-.how-to-list{
-
-}
-.item-to-list{
-font-family: 'Canela Trial', sans-serif;
-font-size: 20px;
-margin: 10px 10px;
-
-  }
-
-/* Sidebar */
-.sidebar-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #000;
-}
-
-.related-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.related-list li {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  align-items: center;
-}
-
-.related-list img {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-}
-
-.related-list p {
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin: 0;
-  color: #222;
-}
-
-.related-list span {
-  font-size: 0.8rem;
-  color: #777;
-}
-
-.post-text {
-  margin-top: 15px;
-}
-
+/* Recommended section */
 .recommended-posts {
   max-width: 1200px;
   margin: 4rem auto;
@@ -174,42 +66,98 @@ margin: 10px 10px;
   margin-bottom: 0.75rem;
 }
 
-.recommended-card h4 {
-  font-size: 20px;
-  font-weight: 500;
-  margin: 0.5rem 0 0.3rem;
-  color: #111;
-  font-family: 'Canela Trial', sans-serif;
-}
-
-.recommended-card p {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 0.3rem;
-}
-
-.recommended-card a {
-  font-size: 0.85rem;
+/* Sidebar section */
+.sidebar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
   color: #000;
-  text-decoration: underline;
-  font-weight: 500;
-  margin-right: 35px;
 }
 
+.related-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.related-list li {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.related-list img {
+  width: 88px;
+  height: 103px;
+  object-fit: cover;
+}
+
+.related-list p {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0;
+  color: #222;
+}
+.finder_track{
+  display: flex;
+      width: 344px;
+      gap: 20px;
+}
+
+.related-list span {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+/* Responsive Design */
+
+/* Tablets */
 @media (max-width: 1024px) {
   .recommended-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 600px) {
+/* ✅ Mobile View Fix */
+@media (max-width: 768px) {
+  .post-wrapper {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* Move sections vertically */
+  .post-main {
+    order: 1;
+    width: 100%;
+  }
+
+  .recommended-posts {
+    order: 2;
+    margin-top: 2rem;
+  }
+
+  .post-sidebar {
+    order: 3;
+    position: static;
+    width: 100%;
+  }
+
   .recommended-grid {
     grid-template-columns: 1fr;
   }
-}
 
-.txt_btn_recomend {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  .recommended-card img {
+    width: 100%;
+    height: auto;
+  }
+
+  .related-list li {
+    flex-direction: row;
+  }
+  .main-img_2{
+    width: 100%;
+    margin-bottom: 15px;
+  }
+ 
 }

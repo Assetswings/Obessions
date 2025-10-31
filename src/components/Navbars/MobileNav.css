@@ -122,10 +122,21 @@ body {
   position: relative;
   overflow: hidden;
   width: 100%;
-  margin-top: 30px;
   height: calc(100% - 40px);
 }
 
+ .drawer-image {
+  width: 100%;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.drawer-image img {
+  width: 100%;
+  height: 250px;
+
+  object-fit: cover;
+}
 .menu {
   position: absolute;
   width: 100%;
@@ -363,3 +374,5 @@ body {
 .popup-item:hover {
   background-color: #f2f2f2;
 }
+
+ 

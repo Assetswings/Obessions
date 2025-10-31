@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./MobileNav.css";
-import { Heart, CircleUser, ShoppingCart, ChevronRight, ChevronLeft, Plus, Minus, User, LogOut, Search, } from "lucide-react";
+import {
+  CircleUser,
+  ChevronRight,
+  ChevronLeft,
+  Plus,
+  Minus,
+  Search,
+  X,
+  User,
+  LogOut,
+} from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import mobilelogo from "../../assets/icons/Black.png";
 import { fetchMegamenuData } from "./megamenuSlice";
@@ -10,78 +20,80 @@ import LoginPromptModal from "../LoginModal/LoginPromptModal";
 import Mobileansbar from "./Mobileansbar";
 import { IoLogoWhatsapp } from "react-icons/io";
 import API from "../../app/api";
+import {
+  fetchSearchResults,
+  clearSearchResults,
+} from "../../pages/Home/searchSlice";
 
 const MobileNav = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("main");
-  const [prevMenu, setPrevMenu] = useState(null);
-  const [direction, setDirection] = useState("forward");
-  const [currentSection, setCurrentSection] = useState(null); // selected section
-  const [openCategory, setOpenCategory] = useState(null); // expanded category
+  const [currentSection, setCurrentSection] = useState(null);
+  const [openCategory, setOpenCategory] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [query, setQuery] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const inputRef = useRef(null);
   const userWrapperRef = useRef(null);
-  const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state.megamenu);
+  const { data } = useSelector((state) => state.megamenu);
   const [wdata, setData] = useState("");
+
+  const searchState = useSelector((state) => state.search || {});
+  const { results = [], loading } = searchState;
+
   useEffect(() => {
     chatsupport();
+    dispatch(fetchMegamenuData());
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, [dispatch]);
+
+  // ✅ Check login status dynamically
+  useEffect(() => {
+    const checkLogin = () => {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(!!token);
+    };
+    checkLogin();
+    window.addEventListener("storage", checkLogin);
+    return () => window.removeEventListener("storage", checkLogin);
   }, []);
+
+  // ✅ Close popup when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userWrapperRef.current && !userWrapperRef.current.contains(event.target)) {
+        setShowUserPopup(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const chatsupport = async () => {
     try {
       const res = await API.get("/chat/support");
-      if (res.data.status === 200) {
-        setTimeout(() => {
-          setData(res.data?.data);
-        }, 1000); // reduce delay (10s is too long for UX)
-      }
+      if (res.data.status === 200) setData(res.data?.data);
     } catch (err) {
       console.log(err);
     }
   };
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (
-  //       userWrapperRef.current &&
-  //       !userWrapperRef.current.contains(event.target)
-  //     ) {
-  //       setShowUserPopup(false);
-  //     }
-  //   };
-
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => document.removeEventListener("mousedown", handleClickOutside);
-  // }, []);
-  useEffect(() => {
-    dispatch(fetchMegamenuData());
-  }, [dispatch]);
 
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
     setActiveMenu("main");
-    setPrevMenu(null);
     setCurrentSection(null);
     setOpenCategory(null);
   };
 
-  const navigateTo = (menu) => {
-    if (menu === activeMenu) return;
-    setDirection("forward");
-    setPrevMenu(activeMenu);
-    setActiveMenu(menu);
-  };
-
+  const navigateTo = (menu) => setActiveMenu(menu);
   const goBack = () => {
-    setDirection("back");
-
     if (activeMenu === "category") {
       setActiveMenu("shop");
       setCurrentSection(null);
@@ -95,60 +107,16 @@ const MobileNav = () => {
     setOpenCategory((prev) => (prev === id ? null : id));
   };
 
-  // Disable scroll when drawer is open
-  useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
-
-    if (isOpen) {
-      html.style.overflow = "hidden";
-      body.style.overflow = "hidden";
-      body.style.position = "fixed";
-      body.style.width = "100%";
-    } else {
-      html.style.overflow = "";
-      body.style.overflow = "";
-      body.style.position = "";
-      body.style.width = "";
-    }
-
-    return () => {
-      html.style.overflow = "";
-      body.style.overflow = "";
-      body.style.position = "";
-      body.style.width = "";
-    };
-  }, [isOpen]);
-
-  const handelroute = (route) => {
-    navigate(route);
-  };
-
-  //  Wish List Modal
   const handleWishlistClick = () => {
     toggleDrawer();
-    if (isLoggedIn) {
-      setShowWishlist(true);
-    } else {
-      setShowLoginPrompt(true);
-    }
+    if (isLoggedIn) setShowWishlist(true);
+    else setShowLoginPrompt(true);
   };
 
-  const handleWishlistClickHeader = () => {
-    if (isLoggedIn) {
-      setShowWishlist(true);
-    } else {
-      setShowLoginPrompt(true);
-    }
-  };
-
-  // User Accunt
-  const handleUserClick = () => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    } else {
-      setShowUserPopup((prev) => !prev);
-    }
+  const handleUserClick = (e) => {
+    e.stopPropagation();
+    if (!isLoggedIn) navigate("/login");
+    else setShowUserPopup((prev) => !prev);
   };
 
   const handleLogout = () => {
@@ -156,7 +124,7 @@ const MobileNav = () => {
     localStorage.removeItem("userName");
     setIsLoggedIn(false);
     setShowUserPopup(false);
-    alert("Logout successful");
+    window.dispatchEvent(new Event("storage"));
     navigate("/");
   };
 
@@ -165,17 +133,37 @@ const MobileNav = () => {
     navigate("/ProfilePage");
   };
 
-  const handelAccountSidenav = () => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    } else {
-      navigate("/ProfilePage");
+  useEffect(() => {
+    if (results.length > 0) setSearchResult(results);
+    else setSearchResult([]);
+  }, [results]);
+
+  useEffect(() => {
+    if (!query.trim()) {
+      dispatch(clearSearchResults());
+      setSearchResult([]);
+      return;
     }
+    const timeoutId = setTimeout(() => {
+      dispatch(fetchSearchResults(query));
+    }, 400);
+    return () => clearTimeout(timeoutId);
+  }, [query, dispatch]);
+
+  useEffect(() => {
+    if (showSearch && inputRef.current) inputRef.current.focus();
+    document.body.style.overflow = showSearch ? "hidden" : "auto";
+  }, [showSearch]);
+
+  const clearSearch = () => {
+    setShowSearch(false);
+    setQuery("");
+    setSearchResult([]);
+    dispatch(clearSearchResults());
   };
 
   return (
     <>
-
       <header className="topbar">
         <div className="topbar-left">
           <div className="hamburger" onClick={toggleDrawer}>
@@ -183,29 +171,47 @@ const MobileNav = () => {
             <span></span>
           </div>
 
-          <div className="mobile_logo_track" onClick={() => handelroute("/")}>
+          <div className="mobile_logo_track" onClick={() => navigate("/")}>
             <img src={mobilelogo} width={105} alt="logo" />
           </div>
         </div>
 
         <div className="icons">
-
           <Search
             color="black"
             strokeWidth={1.5}
+            onClick={() => setShowSearch(true)}
+            className="search-icon"
           />
-          <CircleUser
-            ref={userWrapperRef}
-            strokeWidth={1.5}
-            color="black"
-            size={25}
-            onClick={handleUserClick}
-          />
+          <div ref={userWrapperRef} className="user-click-wrapper">
+            <CircleUser
+              strokeWidth={1.5}
+              color="black"
+              size={25}
+              onClick={handleUserClick}
+            />
+            {isLoggedIn && showUserPopup && (
+              <div
+                className="user-popup_AN"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="popup-triangle_mlb"></div>
+                <div className="popup-item" onClick={handleProfile}>
+                  <User size={20} style={{ marginRight: 8 }} />
+                  <span>Profile</span>
+                </div>
+                <div className="popup-item" onClick={handleLogout}>
+                  <LogOut size={18} style={{ marginRight: 8 }} />
+                  <span>Logout</span>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
       <Mobileansbar />
-      {/* Drawer */}
+
       <div className={`drawer ${isOpen ? "open" : ""}`}>
         <div className="drawer-header">
           {activeMenu !== "main" && (
@@ -213,19 +219,14 @@ const MobileNav = () => {
               <ChevronLeft />
             </span>
           )}
-
-          <>
-
-            <div className="track_sector_close">
-              <span onClick={toggleDrawer} className="close-btn-mlb" >
-                ✕
-              </span>
-            </div>
-          </>
+          <div className="track_sector_close">
+            <span onClick={toggleDrawer} className="close-btn-mlb">
+              ✕
+            </span>
+          </div>
         </div>
 
         <div className="menu-container">
-          {/* Main Menu */}
           <div className={`menu ${activeMenu === "main" ? "active" : ""}`}>
             <ul>
               <li onClick={() => navigateTo("shop")}>
@@ -236,33 +237,34 @@ const MobileNav = () => {
                   </div>
                 </div>
               </li>
-              {/* <li onClick={() => handelroute("/new-arrivals")}>New Arrivals</li>
-              <li onClick={() => handelroute("/bestseller")}>Best Sellers</li>
-              <li onClick={() => handelroute("/offer-spot")}>Offers Spot</li>
-              <li onClick={() => handelroute("/carpet-finder")}>
-                Floor Matcher
-              </li> */}
               <li>
-                <Link to='/new-arrivals' onClick={toggleDrawer}>NEW ARRIVALS</Link>
+                <Link to="/new-arrivals" onClick={toggleDrawer}>
+                  NEW ARRIVALS
+                </Link>
               </li>
               <li>
-                <Link to='/bestseller' onClick={toggleDrawer}>BEST SELLERS</Link>
+                <Link to="/bestseller" onClick={toggleDrawer}>
+                  BEST SELLERS
+                </Link>
               </li>
               <li>
-                <Link to='/offer-spot' onClick={toggleDrawer}>OFFERS SPOT</Link>
+                <Link to="/offer-spot" onClick={toggleDrawer}>
+                  OFFERS SPOT
+                </Link>
               </li>
               <li>
-                <Link to='/carpet-finder' onClick={toggleDrawer}>FLOOR MATCHER</Link>
+                <Link to="/carpet-finder" onClick={toggleDrawer}>
+                  FLOOR MATCHER
+                </Link>
               </li>
             </ul>
             <ul>
               <li onClick={handleWishlistClick}>Wishlist</li>
-              <li onClick={() => handelroute("/cart")}>Cart</li>
-              <li onClick={() => handelAccountSidenav()}>Account</li>
+              <li onClick={() => navigate("/cart")}>Cart</li>
+              <li onClick={() => navigate("/ProfilePage")}>Account</li>
             </ul>
           </div>
 
-          {/* Shop → Sections */}
           <div className={`menu ${activeMenu === "shop" ? "active" : ""}`}>
             <ul>
               {data?.map((section) => (
@@ -284,7 +286,6 @@ const MobileNav = () => {
             </ul>
           </div>
 
-          {/* Section → Categories (expandable) */}
           <div className={`menu ${activeMenu === "category" ? "active" : ""}`}>
             <ul>
               {currentSection?.categories?.map((category) => (
@@ -298,14 +299,16 @@ const MobileNav = () => {
                       {openCategory === category.id ? <Minus /> : <Plus />}
                     </div>
                   </div>
-
-                  {/* Expanded Subcategories */}
                   {openCategory === category.id && (
                     <ul className="submenu">
                       {category.subcategories.map((sub) => (
-                        <li
-                          key={sub.id}>
-                          <Link to={`/products/${category.action_url}/${sub.action_url}`} onClick={toggleDrawer}>{sub.name}</Link>
+                        <li key={sub.id}>
+                          <Link
+                            to={`/products/${category.action_url}/${sub.action_url}`}
+                            onClick={toggleDrawer}
+                          >
+                            {sub.name}
+                          </Link>
                         </li>
                       ))}
                     </ul>
@@ -318,35 +321,103 @@ const MobileNav = () => {
       </div>
 
       {isOpen && <div className="overlay" onClick={toggleDrawer}></div>}
+
       {showWishlist && <WishlistModal onClose={() => setShowWishlist(false)} />}
       {showLoginPrompt && (
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-      {isLoggedIn && showUserPopup && (
-        <>
-          <div className="popup-triangle"></div>
-          <div className="user-popup">
-            <div className="popup-item" onClick={handleProfile}>
-              <User size={22} style={{ marginRight: 8 }} />
-              <span>Profile</span>
-            </div>
-            <div className="popup-item" onClick={handleLogout}>
-              <span
-                style={{
-                  transform: "rotate(180deg)",
-                  display: "inline-block",
-                  marginRight: 8,
+      {showSearch && (
+        <div className="search-overlay_mlb" onClick={clearSearch}>
+          <div
+            className="search-modal-other"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="d-flex set_input_mlb">
+              <input
+                ref={inputRef}
+                type="text"
+                className="form-control border-0 input_global_mlb"
+                placeholder="WHAT ARE YOU LOOKING FOR"
+                value={query}
+                onChange={(e) => {
+                  let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
+                  value = value.replace(/^\s+/, "");
+                  setQuery(value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && query.trim()) {
+                    clearSearch();
+                    navigate("/searchlist", { state: { query } });
+                  }
+                }}
+              />
+              {loading && (
+                <div style={{ backgroundColor: "white" }} className="sarchlader">
+                  <div
+                    className="spinner-border text-secondary"
+                    style={{ width: "20px", height: "20px" }}
+                    role="status"
+                  >
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              )}
+              <button
+                className="btn btn-dark button_search_mlb"
+                disabled={!query?.trim()}
+                onClick={() => {
+                  clearSearch();
+                  navigate("/searchlist", { state: { query } });
                 }}
               >
-                <LogOut size={22} />
-              </span>
-              <span>Logout</span>
+                <Search strokeWidth={1.25} />
+              </button>
             </div>
+
+            {Array.isArray(searchResult) && (
+              <>
+                {searchResult.length > 0 ? (
+                  <div className="search-results-grid-other-mlb">
+                    {searchResult.slice(0, 6).map((item, index) => (
+                      <div
+                        key={index}
+                        className="search-card"
+                        onClick={() => clearSearch()}
+                      >
+                        <Link
+                          to={`/productsdetails/${item.action_url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            src={item.media_list?.main?.file}
+                            alt={item.name}
+                            className="search-card-img"
+                          />
+                          <div className="search-card-body">
+                            <h6 className="search-card-title">
+                              {item.name.split(" ").slice(0, 5).join(" ")}
+                            </h6>
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  !loading &&
+                  query?.trim() && (
+                    <div className="no-data-found-top_mlb">
+                      <p>No Result found</p>
+                    </div>
+                  )
+                )}
+              </>
+            )}
           </div>
-        </>
+        </div>
       )}
-      {/* ✅ Floating WhatsApp Icon */}
+
       <a
         href={`https://api.whatsapp.com/send?phone=${wdata?.phone}&text=${wdata?.text}`}
         className="floating-whatsapp"

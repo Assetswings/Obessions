@@ -1,239 +1,365 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  /*.topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: #111;
-    color: white;
-  } */
-  
-    .topbar_other {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: black;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 9999999;
-    }
-  
-  /* Group hamburger + logo together */
-   .topbar-left {
-    display: flex;
-    align-items: center;
-    gap: 12px; /* spacing between hamburger and logo */
-    }
-  
-    .icons {
-    display: flex;
-    gap: 16px;
-    font-size: 20px;
-    cursor: pointer;
-    }
-  
-    .hamburger_other {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    cursor: pointer;
-    }
-  
-  .hamburger_other span {
-    width: 20px;
-    height: 2px;
-    background: white;
-    border-radius: 1px;
-  }
-  
-  /* Drawer */
-  .drawer {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: white;
-    color: black;
-    padding: 20px;
-    transition: left 0.35s ease;
-    z-index: 9999999;
-  }
-  
-  .drawer.open {
-    left: 0;
-  }
-  
-  .drawer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-  }
-  
-  .close-btn-mlb {
-    cursor: pointer;
-    font-size: 20px;
-  }
-  
-  .track_sector_close {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-  }
-  
-  .back-btn {
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  /* Overlay */
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 99999;
-  }
-  
-   .mobile_logo_track{
-    position: relative;
-    left: 60%;
-  }
-  
-  .iteam_main {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  /* Menu container */
-  .menu-container {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    margin-top: 30px;
-    height: calc(100% - 40px);
-  }
-  
-  .menu {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 100%;
-    opacity: 0;
-    transform: translateX(100%);
-    transition: transform 0.35s ease, opacity 0.35s ease;
-  }
-  
-  .menu.active {
-    left: 0;
-    opacity: 1;
-    transform: translateX(0);
-    z-index: 2;
-  }
-  
-  /* Animations */
-  .menu.slide-left {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  
-  .menu.slide-right {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  
-  .drawer ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .drawer li {
-    padding: 14px 0;
-    /* border-bottom: 1px solid #ddd; */
-    cursor: pointer;
-    font-size: 14px;
-    text-transform: uppercase;
-  }
-  
-  .drawer li:hover {
-    color: #353535;
-  }
-  
-  /* Drawer container - full height */
-  .drawer {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: white;
-    color: black;
-    display: flex;
-    flex-direction: column;
-    transition: left 0.35s ease;
-    z-index: 9999999;
-    overflow: hidden;
-  }
-  
-  /* Drawer header stays fixed */
-  .drawer-header {
-    flex-shrink: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 10px;
-    /* border-bottom: 1px solid #eee; */
-  }
-  
-  /* Scrollable area */
-  .menu-container {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  /* Each menu inside is scrollable */
-  .menu {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 100%;
-    opacity: 0;
-    transform: translateX(100%);
-    transition: transform 0.35s ease, opacity 0.35s ease;
-    height: 100%;
-    overflow-y: auto;
-    /* ✅ Enable vertical scroll */
-    padding-bottom: 80px;
-    /* Add some space below */
-    scrollbar-width: thin;
-    /* optional - nicer look */
-  }
-  
-  /* Active menu is visible */
-  .menu.active {
-    left: 0;
-    opacity: 1;
-    transform: translateX(0);
-    z-index: 2;
-  }
-  
-  .menu::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  .menu::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 3px;
-  }
-  
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/*.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #111;
+  color: white;
+} */
+
+
+.topbar_mlb{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: black ;
+  color: white;
+  position: sticky;
+  top: 0px;
+  z-index: 9999999;
+}
+
+/* Group hamburger + logo together */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* spacing between hamburger and logo */
+}
+
+.icons {
+  display: flex;
+  gap: 16px;
+  font-size: 20px;
+  cursor: pointer;
+
+ 
+}
+
+.hamburger_blk {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.hamburger_blk span {
+  width: 20px;
+  height: 2px;
+  background: white;
+  border-radius: 1px;
+}
+
+/* Drawer */
+.drawer {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: white;
+  color: black;
+  padding: 20px;
+  transition: left 0.35s ease;
+  z-index: 9999999;
+}
+
+.drawer.open {
+  left: 0;
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.close-btn-mlb {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.track_sector_close {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.back-btn {
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 99999;
+}
+
+ .mobile_logo_track{
+  position: relative;
+  left: 10px;
+}
+
+.iteam_main {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Menu container */
+.menu-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 30px;
+  height: calc(100% - 40px);
+}
+
+.menu {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 100%;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.menu.active {
+  left: 0;
+  opacity: 1;
+  transform: translateX(0);
+  z-index: 2;
+}
+
+/* Animations */
+.menu.slide-left {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.menu.slide-right {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.drawer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.drawer li {
+  padding: 14px 0;
+  /* border-bottom: 1px solid #ddd; */
+  cursor: pointer;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.drawer li:hover {
+  color: #353535;
+}
+
+/* Drawer container - full height */
+.drawer {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.35s ease;
+  z-index: 9999999;
+  overflow: hidden;
+}
+
+/* Drawer header stays fixed */
+.drawer-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  /* border-bottom: 1px solid #eee; */
+}
+
+/* Scrollable area */
+.menu-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Each menu inside is scrollable */
+.menu {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 100%;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+  height: 100%;
+  overflow-y: auto;
+  /* ✅ Enable vertical scroll */
+  padding-bottom: 80px;
+  /* Add some space below */
+  scrollbar-width: thin;
+  /* optional - nicer look */
+}
+
+/* Active menu is visible */
+.menu.active {
+  left: 0;
+  opacity: 1;
+  transform: translateX(0);
+  z-index: 2;
+}
+
+.menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.menu::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+/* ===== Search Modal ===== */
+/* 🔹 Fullscreen Search Overlay (Same as Desktop) */
+.search-overlay_mlb {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999999;
+}
+
+
+
+.input_global_mlb{
+  flex: 1;
+  height: 45px;
+  font-size: 14px;
+  padding-left: 15px;
+  border-radius: 0px 0 0 0px;
+  width: 350px;
+}
+
+.set_input_mlb{
+   position: relative;
+   right: 30px;
+}
+.button_search_mlb {
+  border-radius: 0 0px 0px 0;
+  height: 45px;
+}
+
+.close_btn {
+  margin-left: 5px;
+  height: 45px;
+  border-radius: 10px;
+}
+
+.search-results-grid-other-mlb {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+  width: 270px;
+ background-color: white;
+ position: relative;
+ right: 30px;
+ padding: 10px;
+ bottom: 10px;
+}
+
+.search-card {
+  background: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.search-card-img {
+  width: 50%;
+  height: 80px;
+  object-fit: cover;
+}
+
+.search-card-body {
+  padding: 6px;
+}
+
+.search-card-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #222;
+}
+
+.no-data-found-top_mlb {
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #555;
+  width: 270px;
+  background-color: white;
+  position: relative;
+  right: 30px;
+}
+
+ .user-popup_AN {
+  position: absolute;
+  top: 35px;
+  right: -5px;
+  background: #fff;
+  color: #000;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  min-width: 140px;
+  z-index: 9999999;
+}
+
+.popup-triangle_mlb{
+  position: absolute;
+  top: -7px;
+  right: 9px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid rgb(150, 146, 146);
+  z-index: 9999999;
+}
+
+.popup-item {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.popup-item:hover {
+  background-color: #f2f2f2;
+}

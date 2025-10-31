@@ -10,7 +10,7 @@ import { useCartWishlist } from "../../app/CartWishlistContext";
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-    const { getCartWishlistCount } = useCartWishlist();
+  const { getCartWishlistCount } = useCartWishlist();
   const { mobile, loading } = useSelector((state) => state.auth || {});
   const [step, setStep] = useState(1);
   const [timer, setTimer] = useState(30);
@@ -23,6 +23,13 @@ const LoginPage = () => {
   const [loader, setLoader] = useState(false);
   const mobileRef = useRef(null);
   const otpRef = useRef(null);
+  const loginstep = localStorage.getItem('loginstep');
+
+  useEffect(() => {
+    if (loginstep) {
+      setStep(parseInt(loginstep));
+    }
+  }, [loginstep]);
 
   useEffect(() => {
     document.title = `Obsession - Sign In`;
@@ -87,6 +94,7 @@ const LoginPage = () => {
         localStorage.setItem("otp_requested_id", otp_requested_id);
         localStorage.setItem("temp_id", temp_id);
         setStep(2);
+        localStorage.setItem('loginstep',2);
         setTimer(30);
       } else if (res.payload?.notRegistered) {
         setStep(3);
@@ -118,6 +126,7 @@ const LoginPage = () => {
         const { otp_requested_id, temp_id } = res.payload.data;
         localStorage.setItem("otp_requested_id", otp_requested_id);
         localStorage.setItem("temp_id", temp_id);
+        localStorage.setItem('loginstep',2);
         setStep(2);
         setTimer(30);
       }
@@ -142,7 +151,6 @@ const LoginPage = () => {
       });
       return false;
     }
-
     // ✅ Validate 6-digit number (only digits, exactly 6)
     if (!/^\d{6}$/.test(otp)) {
       toast.error("Please enter a valid 6-digit OTP.", {
@@ -161,10 +169,8 @@ const LoginPage = () => {
       });
       return false;
     }
-
     const otp_requested_id = localStorage.getItem("otp_requested_id");
     const temp_id = localStorage.getItem("temp_id");
-
     if (!otp_requested_id || !temp_id) {
       toast.error("Missing OTP session data. Try resending OTP.", {
         style: {
@@ -208,9 +214,13 @@ const LoginPage = () => {
           //   icon: true,
           // });
           setTimeout(() => {
+            localStorage.removeItem('otp_requested_id');
+            localStorage.removeItem('temp_id');
+            localStorage.removeItem('loginstep');
             navigate(-1);
           }, 2000);
         } else if (res.meta.requestStatus === "rejected") {
+          setLoader(false)
           const message =
             res.message ||
             res.error?.data?.message ||
@@ -284,9 +294,9 @@ const LoginPage = () => {
               </div>
               <p>
                 Code sent to <span>{mobile || localMobile}</span>{" "}
-                <a href="#" className="tracker_port" onClick={() => setStep(1)}>
-                  Change
-                </a>
+                <span  className="tracker_port pointer-crusser" onClick={() => {setStep(1); localStorage.setItem('loginstep',1)}}>
+                  <u>Change</u>
+                </span>
               </p>
               <input
                 ref={otpRef}

@@ -170,7 +170,7 @@ const WishlistModal = ({ onClose }) => {
                     alignItems: "center",
                   }}
                 >
-                  <Link to={`/productsdetails/${wishlistItem.action_url}`} target="_blank" rel="noopener noreferrer">
+                  <Link to={`/productsdetails/${product.action_url}`} target="_blank" rel="noopener noreferrer">
                     <img
                       src={product.media}
                       alt={product.name}
@@ -179,7 +179,7 @@ const WishlistModal = ({ onClose }) => {
                   </Link>
                   <div className="wishlist-details" style={{ flex: 1 }}>
                     <div>
-                      <Link to={`/productsdetails/${wishlistItem.action_url}`} target="_blank" rel="noopener noreferrer">
+                      <Link to={`/productsdetails/${product.action_url}`} target="_blank" rel="noopener noreferrer">
                         <p>
                           {product.name.length > 40
                             ? product.name.substring(0, 40) + "..."

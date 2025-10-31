@@ -99,7 +99,7 @@ const BottomTab = () => {
       </div>
       {showwishlist && <WishlistModal onClose={() => setShowwishlist(false)} />}
       <div className={`category-drawer ${showCategories ? "open" : ""}`}>
-        <div className="drawer-header">
+        <div className="drawer-header_btm">
           <h3>Categories</h3>
           <button className="close-btn" onClick={() => setShowCategories(false)}>
             <X size={20} />

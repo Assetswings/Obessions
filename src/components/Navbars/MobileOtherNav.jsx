@@ -24,10 +24,12 @@ import {
   fetchSearchResults,
   clearSearchResults,
 } from "../../pages/Home/searchSlice";
+import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const MobileOtherNav = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+   const { getCartWishlistCount } = useCartWishlist();
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("main");
   const [currentSection, setCurrentSection] = useState(null);
@@ -124,6 +126,7 @@ const MobileOtherNav = () => {
     localStorage.removeItem("userName");
     setIsLoggedIn(false);
     setShowUserPopup(false);
+     getCartWishlistCount();
     window.dispatchEvent(new Event("storage"));
     navigate("/");
   };

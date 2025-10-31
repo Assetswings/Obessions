@@ -33,6 +33,16 @@
     margin-bottom: 4px;
   }
   
+ .tab-icon path {
+  stroke: #888; /* gray for inactive */
+  fill: none;
+  transition: all 0.2s ease; /* smooth color transition */
+}
+
+.tab-item.active .tab-icon path {
+  fill: #000;   /* solid black when active */
+  stroke: none;
+}
   /* Active tab (like NavLink active) */
   .active-tab svg,
   .active-tab span {
@@ -119,6 +129,53 @@
     
   }
   
+
+
+  .icon-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 🛒 Cart badge styling */
+.cart-badge_mlb{
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background-color: rgb(44, 43, 43);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 50%;
+  padding: 2px 5px;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+/* 💖 Wishlist badge styling */
+.wishlist-badge_mlb{
+  position: absolute;
+  top: -5px;
+  right: -2px;
+ background-color: rgb(44, 43, 43);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  padding: 2px 5px;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
   @media (min-width: 768px) {
     .bottom-tab {
       display: none;

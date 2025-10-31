@@ -109,7 +109,8 @@ body {
 
  .mobile_logo_track{
   position: relative;
-  left: 10px;
+  left: 62%;
+
 }
 
 .iteam_main {
@@ -126,6 +127,10 @@ body {
   height: calc(100% - 40px);
 }
 
+ .tab-icon {
+  width: 28px;   /* increase size */
+  height: 28px;
+}
 .menu {
   position: absolute;
   width: 100%;

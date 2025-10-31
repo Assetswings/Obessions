@@ -46,24 +46,10 @@ const BottomTab = () => {
   return (
     <>
       <div className="bottom-tab">
-        <NavLink to="/" end className="tab-item">
-          {({ isActive }) => (
-            <>
-              {/* <Home
-                size={22}
-                color={isActive ? "#000" : "#999"}
-                fill={isActive ? "#000" : "none"}
-              /> */}
-              <HomeIcon
-                width={25}
-                height={25}
-                fill={isActive ? "#000" : "none"} // change fill dynamically
-              // stroke={isActive ? "#000" : "#000"} // optional stroke
-              />
-              <span className={isActive ? "active" : ""}>Home</span>
-            </>
-          )}
-        </NavLink>
+       <NavLink to="/" end className={({ isActive }) => `tab-item ${isActive ? "active" : ""}`}>
+  <HomeIcon className="tab-icon" />
+  <span>Home</span>
+</NavLink>
 
         <div
           className={`tab-item ${showCategories ? "active-tab" : ""}`}
@@ -77,31 +63,39 @@ const BottomTab = () => {
           <span className={showCategories ? "active" : ""}>Categories</span>
         </div>
           {/* {countData?.cart_count ?? ''} */}
-        <NavLink to="/cart" className="tab-item">
-          {({ isActive }) => (
-            <>
-              <ShoppingCart
-                size={22}
-                color={isActive ? "#000" : "#999"}
-                fill={isActive ? "#000" : "none"}
-              />
-              <span className={isActive ? "active" : ""}>Cart</span>
-            </>
-          )}
-        </NavLink>
+      <NavLink to="/cart" className="tab-item cart-tab">
+  {({ isActive }) => (
+    <div className="icon-wrapper cart-icon-wrapper">
+      <ShoppingCart
+        size={22}
+        color={isActive ? "#000" : "#999"}
+        fill={isActive ? "#000" : "none"}
+      />
+      {countData?.cart_count > 0 && (
+        <span className="cart-badge_mlb">{countData.cart_count}</span>
+      )}
+      <span className={isActive ? "active" : ""}>Cart</span>
+    </div>
+  )}
+</NavLink>
 
-        <div
-          className={`tab-item ${showwishlist ? "active-tab" : ""}`}
-          onClick={() => handleWishlistClick()}
-        >
-          {/* {countData?.wishlist_count ?? ''} */}
-          <Heart
-            size={22}
-            color={showwishlist ? "#000" : "#999"}
-            fill={showwishlist ? "#000" : "none"}
-          />
-          <span className={showwishlist ? "active" : ""}>Wishlist</span>
-        </div>
+{/* WISHLIST ICON WITH BADGE */}
+<div
+  className={`tab-item wishlist-tab ${showwishlist ? "active-tab" : ""}`}
+  onClick={() => handleWishlistClick()}
+>
+  <div className="icon-wrapper wishlist-icon-wrapper">
+    <Heart
+      size={22}
+      color={showwishlist ? "#000" : "#999"}
+      fill={showwishlist ? "#000" : "none"}
+    />
+    {countData?.wishlist_count > 0 && (
+      <span className="wishlist-badge_mlb">{countData.wishlist_count}</span>
+    )}
+    <span className={showwishlist ? "active" : ""}>Wishlist</span>
+  </div>
+</div>
       </div>
       {showwishlist && <WishlistModal onClose={() => setShowwishlist(false)} />}
       <div className={`category-drawer ${showCategories ? "open" : ""}`}>

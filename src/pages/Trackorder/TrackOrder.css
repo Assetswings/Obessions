@@ -1,76 +1,131 @@
 .track-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 90vh;
-    background-color: #fff;
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  background: #f9fafb;
 }
 
-.track-box {
-    text-align: left;
-    width: 400px;
+.track-box, .track-result-box {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  width: 100%;
+  max-width: 600px;
 }
 
 .track-title {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #111827;
 }
 
 .track-input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    outline: none;
-    margin-bottom: 15px;
-    font-size: 15px;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 16px;
+  margin-bottom: 12px;
 }
 
 .track-btn {
-    width: 100%;
-    background-color: #1c1b17;
-    color: white;
-    font-size: 15px;
-    padding: 12px 0;
-    border: none;
-    cursor: pointer;
+  width: 100%;
+  padding: 12px;
+  background-color: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .track-btn:hover {
-    background-color: #000;
+  background-color: #1d4ed8;
 }
 
 .track-benefits {
-    margin-top: 30px;
-}
-
-.track-benefits h4 {
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 10px;
+  margin-top: 25px;
 }
 
 .track-benefits ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .track-benefits li {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    margin-bottom: 8px;
-    color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  color: #374151;
 }
 
-.track-benefits li svg {
-    color: #1c1b17;
-    margin-right: 8px;
+/* Result Section */
+.track-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-@media (max-width: 768px) {
-    .track-box {
-        padding: 15px;
-    }
+.reset-btn {
+  background: none;
+  border: none;
+  color: #090909;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.order-summary p {
+  margin: 6px 0;
+  color: #374151;
+}
+
+.status {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+.status.delivered {
+  color: green;
+}
+
+.timeline-title {
+  margin-top: 30px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.timeline {
+  margin-top: 20px;
+  border-left: 3px solid #e5e7eb;
+  padding-left: 15px;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.timeline-icon {
+  margin-right: 12px;
+  font-size: 20px;
+}
+
+.timeline-content .message {
+  font-weight: 600;
+  color: #111827;
+}
+
+.timeline-content .time,
+.timeline-content .location {
+  font-size: 13px;
+  color: #6b7280;
 }

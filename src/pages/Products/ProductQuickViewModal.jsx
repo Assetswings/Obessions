@@ -66,7 +66,6 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       dispatch(fetchProductDetail(actionurl));
     }
     if (storagePin) {
-      console.log('pin', storagePin);
       setPincode(storagePin);
       dispatch(checkPincode(storagePin));
       // handleCheck();

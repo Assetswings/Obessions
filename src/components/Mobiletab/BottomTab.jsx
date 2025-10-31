@@ -4,8 +4,9 @@ import { Home, LayoutGrid, ShoppingCart, Heart, X } from "lucide-react";
 import "./BottomTab.css";
 import { ReactComponent as HomeIcon } from "../../assets/icons/homeicon.svg";
 import WishlistModal from "../Wishtlist/WishlistModal";
+import { useCartWishlist } from "../../app/CartWishlistContext";
 
-  const categories = [
+const categories = [
   { name: "Bath Care", img: "https://i.ibb.co/9Rk33kn/image-648.png" },
   { name: "Dustbins", img: "https://i.ibb.co/R8R9Ndp/image-649.png" },
   { name: "Floor Coverings", img: "https://i.ibb.co/ZRzVmFrL/image-650.png" },
@@ -21,6 +22,7 @@ const BottomTab = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { countData } = useCartWishlist();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -31,21 +33,7 @@ const BottomTab = () => {
     setShowCategories(false);
     // get data from localStorage
     const hero_banner_categories = JSON.parse(localStorage.getItem('hero_banner_categories') || '[]');
-    // map and append image
-    // const mergedCategoriesdata = hero_banner_categories.map((item) => {
-    //   // try to find a matching category by name (case-insensitive & partial match)
-    //   const matched = categories.find(cat =>
-    //     cat.name.toLowerCase().includes(item.name.toLowerCase()) ||
-    //     item.name.toLowerCase().includes(cat.name.toLowerCase())
-    //   );
-    //   return {
-    //     ...item,
-    //     img: matched ? matched.img : null, // add image if found, else null
-    //   };
-    // });
     setmergedCategories(hero_banner_categories);
-    console.log('??????',hero_banner_categories);
-
   }, [location.pathname]);
 
   const handleWishlistClick = () => {
@@ -88,7 +76,7 @@ const BottomTab = () => {
           />
           <span className={showCategories ? "active" : ""}>Categories</span>
         </div>
-
+          {/* {countData?.cart_count ?? ''} */}
         <NavLink to="/cart" className="tab-item">
           {({ isActive }) => (
             <>
@@ -106,6 +94,7 @@ const BottomTab = () => {
           className={`tab-item ${showwishlist ? "active-tab" : ""}`}
           onClick={() => handleWishlistClick()}
         >
+          {/* {countData?.wishlist_count ?? ''} */}
           <Heart
             size={22}
             color={showwishlist ? "#000" : "#999"}

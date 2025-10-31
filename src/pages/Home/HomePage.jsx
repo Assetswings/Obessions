@@ -101,8 +101,8 @@ const HomePage = () => {
         );
         setShopByItems(formattedItems);
       }
-      if(data?.hero_banner_categories){
-        localStorage.setItem('hero_banner_categories',JSON.stringify(data?.hero_banner_categories));
+      if (data?.hero_banner_categories) {
+        localStorage.setItem('hero_banner_categories', JSON.stringify(data?.hero_banner_categories));
       }
     }
   }, [data]);
@@ -268,7 +268,6 @@ const HomePage = () => {
   const FloorDesign4 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[3]?.media || "";
   const FloorDesign5 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[4]?.media || "";
   const FloorDesign6 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[5]?.media || "";
-  console.log("tracker_image", FloorDesign1)
   const floatingImages = [
     { id: 1, src: FloorDesign1, className: "imgf1" },
     { id: 2, src: FloorDesign2, className: "imgf2" },
@@ -450,35 +449,37 @@ const HomePage = () => {
 
         <ul className="shopby-list">
           {shopByItems?.map((item, i) => (
-            <li
-              key={item.label}
-              className={`
+            <Link to={item.url}>
+              <li
+                key={item.label}
+                className={`
                 shopby-item
                 ${item.sale ? "sale" : ""}
                 ${active === i ? "is-active" : ""}
               `}
-              onMouseEnter={() => setActive(i)}
-              onMouseLeave={() => setActive(null)}
-              onClick={() => handelcollectionDetails(item.url)}
-            >
-              {/* Thumbnails */}
-              <div className="thumb-bar">
-                {item.thumbs.map((src, idx) => (
-                  <div>
-                    <img src={src} alt="" key={idx} />
-                  </div>
-                ))}
-              </div>
-              {/* Text label */}
-              <span className="shopby-label">{item.label}</span>
-              {/* VIEW tag */}
-              <span
-                className="view-tag"
-                onClick={() => handelcollectionDetails(item.url)}
+                onMouseEnter={() => setActive(i)}
+                onMouseLeave={() => setActive(null)}
+                // onClick={() => handelcollectionDetails(item.url)}
               >
-                View
-              </span>
-            </li>
+                {/* Thumbnails */}
+                <div className="thumb-bar">
+                  {item.thumbs.map((src, idx) => (
+                    <div>
+                      <img src={src} alt="" key={idx} />
+                    </div>
+                  ))}
+                </div>
+                {/* Text label */}
+                <span className="shopby-label">{item.label}</span>
+                {/* VIEW tag */}
+                <span
+                  className="view-tag"
+                  // onClick={() => handelcollectionDetails(item.url)}
+                >
+                  View
+                </span>
+              </li>
+            </Link>
           ))}
         </ul>
       </section>
@@ -589,7 +590,7 @@ const HomePage = () => {
       {/* ────────────────── 🥀💎💎 🐉 Floor BY SECTION 🐉 💎💎🥀 ────────────────── */}
       < section className="obsessed-section" >
         <h2>
-          <em>Obsessed</em> <span className="track_obsd">Right Now</span>  
+          <em>Obsessed</em> <span className="track_obsd">Right Now</span>
         </h2>
         <div className="obsessed-grid">
           {obsessedItems.map((item, idx) => (
@@ -601,7 +602,7 @@ const HomePage = () => {
                 <img className="img_right_now" src={item.src} alt={item.title} />
                 <p className="obs_track_text">{item.title?.toLowerCase()}</p>
               </Link>
-                
+
             </div>
           ))}
         </div>
@@ -613,13 +614,13 @@ const HomePage = () => {
 
       {/* ────────────────── 🥀💎💎 🐉 OUR OBSESSIONS BY SECTION 🐉 💎💎🥀 ────────────────── */}
       < section className="obsession-section" >
-         <div className="txt_root_warp">
-              <h2 className="obsession-title">OUR OBSESSIONS</h2>
-          </div> 
-          <div className="obsession-image_mlb">
-            <img src={data?.bottom_content?.media} className="img_video_track" alt="Our team" />
-            {/* <img src={videoimage} className="img_video_track" alt="Our team" /> */}
-          </div>
+        <div className="txt_root_warp">
+          <h2 className="obsession-title">OUR OBSESSIONS</h2>
+        </div>
+        <div className="obsession-image_mlb">
+          <img src={data?.bottom_content?.media} className="img_video_track" alt="Our team" />
+          {/* <img src={videoimage} className="img_video_track" alt="Our team" /> */}
+        </div>
 
         <div className="obsession-content">
           <div className="obsession-image">

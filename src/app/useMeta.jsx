@@ -12,7 +12,7 @@ export default function useMeta(pageSlug) {
         const encodedSlug = encodeURIComponent(pageSlug);
         const res = await API.get(`/meta?page_slug=${encodedSlug}`);
         const meta = res.data?.data;
-        if (!meta) return;
+        if (meta?.success &&!meta?.success) return;
         applyMeta(meta);
       } catch (error) {
         console.error("Error fetching meta:", error);

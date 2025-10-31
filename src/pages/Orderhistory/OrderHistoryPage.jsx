@@ -93,7 +93,7 @@ const OrderHistoryPage = () => {
     setShowModal(false);
     if (selectedItem) {
       navigate("/returnexchange", {
-        state: { item: selectedItem, orderNo: selectedOrder,selectOption : option },
+        state: { item: selectedItem, orderNo: selectedOrder, selectOption: option },
       });
     }
   };
@@ -402,7 +402,7 @@ const OrderHistoryPage = () => {
                   className="go-back"
                   onClick={() => {
                     setShowModal(false);
-                    setSelectedItem(null);
+                    setSelectedItem([]);
                   }}
                 >
                   GO BACK
@@ -426,7 +426,7 @@ const OrderHistoryPage = () => {
                   className="go-back"
                   onClick={() => {
                     setShowcnModal(false);
-                    setSelectedItem(null);
+                    setSelectedItem([]);
                   }}
                 >
                   DON'T CANCEL

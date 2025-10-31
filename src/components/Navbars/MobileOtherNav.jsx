@@ -67,6 +67,21 @@ const MobileOtherNav = () => {
     return () => window.removeEventListener("storage", checkLogin);
   }, []);
 
+     useEffect(() => {
+     if (isOpen) {
+       // Disable page scroll when drawer is open
+       document.body.style.overflow = "hidden";
+     } else {
+       // Enable scroll when drawer is closed
+       document.body.style.overflow = "auto";
+     }
+   
+     // Cleanup when component unmounts
+     return () => {
+       document.body.style.overflow = "auto";
+     };
+   }, [isOpen]);
+   
   // ✅ Close popup when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {

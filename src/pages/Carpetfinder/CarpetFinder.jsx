@@ -230,20 +230,20 @@ const CarpetFinder = () => {
           </div>
 
           <div className="finder-buttons">
-            <div
-              className="arrow-stack"
-              onClick={() => setCurrentStep((prev) => prev - 1)}
-              disabled={currentStep === 0}>
-              <div  style={{display:"flex"}}>
-                <div>
-                  <img className="buttonarrawright" src={arrowleft} alt="arrowleft" />
-                </div>
-                <div>
-                  <span> BACK </span>
+            {currentStep != 0 &&
+              <div
+                className="arrow-stack"
+                onClick={() => setCurrentStep((prev) => prev - 1)} >
+                <div style={{ display: "flex" }}>
+                  <div>
+                    <img className="buttonarrawright" src={arrowleft} alt="arrowleft" />
+                  </div>
+                  <div>
+                    <span> BACK </span>
+                  </div>
                 </div>
               </div>
-
-            </div>
+            }
             {currentStep < steps.length - 1 ? (
               <div
                 className="arrow-stack"
@@ -256,7 +256,7 @@ const CarpetFinder = () => {
                   }
                   setCurrentStep((prev) => prev + 1);
                 }}>
-                <div style={{display:"flex"}}>
+                <div style={{ display: "flex" }}>
                   <div>
                     <span> NEXT </span>
                   </div>

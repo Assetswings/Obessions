@@ -27,9 +27,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange, totalitems }) => {
 
   return (
     <nav aria-label="Page navigation example">
-      <p className="pagination-count">
+      {/* <p className="pagination-count">
         {`Showing ${rangeStart} – ${rangeEnd} of ${totalItems}`}
-      </p>
+      </p> */}
       <ul className="pagination custom-pagination">
         {/* Previous */}
         <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>

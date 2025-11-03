@@ -127,11 +127,12 @@ const OtherTopnav = () => {
     };
   }, [showSearch]);
   const handleLogoClick = () => navigate("/");
-  const handleCartClick = () => {
-    checkSession();
-    if (isLoggedIn) {
-      navigate("/cart");
-    } else {
+  const handleCartClick = (e) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      e.preventDefault(); // Stop <Link> navigation
+      // Show your login modal or redirect
       setShowLoginPrompt(true);
     }
   };
@@ -209,9 +210,6 @@ const OtherTopnav = () => {
 
         <ul className="nav-links">
           <li onMouseEnter={() => setShowMegaMenu(true)}>SHOP</li>
-          {/* <li>
-            <Link to='/new-arrivals'>NEW ARRIVALS</Link>
-          </li> */}
           <li>
             <NavLink to="/new-arrivals" className={({ isActive }) => (isActive ? "active-tab" : "")}>NEW ARRIVALS</NavLink>
           </li>
@@ -288,7 +286,8 @@ const OtherTopnav = () => {
             <span className="wishlist-badge" style={{ right: "65px", top: "10px" }}>{countData?.wishlist_count ?? ''}</span>
           </div>
           <div title="Cart">
-            <ShoppingCart
+            <Link to="/cart" onClick={handleCartClick}>
+              <ShoppingCart
               onClick={handleCartClick}
               strokeWidth={1}
               title="Shopping Cart"
@@ -296,6 +295,7 @@ const OtherTopnav = () => {
               style={{ cursor: "pointer" }}
             />
             <span className="wishlist-badge" style={{ right: "22px", top: "10px" }}>{countData?.cart_count ?? ''}</span>
+            </Link>
           </div>
         </div>
       </nav>

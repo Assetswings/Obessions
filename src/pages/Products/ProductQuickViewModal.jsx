@@ -575,12 +575,24 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                         value={pincode}
                         onChange={(e) => setPincode(e.target.value)}
                       />
-                      <button onClick={handleReset} className="check-btn-2">
-                        Reset
-                      </button>
-                      <button onClick={handleCheck} className="check-btn-2">
-                        Check
-                      </button>
+                      {pincode ? (
+                        <button onClick={handleReset} className="rest-btn">
+                          Reset
+                        </button>
+                      ) : (
+                        <button className="rest-btn" style={{ visibility: 'hidden' }}>
+                          Reset
+                        </button>
+                      )}
+                      {pincodeDetails?.is_active ? (
+                        <button className="check-btn-2" style={{ visibility: 'hidden' }}>
+                          Check
+                        </button>
+                      ) : (
+                        <button onClick={handleCheck} className="check-btn-2">
+                          Check
+                        </button>
+                      )}
                     </div>
 
                     {pinloading && <p>Checking...</p>}
@@ -611,7 +623,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     <button className="add-to-cart-btn_qucick" onClick={handleAddToCart}>
                       ADD TO CART
                     </button>
-                    <div className="wst_box_quick" onClick={(e) => toggleWishlist(e, selectedSize)}>
+                    <div className="wst_box_quick pointer-crusser" onClick={(e) => toggleWishlist(e, selectedSize)}>
                       {selectedSize?.is_wishlisted == 1 ? (
                         <Player
                           autoplay
@@ -649,14 +661,14 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                         />
                         <span className="txt-sub-info-pdp">Free Shipping</span>
                       </div>
-                      <div>
+                      {/* <div>
                         <img
                           src="https://i.ibb.co/SDsg21mX/Frame-2763.png"
                           className="img-ruppee"
                           alt="Prepaid only"
                         />
                         <span className="txt-sub-info-pdp">Prepaid orders only</span>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="txt-exchange">
                       <img
@@ -665,7 +677,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                         alt="Returns"
                       />
                       <span className="txt-sub-info-pdp">
-                        5 days return and exchange available
+                        {productDetails?.return_exchange_days}
                       </span>
                     </div>
                     <p className="txt-Carpet-Finder">

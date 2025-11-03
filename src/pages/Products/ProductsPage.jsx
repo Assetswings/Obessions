@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./ProductsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "./productsSlice";
@@ -62,6 +62,9 @@ const ProductsPage = () => {
   const limit = pagination?.limit || 20;
   const totalPages = Math.ceil(total / limit);
 
+  const rangeStart = total === 0 ? 0 : (currentPage - 1) * limit + 1;
+  const rangeEnd = Math.min(currentPage * limit, total);
+
   useEffect(() => {
     setProducts(Array.isArray(data) ? data : []);
   }, [data]);
@@ -117,13 +120,43 @@ const ProductsPage = () => {
     }
   };
 
+  // ✅ Load filters from localStorage on page load
+  useEffect(() => {
+    const savedFilters = localStorage.getItem("selectedFilters");
+    if (savedFilters) {
+      try {
+        setSelectedFilters(JSON.parse(savedFilters));
+        setTempMobileFilters(JSON.parse(savedFilters));
+      } catch (e) {
+        console.error("Error parsing filters:", e);
+        localStorage.removeItem("selectedFilters");
+      }
+    }
+  }, []);
+
+  // ✅ Clear filters when leaving page or navigating away
+  const prevPathRef = useRef(location.pathname);
+  useEffect(() => {
+    const prevPath = prevPathRef.current;
+    return () => {
+      // Only clear if navigating away from this page
+      if (prevPath === "/products" && location.pathname !== "/products") {
+        localStorage.removeItem("selectedFilters");
+      }
+    };
+  }, [location.pathname]);
+
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
       const current = prev[filterKey] || [];
       const updated = current.includes(value)
         ? current.filter((v) => v !== value)
         : [...current, value];
-      return { ...prev, [filterKey]: updated };
+      // return { ...prev, [filterKey]: updated };
+      const newFilters = { ...prev, [filterKey]: updated };
+      // Save to localStorage
+      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
+      return newFilters;
     });
   };
 
@@ -354,7 +387,11 @@ const ProductsPage = () => {
       const updated = current.includes(value)
         ? current.filter((v) => v !== value)
         : [...current, value];
-      return { ...prev, [filterKey]: updated };
+      // return { ...prev, [filterKey]: updated };
+      const newFilters = { ...prev, [filterKey]: updated };
+      // Save to localStorage
+      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
+      return newFilters;
     });
   };
   useEffect(() => {
@@ -371,83 +408,90 @@ const ProductsPage = () => {
   };
   const breadcrumbPaths = [
     {
-      label: subcategory ? (
-        formatTitle(subcategory)
-      ) : (
-        formatTitle(category)
-      ), to: ""
-    }, // last one (no link)
+      label: products.length > 0
+        ? subcategory
+          ? formatTitle(subcategory)
+          : formatTitle(category)
+        : "",
+      to: ""
+    }
   ];
   return (
     <>
       <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} />
       <Breadcrumbs paths={breadcrumbPaths} />
       {/* MOBILE FILTER BUTTON */}
-      <div className="track_filter">
-            <div className="sortby-container">
-              <div className="dropdown">
-                <div
-                  className="dropdown-toggle sortby-btn"
-                  id="dropdownMenuButton"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  SORT BY
-                </div>
-                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  {Object.entries(sorting).map(([key, label]) => (
-                    <li key={key}>
-                      <button
-                        className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                        onClick={() => handleSelect(key)}
-                      >
-                        {label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+      {products.length > 0 &&
+        <div className="track_filter">
+          <div className="sortby-container">
+            <div className="dropdown">
+              <div
+                className="dropdown-toggle sortby-btn"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                SORT BY
               </div>
-            </div>
-            <div
-              className="mobile-filter-btn"
-              onClick={() => setIsFilterOpen(true)}
-            >
-              <span>
-                {" "}
-                <SlidersHorizontal size={15} />
-              </span>{" "}
-              Filters
+              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {Object.entries(sorting).map(([key, label]) => (
+                  <li key={key}>
+                    <button
+                      className={`dropdown-item ${selected === key ? "active-option" : ""}`}
+                      onClick={() => handleSelect(key)}
+                    >
+                      {label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
+          <div
+            className="mobile-filter-btn"
+            onClick={() => setIsFilterOpen(true)}
+          >
+            <span>
+              {" "}
+              <SlidersHorizontal size={15} />
+            </span>{" "}
+            Filters
+          </div>
+        </div>
+      }
       <div className="custom-products-page">
         <aside className="custom-filters">
-          <h2 className="title_prd_roots">
-            {loading ? (
-              <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
-            ) : subcategory ? (
-              formatTitle(subcategory)
-            ) : (
-              formatTitle(category)
-            )}
-          </h2>
+          {products.length > 0 &&
+            <>
+              <h2 className="title_prd_roots">
+                {loading ? (
+                  <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
+                ) : subcategory ? (
+                  formatTitle(subcategory)
+                ) : (
+                  formatTitle(category)
+                )}
+              </h2>
 
-          <div className="root_devider_flt">
-            {loading ? (
-              <>
-                <Skeleton height={22} width={80} style={{ marginBottom: 5 }} />
+              <div className="root_devider_flt">
+                {loading ? (
+                  <>
+                    <Skeleton height={22} width={80} style={{ marginBottom: 5 }} />
 
-              </>
-            ) : (
-              <>
-                <h2>Filters</h2>
-                {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
-                  <p className="clr-all" onClick={() => setSelectedFilters({})}>
-                    Clear all
-                  </p>
-                ) : null}
-              </>
-            )}
-          </div>
+                  </>
+                ) : (
+                  <>
+                    <h2>Filters</h2>
+                    {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
+                      <p className="clr-all" onClick={() => { setSelectedFilters({}); localStorage.removeItem("selectedFilters"); }}>
+                        Clear all
+                      </p>
+                    ) : null}
+                  </>
+                )}
+              </div>
+            </>
+          }
           {loading ? (
             // 🔄 Skeleton loader while fetching data
             <>
@@ -475,10 +519,10 @@ const ProductsPage = () => {
               {/* 4️⃣ Product Filters */}
               {filters.product_filter &&
                 Object.entries(filters.product_filter)
-                .filter(([key, values]) => Array.isArray(values) && values.length > 0)
-                .map(([key, values]) =>
-                  renderFilterGroup(key.replace(/_/g, " "), values, key)
-                )}
+                  .filter(([key, values]) => Array.isArray(values) && values.length > 0)
+                  .map(([key, values]) =>
+                    renderFilterGroup(key.replace(/_/g, " "), values, key)
+                  )}
             </>
           ) : (
             // ❌ No filters found
@@ -486,160 +530,167 @@ const ProductsPage = () => {
           )}
 
         </aside>
-        
+
         <main className="custom-product-list">
-          <div className="sortby-container-mlb">
-            <div className="dropdown">
-              <div
-                className="dropdown-toggle sortby-btn"
-                id="dropdownMenuButton"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                SORT BY
-              </div>
-              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {Object.entries(sorting).map(([key, label]) => (
-                  <li key={key}>
-                    <button
-                      className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                      onClick={() => handleSelect(key)}
-                    >
-                      {label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="product-grid">
-  {loading ? (
-    Array.from({ length: 8 }).map((_, i) => (
-      <div key={i} className="product-card-dtl">
-        <Skeleton height={200} />
-        <Skeleton height={20} width={150}  />
-        <Skeleton height={20} width={100} />
-      </div>
-    ))
-  ) : products.length > 0 ? (
-    products.map((item) => {
-      const isWishlisted = item.is_wishlisted;
-      return (
-        <div
-          key={item.id}
-          className="product-card-dtl pointer-crusser"
-          style={{ cursor: "pointer" }}
-        >
-          <div className="product-img-box">
-            <Link
-              to={`/productsdetails/${item.action_url}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-                <img
-                src={item.media_list?.main?.file}
-                alt={item.name}
-                title={item.name}
-                 className="main_image"
-              />
-              <img
-                src={item.media_list?.hover?.file}
-                alt={item.name}
-                title={item.name}
-                 className="hover_image"
-              />
-            </Link>
-
-            {/* Wishlist Button */}
-            <button
-              className="wishlist-btn_products pointer-crusser"
-              onClick={(e) => toggleWishlist(e, item)}
-            >
-              {animatedWish === item.id ? (
-                <div
-                  style={{
-                    width: 20,
-                    height: 24,
-                    overflow: "hidden",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Player
-                    autoplay
-                    keepLastFrame
-                    src={heartAnimation}
-                    style={{
-                      width: 139,
-                      height: 139,
-                      transform: "scale(0.5)",
-                      transformOrigin: "center",
-                    }}
-                  />
+          {products.length > 0 &&
+            <>
+              <div className="sortby-container-mlb">
+                <div className="dropdown">
+                  <div
+                    className="dropdown-toggle sortby-btn"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    SORT BY
+                  </div>
+                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {Object.entries(sorting).map(([key, label]) => (
+                      <li key={key}>
+                        <button
+                          className={`dropdown-item ${selected === key ? "active-option" : ""}`}
+                          onClick={() => handleSelect(key)}
+                        >
+                          {label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ) : (
-                <Heart
-                  color={isWishlisted ? "#FF0000" : "#000"}
-                  fill={isWishlisted ? "#FF0000" : "none"}
-                  size={20}
-                  strokeWidth={2}
-                />
-              )}
-            </button>
+              </div>
+              <p style={{ fontWeight: "bold" }}>
+                {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
+              </p>
+            </>
+          }
+          <div className="product-grid">
+            {loading ? (
+              Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="product-card-dtl">
+                  <Skeleton height={200} />
+                  <Skeleton height={20} width={150} />
+                  <Skeleton height={20} width={100} />
+                </div>
+              ))
+            ) : products.length > 0 ? (
+              products.map((item) => {
+                const isWishlisted = item.is_wishlisted;
+                return (
+                  <div
+                    key={item.id}
+                    className="product-card-dtl pointer-crusser"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className="product-img-box">
+                      <Link
+                        to={`/productsdetails/${item.action_url}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img
+                          src={item.media_list?.main?.file}
+                          alt={item.name}
+                          title={item.name}
+                          className="main_image"
+                        />
+                        <img
+                          src={item.media_list?.hover?.file}
+                          alt={item.name}
+                          title={item.name}
+                          className="hover_image"
+                        />
+                      </Link>
 
-            {/* Quick View */}
-            <div className="qucick_dv">
-              <span
-                className="quick-view_pd"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setQuickViewProduct(item);
-                  setShowModal(true);
-                }}
-              >
-                Quick View &nbsp;
-                <Expand color="#000000" size={15} strokeWidth={1.25} />
-              </span>
-            </div>
+                      {/* Wishlist Button */}
+                      <button
+                        className="wishlist-btn_products pointer-crusser"
+                        onClick={(e) => toggleWishlist(e, item)}
+                      >
+                        {animatedWish === item.id ? (
+                          <div
+                            style={{
+                              width: 20,
+                              height: 24,
+                              overflow: "hidden",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Player
+                              autoplay
+                              keepLastFrame
+                              src={heartAnimation}
+                              style={{
+                                width: 139,
+                                height: 139,
+                                transform: "scale(0.5)",
+                                transformOrigin: "center",
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <Heart
+                            color={isWishlisted ? "#FF0000" : "#000"}
+                            fill={isWishlisted ? "#FF0000" : "none"}
+                            size={20}
+                            strokeWidth={2}
+                          />
+                        )}
+                      </button>
+
+                      {/* Quick View */}
+                      <div className="qucick_dv">
+                        <span
+                          className="quick-view_pd"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setQuickViewProduct(item);
+                            setShowModal(true);
+                          }}
+                        >
+                          Quick View &nbsp;
+                          <Expand color="#000000" size={15} strokeWidth={1.25} />
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Product Title */}
+                    <p className="product-title truncate pointer-crusser">
+                      <Link
+                        to={`/productsdetails/${item.action_url}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {item.name}
+                      </Link>
+                    </p>
+
+                    {/* Product Price */}
+                    <Link
+                      to={`/productsdetails/${item.action_url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <div className="product-price">
+                        <span>₹{item.selling_price}</span>
+                        {item.mrp && item.mrp !== item.selling_price && (
+                          <>
+                            <span className="original">₹{item.mrp}</span>
+                            <span className="discount">
+                              ({item.discount_percent}% OFF)
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })
+            ) : (
+              <></>
+            )}
           </div>
-
-          {/* Product Title */}
-          <p className="product-title truncate pointer-crusser">
-            <Link
-              to={`/productsdetails/${item.action_url}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {item.name}
-            </Link>
-          </p>
-
-          {/* Product Price */}
-          <Link
-            to={`/productsdetails/${item.action_url}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div className="product-price">
-              <span>₹{item.selling_price}</span>
-              {item.mrp && item.mrp !== item.selling_price && (
-                <>
-                  <span className="original">₹{item.mrp}</span>
-                  <span className="discount">
-                    ({item.discount_percent}% OFF)
-                  </span>
-                </>
-              )}
-            </div>
-          </Link>
-        </div>
-      );
-    })
-  ) : (
-    <></>
-  )}
-</div>
 
 
           {products?.length === 0 &&
@@ -665,7 +716,7 @@ const ProductsPage = () => {
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
-            totalitems = {products.length}
+            totalitems={products.length}
           />
         </main>
 
@@ -766,7 +817,7 @@ const ProductsPage = () => {
 
         <div className="mobile-filter-body">
           <div className="track-lock">
-            <p className="clr-all" onClick={() => setTempMobileFilters({})}>
+            <p className="clr-all" onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}>
               clear all
             </p>
           </div>
@@ -793,10 +844,10 @@ const ProductsPage = () => {
 
               {filters.product_filter &&
                 Object.entries(filters.product_filter)
-                .filter(([key, values]) => Array.isArray(values) && values.length > 0)
-                .map(([key, values]) =>
-                  renderFilterGroup(key.replace(/_/g, " "), values, key, true)
-                )}
+                  .filter(([key, values]) => Array.isArray(values) && values.length > 0)
+                  .map(([key, values]) =>
+                    renderFilterGroup(key.replace(/_/g, " "), values, key, true)
+                  )}
             </>
           )}
         </div>

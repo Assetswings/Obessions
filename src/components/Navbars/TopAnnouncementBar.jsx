@@ -129,9 +129,14 @@ const TopAnnouncementBar = () => {
     else setShowLoginPrompt(true);
   };
 
-  const handleCartClick = () => {
-    if (isLoggedIn) navigate("/cart");
-    else setShowLoginPrompt(true);
+  const handleCartClick = (e) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      e.preventDefault(); // Stop <Link> navigation
+      // Show your login modal or redirect
+      setShowLoginPrompt(true);
+    }
   };
 
   return (
@@ -221,14 +226,25 @@ const TopAnnouncementBar = () => {
             <span className="wishlist-badge" style={{ right: "21px" }}>{countData?.wishlist_count ?? ''}</span>
           </div>
           <div title="Cart">
-            <ShoppingCart
+            <Link to="/cart" onClick={handleCartClick} style={{ position: "relative" }}>
+              <ShoppingCart
+                size={22}
+                style={{ cursor: "pointer" }}
+                strokeWidth={1}
+                title="Cart"
+              />
+              <span className="wishlist-badge" style={{ left: "93%" }}>
+                {countData?.cart_count ?? ""}
+              </span>
+            </Link>
+            {/* <ShoppingCart
               size={22}
               onClick={handleCartClick}
               style={{ cursor: "pointer" }}
               strokeWidth={1}
               title="Cart"
             />
-            <span className="wishlist-badge" style={{ left: "93%" }}>{countData?.cart_count ?? ''}</span>
+            <span className="wishlist-badge" style={{ left: "93%" }}>{countData?.cart_count ?? ''}</span> */}
           </div>
         </div>
       </div>

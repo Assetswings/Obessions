@@ -37,6 +37,9 @@ const OrderHistoryPage = () => {
   const limit = pagination?.limit || 20;
   const totalPages = Math.ceil(total / limit);
 
+  const rangeStart = total === 0 ? 0 : (currentPage - 1) * limit + 1;
+  const rangeEnd = Math.min(currentPage * limit, total);
+
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
@@ -381,7 +384,9 @@ const OrderHistoryPage = () => {
                   </div>
                 )
               })}
-
+              <p style={{ fontWeight: "bold",textAlign:"center" }}>
+                {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
+              </p>
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}

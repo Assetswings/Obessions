@@ -39,12 +39,13 @@ import useMeta from "../../app/useMeta";
 
 const HomePage = () => {
   const token = localStorage.getItem("token");
-  useMeta("https://www.obsessions.co.in");
   const [active, setActive] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const inputRef = useRef(null);
+  const homepageURL = `${window.location.origin}${location.pathname}`;
+  useMeta(homepageURL);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [query, setQuery] = useState("");
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -459,7 +460,7 @@ const HomePage = () => {
               `}
                 onMouseEnter={() => setActive(i)}
                 onMouseLeave={() => setActive(null)}
-                // onClick={() => handelcollectionDetails(item.url)}
+              // onClick={() => handelcollectionDetails(item.url)}
               >
                 {/* Thumbnails */}
                 <div className="thumb-bar">
@@ -474,7 +475,7 @@ const HomePage = () => {
                 {/* VIEW tag */}
                 <span
                   className="view-tag"
-                  // onClick={() => handelcollectionDetails(item.url)}
+                // onClick={() => handelcollectionDetails(item.url)}
                 >
                   View
                 </span>

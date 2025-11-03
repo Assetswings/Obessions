@@ -203,7 +203,7 @@ const OtherTopnav = () => {
           className="nav-logo"
           style={{ cursor: "pointer" }}>
           <Link to='/'>
-            <img src={logo} alt="Obsession" />
+            <img src={localStorage.getItem('logo')} alt="Obsession" />
           </Link>
         </div>
 

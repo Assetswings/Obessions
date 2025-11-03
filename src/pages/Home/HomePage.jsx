@@ -105,8 +105,30 @@ const HomePage = () => {
       if (data?.hero_banner_categories) {
         localStorage.setItem('hero_banner_categories', JSON.stringify(data?.hero_banner_categories));
       }
+      if (data?.logo_content) {
+        localStorage.setItem('logo', data?.logo_content?.logo);
+        localStorage.setItem('favicon', data?.logo_content?.favicon);
+        setFavicon(data?.logo_content?.favicon);
+      }
     }
   }, [data]);
+
+  const setFavicon = (url) => {
+    localStorage.setItem("favicon_url", url);
+
+    const existingLink = document.querySelector("link[rel='icon']");
+    if (existingLink) existingLink.remove();
+
+    const link = document.createElement("link");
+    link.rel = "icon";
+    link.type = "image/png";
+    link.href = url;
+    console.log(link);
+    
+    document.head.appendChild(link);
+    console.log(document.head);
+    
+  };
 
   function formatLabel(key) {
     return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -283,7 +305,7 @@ const HomePage = () => {
       <div className="spacer_track"></div>
       {/* ───────────────────── HERO ───────────────────── */}
       <div className="homepage container-fluid position-relative p-5">
-        <img src={logo} className="img-left-logo" alt="Obesession" />
+        <img src={data?.logo_content?.logo} className="img-left-logo" alt="Obesession" />
         <h1 className="display-1 bold position-absolute obsessions-text">
           obsessions
         </h1>

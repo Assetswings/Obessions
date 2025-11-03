@@ -35,6 +35,7 @@ import Tableimage from "../../assets/images/Kitchen1.png";
 import videoimage from "../../assets/images/videoimage.png";
 import { Search } from "lucide-react";
 import useMeta from "../../app/useMeta";
+import { useHeader } from "../../app/CartWishlistContext";
 
 
 const HomePage = () => {
@@ -59,8 +60,29 @@ const HomePage = () => {
   const { data } = useSelector((state) => state.home);
   const searchState = useSelector((state) => state.search || {});
   const { results = [], loading, error } = searchState;
-  // console.log("🔥fffffff::::::::", results);
-  // Pick random hero set whenever HomePage mounts
+
+  const searchSectionRef = useRef(null);
+  const { setShowSearchIcon } = useHeader();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // When section is visible => hide icon
+        // When not visible => show icon
+        setShowSearchIcon(!entry.isIntersecting);
+      },{
+        threshold: 0.1, // triggers when 10% of element is visible
+      }
+    );
+    if (searchSectionRef.current) {
+      observer.observe(searchSectionRef.current);
+    }
+    return () => {
+      if (searchSectionRef.current) {
+        observer.unobserve(searchSectionRef.current);
+      }
+    };
+  }, [setShowSearchIcon]);
 
   useEffect(() => {
     document.title = "Obsession - Home";
@@ -124,10 +146,10 @@ const HomePage = () => {
     link.type = "image/png";
     link.href = url;
     console.log(link);
-    
+
     document.head.appendChild(link);
     console.log(document.head);
-    
+
   };
 
   function formatLabel(key) {
@@ -333,7 +355,7 @@ const HomePage = () => {
           </p>
         </div>
 
-        <div
+        <div ref={searchSectionRef}
           className={`search-wrapper bg-white rounded shadow ${isSearchActive ? "active" : ""
             }`}
         >

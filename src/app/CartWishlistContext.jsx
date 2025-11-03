@@ -35,3 +35,17 @@ export const CartWishlistProvider = ({ children }) => {
 };
 
 export const useCartWishlist = () => useContext(CartWishlistContext);
+
+const HeaderContext = createContext();
+
+export const HeaderProvider = ({ children }) => {
+  const [showSearchIcon, setShowSearchIcon] = useState(false);
+
+  return (
+    <HeaderContext.Provider value={{ showSearchIcon, setShowSearchIcon }}>
+      {children}
+    </HeaderContext.Provider>
+  );
+};
+
+export const useHeader = () => useContext(HeaderContext);

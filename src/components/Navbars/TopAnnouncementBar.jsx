@@ -7,6 +7,7 @@ import {
   LogOut,
   ChevronRight,
   ChevronLeft,
+  Search,
 } from "lucide-react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
@@ -15,10 +16,15 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import "./TopAnnouncementBar.css";
 import API from "../../app/api";
-import { useCartWishlist } from "../../app/CartWishlistContext";
+import { useCartWishlist, useHeader } from "../../app/CartWishlistContext";
+import { FaSearch } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { clearSearchResults, fetchSearchResults } from "../../pages/Home/searchSlice";
 
 const TopAnnouncementBar = () => {
+    const dispatch = useDispatch();
   const { countData } = useCartWishlist();
+  const { showSearchIcon } = useHeader();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showUserPopup, setShowUserPopup] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
@@ -26,6 +32,12 @@ const TopAnnouncementBar = () => {
   const [banners, setBanners] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState("right");
+  const [showSearch, setShowSearch] = useState(false);
+  const inputRef = useRef(null);
+  const searchState = useSelector((state) => state.search || {});
+  const { results = [], loading, error } = searchState;
+  const [query, setQuery] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -80,6 +92,43 @@ const TopAnnouncementBar = () => {
       return () => clearInterval(interval);
     }
   }, [banners]);
+
+  useEffect(() => {
+    if (results.length > 0) {
+      setSearchResult(results);
+    }
+  }, [results]);
+
+  useEffect(() => {
+    if (!query.trim()) {
+      dispatch(clearSearchResults());
+      return;
+    }
+    const timeoutId = setTimeout(() => {
+      dispatch(fetchSearchResults(query));
+    }, 400);
+
+    return () => clearTimeout(timeoutId);
+  }, [query, dispatch]);
+
+  useEffect(() => {
+    if (showSearch) {
+      // Focus input automatically
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+      // Block scroll
+      document.body.style.overflow = "hidden";
+    } else {
+      // Restore scroll
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup when unmount
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showSearch]);
 
   const handleNext = () => {
     setSlideDirection("right");
@@ -139,6 +188,14 @@ const TopAnnouncementBar = () => {
     }
   };
 
+  // Search login 
+  const claersearch = () => {
+    setShowSearch(false);
+    // dispatch(clearSearchResults());
+    setQuery("");
+    setSearchResult([]);
+  };
+
   return (
     <>
       {/* <ToastContainer
@@ -179,6 +236,13 @@ const TopAnnouncementBar = () => {
         </div>
 
         <div className="icons">
+          {showSearchIcon && (
+            <div className="announce-search-bar">
+              <button onClick={() => setShowSearch(true)} >
+                <FaSearch />
+              </button>
+            </div>
+          )}
           <div
             ref={userWrapperRef}
             className="user-click-wrapper"
@@ -248,6 +312,103 @@ const TopAnnouncementBar = () => {
           </div>
         </div>
       </div>
+
+      {/* 🔹 Fullscreen Search Modal */}
+      {showSearch && (
+        <div className="search-overlay" onClick={() => claersearch()}>
+          <div
+            className="search-modal-other"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="d-flex">
+              <input
+                ref={inputRef}
+                type="text"
+                className="form-control border-0 input_global"
+                placeholder="WHAT ARE YOU LOOKING FOR?"
+                value={query}
+                onChange={(e) => {
+                  // Allow only letters, numbers, and spaces (no special characters)
+                  let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
+
+                  // Remove leading spaces
+                  value = value.replace(/^\s+/, "");
+
+                  setQuery(value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && query.trim()) {
+                    claersearch();
+                    navigate("/searchlist", { state: { query } });
+                  }
+                }}
+              // onFocus={handleFocus}
+              />
+              {loading && (
+                <div style={{ backgroundColor: "white" }} className="sarchlader">
+                  <div
+                    className="spinner-border text-secondary"
+                    style={{ width: "20px", height: "20px" }}
+                    role="status"
+                  >
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              )}
+              <button
+                className="btn btn-dark  button_search"
+                disabled={!query?.trim()}
+                onClick={() => {
+                  claersearch();
+                  navigate("/searchlist", {
+                    state: { query: query },
+                  });
+                }}
+              >
+                <Search strokeWidth={1.25} />
+              </button>
+            </div>
+
+            {Array.isArray(searchResult) && (
+              <>
+                {searchResult.length > 0 ? (
+                  <div className="search-results-grid-other">
+                    {searchResult.slice(0, 8).map((item, index) => (
+                      <div
+                        key={index}
+                        className="search-card"
+                        onClick={() => {
+                          claersearch();
+                        }}>
+                        <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                          <img
+                            src={item.media_list?.main?.file}
+                            alt={item.name}
+                            className="search-card-img"
+                          />
+                          <div className="search-card-body">
+                            <h6 className="search-card-title">
+                              {item.name.split(" ").slice(0, 5).join(" ")}
+                            </h6>
+                          </div>
+
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  // ✅ No Data Found message 
+                  !loading && query?.trim() && (
+                    <div className="no-data-found-top">
+                      <p>No Result found</p>
+                    </div>
+                  )
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       {showWishlist && <WishlistModal onClose={() => setShowWishlist(false)} />}
       {showLoginPrompt && (

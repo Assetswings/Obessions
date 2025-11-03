@@ -13,8 +13,9 @@ const VideoSection = () => {
   const [paused, setPaused] = useState(false);
 
   const galleries = useSelector((state) => state.home?.data?.galleries || []);
+  console.log("video_data------>", galleries);
 
-  // Horizontal slider scroll hello
+  // Horizontal slider scroll
   const scroll = (direction) => {
     const { current } = sliderRef;
     if (current) {
@@ -26,22 +27,23 @@ const VideoSection = () => {
     }
   };
 
-  // Pause slider videos
+  // Pause other videos but keep their thumbnails
   const handlePlay = (index) => {
     videoRefs.current.forEach((video, i) => {
       if (i !== index && video) {
         video.pause();
-        video.currentTime = 0;
+        // ❌ Do NOT reset currentTime, this removes the poster
+        // ✅ Just pause
       }
     });
   };
 
-  // Open reel mode at specific video
+  // Open reel view for specific video
   const handleVideoClick = (index) => {
     videoRefs.current.forEach((v) => {
       if (v) {
         v.pause();
-        v.currentTime = 0;
+        v.currentTime = 0; // OK here since we're leaving the slider
       }
     });
 
@@ -65,6 +67,14 @@ const VideoSection = () => {
     setActiveIndex(null);
     setPaused(false);
     document.body.style.overflow = "auto";
+
+    // Reset reel videos so next open starts from start
+    reelVideoRefs.current.forEach((v) => {
+      if (v) {
+        v.pause();
+        v.currentTime = 0;
+      }
+    });
   };
 
   // Auto-play reel video
@@ -75,12 +85,11 @@ const VideoSection = () => {
     }
   }, [activeIndex]);
 
-  // Handle swipe/scroll like Reels
+  // Handle vertical scroll for reels
   const handleScroll = (e) => {
     const container = e.target;
     const newIndex = Math.round(container.scrollTop / window.innerHeight);
     if (newIndex !== activeIndex && galleries[newIndex]) {
-      // Pause previous
       if (reelVideoRefs.current[activeIndex]) {
         reelVideoRefs.current[activeIndex].pause();
         reelVideoRefs.current[activeIndex].currentTime = 0;
@@ -90,7 +99,7 @@ const VideoSection = () => {
     }
   };
 
-  // Toggle play/pause on video tap
+  // Toggle play/pause
   const togglePause = () => {
     if (!reelVideoRefs.current[activeIndex]) return;
     if (paused) {
@@ -104,7 +113,8 @@ const VideoSection = () => {
   // Toggle mute/unmute
   const toggleMute = () => {
     if (!reelVideoRefs.current[activeIndex]) return;
-    reelVideoRefs.current[activeIndex].muted = !reelVideoRefs.current[activeIndex].muted;
+    reelVideoRefs.current[activeIndex].muted =
+      !reelVideoRefs.current[activeIndex].muted;
   };
 
   return (
@@ -112,16 +122,16 @@ const VideoSection = () => {
       {/* Header */}
       <div className="video-header">
         <h2 className="video-heading">
-         <span className="track_ost"> Obsessions in</span>   <em>Action</em>
+          <span className="track_ost">Obsessions in</span> <em>Action</em>
         </h2>
         <p className="txt_sub_video_tag">
-          See how our products blend into real homes, real moods, and real lifestyles.
+          See how our products blend into real homes, real moods, and real
+          lifestyles.
         </p>
         <Link to={`/videogallery`}>
-           <div className="track_btn_glr">
-           <button className="matcher-btn">VIEW THE GALLERY</button>
-           </div>
-        
+          <div className="track_btn_glr">
+            <button className="matcher-btn">VIEW THE GALLERY</button>
+          </div>
         </Link>
       </div>
 
@@ -138,12 +148,17 @@ const VideoSection = () => {
                 <video
                   ref={(el) => (videoRefs.current[index] = el)}
                   src={video.uploaded_media}
+                  poster={video.poster_image} // ✅ Thumbnail always visible
                   muted
                   playsInline
                   controls={false}
                   onPlay={() => handlePlay(index)}
-                  onMouseEnter={(e) => e.currentTarget.setAttribute("controls", true)}
-                  onMouseLeave={(e) => e.currentTarget.removeAttribute("controls")}
+                  onMouseEnter={(e) =>
+                    e.currentTarget.setAttribute("controls", true)
+                  }
+                  onMouseLeave={(e) =>
+                    e.currentTarget.removeAttribute("controls")
+                  }
                 />
               </div>
             </div>
@@ -163,26 +178,29 @@ const VideoSection = () => {
       {/* Reels viewer overlay */}
       {activeIndex !== null && (
         <div className="reel-viewer" onScroll={handleScroll}>
-          <button className="close-reel" onClick={closeReel}>✕</button>
+          <button className="close-reel" onClick={closeReel}>
+            ✕
+          </button>
           <div className="reel-container">
             {galleries.map((video, index) => (
               <div
                 key={index}
-                className={`reel-video ${index === activeIndex ? "active" : ""}`}
+                className={`reel-video ${
+                  index === activeIndex ? "active" : ""
+                }`}
               >
-                <div
-                  className="reel-video-wrapper"
-                  onClick={togglePause}
-                >
+                <div className="reel-video-wrapper" onClick={togglePause}>
                   <video
                     ref={(el) => (reelVideoRefs.current[index] = el)}
                     src={video.uploaded_media}
+                    poster={video.poster_image}
                     muted
                     playsInline
-                    controls={true} // show pause/play and sound toggle
+                    controls={true}
                     autoPlay={index === activeIndex}
                     onEnded={() => {
-                      if (index < galleries.length - 1) setActiveIndex(index + 1);
+                      if (index < galleries.length - 1)
+                        setActiveIndex(index + 1);
                     }}
                   />
                 </div>

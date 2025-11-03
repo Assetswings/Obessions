@@ -34,6 +34,10 @@
 .img_main_asp{
   height: 200px;
 }
+.img_main_asp_hvr{
+  height: 200px;
+  display: none;
+}
 
 .image-wrapper {
   position: relative;
@@ -63,10 +67,24 @@
 
 }
 
+
 /* ✅ FIX: show quick-view on hover of bestseller-card */
 .bestseller-card:hover .quick-view {
   opacity: 1;
   pointer-events: auto;
+}
+
+ .bestseller-card:hover .quick-view {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+ .bestseller-card:hover .img_main_asp_hvr {
+ display: inline;
+}
+
+ .bestseller-card:hover .img_main_asp {
+ display: none;
 }
 
 .fav-icon {
@@ -150,13 +168,7 @@
   cursor: pointer;
 }
 
-.btn_left_arrow {
-  transform: rotate(-180deg);
-}
 
-.btn_right_arrow {
-  transform: rotate(180deg);
-}
  .bestseller-fixed-card-mlb{
   display: none;
  }
@@ -193,6 +205,36 @@
   width: 120px;
   }
  } */
+
+.btn_arrow {
+  background: none;
+  border: none;
+  position: relative;
+  cursor: pointer;
+}
+
+.btn_arrow img {
+  width: 40px; /* adjust as needed */
+  height: auto;
+  
+}
+
+.btn_arrow .hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.btn_arrow:hover .default {
+  opacity: 0;
+}
+
+.btn_arrow:hover .hover {
+  opacity: 1;
+}
+
+
 
  @media (max-width: 768px) {
   .bestseller-container {

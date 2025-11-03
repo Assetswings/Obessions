@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./BestsellersSlider.css";
 import { Expand, Heart } from "lucide-react";
-import arrowleft from "../../assets/icons/ArrowLeft.png";
-import arrowright from "../../assets/icons/ArrowRight.png";
+import arrowleft from "../../assets/icons/left_arrow_black.svg";
+import arrowright from "../../assets/icons/right_arrow_black.svg";
+import arrowhvrleft from "../../assets/icons/left_arrow_red.svg";
+import arrowhvrright from "../../assets/icons/right_arrow_red.svg";
+
 import { addToWishlist, removeFromWishlist } from "../Wishtlist/WishlistSlice";
 import { ToastContainer, toast } from "react-toastify";
 import { Player } from "@lottiefiles/react-lottie-player";
@@ -159,12 +162,12 @@ const BestsellersSlider = ({ onQuickView }) => {
 
 
                     <div className="wrp_main">
-
                       <Link to={`/productsdetails/${item.action_url}`}>
-                        <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.name} />
+                         <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.name} />
+                           <img className="img_main_asp_hvr" src={item?.media_list?.hover?.file} alt={item.name} />
                       </Link>
                     </div>
-
+          
 
                     <button
                       className="wishlist-btn_products"
@@ -234,6 +237,7 @@ const BestsellersSlider = ({ onQuickView }) => {
                     <div className="image-wrapper">
                       <Link to={`/productsdetails/${item.action_url}`}>
                         <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.name} />
+                           <img className="img_main_asp_hvr" src={item?.media_list?.hover?.file} alt={item.name} />
                       </Link>
                       <div className="order_view_btn">
                         <button
@@ -313,12 +317,18 @@ const BestsellersSlider = ({ onQuickView }) => {
                   Get the <em>Bestsellers</em>
                 </h3>
                 <div className="arrow-controls">
-                  <button onClick={handlePrev}>
-                    <img className="btn_left_arrow" src={arrowleft} alt="prev" />
+
+
+                  <button className="btn_arrow left" onClick={handlePrev}>
+                    <img src={arrowleft} alt="prev" className="default" />
+                    <img src={arrowhvrleft} alt="prev hover" className="hover" />
                   </button>
-                  <button onClick={handleNext}>
-                    <img className="btn_right_arrow" src={arrowright} alt="next" />
+
+                  <button className="btn_arrow right" onClick={handleNext}>
+                    <img src={arrowright} alt="next" className="default" />
+                    <img src={arrowhvrright} alt="next hover" className="hover" />
                   </button>
+
                 </div>
               </div>
 
@@ -332,6 +342,7 @@ const BestsellersSlider = ({ onQuickView }) => {
                       <div className="image-wrapper">
                         <Link to={`/productsdetails/${item.action_url}`}>
                           <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.name} />
+                           <img className="img_main_asp_hvr" src={item?.media_list?.hover?.file} alt={item.name} />
                         </Link>
                         <button
                           className="quick-view"

@@ -87,6 +87,8 @@
     padding: 10px 0;
     cursor: pointer;
     font-weight: 500;
+    font-size: 16px;
+    color: black;
   }
   
   .menu-categories li.active {
@@ -119,6 +121,7 @@
     font-weight: 400;
     margin-bottom: 10px;
     font-family: 'Helvetica Neue', sans-serif;
+    color: black;
   }
   
   .menu-section ul {

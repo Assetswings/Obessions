@@ -194,6 +194,15 @@ const OtherTopnav = () => {
     setSearchResult([]);
   };
 
+  let closeTimer;
+  const handleMouseEnter = () => {
+    clearTimeout(closeTimer);
+    setShowMegaMenu(true);
+  };
+  const handleMouseLeave = () => {
+    closeTimer = setTimeout(() => setShowMegaMenu(false), 200); // small delay for smoother UX
+  };
+
   return (
     <>
       {/* <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} /> */}
@@ -209,7 +218,31 @@ const OtherTopnav = () => {
 
 
         <ul className="nav-links">
-          <li onMouseEnter={() => setShowMegaMenu(true)}>SHOP</li>
+          {/* <li onMouseEnter={() => setShowMegaMenu(true)}>SHOP</li> */}
+          <li
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            style={{ position: "relative" }}
+          >
+            SHOP
+            {showMegaMenu && (
+              <div
+                className="megamenu-wrapper"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  zIndex: 1000,
+                  background: "#fff",
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+                }}
+              >
+                <MegamenuDuo closeMenu={() => setShowMegaMenu(false)} />
+              </div>
+            )}
+          </li>
           <li>
             <NavLink to="/new-arrivals" className={({ isActive }) => (isActive ? "active-tab" : "")}>NEW ARRIVALS</NavLink>
           </li>
@@ -288,13 +321,13 @@ const OtherTopnav = () => {
           <div title="Cart">
             <Link to="/cart" onClick={handleCartClick}>
               <ShoppingCart
-              onClick={handleCartClick}
-              strokeWidth={1}
-              title="Shopping Cart"
-              size={25}
-              style={{ cursor: "pointer" }}
-            />
-            <span className="wishlist-badge" style={{ right: "22px", top: "10px" }}>{countData?.cart_count ?? ''}</span>
+                onClick={handleCartClick}
+                strokeWidth={1}
+                title="Shopping Cart"
+                size={25}
+                style={{ cursor: "pointer" }}
+              />
+              <span className="wishlist-badge" style={{ right: "22px", top: "10px" }}>{countData?.cart_count ?? ''}</span>
             </Link>
           </div>
         </div>
@@ -303,11 +336,11 @@ const OtherTopnav = () => {
       <div style={{ height: "50px" }}></div>
       {/* <div style={{height:"60px"}}></div> */}
 
-      {showMegaMenu && (
+      {/* {showMegaMenu && (
         <div className="megamenu-wrapper">
           <MegamenuDuo closeMenu={() => setShowMegaMenu(false)} />
         </div>
-      )}
+      )} */}
 
       {showWishlist && <WishlistModal onClose={() => setShowWishlist(false)} />}
       {showLoginPrompt && (

@@ -23,14 +23,48 @@ const Topnav = () => {
       console.log(err);
     }
   };
+
+  let closeTimer;
+  const handleMouseEnter = () => {
+    clearTimeout(closeTimer);
+    setShowMegaMenu(true);
+  };
+  const handleMouseLeave = () => {
+    closeTimer = setTimeout(() => setShowMegaMenu(false), 200); // small delay for smoother UX
+  };
   return (
     <>
       <nav className="horizontal-nav-bar">
-        <div
+        {/* <div
           className="nav-item"
           onMouseEnter={() => setShowMegaMenu(true)}
         >
           SHOP
+        </div> */}
+        <div
+          className="nav-item"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={{ position: "relative" }}
+        >
+          SHOP
+          {showMegaMenu && (
+            <div
+              className="megamenu-wrapper"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              style={{
+                position: "absolute",
+                top: "100%",
+                left: 0,
+                zIndex: 1000,
+                background: "#fff",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+              }}
+            >
+              <MegaMenu closeMenu={() => setShowMegaMenu(false)} />
+            </div>
+          )}
         </div>
         <div className="nav-item">
           <Link to='/new-arrivals'>NEW ARRIVALS</Link>
@@ -45,7 +79,7 @@ const Topnav = () => {
           <Link to='/carpet-finder'>FLOOR MATCHER</Link>
         </div>
       </nav>
-      {showMegaMenu && <MegaMenu closeMenu={() => setShowMegaMenu(false)} />}
+      {/* {showMegaMenu && <MegaMenu closeMenu={() => setShowMegaMenu(false)} />} */}
       {/* ✅ Floating WhatsApp Icon */}
       <a
         href={`https://api.whatsapp.com/send?phone=${data?.phone}&text=${data?.text}`}

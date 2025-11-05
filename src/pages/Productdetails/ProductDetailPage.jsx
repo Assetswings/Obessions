@@ -32,6 +32,7 @@ const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("highlights");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [zoomStyle, setZoomStyle] = useState({});
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [localLoading, setLocalLoading] = useState(true);
@@ -90,6 +91,23 @@ const ProductDetailPage = () => {
       dispatch(clearProductDetail());
     };
   }, [dispatch, productSlug]);
+
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.pageX - left) / width) * 100;
+    const y = ((e.pageY - top) / height) * 100;
+    setZoomStyle({
+      transformOrigin: `${x}% ${y}%`,
+      transform: "scale(1.85)",
+    });
+  };
+  const handleMouseLeave = () => {
+    setZoomStyle({
+      transform: "scale(1)",
+      transformOrigin: "center center",
+    });
+  };
 
   useEffect(() => {
     if (!data?.id) return;
@@ -464,13 +482,42 @@ const ProductDetailPage = () => {
     <>
       <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
       <div className="root_br_head">
-        <div> <Breadcrumbs paths={breadcrumbPaths} /></div>
-        {!open &&
-          <div className="share_btn" onMouseEnter={() => setOpen(!open)}> <span><Share2 /></span> share</div>
-        }
-        {/* Fallback share options */}
-        {open && (
-          <div className="absolute bg-white shadow-lg rounded-lg p-2 mt-2 z-50" onMouseLeave={() => setOpen(false)}>
+        {/* Breadcrumbs or Skeleton */}
+        <div>
+          {localLoading ? (
+            <Skeleton width={180} height={20}
+              style={{
+                position: "relative",
+                left: "20px",
+              }}
+            />
+          ) : (
+            <Breadcrumbs paths={breadcrumbPaths} />
+          )}
+        </div>
+
+        {/* Share Button or Skeleton */}
+        {localLoading ? (
+          <div className="share_btn">
+            <Skeleton width={32} height={32} />
+          </div>
+        ) : (
+          !open && (
+            <div
+              className="share_btn"
+              onMouseEnter={() => setOpen(true)}
+            >
+              <span><Share2 /></span> share
+            </div>
+          )
+        )}
+
+        {/* Dropdown */}
+        {open && !loading && (
+          <div
+            className="absolute bg-white shadow-lg rounded-lg p-2 mt-2 z-50"
+            onMouseLeave={() => setOpen(false)}
+          >
             <a
               href={shareLinks.whatsapp}
               target="_blank"
@@ -483,7 +530,6 @@ const ProductDetailPage = () => {
               href={shareLinks.facebook}
               target="_blank"
               rel="noopener noreferrer"
-              titel="FaceBook"
               className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded"
             >
               <Facebook size={16} className="text-blue-600" />
@@ -502,17 +548,9 @@ const ProductDetailPage = () => {
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">
-          {/* Main Image or Video Section */}
-          <div className="image_track" style={{ width: "100%", minHeight: "750px" }}>
+          <div className="image_track">
             {loading || !selectedImage ? (
-              <div style={{ width: "100%", height: "100%" }}>
-                <Skeleton
-                  height="100%"
-                  width="100%"
-                  baseColor="#e0e0e0"
-                  highlightColor="#f5f5f5"
-                />
-              </div>
+              <Skeleton height="100%" width="100%" />
             ) : selectedImage === "video" ? (
               selectedColor?.video_source?.includes("youtube.com") ? (
                 <iframe
@@ -534,87 +572,29 @@ const ProductDetailPage = () => {
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
-                    borderRadius: "10px",
+
                   }}
                 >
                   <source src={selectedColor?.video_source} type="video/mp4" />
-                  Your browser does not support the video tag.
                 </video>
               )
-
             ) : (
-              <img
-                src={selectedImage}
-                alt="Main Product"
-                className="main-image"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  mixBlendMode: "darken",
-                  objectFit: "cover",
-                }}
-              />
-            )}
-          </div>
-
-          {/* Mobile view */}
-          <div
-            className="image_track_mobile"
-            style={{ width: "100%", minHeight: "250px" }}
-          >
-            {loading || !selectedImage ? (
-              <div style={{ width: "100%", height: "100%" }}>
-                <Skeleton
-                  height="100%"
-                  width="100%"
-                  baseColor="#e0e0e0"
-                  highlightColor="#f5f5f5"
+              <div
+                className="zoom-container"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img
+                  src={selectedImage}
+                  alt="Main Product"
+                  className="main-image zoom-image"
+                  style={zoomStyle}
                 />
               </div>
-            ) : selectedImage === "video" ? (
-              selectedColor?.video_source?.includes("youtube.com") ? (
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src={`${selectedColor.video_source}?autoplay=1&mute=1`}
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                  style={{ borderRadius: "10px", width: "100%", height: "100%" }}
-                ></iframe>
-              ) : (
-                <video
-                  controls
-                  autoPlay
-                  muted
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    borderRadius: "10px",
-                  }}
-                >
-                  <source src={selectedColor?.video_source} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              )
-            ) : (
-              <img
-                src={selectedImage}
-                alt="Main Product"
-                className="main-image"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  mixBlendMode: "darken",
-                  objectFit: "cover",
-                }}
-              />
             )}
           </div>
 
-          {/* Thumbnail Row */}
+          {/* Thumbnails */}
           <div className="thumbnail-row">
             {localLoading
               ? Array(4)
@@ -639,9 +619,7 @@ const ProductDetailPage = () => {
                       onClick={() => setSelectedImage(img.media)}
                     />
                   ))}
-
-                  {/* Static video thumbnail (at the end) */}
-                  {selectedColor?.video_source &&
+                  {selectedColor?.video_source && (
                     <div
                       className={`thumbnail video-thumb ${selectedImage === "video" ? "selected-thumb" : ""}`}
                       onClick={() => setSelectedImage("video")}
@@ -652,7 +630,7 @@ const ProductDetailPage = () => {
                       />
                       <div className="thumb-overlay">▶</div>
                     </div>
-                  }
+                  )}
                 </>
               )}
           </div>
@@ -1307,7 +1285,11 @@ const ProductDetailPage = () => {
 
       {/* Similar Products */}
       <div className="similar-styles-section">
-        <h2>Discover Similar Styles</h2>
+        {localLoading ? (
+          <Skeleton width={320} height={28} />
+        ) : (
+          <h2>Discover Similar Styles</h2>
+        )}
         {localLoading ? (
           <div className="product-grid">
             {Array(5)
@@ -1407,7 +1389,11 @@ const ProductDetailPage = () => {
 
       {/* Don’t Miss the product */}
       <div className="similar-styles-section-2">
-        <h2 className="txt_head_list">Don’t Miss These Matching Finds</h2>
+        {localLoading ? (
+          <Skeleton width={280} height={32} borderRadius={8} />
+        ) : (
+          <h2 className="txt_head_list">Don’t Miss These Matching Finds</h2>
+        )}
         {localLoading ? (
           <div className="product-grid">
             {Array(5)

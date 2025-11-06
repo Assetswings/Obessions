@@ -71,7 +71,7 @@ background: white;
   width: 600px;
   transform: translate(-50%, 200px);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1001;
+  z-index: 99999999;;
 }
 
 /* Active state */
@@ -87,7 +87,7 @@ background: white;
   height: 100%;
   backdrop-filter: blur(2px);
   background: rgba(0, 0, 0, 0.6);
-  z-index: 1000;
+  z-index: 9999999;
   transition: opacity 0.8s ease;
 }
 

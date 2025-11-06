@@ -594,6 +594,67 @@ const ProductDetailPage = () => {
             )}
           </div>
 
+ {/* Mobile view */}
+<div className="image_track_mobile" style={{ width: "100%", minHeight: "250px" }}>
+  {loading || !selectedImage ? (
+    <div style={{ width: "100%", height: "100%" }}>
+      <Skeleton
+        height="100%"
+        width="100%"
+        baseColor="#e0e0e0"
+        highlightColor="#f5f5f5"
+        borderRadius={10}
+      />
+    </div>
+  ) : selectedImage === "video" ? (
+    selectedColor?.video_source?.includes("youtube.com") ? (
+      <iframe
+        width="100%"
+        height="100%"
+        src={`${selectedColor.video_source}?autoplay=1&mute=1`}
+        title="YouTube video player"
+        frameBorder="0"
+        allow="autoplay; encrypted-media"
+        allowFullScreen
+        style={{
+          borderRadius: "10px",
+          width: "100%",
+          height: "100%",
+        }}
+      ></iframe>
+    ) : (
+      <video
+        controls
+        autoPlay
+        muted
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          borderRadius: "10px",
+        }}
+      >
+        <source src={selectedColor?.video_source} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    )
+  ) : (
+    <img
+      src={selectedImage}
+      alt="Main Product"
+      className="main-image"
+      style={{
+        width: "100%",
+        height: "auto",
+        mixBlendMode: "darken",
+        objectFit: "cover",
+        borderRadius: "10px",
+      }}
+    />
+  )}
+</div>
+
+ 
           {/* Thumbnails */}
           <div className="thumbnail-row">
             {localLoading

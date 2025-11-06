@@ -4,7 +4,7 @@
   /* exactly below the 35px tall announcement bar */
   left: 0;
   width: 100%;
-  z-index: 9998;
+  z-index: 99999999999;
   /* just below or same as announcement bar */
   display: flex;
   justify-content: space-around;

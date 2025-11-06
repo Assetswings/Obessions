@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./VideoSection.css";
@@ -10,45 +10,38 @@ const VideoSection = () => {
   const videoRefs = useRef([]);
   const reelVideoRefs = useRef([]);
   const [activeIndex, setActiveIndex] = useState(null);
-  const [paused, setPaused] = useState(false);
+  const [playingIndex, setPlayingIndex] = useState(null);
 
   const galleries = useSelector((state) => state.home?.data?.galleries || []);
-  console.log("video_data------>", galleries);
 
-  // Horizontal slider scroll
+  // Horizontal scroll
   const scroll = (direction) => {
-    const { current } = sliderRef;
-    if (current) {
-      const scrollAmount = 320;
-      current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  // Pause other videos but keep their thumbnails
-  const handlePlay = (index) => {
-    videoRefs.current.forEach((video, i) => {
-      if (i !== index && video) {
-        video.pause();
-        // ❌ Do NOT reset currentTime, this removes the poster
-        // ✅ Just pause
-      }
+    if (!sliderRef.current) return;
+    const scrollAmount = 320;
+    sliderRef.current.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
     });
   };
 
-  // Open reel view for specific video
-  const handleVideoClick = (index) => {
-    videoRefs.current.forEach((v) => {
-      if (v) {
+  // Play a video and pause all others
+  const handlePlay = (index, isReel = false) => {
+    setPlayingIndex(index);
+    const refs = isReel ? reelVideoRefs.current : videoRefs.current;
+    refs.forEach((v, i) => {
+      if (i !== index && v) {
         v.pause();
-        v.currentTime = 0; // OK here since we're leaving the slider
+        v.currentTime = 0; // reset to show poster
       }
     });
+    if (refs[index]) refs[index].play();
+  };
 
+  // Open reel mode
+  const handleVideoClick = (index) => {
+    videoRefs.current.forEach((v) => v && v.pause());
     setActiveIndex(index);
-    setPaused(false);
+    setPlayingIndex(index);
     document.body.style.overflow = "hidden";
 
     setTimeout(() => {
@@ -59,63 +52,30 @@ const VideoSection = () => {
           behavior: "instant",
         });
       }
-    }, 50);
+    }, 100);
   };
 
-  // Close reel mode
+  // Close reel
   const closeReel = () => {
     setActiveIndex(null);
-    setPaused(false);
+    setPlayingIndex(null);
     document.body.style.overflow = "auto";
-
-    // Reset reel videos so next open starts from start
-    reelVideoRefs.current.forEach((v) => {
-      if (v) {
-        v.pause();
-        v.currentTime = 0;
-      }
-    });
-  };
-
-  // Auto-play reel video
-  useEffect(() => {
-    if (activeIndex !== null && reelVideoRefs.current[activeIndex]) {
-      reelVideoRefs.current[activeIndex].currentTime = 0;
-      reelVideoRefs.current[activeIndex].play();
-    }
-  }, [activeIndex]);
-
-  // Handle vertical scroll for reels
-  const handleScroll = (e) => {
-    const container = e.target;
-    const newIndex = Math.round(container.scrollTop / window.innerHeight);
-    if (newIndex !== activeIndex && galleries[newIndex]) {
-      if (reelVideoRefs.current[activeIndex]) {
-        reelVideoRefs.current[activeIndex].pause();
-        reelVideoRefs.current[activeIndex].currentTime = 0;
-      }
-      setActiveIndex(newIndex);
-      setPaused(false);
-    }
+    reelVideoRefs.current.forEach((v) => v && v.pause());
   };
 
   // Toggle play/pause
-  const togglePause = () => {
-    if (!reelVideoRefs.current[activeIndex]) return;
-    if (paused) {
-      reelVideoRefs.current[activeIndex].play();
+  const togglePause = (index, isReel = false) => {
+    const refs = isReel ? reelVideoRefs.current : videoRefs.current;
+    if (!refs[index]) return;
+    const video = refs[index];
+    if (video.paused) {
+      video.play();
+      setPlayingIndex(index);
     } else {
-      reelVideoRefs.current[activeIndex].pause();
+      video.pause();
+      setPlayingIndex(null);
     }
-    setPaused(!paused);
-  };
-
-  // Toggle mute/unmute
-  const toggleMute = () => {
-    if (!reelVideoRefs.current[activeIndex]) return;
-    reelVideoRefs.current[activeIndex].muted =
-      !reelVideoRefs.current[activeIndex].muted;
-  };
+    };
 
   return (
     <section className="video-section">
@@ -125,8 +85,7 @@ const VideoSection = () => {
           <span className="track_ost">Obsessions in</span> <em>Action</em>
         </h2>
         <p className="txt_sub_video_tag">
-          See how our products blend into real homes, real moods, and real
-          lifestyles.
+          See how our products blend into real homes, real moods, and real lifestyles.
         </p>
         <Link to={`/videogallery`}>
           <div className="track_btn_glr">
@@ -135,31 +94,37 @@ const VideoSection = () => {
         </Link>
       </div>
 
-      {/* Horizontal video slider */}
+      {/* Horizontal Slider */}
       <div className="video-slider-wrapper">
         <div className="video-slider" ref={sliderRef}>
           {galleries.map((video, index) => (
-            <div
-              className="video-card"
-              key={video.id}
-              onClick={() => handleVideoClick(index)}
-            >
+            <div className="video-card" key={video.id || index}>
               <div className="video-wrapper">
-                <video
-                  ref={(el) => (videoRefs.current[index] = el)}
-                  src={video.uploaded_media}
-                  poster={video.poster_image} // ✅ Thumbnail always visible
-                  muted
-                  playsInline
-                  controls={false}
-                  onPlay={() => handlePlay(index)}
-                  onMouseEnter={(e) =>
-                    e.currentTarget.setAttribute("controls", true)
-                  }
-                  onMouseLeave={(e) =>
-                    e.currentTarget.removeAttribute("controls")
-                  }
-                />
+                {video.uploaded_media ? (
+                  <>
+                    <video
+                      ref={(el) => (videoRefs.current[index] = el)}
+                      src={video.uploaded_media}
+                      muted={false}
+                      playsInline
+                      controls={playingIndex === index}
+                      poster={video.poster_image}
+                      onClick={() => togglePause(index)}
+                      onPlay={() => handlePlay(index)}
+                    />
+                    {/* Poster overlay if video is not playing */}
+                    {playingIndex !== index && (
+                      <img
+                        src={video.poster_image}
+                        className="video-poster"
+                        alt="thumbnail"
+                        onClick={() => handlePlay(index)}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <img src={video.poster_image} alt="thumbnail" className="video-poster" />
+                )}
               </div>
             </div>
           ))}
@@ -175,34 +140,38 @@ const VideoSection = () => {
         </div>
       </div>
 
-      {/* Reels viewer overlay */}
+      {/* Fullscreen Reels */}
       {activeIndex !== null && (
-        <div className="reel-viewer" onScroll={handleScroll}>
-          <button className="close-reel" onClick={closeReel}>
-            ✕
-          </button>
+        <div className="reel-viewer">
+          <button className="close-reel" onClick={closeReel}>✕</button>
           <div className="reel-container">
             {galleries.map((video, index) => (
-              <div
-                key={index}
-                className={`reel-video ${
-                  index === activeIndex ? "active" : ""
-                }`}
-              >
-                <div className="reel-video-wrapper" onClick={togglePause}>
-                  <video
-                    ref={(el) => (reelVideoRefs.current[index] = el)}
-                    src={video.uploaded_media}
-                    poster={video.poster_image}
-                    muted
-                    playsInline
-                    controls={true}
-                    autoPlay={index === activeIndex}
-                    onEnded={() => {
-                      if (index < galleries.length - 1)
-                        setActiveIndex(index + 1);
-                    }}
-                  />
+              <div className={`reel-video ${index === activeIndex ? "active" : ""}`} key={index}>
+                <div className="reel-video-wrapper" onClick={() => togglePause(index, true)}>
+                  {video.uploaded_media ? (
+                    <>
+                      <video
+                        ref={(el) => (reelVideoRefs.current[index] = el)}
+                        src={video.uploaded_media}
+                        muted={false}
+                        playsInline
+                        controls
+                        autoPlay={index === activeIndex}
+                        poster={video.poster_image}
+                        onPlay={() => handlePlay(index, true)}
+                      />
+                      {playingIndex !== index && (
+                        <img
+                          src={video.poster_image}
+                          className="video-poster"
+                          alt="thumbnail"
+                          onClick={() => handlePlay(index, true)}
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <img src={video.poster_image} alt="thumbnail" className="video-poster" />
+                  )}
                 </div>
               </div>
             ))}

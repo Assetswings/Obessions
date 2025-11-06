@@ -41,12 +41,11 @@ const Topnav = () => {
         >
           SHOP
         </div> */}
-        <div
+        {/* <div
           className="nav-item"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          style={{ position: "relative" }}
-        >
+          style={{ position: "relative" }}>
           SHOP
           {showMegaMenu && (
             <div
@@ -62,10 +61,41 @@ const Topnav = () => {
                 boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
               }}
             >
-              <MegaMenu closeMenu={() => setShowMegaMenu(false)} />
+            <MegaMenu closeMenu={() => setShowMegaMenu(false)} />
+            </div>
+          )}
+        </div> */}
+        <div
+          className="nav-item shop-wrapper"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={{ position: "relative" }}
+        >
+          <div className="track_poster">
+            <span>SHOP</span>
+          </div>
+
+          {showMegaMenu && (
+            <div
+              className="megamenu-wrapper"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              style={{
+                position: "absolute",
+                top: "100%",
+                left: 0,
+                zIndex: 1000,
+                background: "#fff",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+                borderTop: "1px solid #eee",
+              }}
+            >
+              <MegaMenu closeMenu={() => setShowMegaMenu(false)}/>
             </div>
           )}
         </div>
+
+
         <div className="nav-item">
           <Link to='/new-arrivals'>NEW ARRIVALS</Link>
         </div>

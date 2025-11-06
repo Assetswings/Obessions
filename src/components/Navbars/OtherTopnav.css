@@ -16,6 +16,10 @@
 .nav-logo img {
   height: 30px;
 }
+span.track_poster {
+    padding: 10px;
+    height: 57px;
+}
 
 .nav-links {
   display: flex;
@@ -224,4 +228,22 @@
   text-align: center;
   line-height: 1;
   background-color: #fff;
+}
+
+ .shop-wrapper {
+  position: relative;
+}
+
+.megamenu-wrapper {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.shop-wrapper:hover .megamenu-wrapper {
+  opacity: 1;
+  visibility: visible;
 }

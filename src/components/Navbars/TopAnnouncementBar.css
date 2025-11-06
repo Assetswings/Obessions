@@ -97,7 +97,7 @@
   position: relative;
 }
 
-.user-popup_AN {
+.user-popup_AN_al {
   position: absolute;
   top: 35px;
   right: -5px;
@@ -107,7 +107,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 10px;
   min-width: 140px;
-  z-index: 9999999;
+  z-index: 999999999999999 !important;
 }
 
 .popup-triangle_an {

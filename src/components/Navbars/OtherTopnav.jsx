@@ -219,12 +219,17 @@ const OtherTopnav = () => {
 
         <ul className="nav-links">
           {/* <li onMouseEnter={() => setShowMegaMenu(true)}>SHOP</li> */}
-          <li
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            style={{ position: "relative" }}
-          >
-            SHOP
+          {/* <li >
+            <div
+             className="root_base"
+              
+              >
+                 <div  className="track_poster" > 
+                   <span > SHOP</span>
+     
+                 </div>
+           
+            </div>
             {showMegaMenu && (
               <div
                 className="megamenu-wrapper"
@@ -237,23 +242,52 @@ const OtherTopnav = () => {
                   zIndex: 1000,
                   background: "#fff",
                   boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                }}
-              >
+                }}>
                 <MegamenuDuo closeMenu={() => setShowMegaMenu(false)} />
               </div>
             )}
+          </li> */}
+
+          <li
+            className="shop-wrapper"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="track_poster">
+              <span>SHOP</span>
+            </div>
+
+            <div
+              className={`megamenu-wrapper ${showMegaMenu ? "visible" : ""}`}
+            >
+              <MegamenuDuo closeMenu={() => setShowMegaMenu(false)} />
+            </div>
           </li>
           <li>
-            <NavLink to="/new-arrivals" className={({ isActive }) => (isActive ? "active-tab" : "")}>NEW ARRIVALS</NavLink>
+            <NavLink to="/new-arrivals" className={({ isActive }) => (isActive ? "active-tab" : "")}>
+              <div className="track_poster">
+                NEW ARRIVALS
+              </div>
+            </NavLink>
           </li>
           <li>
-            <NavLink to='/bestseller' className={({ isActive }) => (isActive ? "active-tab" : "")}>BEST SELLERS</NavLink>
+            <NavLink to='/bestseller' className={({ isActive }) => (isActive ? "active-tab" : "")}>
+              <div className="track_poster"> BEST SELLERS </div>
+
+            </NavLink>
           </li>
           <li>
-            <NavLink to='/offer-spot' className={({ isActive }) => (isActive ? "active-tab" : "")}>OFFERS SPOT</NavLink>
+            <NavLink to='/offer-spot' className={({ isActive }) => (isActive ? "active-tab" : "")}>
+              <div className="track_poster">  OFFERS SPOT</div>
+
+            </NavLink>
           </li>
           <li>
-            <NavLink to='/carpet-finder' className={({ isActive }) => (isActive ? "active-tab" : "")}>FLOOR MATCHER</NavLink>
+            <NavLink to='/carpet-finder' className={({ isActive }) => (isActive ? "active-tab" : "")}>
+              <div className="track_poster">
+                FLOOR MATCHER
+              </div>
+            </NavLink>
           </li>
         </ul>
 

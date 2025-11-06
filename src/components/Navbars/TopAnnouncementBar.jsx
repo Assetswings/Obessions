@@ -21,8 +21,8 @@ import { FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { clearSearchResults, fetchSearchResults } from "../../pages/Home/searchSlice";
 
-const TopAnnouncementBar = () => {
-    const dispatch = useDispatch();
+  const TopAnnouncementBar = () => {
+  const dispatch = useDispatch();
   const { countData } = useCartWishlist();
   const { showSearchIcon } = useHeader();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -44,18 +44,18 @@ const TopAnnouncementBar = () => {
   const userWrapperRef = useRef(null);
 
   // ✅ Check login status
-  useEffect(() => {
-    const checkLogin = () => {
+      useEffect(() => {
+      const checkLogin = () => {
       const token = localStorage.getItem("token");
       setIsLoggedIn(!!token);
     };
-    checkLogin();
-    window.addEventListener("storage", checkLogin);
-    return () => window.removeEventListener("storage", checkLogin);
+      checkLogin();
+      window.addEventListener("storage", checkLogin);
+      return () => window.removeEventListener("storage", checkLogin);
   }, []);
 
   // ✅ Close popup when clicking outside
-  useEffect(() => {
+    useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         userWrapperRef.current &&
@@ -64,12 +64,12 @@ const TopAnnouncementBar = () => {
         setShowUserPopup(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // ✅ Fetch banner data
-  useEffect(() => {
+    useEffect(() => {
     axios
       .get("https://apis-staging.obsessions.co.in/v1/banners/announce-bar", {
         headers: { accept: "application/json" },
@@ -261,7 +261,7 @@ const TopAnnouncementBar = () => {
             {/* ✅ Fixed Popup */}
             {isLoggedIn && showUserPopup && (
               <div
-                className="user-popup_AN"
+                className="user-popup_AN_al"
                 onClick={(e) => e.stopPropagation()} // prevent close on inside click
               >
                 <div className="popup-triangle_an"></div>

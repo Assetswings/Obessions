@@ -24,6 +24,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { IoLogoWhatsapp } from "react-icons/io";
 import API from "../../app/api";
 import { useCartWishlist } from "../../app/CartWishlistContext";
+import searchicon from "../../assets/icons/Searchicon.svg";
 
 const OtherTopnav = () => {
   const dispatch = useDispatch();
@@ -293,11 +294,7 @@ const OtherTopnav = () => {
 
         <div className="nav-actions">
           {!shouldHideIcon && (
-            <div className="search-bar">
-              <button onClick={() => setShowSearch(true)}>
-                <FaSearch />
-              </button>
-            </div>
+            <img src={searchicon} alt="search" onClick={() => setShowSearch(true)} className="pointer-crusser"/>
           )}
 
           {/* User Icon */}

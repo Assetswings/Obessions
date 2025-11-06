@@ -84,33 +84,15 @@ const CancelOrder = () => {
       });
 
       if (res.data.success) {
-        toast.success("Order cancelled successfully!", {
-          style: {
-            border: "1px solid black",
-            padding: "16px",
-            color: "black",
-          },
-          iconTheme: {
-            primary: "black",
-            secondary: "white",
+        navigate("/order-cancel", {
+          state: {
+            orderNo: orderNo,
           },
         });
-        navigate("/orderhistory");
       }
     } catch (err) {
       console.error("Cancel error:", err);
-      toast.error(err.response?.data?.msg || "Order cancellation failed!", {
-        style: {
-          border: "1px solid #FF0000",
-          padding: "16px",
-          color: "#FF0000",
-        },
-        iconTheme: {
-          primary: "#FF0000",
-          secondary: "#FFFAEE",
-        },
-      });
-      navigate("/orderhistory");
+      navigate("/ProfilePage");
     }
   };
   const breadcrumbPaths = [

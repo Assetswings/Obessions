@@ -100,33 +100,16 @@ const ReturnExchange = () => {
         });
 
         if (res.data.success) {
-          toast.success("Order Returned successfully!", {
-            style: {
-              border: "1px solid black",
-              padding: "16px",
-              color: "black",
-            },
-            iconTheme: {
-              primary: "black",
-              secondary: "white",
+          navigate("/Return-Success", {
+            state: {
+              orderNo: orderNo,
+              page:"Return"
             },
           });
-          navigate("/orderhistory");
         }
       } catch (err) {
         console.error("Cancel error:", err);
-        toast.error(err.response?.data?.msg || "Order Return failed!", {
-          style: {
-            border: "1px solid #FF0000",
-            padding: "16px",
-            color: "#FF0000",
-          },
-          iconTheme: {
-            primary: "#FF0000",
-            secondary: "#FFFAEE",
-          },
-        });
-        navigate("/orderhistory");
+        navigate("/ProfilePage");
       }
     } else { // Exchange API Call
       try {
@@ -137,33 +120,16 @@ const ReturnExchange = () => {
         });
 
         if (res.data.success) {
-          toast.success("Order Exchanged successfully!", {
-            style: {
-              border: "1px solid black",
-              padding: "16px",
-              color: "black",
-            },
-            iconTheme: {
-              primary: "black",
-              secondary: "white",
+          navigate("/Exchange-Success", {
+            state: {
+              orderNo: orderNo,
+              page:"Exchange"
             },
           });
-          navigate("/orderhistory");
         }
       } catch (err) {
         console.error("Cancel error:", err);
-        toast.error(err.response?.data?.msg || "Order Exchange failed!", {
-          style: {
-            border: "1px solid #FF0000",
-            padding: "16px",
-            color: "#FF0000",
-          },
-          iconTheme: {
-            primary: "#FF0000",
-            secondary: "#FFFAEE",
-          },
-        });
-        navigate("/orderhistory");
+        navigate("/ProfilePage");
       }
     }
   };
@@ -224,7 +190,7 @@ const ReturnExchange = () => {
                 </label>
               )}
             </div> */}
-            <span style={{textTransform:"capitalize"}}><b>{option} Order</b></span>
+            <span style={{ textTransform: "capitalize" }}><b>{option} Order</b></span>
 
             <label>
               Reason for {option} <span className="required">*</span>

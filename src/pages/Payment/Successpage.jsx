@@ -66,22 +66,6 @@ const Successpage = () => {
           </button>
         </div>
       </div>
-
-      {/* <section className="top-picks-section">
-        <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
-        <div className="top-picks-slider">
-          {addOns?.map((item) => (
-            <div key={item.id} className="top-pick-card">
-              <img
-                src={item.media}
-                alt={item.name}
-                className="top-pick-image"
-              />
-              <p className="top-pick-title">{item.name}</p>
-            </div>
-          ))}
-        </div>
-      </section> */}
       <section className="top-picks-section">
         <h2 className="top-picks-heading">Perfect Add-ons for Your Order</h2>
         <div className="top-picks-grid">

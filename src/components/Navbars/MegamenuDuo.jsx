@@ -65,21 +65,23 @@ const MegamenuDuo = ({ closeMenu }) => {
               </h4>
               <ul>
                 {cat.subcategories.map((sub) => (
-                  // <li
-                  //   key={sub.id}
-                  //   className="mega-subcategory-link"
-                  //    onClick={closeMenu}
-                  // >
-                  //   <Link to={`/products/${cat.action_url}/${sub.action_url}`} >{sub.name}</Link>
-                  // </li>
-                  <Link
-                    to={`/products/${cat.action_url}/${sub.action_url}`}
-                    onClick={closeMenu}
+                  <li
+                    key={sub.id}
+                    className="mega-subcategory-link"
                   >
-                    <li key={sub.id} className="mega-subcategory-link">
-                      {sub.name}
-                    </li>
-                  </Link>
+                    <Link to={`/products/${cat.action_url}/${sub.action_url}`} onClick={() => {
+                      console.log("Clicked link:", sub.name);
+                      closeMenu();
+                    }}>{sub.name}</Link>
+                  </li>
+                  // <Link
+                  //   to={`/products/${cat.action_url}/${sub.action_url}`}
+                  //   onClick={closeMenu}
+                  // >
+                  //   <li key={sub.id} className="mega-subcategory-link">
+                  //     {sub.name}
+                  //   </li>
+                  // </Link>
                 ))}
               </ul>
             </div>

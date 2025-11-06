@@ -21,9 +21,10 @@ const AboutPage = () => {
         <section className="about-hero" style={{ backgroundImage: `url(${data?.bg_media})`, }}>
           <div className="hero-overlay">
             <h1>
-              Our <span className="italic">passion</span> lies in <br />
+              {data?.description}
+              {/* Our <span className="italic">passion</span> lies in <br />
               making your daily moments feel{" "}
-              <span className="italic">special</span>
+              <span className="italic">special</span> */}
             </h1>
           </div>
         </section>

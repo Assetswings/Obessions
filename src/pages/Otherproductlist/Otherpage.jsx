@@ -135,9 +135,9 @@ const Otherpage = () => {
     const prevPath = prevPathRef.current;
     return () => {
       // Only clear if navigating away from this page
-      if (prevPath === "/products" && location.pathname !== "/products") {
+      // if (prevPath === "/products" && location.pathname !== "/products") {
         localStorage.removeItem("selectedFilters");
-      }
+      // }
     };
   }, [location.pathname]);
 

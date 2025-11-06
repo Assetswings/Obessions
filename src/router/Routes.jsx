@@ -37,6 +37,8 @@ import Failedpage from "../pages/Payment/Failedpage";
 import SizeGuide from "../pages/Sizeguid/SizeGuide";
 import StyleGuide from "../pages/Styleguid/StyleGuide";
 import TrackOrder from "../pages/Trackorder/TrackOrder";
+import CancelSuccess from "../pages/CancelOrder/CancelSuccess";
+import ReturnExchangeSuccess from "../pages/ReturnExchange/ReturnExchangeSuccess";
 const AppRoutes = () => {
   return (
     // <ScrollToTopWrapper>
@@ -62,7 +64,10 @@ const AppRoutes = () => {
           <Route path="orderfailed" element={<Failedpage />} />
           <Route path="paymentcheck" element={<PaymentCheck />} />
           <Route path="cancelorder" element={<CancelOrder />} />
+          <Route path="order-cancel" element={<CancelSuccess />} />
           <Route path="returnexchange" element={<ReturnExchange />} />
+          <Route path="Return-Success" element={<ReturnExchangeSuccess />} />
+          <Route path="Exchange-Success" element={<ReturnExchangeSuccess />} />
           <Route path="carpet-finder" element={<CarpetFinder />} />
           <Route path="searchlist" element={<Searchlist />} />
           <Route path="carpetfinderserch" element={<Carpetfinderserch />} />

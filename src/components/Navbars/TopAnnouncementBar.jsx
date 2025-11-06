@@ -20,6 +20,7 @@ import { useCartWishlist, useHeader } from "../../app/CartWishlistContext";
 import { FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { clearSearchResults, fetchSearchResults } from "../../pages/Home/searchSlice";
+import searchicon from "../../assets/icons/Searchicon.svg";
 
   const TopAnnouncementBar = () => {
   const dispatch = useDispatch();
@@ -237,11 +238,7 @@ import { clearSearchResults, fetchSearchResults } from "../../pages/Home/searchS
 
         <div className="icons">
           {showSearchIcon && (
-            <div className="announce-search-bar">
-              <button onClick={() => setShowSearch(true)} >
-                <FaSearch />
-              </button>
-            </div>
+            <img src={searchicon} alt="search" onClick={() => setShowSearch(true)} className="pointer-crusser"/>
           )}
           <div
             ref={userWrapperRef}

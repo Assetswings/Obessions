@@ -32,7 +32,7 @@ span.track_poster {
 
 .nav-links li {
   cursor: pointer;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   letter-spacing: 0.5px;
 }
 

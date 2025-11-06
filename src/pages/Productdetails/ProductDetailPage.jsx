@@ -499,7 +499,7 @@ const ProductDetailPage = () => {
         {/* Share Button or Skeleton */}
         {localLoading ? (
           <div className="share_btn">
-            <Skeleton width={32} height={32} />
+            
           </div>
         ) : (
           !open && (

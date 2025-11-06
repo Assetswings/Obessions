@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef  } from "react";
 import "./HorizontalNavBar.css";
 import MegaMenu from "./MegaMenu";
 import { Link, useNavigate } from "react-router-dom";
 import { IoLogoWhatsapp } from "react-icons/io";
 import API from "../../app/api";
+import MegamenuDuo from "./MegamenuDuo";
 
 const Topnav = () => {
   const [showMegaMenu, setShowMegaMenu] = useState(false);
@@ -11,6 +12,7 @@ const Topnav = () => {
   useEffect(() => {
     chatsupport();
   }, []);
+   
   const chatsupport = async () => {
     try {
       const res = await API.get("/chat/support");
@@ -24,14 +26,24 @@ const Topnav = () => {
     }
   };
 
-  let closeTimer;
-  const handleMouseEnter = () => {
-    clearTimeout(closeTimer);
-    setShowMegaMenu(true);
-  };
-  const handleMouseLeave = () => {
-    closeTimer = setTimeout(() => setShowMegaMenu(false), 200); // small delay for smoother UX
-  };
+  const closeTimer = useRef(null);
+
+ const handleMouseEnter = () => {
+  clearTimeout(closeTimer.current); // cancel any pending close
+  setShowMegaMenu(true);
+};
+
+const handleMouseLeave = () => {
+  closeTimer.current = setTimeout(() => {
+    setShowMegaMenu(false);
+  }, 200); // small delay for smoother UX
+};
+
+const handleItemClick = () => {
+  clearTimeout(closeTimer.current); // stop any hover timers
+  setShowMegaMenu(false);           // close the menu
+};
+
   return (
     <>
       <nav className="horizontal-nav-bar">
@@ -66,34 +78,31 @@ const Topnav = () => {
           )}
         </div> */}
         <div
-          className="nav-item shop-wrapper"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          style={{ position: "relative" }}
-        >
-          <div className="track_poster">
-            <span>SHOP</span>
-          </div>
+      className="nav-item shop-wrapper"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{ position: "relative" }}
+    >
+      <div className="track_poster">
+        <span>SHOP</span>
+      </div>
 
-          {showMegaMenu && (
-            <div
-              className="megamenu-wrapper"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              style={{
-                position: "absolute",
-                top: "100%",
-                left: 0,
-                zIndex: 1000,
-                background: "#fff",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                borderTop: "1px solid #eee",
-              }}
-            >
-              <MegaMenu closeMenu={() => setShowMegaMenu(false)}/>
-            </div>
-          )}
-        </div>
+      <div
+        className={`megamenu-wrapper ${showMegaMenu ? "visible" : ""}`}
+        style={{
+          position: "absolute",
+          top: "100%",
+          left: 0,
+          zIndex: 1000,
+          background: "#fff",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+          borderTop: "1px solid #eee",
+          display: showMegaMenu ? "block" : "none", // ensures hiding works
+        }}
+      >
+        <MegaMenu closeMenu={handleItemClick} />
+      </div>
+    </div>
 
 
         <div className="nav-item">

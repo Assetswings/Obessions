@@ -15,17 +15,7 @@
     z-index: 999999;
      }
   
-  .mega-backdrop {
-    position: absolute;
-    top: 80px; /* So Topnav is not covered */
-    left: 0;
-    width: 100%;
-    height: calc(100% - 80px);
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 1;
-    pointer-events: auto;
-  }
-  
+ 
   /* Actual mega menu content area */
   .mega-menu-content {
     position: absolute;
@@ -33,7 +23,7 @@
     left: 0;
     width: 100%;
     height: calc(93% - 81px);
-    background: #fff;
+    background: white;
     z-index: 2;
     display: flex;
     padding: 40px;
@@ -42,6 +32,7 @@
     animation: fadeSlideDown 0s ease-out forwards;
     opacity: 0;
     transform: translateY(-20px);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
   }
   
   .mega-menu-content-duo{
@@ -59,6 +50,7 @@
     animation: fadeSlideDown 0s ease-out forwards;
     opacity: 0;
     transform: translateY(-20px);
+       box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
   }
   
   @keyframes fadeSlideDown {

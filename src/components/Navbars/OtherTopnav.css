@@ -247,3 +247,10 @@ span.track_poster {
   opacity: 1;
   visibility: visible;
 }
+ .megamenu-wrapper {
+  display: none;
+}
+
+.megamenu-wrapper.visible {
+  display: block;
+}

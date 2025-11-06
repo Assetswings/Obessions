@@ -36,6 +36,7 @@ const OtherTopnav = () => {
   const [showUserPopup, setShowUserPopup] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [disableHover, setDisableHover] = useState(false);
   const [query, setQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
@@ -195,15 +196,28 @@ const OtherTopnav = () => {
     setSearchResult([]);
   };
 
-  let closeTimer;
+   const closeTimer = useRef(null);
   const handleMouseEnter = () => {
-    clearTimeout(closeTimer);
-    setShowMegaMenu(true);
-  };
-  const handleMouseLeave = () => {
-    closeTimer = setTimeout(() => setShowMegaMenu(false), 200); // small delay for smoother UX
-  };
+  if (disableHover) return; // ❌ prevent reopening while disabled
+  clearTimeout(closeTimer.current);
+  setShowMegaMenu(true);
+};
 
+const handleMouseLeave = () => {
+  if (disableHover) return; // ❌ prevent closing while disabled
+  closeTimer.current = setTimeout(() => {
+    setShowMegaMenu(false);
+  }, 200);
+};
+
+const handleItemClick = () => {
+  clearTimeout(closeTimer.current);
+  setDisableHover(true);     
+  setShowMegaMenu(false);
+
+  // re-enable hover after a short delay
+  setTimeout(() => setDisableHover(false), 200);
+};
   return (
     <>
       {/* <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} /> */}
@@ -249,21 +263,20 @@ const OtherTopnav = () => {
             )}
           </li> */}
 
-          <li
-            className="shop-wrapper"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <div className="track_poster">
-              <span>SHOP</span>
-            </div>
+      <li
+      className="shop-wrapper"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="track_poster">
+        <span>SHOP</span>
+      </div>
 
-            <div
-              className={`megamenu-wrapper ${showMegaMenu ? "visible" : ""}`}
-            >
-              <MegamenuDuo closeMenu={() => setShowMegaMenu(false)} />
-            </div>
-          </li>
+      <div className={`megamenu-wrapper ${showMegaMenu ? "visible" : ""}`}>
+        <MegamenuDuo closeMenu={handleItemClick} />
+      </div>
+    </li>
+
           <li>
             <NavLink to="/new-arrivals" className={({ isActive }) => (isActive ? "active-tab" : "")}>
               <div className="track_poster">

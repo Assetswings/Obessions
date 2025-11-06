@@ -94,9 +94,9 @@ const MegamenuDuo = ({ closeMenu }) => {
         </div>
 
         {/* Close Button */}
-        <button className="close-btn" onClick={closeMenu}>
+        {/* <button className="close-btn" onClick={closeMenu}>
           ×
-        </button>
+        </button> */}
       </div>
     </div>
   );

@@ -141,7 +141,7 @@ const ProductsPage = () => {
     return () => {
       // Only clear if navigating away from this page
       // if (prevPath === "/products" && location.pathname !== "/products") {
-        localStorage.removeItem("selectedFilters");
+      localStorage.removeItem("selectedFilters");
       // }
     };
   }, [location.pathname]);
@@ -535,12 +535,12 @@ const ProductsPage = () => {
           {products.length > 0 &&
             <>
               <div className="sortby-container-mlb">
-                  <div> 
-    <span style={{ fontWeight: "bold" }} className="track_contuing">
-                {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
-              </span>
+                <div>
+                  <span style={{ fontWeight: "bold" }} className="track_contuing">
+                    {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
+                  </span>
 
-                  </div>
+                </div>
                 <div className="dropdown">
                   <div
                     className="dropdown-toggle sortby-btn"
@@ -564,7 +564,7 @@ const ProductsPage = () => {
                   </ul>
                 </div>
               </div>
-             
+
             </>
           }
           <div className="product-grid">
@@ -697,7 +697,7 @@ const ProductsPage = () => {
           </div>
 
 
-          {products?.length === 0 &&
+          {!loading && products?.length === 0 &&
             <div className="empty-product">
               <img
                 src={emptyproduct}

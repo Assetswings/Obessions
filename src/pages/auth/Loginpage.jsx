@@ -194,8 +194,10 @@ const LoginPage = () => {
         if (res.meta.requestStatus === "fulfilled") {
           console.log(res?.payload?.addresses[0]?.name);
           if (res?.payload?.addresses.length > 0) {
-            localStorage.setItem('userName', res?.payload?.addresses[0]?.name);
             localStorage.setItem('pincode', res?.payload?.addresses[0]?.pincode);
+          }
+          if (res?.payload?.user) {
+            localStorage.setItem('userName', res?.payload?.user?.first_name + ' '+ res?.payload?.user?.last_name);
           }
           getCartWishlistCount();
           // return false;

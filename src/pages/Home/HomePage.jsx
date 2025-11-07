@@ -63,9 +63,10 @@ const HomePage = () => {
 
   const searchSectionRef = useRef(null);
   const { setShowSearchIcon } = useHeader();
+  console.log("data----->home banner", data);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
+     useEffect(() => {
+     const observer = new IntersectionObserver(
       ([entry]) => {
         // When section is visible => hide icon
         // When not visible => show icon

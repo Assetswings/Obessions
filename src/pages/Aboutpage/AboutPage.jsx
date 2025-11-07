@@ -21,10 +21,15 @@ const AboutPage = () => {
         <section className="about-hero" style={{ backgroundImage: `url(${data?.bg_media})`, }}>
           <div className="hero-overlay">
             <h1>
-              {/* {data?.description} */}
-              Our <span className="italic">passion</span> lies in <br />
+             <p
+              className="track_set_hader"
+  dangerouslySetInnerHTML={{
+    __html: data?.bg_short_desc?.replace(/\{\"\s*\"\}/g, " "),
+  }}
+/>
+              {/* Our <span className="italic">passion</span> lies in <br />
               making your daily moments feel{" "}
-              <span className="italic">special</span>
+              <span className="italic">special</span> */}
             </h1>
           </div>
         </section>
@@ -210,8 +215,6 @@ const AboutPage = () => {
           </div>
         </section>
       </div>
-
-
       <Footer />
     </>
   );

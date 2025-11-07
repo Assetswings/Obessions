@@ -535,6 +535,12 @@ const ProductsPage = () => {
           {products.length > 0 &&
             <>
               <div className="sortby-container-mlb">
+                  <div> 
+    <span style={{ fontWeight: "bold" }} className="track_contuing">
+                {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
+              </span>
+
+                  </div>
                 <div className="dropdown">
                   <div
                     className="dropdown-toggle sortby-btn"
@@ -558,9 +564,7 @@ const ProductsPage = () => {
                   </ul>
                 </div>
               </div>
-              <p style={{ fontWeight: "bold" }}>
-                {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
-              </p>
+             
             </>
           }
           <div className="product-grid">

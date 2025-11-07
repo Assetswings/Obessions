@@ -228,7 +228,7 @@ const handleItemClick = () => {
           className="nav-logo"
           style={{ cursor: "pointer" }}>
           <Link to='/'>
-            <img src={logowhite} alt="Obsession" />
+            <img src="https://efi-s3-private.s3.ap-south-1.amazonaws.com/b2c-img/EnvogueImages/ReactJs_App/assets/logo-white.png" alt="Obsession" />
           </Link>
         </div>
 

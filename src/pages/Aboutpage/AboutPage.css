@@ -20,14 +20,14 @@
 .hero-overlay {
   padding: 2rem 3rem;
   text-align: center;
-  max-width: 594px;
+   max-width: 680px;;
   border-radius: 12px;
-  margin-top: 588px;
-  margin-left: 13vh;
+  margin-top: 608px;
+  margin-left: 5%;
 }
 
 .hero-overlay h1 {
-  font-size: 2.2rem;
+  font-size: 2.8rem;
   color: #ffffff;
   line-height: 1;
   font-family: "Playfair Display", serif;
@@ -36,6 +36,9 @@
   bottom: 30px;
 }
 
+.track_set_hader{
+   font-size: 3.8rem;
+}
 .italic {
   font-family: "Playfair Display", serif;
   font-weight: 500;

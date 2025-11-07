@@ -25,6 +25,7 @@ import { IoLogoWhatsapp } from "react-icons/io";
 import API from "../../app/api";
 import { useCartWishlist } from "../../app/CartWishlistContext";
 import searchicon from "../../assets/icons/Searchicon.svg";
+import logowhite from "../../assets/icons/logo-white.png"
 
 const OtherTopnav = () => {
   const dispatch = useDispatch();
@@ -227,7 +228,7 @@ const handleItemClick = () => {
           className="nav-logo"
           style={{ cursor: "pointer" }}>
           <Link to='/'>
-            <img src={localStorage.getItem('logo')} alt="Obsession" />
+            <img src={logowhite} alt="Obsession" />
           </Link>
         </div>
 

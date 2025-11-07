@@ -15,10 +15,8 @@
 }
 
 .nav-item {
-    font-size: 12px;
-    cursor: pointer;
-    padding: 48px;
- 
+  font-size: 12px;
+  cursor: pointer;
 }
 
 .nav-item:hover {

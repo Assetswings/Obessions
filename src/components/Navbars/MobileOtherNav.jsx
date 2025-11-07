@@ -17,7 +17,7 @@ import { fetchMegamenuData } from "./megamenuSlice";
 import { Link, useNavigate } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
- import newsdrwimage from "../../assets/images/navimage.png";
+import newsdrwimage from "../../assets/images/navimage.png";
 import { IoLogoWhatsapp } from "react-icons/io";
 import API from "../../app/api";
 import {
@@ -29,7 +29,7 @@ import { useCartWishlist } from "../../app/CartWishlistContext";
 const MobileOtherNav = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-   const { getCartWishlistCount } = useCartWishlist();
+  const { getCartWishlistCount } = useCartWishlist();
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("main");
   const [currentSection, setCurrentSection] = useState(null);
@@ -67,21 +67,21 @@ const MobileOtherNav = () => {
     return () => window.removeEventListener("storage", checkLogin);
   }, []);
 
-     useEffect(() => {
-     if (isOpen) {
-       // Disable page scroll when drawer is open
-       document.body.style.overflow = "hidden";
-     } else {
-       // Enable scroll when drawer is closed
-       document.body.style.overflow = "auto";
-     }
-   
-     // Cleanup when component unmounts
-     return () => {
-       document.body.style.overflow = "auto";
-     };
-   }, [isOpen]);
-   
+  useEffect(() => {
+    if (isOpen) {
+      // Disable page scroll when drawer is open
+      document.body.style.overflow = "hidden";
+    } else {
+      // Enable scroll when drawer is closed
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup when component unmounts
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
   // ✅ Close popup when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -141,7 +141,7 @@ const MobileOtherNav = () => {
     localStorage.removeItem("userName");
     setIsLoggedIn(false);
     setShowUserPopup(false);
-     getCartWishlistCount();
+    getCartWishlistCount();
     window.dispatchEvent(new Event("storage"));
     navigate("/");
   };
@@ -229,117 +229,117 @@ const MobileOtherNav = () => {
       </header>
 
 
-  
- <div className={`drawer ${isOpen ? "open" : ""}`}>
-  <div className="drawer-header">
-    {activeMenu !== "main" && (
-      <span className="back-btn" onClick={goBack}>
-        <ChevronLeft />
-      </span>
-    )}
-    <div className="track_sector_close">
-      <span onClick={toggleDrawer} className="close-btn-mlb">
-        ✕
-      </span>
-    </div>
-  </div>
 
-  <div className="menu-container">
-    {/* ===== MAIN MENU ===== */}
-    <div className={`menu ${activeMenu === "main" ? "active" : ""}`}>
-      <ul>
-        <li onClick={() => navigateTo("shop")}>
-          <div className="iteam_main">
-            <div>Shop</div>
-            <div>
-              <ChevronRight />
+      <div className={`drawer ${isOpen ? "open" : ""}`}>
+        <div className="drawer-header">
+          {activeMenu !== "main" && (
+            <span className="back-btn" onClick={goBack}>
+              <ChevronLeft />
+            </span>
+          )}
+          <div className="track_sector_close">
+            <span onClick={toggleDrawer} className="close-btn-mlb">
+              ✕
+            </span>
+          </div>
+        </div>
+
+        <div className="menu-container">
+          {/* ===== MAIN MENU ===== */}
+          <div className={`menu ${activeMenu === "main" ? "active" : ""}`}>
+            <ul>
+              <li onClick={() => navigateTo("shop")} className="border-buttom">
+                <div className="iteam_main">
+                  <div>Shop</div>
+                  <div>
+                    <ChevronRight />
+                  </div>
+                </div>
+              </li>
+              <li className="border-buttom">
+                <Link to="/new-arrivals" onClick={toggleDrawer}>
+                  NEW ARRIVALS
+                </Link>
+              </li>
+              <li className="border-buttom">
+                <Link to="/bestseller" onClick={toggleDrawer}>
+                  BEST SELLERS
+                </Link>
+              </li>
+              <li className="border-buttom">
+                <Link to="/offer-spot" onClick={toggleDrawer}>
+                  OFFERS SPOT
+                </Link>
+              </li>
+              <li className="border-buttom">
+                <Link to="/carpet-finder" onClick={toggleDrawer}>
+                  FLOOR MATCHER
+                </Link>
+              </li>
+            </ul>
+
+            {/* 🔥 Image after all text content */}
+            <div className="drawer-image">
+              <img src={newsdrwimage} alt="Menu Banner" />
             </div>
           </div>
-        </li>
-        <li>
-          <Link to="/new-arrivals" onClick={toggleDrawer}>
-            NEW ARRIVALS
-          </Link>
-        </li>
-        <li>
-          <Link to="/bestseller" onClick={toggleDrawer}>
-            BEST SELLERS
-          </Link>
-        </li>
-        <li>
-          <Link to="/offer-spot" onClick={toggleDrawer}>
-            OFFERS SPOT
-          </Link>
-        </li>
-        <li>
-          <Link to="/carpet-finder" onClick={toggleDrawer}>
-            FLOOR MATCHER
-          </Link>
-        </li>
-      </ul>
 
-      {/* 🔥 Image after all text content */}
-      <div className="drawer-image">
-        <img src={newsdrwimage} alt="Menu Banner" />
+          {/* ===== SHOP MENU ===== */}
+          <div className={`menu ${activeMenu === "shop" ? "active" : ""}`}>
+            <ul>
+              {data?.map((section) => (
+                <li
+                  key={section.id}
+                  onClick={() => {
+                    setCurrentSection(section);
+                    navigateTo("category");
+                  }}
+                >
+                  <div className="iteam_main border-buttom">
+                    <div>{section.name}</div>
+                    <div>
+                      <ChevronRight />
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* ===== CATEGORY MENU ===== */}
+          <div className={`menu ${activeMenu === "category" ? "active" : ""}`}>
+            <ul>
+              {currentSection?.categories?.map((category) => (
+                <li key={category.id}>
+                  <div
+                    className="iteam_main"
+                    onClick={() => toggleCategory(category.id)}
+                  >
+                    <div>{category.name}</div>
+                    <div className="toggle-icon">
+                      {openCategory === category.id ? <Minus /> : <Plus />}
+                    </div>
+                  </div>
+                  {openCategory === category.id && (
+                    <ul className="submenu">
+                      {category.subcategories.map((sub) => (
+                        <li key={sub.id}>
+                          <Link
+                            to={`/products/${category.action_url}/${sub.action_url}`}
+                            onClick={toggleDrawer}
+                          >
+                            {sub.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
-
-    {/* ===== SHOP MENU ===== */}
-    <div className={`menu ${activeMenu === "shop" ? "active" : ""}`}>
-      <ul>
-        {data?.map((section) => (
-          <li
-            key={section.id}
-            onClick={() => {
-              setCurrentSection(section);
-              navigateTo("category");
-            }}
-          >
-            <div className="iteam_main">
-              <div>{section.name}</div>
-              <div>
-                <ChevronRight />
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-
-    {/* ===== CATEGORY MENU ===== */}
-    <div className={`menu ${activeMenu === "category" ? "active" : ""}`}>
-      <ul>
-        {currentSection?.categories?.map((category) => (
-          <li key={category.id}>
-            <div
-              className="iteam_main"
-              onClick={() => toggleCategory(category.id)}
-            >
-              <div>{category.name}</div>
-              <div className="toggle-icon">
-                {openCategory === category.id ? <Minus /> : <Plus />}
-              </div>
-            </div>
-            {openCategory === category.id && (
-              <ul className="submenu">
-                {category.subcategories.map((sub) => (
-                  <li key={sub.id}>
-                    <Link
-                      to={`/products/${category.action_url}/${sub.action_url}`}
-                      onClick={toggleDrawer}
-                    >
-                      {sub.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-  </div>
-</div>
 
       {isOpen && <div className="overlay" onClick={toggleDrawer}></div>}
 

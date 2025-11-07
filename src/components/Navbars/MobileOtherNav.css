@@ -368,3 +368,8 @@ body {
 .popup-item:hover {
   background-color: #f2f2f2;
 }
+
+.border-buttom {
+  border-bottom: 1px solid #E5E7E9;
+  padding-bottom: 5px;
+}

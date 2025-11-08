@@ -597,7 +597,7 @@ const HomePage = () => {
                     className="carpet-tile"
                     style={{ backgroundImage: `url(${item.image})` }}
                   >
-                    <div className="carpet-label">{item.title}</div>
+                    {/* <div className="carpet-label">{item.title}</div> */}
                   </div>
                 </Link>
               </>

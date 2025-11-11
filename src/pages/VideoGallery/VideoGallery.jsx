@@ -93,7 +93,7 @@ export default function VideoGallery() {
   return (
     <>
       {/* Back Button */}
-      <button className="back-btn" onClick={() => navigate(-1)}>
+      <button className="back-btn_glr" onClick={() => navigate(-1)}>
         <ChevronLeft />
       </button>
 

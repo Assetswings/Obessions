@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../../app/api";
 import "./VideoGallery.css";
+import { ChevronLeft } from "lucide-react";
 
 export default function VideoGallery() {
+  const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const scrollRef = useRef(null);
@@ -53,7 +56,6 @@ export default function VideoGallery() {
     else if (el.scrollTop > thirdY * 2 - pad) el.scrollTop -= thirdY;
   };
 
-  // ✅ Hover logic (auto play video)
   const handleMouseEnter = (index) => {
     videoRefs.current.forEach((vid, i) => {
       if (vid && i !== index) {
@@ -81,7 +83,6 @@ export default function VideoGallery() {
     }
   };
 
-  // ✅ Modal logic
   const handleVideoClick = (v) => setSelectedVideo(v);
   const closeModal = () => setSelectedVideo(null);
 
@@ -91,6 +92,11 @@ export default function VideoGallery() {
 
   return (
     <>
+      {/* Back Button */}
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        <ChevronLeft />
+      </button>
+
       <div ref={scrollRef} className="gallery-wrapper" onScroll={handleScroll}>
         {totalGrid.map((v, i) => {
           const isValid =
@@ -131,7 +137,10 @@ export default function VideoGallery() {
 
       {selectedVideo && (
         <div className="video-modal" onClick={closeModal}>
-          <div className="video-modal-content" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="video-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
             <video
               src={selectedVideo.media}
               autoPlay

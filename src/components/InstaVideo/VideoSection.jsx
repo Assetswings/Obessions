@@ -11,8 +11,8 @@ const VideoSection = () => {
   const reelVideoRefs = useRef([]);
   const [activeIndex, setActiveIndex] = useState(null);
   const [playingIndex, setPlayingIndex] = useState(null);
-
   const galleries = useSelector((state) => state.home?.data?.galleries || []);
+
 
   // Horizontal scroll
   const scroll = (direction) => {

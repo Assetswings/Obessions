@@ -510,7 +510,7 @@ const ProductDetailPage = () => {
               className="share_btn"
               onMouseEnter={() => setOpen(true)}
             >
-              <span><Share2 /></span> share
+              <span ><Share2 size={14}  /></span> share
             </div>
           )
         )}

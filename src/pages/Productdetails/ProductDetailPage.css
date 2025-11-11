@@ -11,8 +11,9 @@ font-family: "Playfair Display", serif; */
       display: flex;
       justify-content: space-between;
       height: 20px;
-      margin-top: 5px;
+      margin-bottom: 15px;
       padding: 20px;
+   
 }
 
 .share_btn {

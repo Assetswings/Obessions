@@ -21,12 +21,12 @@ const AboutPage = () => {
         <section className="about-hero" style={{ backgroundImage: `url(${data?.bg_media})`, }}>
           <div className="hero-overlay">
             <h1>
-             <p
-              className="track_set_hader"
-  dangerouslySetInnerHTML={{
-    __html: data?.bg_short_desc?.replace(/\{\"\s*\"\}/g, " "),
-  }}
-/>
+              <p
+                className="track_set_hader"
+                dangerouslySetInnerHTML={{
+                  __html: data?.bg_short_desc?.replace(/\{\"\s*\"\}/g, " "),
+                }}
+              />
               {/* Our <span className="italic">passion</span> lies in <br />
               making your daily moments feel{" "}
               <span className="italic">special</span> */}
@@ -76,8 +76,8 @@ const AboutPage = () => {
           </div>
         </section>
       </div>
-  
-  
+
+
       {/* 
       <div className="tr_div">
         <img
@@ -127,7 +127,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-       
+
       <section className="thirty-years-section-mlb ">
         <div className="container">
           <div className="row align-items-center">
@@ -183,34 +183,26 @@ const AboutPage = () => {
             <h2>
               The Obsession <span>Promise</span>
             </h2>
-            <p>
-              We design with you in mind; your lifestyle, your home, your needs. From sleek designs to clever functionality, every Obsessions product is made to make your everyday feel a little more beautiful and a lot more effortless.
-            </p>
+            <p>{data?.obsession_promise?.description}</p>
           </div>
 
           <div className="promise-features">
             <div className="feature-item">
               <Palette className="feature-icon" strokeWidth={1.2} />
               <h3>CRAFTSMANSHIP</h3>
-              <p>
-                Every detail matters; our products are carefully made to reflect precision, passion, and skill.
-              </p>
+              <p>{data?.obsession_promise?.craftsmanship}</p>
             </div>
 
             <div className="feature-item">
               <Lightbulb className="feature-icon" strokeWidth={1.2} />
               <h3>INNOVATION</h3>
-              <p>
-                We believe innovation should feel effortless; and look good doing it.
-              </p>
+              <p>{data?.obsession_promise?.innovation}</p>
             </div>
 
             <div className="feature-item">
               <Recycle className="feature-icon" strokeWidth={1.2} />
               <h3>SUSTAINABILITY</h3>
-              <p>
-                From sustainable materials to minimal packaging, we’re committed to reducing waste.
-              </p>
+              <p>{data?.obsession_promise?.sustainability}</p>
             </div>
           </div>
         </section>

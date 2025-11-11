@@ -447,8 +447,6 @@ const ProductDetailPage = () => {
     return <div className="error">Error: {error}</div>;
   }
 
-
-
   const handleCheck = () => {
     if (pincode.trim()) {
       dispatch(checkPincode(pincode));
@@ -471,13 +469,12 @@ const ProductDetailPage = () => {
   };
   const breadcrumbPaths = [
     { label: data?.sub_category_action_url, to: `/products/${data?.category_action_url}/${data?.sub_category_action_url}` },
-    { label: selectedSize?.name, to: "" }, // last one (no link)
+    { label: 'Product Details', to: "" }, // last one (no link)
   ];
 
   // Build full product URL (works with #/ hash routing)
   const productUrl = window.location.href;
   const encodedUrl = encodeURIComponent(productUrl);
-  const encodedText = encodeURIComponent(`Check out this product: ${selectedSize?.name}`);
 
   const shareLinks = {
     whatsapp: `https://api.whatsapp.com/send?text=${encodedUrl}`,

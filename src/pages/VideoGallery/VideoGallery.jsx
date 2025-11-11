@@ -1,28 +1,12 @@
-// VideoGallery.jsx
 import React, { useEffect, useRef, useState } from "react";
 import API from "../../app/api";
 import "./VideoGallery.css";
 
-const FRICTION = 0.92;
-const SPEED = 1.2;
-const MOMENTUM_MULT = 18;
-
 export default function VideoGallery() {
   const [videos, setVideos] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
   const scrollRef = useRef(null);
-  const state = useRef({
-    isDown: false,
-    startX: 0,
-    startY: 0,
-    baseLeft: 0,
-    baseTop: 0,
-    vx: 0,
-    vy: 0,
-    lastX: 0,
-    lastY: 0,
-    lastT: 0,
-    rafId: 0,
-  });
+  const videoRefs = useRef([]);
 
   useEffect(() => {
     document.title = "Obsession - Video Gallery";
@@ -69,103 +53,98 @@ export default function VideoGallery() {
     else if (el.scrollTop > thirdY * 2 - pad) el.scrollTop -= thirdY;
   };
 
-  const onPointerDown = (e) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.setPointerCapture?.(e.pointerId);
-    state.current.isDown = true;
-    state.current.startX = e.clientX;
-    state.current.startY = e.clientY;
-    state.current.baseLeft = el.scrollLeft;
-    state.current.baseTop = el.scrollTop;
-    state.current.vx = 0;
-    state.current.vy = 0;
-    state.current.lastX = e.clientX;
-    state.current.lastY = e.clientY;
-    state.current.lastT = performance.now();
-    cancelAnimationFrame(state.current.rafId);
+  // ✅ Hover logic (auto play video)
+  const handleMouseEnter = (index) => {
+    videoRefs.current.forEach((vid, i) => {
+      if (vid && i !== index) {
+        try {
+          vid.pause();
+          vid.load();
+        } catch {}
+      }
+    });
+    const video = videoRefs.current[index];
+    if (video) {
+      try {
+        video.play().catch(() => {});
+      } catch {}
+    }
   };
 
-  const onPointerMove = (e) => {
-    if (!state.current.isDown) return;
-    e.preventDefault();
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const dx = (e.clientX - state.current.startX) * SPEED;
-    const dy = (e.clientY - state.current.startY) * SPEED;
-
-    el.scrollLeft = state.current.baseLeft - dx;
-    el.scrollTop = state.current.baseTop - dy;
-
-    const now = performance.now();
-    const dt = Math.max(1, now - state.current.lastT);
-    const instVX = (e.clientX - state.current.lastX) / dt;
-    const instVY = (e.clientY - state.current.lastY) / dt;
-    state.current.vx = state.current.vx * 0.8 + instVX * 0.2;
-    state.current.vy = state.current.vy * 0.8 + instVY * 0.2;
-    state.current.lastX = e.clientX;
-    state.current.lastY = e.clientY;
-    state.current.lastT = now;
+  const handleMouseLeave = (index) => {
+    const video = videoRefs.current[index];
+    if (video) {
+      try {
+        video.pause();
+        video.load();
+      } catch {}
+    }
   };
 
-  const kickMomentum = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const step = () => {
-      state.current.vx *= FRICTION;
-      state.current.vy *= FRICTION;
-      if (Math.abs(state.current.vx) < 0.005 && Math.abs(state.current.vy) < 0.005) return;
-      el.scrollLeft -= state.current.vx * MOMENTUM_MULT;
-      el.scrollTop -= state.current.vy * MOMENTUM_MULT;
-      handleScroll();
-      state.current.rafId = requestAnimationFrame(step);
-    };
-    state.current.rafId = requestAnimationFrame(step);
-  };
-
-  const onPointerUp = (e) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.releasePointerCapture?.(e.pointerId);
-    if (!state.current.isDown) return;
-    state.current.isDown = false;
-    kickMomentum();
-  };
-
-  const pattern = ["", "tall", "", "", "tall", "", "", "wide"];
+  // ✅ Modal logic
+  const handleVideoClick = (v) => setSelectedVideo(v);
+  const closeModal = () => setSelectedVideo(null);
 
   if (!videos.length) {
     return <div className="gallery-loading">Loading videos...</div>;
   }
 
   return (
-    <div className="gallery-container">
-      <div
-        ref={scrollRef}
-        className="gallery-wrapper"
-        onScroll={handleScroll}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
-      >
-        {totalGrid.map((v, i) => (
-          <div
-            className={`gallery-item ${pattern[i % pattern.length]}`}
-            key={`${i}-${v.id || i}`}
-          >
-            <video
-              className="video-box"
-              src={v.media}
-              autoPlay
-              loop
-              muted
-              playsInline
-            />
-          </div>
-        ))}
+    <>
+      <div ref={scrollRef} className="gallery-wrapper" onScroll={handleScroll}>
+        {totalGrid.map((v, i) => {
+          const isValid =
+            v.media &&
+            (v.media.endsWith(".mp4") ||
+              v.media.endsWith(".webm") ||
+              v.media.endsWith(".mov"));
+
+          return (
+            <div
+              className="gallery-item"
+              key={`${i}-${v.id || i}`}
+              onMouseEnter={() => handleMouseEnter(i)}
+              onMouseLeave={() => handleMouseLeave(i)}
+              onClick={() => handleVideoClick(v)}
+            >
+              {isValid ? (
+                <video
+                  ref={(el) => (videoRefs.current[i] = el)}
+                  className="video-box"
+                  src={v.media}
+                  poster={v.poster_image}
+                  muted
+                  loop
+                  playsInline
+                />
+              ) : (
+                <img
+                  src={v.poster_image || "/fallback.jpg"}
+                  alt="Video thumbnail"
+                  className="video-box"
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
-    </div>
+
+      {selectedVideo && (
+        <div className="video-modal" onClick={closeModal}>
+          <div className="video-modal-content" onClick={(e) => e.stopPropagation()}>
+            <video
+              src={selectedVideo.media}
+              autoPlay
+              controls
+              playsInline
+              className="modal-video"
+            />
+            <button className="close-btn" onClick={closeModal}>
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

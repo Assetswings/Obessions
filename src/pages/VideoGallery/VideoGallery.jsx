@@ -1,3 +1,4 @@
+// VideoGallery.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../app/api";
@@ -7,147 +8,156 @@ import { ChevronLeft } from "lucide-react";
 export default function VideoGallery() {
   const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
+
   const scrollRef = useRef(null);
   const videoRefs = useRef([]);
 
-  useEffect(() => {
-    document.title = "Obsession - Video Gallery";
-    (async () => {
-      try {
-        const res = await API.get("/gallery");
-        if (res.data?.status === 200 && Array.isArray(res.data.data)) {
-          setVideos(res.data.data);
+  const COLUMNS = 4;
+
+  // Fetch videos
+  const fetchVideos = async (pageNum = 1) => {
+    setLoading(true);
+    try {
+      const res = await API.get(`/gallery?page=${pageNum}`);
+      if (res.data?.status === 200 && Array.isArray(res.data.data)) {
+        if (res.data.data.length === 0) {
+          setHasMore(false);
         } else {
-          console.error("Invalid gallery data:", res.data);
+          setVideos((prev) => [...prev, ...res.data.data]);
         }
-      } catch (err) {
-        console.error("Gallery fetch error:", err);
       }
-    })();
-  }, []);
-
-  const TILES = 3;
-  const totalGrid = videos.length
-    ? Array.from({ length: TILES * TILES }, () => videos).flat()
-    : [];
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el || totalGrid.length === 0) return;
-    const id = setTimeout(() => {
-      el.scrollLeft = el.scrollWidth / 3;
-      el.scrollTop = el.scrollHeight / 3;
-    }, 50);
-    return () => clearTimeout(id);
-  }, [totalGrid.length]);
-
-  const handleScroll = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const thirdX = el.scrollWidth / 3;
-    const thirdY = el.scrollHeight / 3;
-    const pad = 50;
-
-    if (el.scrollLeft < pad) el.scrollLeft += thirdX;
-    else if (el.scrollLeft > thirdX * 2 - pad) el.scrollLeft -= thirdX;
-
-    if (el.scrollTop < pad) el.scrollTop += thirdY;
-    else if (el.scrollTop > thirdY * 2 - pad) el.scrollTop -= thirdY;
+    } catch (err) {
+      console.error("Gallery fetch error:", err);
+    }
+    setLoading(false);
   };
 
-  const handleMouseEnter = (index) => {
-    videoRefs.current.forEach((vid, i) => {
-      if (vid && i !== index) {
-        try {
-          vid.pause();
-          vid.load();
-        } catch {}
-      }
-    });
-    const video = videoRefs.current[index];
-    if (video) {
-      try {
-        video.play().catch(() => {});
-      } catch {}
+  useEffect(() => {
+    fetchVideos(page);
+  }, [page]);
+
+  // Infinite scroll
+  const handleScroll = () => {
+    const el = scrollRef.current;
+    if (!el || loading || !hasMore) return;
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 200) {
+      setPage((prev) => prev + 1);
     }
+  };
+
+  // Distribute videos into columns
+  const columns = Array.from({ length: COLUMNS }, () => []);
+  const heights = Array.from({ length: COLUMNS }, () => 0);
+
+  videos.forEach((video) => {
+    const height = video.height || Math.floor(Math.random() * 270) + 280;
+    const minIndex = heights.indexOf(Math.min(...heights));
+    columns[minIndex].push({ ...video, height });
+    heights[minIndex] += height + 14;
+  });
+
+  // Hover play logic
+  const handleMouseEnter = (index) => {
+    const video = videoRefs.current[index];
+    if (video) video.play().catch(() => {});
   };
 
   const handleMouseLeave = (index) => {
     const video = videoRefs.current[index];
     if (video) {
-      try {
-        video.pause();
-        video.load();
-      } catch {}
+      video.pause();
+      video.load(); // reset to poster
     }
   };
 
   const handleVideoClick = (v) => setSelectedVideo(v);
   const closeModal = () => setSelectedVideo(null);
 
-  if (!videos.length) {
+  if (!videos.length && !loading)
     return <div className="gallery-loading">Loading videos...</div>;
-  }
 
   return (
     <>
-      {/* Back Button */}
       <button className="back-btn_glr" onClick={() => navigate(-1)}>
         <ChevronLeft />
       </button>
 
       <div ref={scrollRef} className="gallery-wrapper" onScroll={handleScroll}>
-        {totalGrid.map((v, i) => {
-          const isValid =
-            v.media &&
-            (v.media.endsWith(".mp4") ||
-              v.media.endsWith(".webm") ||
-              v.media.endsWith(".mov"));
+        {columns.map((col, colIndex) => (
+          <div key={colIndex} className="gallery-column">
+            {col.map((v) => {
+              // Get correct index in videos array
+              const videoIndex = videos.findIndex((vid) => vid.id === v.id);
 
-          return (
-            <div
-              className="gallery-item"
-              key={`${i}-${v.id || i}`}
-              onMouseEnter={() => handleMouseEnter(i)}
-              onMouseLeave={() => handleMouseLeave(i)}
-              onClick={() => handleVideoClick(v)}
-            >
-              {isValid ? (
-                <video
-                  ref={(el) => (videoRefs.current[i] = el)}
-                  className="video-box"
-                  src={v.media}
-                  poster={v.poster_image}
-                  muted
-                  loop
-                  playsInline
-                />
-              ) : (
-                <img
-                  src={v.poster_image || "/fallback.jpg"}
-                  alt="Video thumbnail"
-                  className="video-box"
-                />
-              )}
-            </div>
-          );
-        })}
+              const isVideo =
+                v.media &&
+                (v.media.endsWith(".mp4") ||
+                  v.media.endsWith(".webm") ||
+                  v.media.endsWith(".mov"));
+
+              return (
+                <div
+                  key={v.id}
+                  className="gallery-item"
+                  style={{ height: v.height }}
+                  onMouseEnter={() => handleMouseEnter(videoIndex)}
+                  onMouseLeave={() => handleMouseLeave(videoIndex)}
+                  onClick={() => handleVideoClick(v)}
+                >
+                  {isVideo ? (
+                    <video
+                      ref={(el) => (videoRefs.current[videoIndex] = el)}
+                      className="video-box"
+                      src={v.media}
+                      poster={v.poster_image}
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                    />
+                  ) : (
+                    <img
+                      src={v.poster_image || "/fallback.jpg"}
+                      alt="Video thumbnail"
+                      className="video-box"
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+        {loading && <div className="gallery-loading">Loading more videos...</div>}
       </div>
 
+      {/* Modal */}
       {selectedVideo && (
         <div className="video-modal" onClick={closeModal}>
-          <div
-            className="video-modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <video
-              src={selectedVideo.media}
-              autoPlay
-              controls
-              playsInline
-              className="modal-video"
-            />
+          <div className="video-modal-content" onClick={(e) => e.stopPropagation()}>
+            {selectedVideo.media &&
+            (selectedVideo.media.endsWith(".mp4") ||
+              selectedVideo.media.endsWith(".webm") ||
+              selectedVideo.media.endsWith(".mov")) ? (
+              <video
+                key={selectedVideo.media} // force reload on change
+                src={selectedVideo.media}
+                autoPlay
+                muted={false}
+                controls
+                playsInline
+                className="modal-video"
+              />
+            ) : (
+              <img
+                src={selectedVideo.poster_image || "/fallback.jpg"}
+                alt="Video thumbnail"
+                className="modal-video"
+              />
+            )}
             <button className="close-btn" onClick={closeModal}>
               ✕
             </button>

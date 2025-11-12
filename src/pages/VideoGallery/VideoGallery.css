@@ -1,8 +1,7 @@
-/* VideoGallery.css */
 .gallery-wrapper {
   display: flex;
   width: 100%;
-  gap: 14px;
+  gap: 12px;
   padding: 10px;
   background: #000;
   overflow-y: auto;
@@ -28,7 +27,7 @@
   width: 100%;
   background: #000;
   overflow: hidden;
-  border-radius: 6px;
+
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -71,7 +70,9 @@
 .video-modal-content {
   position: relative;
   width: 360px;
+  max-width: 90%;
   height: 640px;
+  max-height: 90%;
   background: #000;
   display: flex;
   justify-content: center;
@@ -120,4 +121,14 @@
   font-size: 16px;
   border-radius: 2px;
   cursor: pointer;
+}
+
+/* Mobile: 2 columns */
+@media (max-width: 768px) {
+  .gallery-wrapper {
+    gap: 10px;
+  }
+  .gallery-column {
+    flex: 0 0 50%;
+  }
 }

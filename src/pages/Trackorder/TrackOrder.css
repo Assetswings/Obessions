@@ -17,7 +17,8 @@
 }
 
 .track-title {
-  text-align: center;
+  font-size: 25px;
+  text-align: left;
   margin-bottom: 20px;
   color: #111827;
 }

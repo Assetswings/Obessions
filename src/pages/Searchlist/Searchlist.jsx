@@ -14,12 +14,14 @@ import {
   removeFromWishlist,
 } from "../../components/Wishtlist/WishlistSlice";
 import { fetchSearchResults, clearSearchResults } from "../Home/searchSlice";
-import { toast } from "react-hot-toast";
+
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "../Products/otherproductSlice";
+import { toast, ToastContainer } from "react-toastify";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const Searchlist = () => {
   const dispatch = useDispatch();
@@ -168,9 +170,15 @@ const Searchlist = () => {
       ))}
     </div>
   );
-
+  const breadcrumbPaths = [
+    {
+      label:"Search List",to: ""
+    }
+  ];
   return (
     <>
+      <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} />
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="custom-products-page">
         {(loading || results?.length > 0) && (
           <aside className="custom-filters">

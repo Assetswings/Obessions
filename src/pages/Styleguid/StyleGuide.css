@@ -1,3 +1,4 @@
+@import url('https://fonts.cdnfonts.com/css/playfair-display');
 .styleguide-container {
     font-family: "Poppins", sans-serif;
     color: #222;
@@ -28,9 +29,10 @@
   }
   
   .hero-text-sz h1 {
-    font-size: 48px;
-    font-weight: 600;
+    font-size: 44px;
+    font-weight: 500;
     margin-bottom: 15px;
+    font-family: "Playfair Display";
   }
   
   .hero-text-sz p {
@@ -47,10 +49,11 @@
   }
   
   .guide-title {
-    font-size: 28px;
+    font-size: 32px;
     text-align: center;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 30px;
+    font-family: "Playfair Display";
   }
   
   /* Tabs */
@@ -78,6 +81,7 @@
   .tab-btn.active {
     color: #000;
     border-bottom: 2px solid #000;
+    font-weight: 400 !important;
   }
   
   /* Layout */
@@ -146,6 +150,7 @@
     border: none;
     cursor: pointer;
     transition: 0.3s;
+    text-transform: uppercase;
   }
   
   .shop-btn:hover {

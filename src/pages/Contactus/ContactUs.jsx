@@ -12,6 +12,7 @@ import { Toaster, toast } from "react-hot-toast";
 import helpchat from "../../assets/icons/helpchat.png";
 import sizeguide from "../../assets/icons/sizeguide.png";
 import styleguild from "../../assets/icons/styleguild.png";
+import { Link } from "react-router-dom";
 
 const ContactUs = () => {
   const dispatch = useDispatch();
@@ -341,25 +342,31 @@ const ContactUs = () => {
           <h2 style={{ fontWeight: "400", fontSize: "32px" }}>Instant Help Guides</h2>
           <div className="guides-container">
             <div className="guide-item">
-              <img
-                src={helpchat}
-                alt="FAQ Icon"
-              />
-              <p>FAQ’s</p>
+              <Link to="/faq">
+                <img
+                  src={helpchat}
+                  alt="FAQ Icon"
+                />
+                <p>FAQ’s</p>
+              </Link>
             </div>
             <div className="guide-item">
-              <img
-                src={sizeguide}
-                alt="Size Guide Icon"
-              />
-              <p>SIZE GUIDE</p>
+              <Link to="/size-guide">
+                <img
+                  src={sizeguide}
+                  alt="Size Guide Icon"
+                />
+                <p>SIZE GUIDE</p>
+              </Link>
             </div>
             <div className="guide-item">
-              <img
-                src={styleguild}
-                alt="Style Guide Icon"
-              />
-              <p>STYLE GUIDE</p>
+              <Link to="/style-guide">
+                <img
+                  src={styleguild}
+                  alt="Style Guide Icon"
+                />
+                <p>STYLE GUIDE</p>
+              </Link>
             </div>
           </div>
         </section>

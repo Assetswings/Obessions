@@ -49,7 +49,7 @@ GENERAL
   
   .steps-section h2 {
     font-size: 26px;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 50px;
   }
   
@@ -81,12 +81,12 @@ GENERAL
   
   .step-item h3 {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 500;
   }
   
   .step-item p {
     font-size: 14px;
-    color: #333;
+    color: #625E55;
     line-height: 1.6;
   }
   
@@ -154,10 +154,11 @@ GENERAL
   }
   
   .section-title {
-    font-size: 28px;
-    font-weight: 600;
+    font-size: 32px;
+    font-weight: 500;
     margin-bottom: 8px;
     text-align: left;
+    font-family: "Playfair Display";
   }
   
   .section-subtitle {
@@ -193,8 +194,8 @@ GENERAL
   }
   
   .style-title {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 500;
     letter-spacing: 1px;
     margin-bottom: 16px;
   }
@@ -207,8 +208,8 @@ GENERAL
   }
   
   .recommend-title {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 500;
     margin-bottom: 10px;
   }
   

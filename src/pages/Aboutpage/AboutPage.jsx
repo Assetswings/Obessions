@@ -18,21 +18,27 @@ const AboutPage = () => {
     <>
       <div className="about-wrapper">
         {/* Hero Section */}
-        <section className="about-hero"   style={{ backgroundImage: `url(${data?.bg_media})`, height: '100vh', }}>
-          <div className="hero-overlay">
-            <h1>
-              <p
-                className="track_set_hader"
-                dangerouslySetInnerHTML={{
-                  __html: data?.bg_short_desc?.replace(/\{\"\s*\"\}/g, " "),
-                }}
-              />
-              {/* Our <span className="italic">passion</span> lies in <br />
-              making your daily moments feel{" "}
-              <span className="italic">special</span> */}
-            </h1>
-          </div>
-        </section>
+       <section
+  className="about-hero"
+  style={{
+    backgroundImage: `url(${data?.bg_media})`,
+    height: "105vh",
+    backgroundSize: "cover",       // makes image fully cover section
+    backgroundPosition: "center",  // centers the image
+    backgroundRepeat: "no-repeat", // prevents tiling
+  }}
+>
+  <div className="hero-overlay">
+    <h1>
+      <p
+        className="track_set_hader"
+        dangerouslySetInnerHTML={{
+          __html: data?.bg_short_desc?.replace(/\{\"\s*\"\}/g, " "),
+        }}
+      />
+    </h1>
+  </div>
+</section>
         {/* Text Content Section */}
         {/* Styled Text Section */}
         <section className="about-text-section">
@@ -56,8 +62,8 @@ const AboutPage = () => {
         <section className="philosophy-section">
           <div className="philosophy-left">
             <h2>
-              <span className="italic">Our</span>{" "}
-              <strong>Our Philosophy</strong>
+              <span style={{color:'black'}} className="italic">Our</span>{" "}
+              <span className="ph_txt">Philosophy</span>
             </h2>
             <img
               src={data.our_philosophy?.left}

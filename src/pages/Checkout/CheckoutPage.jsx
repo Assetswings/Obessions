@@ -322,7 +322,7 @@ const CheckoutPage = () => {
                   </span>
                 </p>
                 <p className="item-qtn">
-                  Quantity: <u>{item.cart_qty}</u>
+                  Quantity: {item.cart_qty}
                 </p>
                 <p>
                   {" "}

@@ -36,7 +36,7 @@ const Successpage = () => {
         {/* ✅ Estimated Arrival */}
         <div className="arrival-box">
           <h3 className="arrival-title">Estimated arrival</h3>
-          <p className="arrival-date">--</p>
+          {/* <p className="arrival-date">--</p> */}
           <p className="arrival-id">
             Order PLACED : <span>{new Date(verifyResponse?.data?.created_at).toLocaleDateString(
               "en-GB",

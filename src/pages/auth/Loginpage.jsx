@@ -281,8 +281,9 @@ const LoginPage = () => {
                 {loading ? "Sending..." : "CONTINUE"}
               </button>
               <p className="terms">
-                <Link to={`/tc-of-sale`}>Terms of Service</Link> and{" "}
-                <Link to={`/privacy-policy`}>Privacy Policy</Link>
+                By continuing, you agree to Obsessions {" "}
+                <Link to={`/tc-of-sale`}><u>Terms of Service</u></Link> and{" "}
+                <Link to={`/privacy-policy`}><u>Privacy Policy</u></Link>
                 {/* <a href="/tc-of-sale">Terms of Service</a> and{" "}
                 <a href="/privacy-policy">Privacy Policy</a> */}
               </p>
@@ -295,7 +296,7 @@ const LoginPage = () => {
                 <h2>Verification Code</h2>
               </div>
               <p>
-                Code sent to <span>{mobile || localMobile}</span>{" "}
+                A verification code has been sent to <span>{mobile || localMobile}</span>{" "}
                 <span  className="tracker_port pointer-crusser" onClick={() => {setStep(1); localStorage.setItem('loginstep',1)}}>
                   <u>Change</u>
                 </span>

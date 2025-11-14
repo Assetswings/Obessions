@@ -27,7 +27,7 @@
   }
   
   .breadcrumb-item.active {
-    font-weight: 600;
+    font-weight: 500;
     color: #000;
   }
   @media (max-width: 768px) {

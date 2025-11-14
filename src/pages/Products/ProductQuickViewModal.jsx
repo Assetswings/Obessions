@@ -661,31 +661,25 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                         />
                         <span className="txt-sub-info-pdp">Free Shipping</span>
                       </div>
-                      {/* <div>
+                      <div>
                         <img
-                          src="https://i.ibb.co/SDsg21mX/Frame-2763.png"
-                          className="img-ruppee"
-                          alt="Prepaid only"
+                          src="https://i.ibb.co/PsNnXB2G/package.png"
+                          className="img-exchange"
+                          alt="Returns"
                         />
-                        <span className="txt-sub-info-pdp">Prepaid orders only</span>
-                      </div> */}
+                        <span className="txt-sub-info-pdp">
+                          {productDetails?.return_exchange_days}
+                        </span>
+                      </div>
                     </div>
-                    <div className="txt-exchange">
-                      <img
-                        src="https://i.ibb.co/PsNnXB2G/package.png"
-                        className="img-exchange"
-                        alt="Returns"
-                      />
-                      <span className="txt-sub-info-pdp">
-                        {productDetails?.return_exchange_days}
-                      </span>
-                    </div>
-                    <p className="txt-Carpet-Finder">
-                      Not sure which carpet fits your space? Try our{" "}
-                      <span className="txt_crp">
-                        <Link to='/carpet-finder' target="_blank" rel="noopener noreferrer">Floor Matcher</Link>
-                      </span>
-                    </p>
+                    {productDetails?.sub_category_action_url === "carpet" ? (
+                      <p className="txt-Carpet-Finder">
+                        Not sure which carpet fits your space? Try our{" "}
+                        <span className="txt_crp">
+                          <Link to='/carpet-finder' target="_blank" rel="noopener noreferrer">Floor Matcher</Link>
+                        </span>
+                      </p>
+                    ) : null}
                   </>
                 )}
               </div>

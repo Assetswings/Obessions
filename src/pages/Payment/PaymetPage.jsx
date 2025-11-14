@@ -277,8 +277,8 @@ const PaymentPage = () => {
           </div>
           <p className="terms">
             Before proceed further you can review{" "}
-            <a href="/tc-of-sale">Terms & Conditions of Sale</a> and{" "}
-            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/tc-of-sale"><u>Terms & Conditions of Sale</u></a> and{" "}
+            <a href="/privacy-policy"><u>Privacy Policy</u></a>
           </p>
           <div className="root_track">
             <button onClick={startPayment} className="payment-btn">

@@ -1,4 +1,3 @@
-// VideoGallery.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../app/api";
@@ -27,7 +26,12 @@ export default function VideoGallery() {
         if (res.data.data.length === 0) {
           setHasMore(false);
         } else {
-          setVideos((prev) => [...prev, ...res.data.data]);
+          // Pre-generate consistent heights for new videos
+          const newVideos = res.data.data.map((v) => ({
+            ...v,
+            height: v.height || Math.floor(Math.random() * 80) + 320, // increase min height
+          }));
+          setVideos((prev) => [...prev, ...newVideos]);
         }
       }
     } catch (err) {
@@ -54,10 +58,9 @@ export default function VideoGallery() {
   const heights = Array.from({ length: COLUMNS }, () => 0);
 
   videos.forEach((video) => {
-    const height = video.height || Math.floor(Math.random() * 270) + 280;
     const minIndex = heights.indexOf(Math.min(...heights));
-    columns[minIndex].push({ ...video, height });
-    heights[minIndex] += height + 14;
+    columns[minIndex].push(video);
+    heights[minIndex] += video.height + 14;
   });
 
   // Hover play logic
@@ -90,9 +93,7 @@ export default function VideoGallery() {
         {columns.map((col, colIndex) => (
           <div key={colIndex} className="gallery-column">
             {col.map((v) => {
-              // Get correct index in videos array
               const videoIndex = videos.findIndex((vid) => vid.id === v.id);
-
               const isVideo =
                 v.media &&
                 (v.media.endsWith(".mp4") ||

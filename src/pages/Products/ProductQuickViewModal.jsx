@@ -567,34 +567,38 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 ) : (
                   <>
                     <p className="check-heading">CHECK AVAILABILITY</p>
-                    <div className="input-wrapper-quick-2">
-                      <input
-                        className="checkup_track_txt"
-                        type="text"
-                        placeholder="Enter Delivery Pincode"
-                        value={pincode}
-                        onChange={(e) => setPincode(e.target.value)}
-                      />
-                      {pincode ? (
-                        <button onClick={handleReset} className="rest-btn">
-                          Reset
-                        </button>
-                      ) : (
-                        <button className="rest-btn" style={{ visibility: 'hidden' }}>
-                          Reset
-                        </button>
-                      )}
-                      {pincodeDetails?.is_active ? (
-                        <button className="check-btn-2" style={{ visibility: 'hidden' }}>
-                          Check
-                        </button>
-                      ) : (
-                        <button onClick={handleCheck} className="check-btn-2">
-                          Check
-                        </button>
-                      )}
-                    </div>
+                   <div className="input-wrapper-quick-2">
+  <input
+    className="checkup_track_txt"
+    type="text"
+    placeholder="Enter Delivery Pincode"
+    value={pincode}
+    onChange={(e) => {
+      const onlyNums = e.target.value.replace(/\D/g, '');
+      setPincode(onlyNums);
+    }}
+    onKeyDown={(e) => {
+      const onlyNums = e.target.value.replace(/\D/g, '');
+      if (e.key === "Enter" && onlyNums.trim()) {
+        handleCheck();
+      }
+    }}
+  />
 
+  <div className="btn-group">
+    {pincode && (
+      <button onClick={handleReset} className="rest-btn">
+        Reset
+      </button>
+    )}
+
+    {!pincodeDetails?.is_active && (
+      <button onClick={handleCheck} className="check-btn-2">
+        Check
+      </button>
+    )}
+  </div>
+</div>
                     {pinloading && <p>Checking...</p>}
                     {pinerror && (
                       <p style={{ color: "red", marginTop: "15px" }}>

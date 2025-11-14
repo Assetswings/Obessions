@@ -886,25 +886,19 @@ const ProductDetailPage = () => {
                     }}
                   />
 
-                  {pincode ? (
-                    <button onClick={handleReset} className="rest-btn">
-                      Reset
-                    </button>
-                  ) : (
-                    <button className="rest-btn" style={{ visibility: 'hidden' }}>
-                      Reset
-                    </button>
-                  )}
+                  <div className="btn-group">
+                    {pincode && (
+                      <button onClick={handleReset} className="rest-btn">
+                        Reset
+                      </button>
+                    )}
 
-                  {pincodeDetails?.is_active ? (
-                    <button className="check-btn-2" style={{ visibility: 'hidden' }}>
-                      Check
-                    </button>
-                  ) : (
-                    <button onClick={handleCheck} className="check-btn-2">
-                      Check
-                    </button>
-                  )}
+                    {!pincodeDetails?.is_active && (
+                      <button onClick={handleCheck} className="check-btn-2">
+                        Check
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="root_avl">

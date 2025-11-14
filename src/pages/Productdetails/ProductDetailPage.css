@@ -375,38 +375,35 @@ font-family: "Playfair Display", serif; */
   flex: 1;
   font-size: 14px;
   color: #333;
-  max-width: 70%;
+  max-width: 90%;
 }
 
 .check_test {
   position: relative;
   top: 10px;
 }
+.btn-group {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* spacing between btns */
+}
 
-.check-btn {
+.rest-btn,
+.check-btn-2 {
   border: none;
   background: none;
   font-size: 14px;
   font-weight: 500;
   color: #4a4a4a;
   cursor: pointer;
-  /* padding-left: 16px; */
-  position: relative;
-  left: 42px;
   text-decoration: underline;
+  padding: 0;
 }
 
-.rest-btn {
-  border: none;
-  background: none;
-  font-size: 14px;
-  font-weight: 500;
-  color: #4a4a4a;
-  cursor: pointer;
-  padding-left: 54px;
-  text-decoration: underline;
+/* keep the space without showing button */
+.invisible-btn {
+  visibility: hidden;
 }
-
 /* .checkup_track_txt {
   background-color: #f7f7f7;
 } */

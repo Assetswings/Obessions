@@ -234,7 +234,7 @@ const StyleGuide = () => {
     }
   }
   useEffect(() => {
-    document.title = "Obsession - Style Guide";
+    document.title = "Obsession - Size Guide";
     handleTerms();
   }, []);
 

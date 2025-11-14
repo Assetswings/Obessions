@@ -294,6 +294,7 @@ const OrderTrackingPage = () => {
               <span>Shipping Charges</span>
               <span>₹{order.shipping_charges}</span>
             </div>
+            <hr />
             <div className="total">
               <strong>Total</strong>
               <strong>₹{order.total_amount}</strong>

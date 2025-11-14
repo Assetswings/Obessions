@@ -6,6 +6,7 @@ import { BsYoutube } from "react-icons/bs";
 import { RiInstagramLine } from "react-icons/ri";
 import API from "../../app/api";
 import { Link, useNavigate } from "react-router-dom";
+import rightarrow from "../../assets/icons/Vector.svg";
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -130,8 +131,22 @@ const Footer = () => {
             onChange={(e) => setEmail(e.target.value)}
             disabled={loading}
           />
-          <button onClick={handleSubscribe} disabled={loading}>
+          {/* <button onClick={handleSubscribe} disabled={loading}>
             {loading ? "Signing up..." : "SIGN UP →"}
+          </button> */}
+          <button onClick={handleSubscribe} disabled={loading}>
+            {loading ? (
+              "Signing up..."
+            ) : (
+              <>
+                SIGN UP
+                <img
+                  src={rightarrow}
+                  alt="arrow"
+                  style={{ width: "16px", marginLeft: "6px", paddingBottom: "4%" }}
+                />
+              </>
+            )}
           </button>
         </div>
 
@@ -156,7 +171,7 @@ const Footer = () => {
           <h4>SHOP</h4>
           <ul>
             {SHOP?.slice(0, 7).map((item, idx) => (
-              <li style={{textTransform:"capitalize"}}
+              <li style={{ textTransform: "capitalize" }}
                 key={idx}
               >
                 <Link to={`/products/${item.action_url}`}>{item.title.toLowerCase()}</Link>
@@ -167,7 +182,7 @@ const Footer = () => {
         <div><br />
           <ul>
             {SHOP?.slice(7, 15).map((item, idx) => (
-              <li style={{textTransform:"capitalize"}}
+              <li style={{ textTransform: "capitalize" }}
                 key={idx}
               >
                 <Link to={`/products/${item.action_url}`}>{item.title.toLowerCase()}</Link>
@@ -205,8 +220,15 @@ const Footer = () => {
           <div className="ctn_txt">
             <h4>CONTACT US</h4>
             <p>A. {CONTACT_US?.address}</p>
-            <p>T. {CONTACT_US?.phone}</p>
-            <p>E. {CONTACT_US?.email}</p>
+            {/* <p>T. {CONTACT_US?.phone}</p>
+            <p>E. {CONTACT_US?.email}</p> */}
+            <p>
+              T. <a href={`tel:${CONTACT_US?.phone}`}>{CONTACT_US?.phone}</a>
+            </p>
+
+            <p>
+              E. <a href={`mailto:${CONTACT_US?.email}`}>{CONTACT_US?.email}</a>
+            </p>
           </div>
 
           <div className="social-icons">

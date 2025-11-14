@@ -510,7 +510,7 @@ const ProductDetailPage = () => {
               className="share_btn"
               onMouseEnter={() => setOpen(true)}
             >
-              <span ><Share2 size={14}  /></span> share
+              <span ><Share2 size={14} /></span> share
             </div>
           )
         )}
@@ -753,7 +753,7 @@ const ProductDetailPage = () => {
                   </p>
                 ) : (
                   <p className="selected-size-label">
-                    CHOOSE A SIZE:
+                    CHOOSE A SIZE :&nbsp;
                     {selectedSize && <strong>{selectedSize.size}</strong>}
                   </p>
                 )}
@@ -807,7 +807,7 @@ const ProductDetailPage = () => {
             ) : selectedSize?.product_colors?.length > 0 ? (
               <>
                 <div>
-                  <p>CHOOSE A COLOR:{selectedColor?.color}</p>
+                  <p>CHOOSE A COLOR :&nbsp;<span style={{ textTransform: "uppercase", fontWeight: "bold" }}>{selectedColor?.color}</span></p>
                 </div>
                 <div className="color-options">
                   {selectedSize?.product_colors?.map((color, idx) => (
@@ -987,16 +987,18 @@ const ProductDetailPage = () => {
                     />
                     <span className="txt-sub-info-pdp">Free Shipping</span>
                   </div>
-                  {/* <div>
-                <img
-                  src="https://i.ibb.co/SDsg21mX/Frame-2763.png"
-                  className="img-ruppee"
-                  alt="Prepaid only"
-                />
-                <span className="txt-sub-info-pdp">Prepaid orders only</span>
-              </div> */}
+                  <div>
+                    <img
+                      src="https://i.ibb.co/PsNnXB2G/package.png"
+                      className="img-exchange"
+                      alt="Returns"
+                    />
+                    <span className="txt-sub-info-pdp">
+                      {productDetails?.return_exchange_days}
+                    </span>
+                  </div>
                 </div>
-                <div className="txt-exchange">
+                {/* <div className="txt-exchange">
                   <img
                     src="https://i.ibb.co/PsNnXB2G/package.png"
                     className="img-exchange"
@@ -1005,13 +1007,15 @@ const ProductDetailPage = () => {
                   <span className="txt-sub-info-pdp">
                     {productDetails?.return_exchange_days}
                   </span>
-                </div>
-                <p className="txt-Carpet-Finder">
-                  Not sure which carpet fits your space? Try our{" "}
-                  <span className="txt_crp">
-                    <Link to='/carpet-finder' target="_blank" rel="noopener noreferrer">Floor Matcher</Link>
-                  </span>
-                </p>
+                </div> */}
+                {productDetails?.sub_category_action_url === "carpet" ? (
+                  <p className="txt-Carpet-Finder">
+                    Not sure which carpet fits your space? Try our{" "}
+                    <span className="txt_crp">
+                      <Link to='/carpet-finder' target="_blank" rel="noopener noreferrer">Floor Matcher</Link>
+                    </span>
+                  </p>
+                ) : null}
               </>
             )}
           </div>
@@ -1115,7 +1119,7 @@ const ProductDetailPage = () => {
         <>
           <div className="product-tabs-container">
             <div className="tabs-bar">
-              {tabs.map((tab) => (
+              {/* {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   disabled={true}
@@ -1124,7 +1128,7 @@ const ProductDetailPage = () => {
                 >
                   {tab.label}
                 </button>
-              ))}
+              ))} */}
             </div>
 
             <div className="track_box_pr">
@@ -1287,7 +1291,7 @@ const ProductDetailPage = () => {
                     <div>
                       <span className="pp-mc-txt">
                         Not sure which size fits best? Explore our{" "}
-                        <span className="sub-pp-mc"> Size Guide</span> to find
+                        <span className="sub-pp-mc"><Link to="/style-guide">Size Guide</Link></span> to find
                         your perfect match.
                       </span>
                     </div>

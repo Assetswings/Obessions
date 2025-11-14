@@ -4,6 +4,7 @@ import { MdLocalShipping, MdCheckCircle, MdOutlineAccessTime } from "react-icons
 import "./TrackOrder.css";
 import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
+import tickicon from "../../assets/icons/tick-Icons.svg";
 
 const TrackOrder = () => {
     const [orderId, setOrderId] = useState("");
@@ -66,8 +67,8 @@ const TrackOrder = () => {
                         <div className="track-benefits">
                             <h4>Key Benefits</h4>
                             <ul>
-                                <li><FaCheckSquare /> Track in real time without logging in</li>
-                                <li><FaCheckSquare /> Get an update in one click on the homepage</li>
+                                <li><img src={tickicon} alt="tick" /> Track in real time without logging in</li>
+                                <li><img src={tickicon} alt="tick" /> Get an update in one click on the homepage</li>
                             </ul>
                         </div>
                     </div>

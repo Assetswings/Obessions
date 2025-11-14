@@ -64,7 +64,7 @@ const Otherpage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const total = pagination?.total || 0;
-  const limit = pagination?.limit || 20;
+  const limit = pagination?.limit || 40;
   const totalPages = Math.ceil(total / limit);
 
   const rangeStart = total === 0 ? 0 : (currentPage - 1) * limit + 1;
@@ -94,7 +94,7 @@ const Otherpage = () => {
         fetchOtherProducts({
           slug,
           page: currentPage,
-          limit: 20,
+          limit: 40,
           filters: selectedFilters,
         })
       );
@@ -311,7 +311,7 @@ const Otherpage = () => {
 
     return (
       <div className="custom-filter-group" key="categories">
-        <h4>Categories</h4>
+        <h4>Other Categories</h4>
         <label>
           <span className="txt_checkbox">{categories.name}</span>
         </label>

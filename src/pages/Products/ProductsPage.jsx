@@ -59,7 +59,7 @@ const ProductsPage = () => {
   const { data, filters, sorting, pagination, loading } = useSelector((state) => state.products);
 
   const total = pagination?.total || 0;
-  const limit = pagination?.limit || 20;
+  const limit = pagination?.limit || 40;
   const totalPages = Math.ceil(total / limit);
 
   const rangeStart = total === 0 ? 0 : (currentPage - 1) * limit + 1;
@@ -99,7 +99,7 @@ const ProductsPage = () => {
           category,
           subcategory,
           page: currentPage,
-          limit: 20,
+          limit: 40,
           filters: selectedFilters,
         })
       );
@@ -301,7 +301,7 @@ const ProductsPage = () => {
 
     return (
       <div className="custom-filter-group" key="categories">
-        <h4>Categories</h4>
+        <h4>Other Categories</h4>
         <label>
           <span className="txt_checkbox">{categories.name}</span>
         </label>
@@ -567,7 +567,7 @@ const ProductsPage = () => {
 
             </>
           }
-          <div className="product-grid">
+          <div className="product-grid mb-6">
             {loading ? (
               Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="product-card-dtl">

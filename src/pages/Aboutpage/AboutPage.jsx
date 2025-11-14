@@ -18,7 +18,7 @@ const AboutPage = () => {
     <>
       <div className="about-wrapper">
         {/* Hero Section */}
-        <section className="about-hero" style={{ backgroundImage: `url(${data?.bg_media})`, }}>
+        <section className="about-hero"   style={{ backgroundImage: `url(${data?.bg_media})`, height: '100vh', }}>
           <div className="hero-overlay">
             <h1>
               <p

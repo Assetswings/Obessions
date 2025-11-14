@@ -9,7 +9,7 @@
   margin: 0 auto;
   padding: 20px;
   color: #000;
-  padding: 20px 60px 10px 60px;
+  padding: 20px 60px 60px 60px;
 }
 
 /* Header */
@@ -69,9 +69,10 @@
 
 /* Latest Posts */
 .latest-posts h3 {
-  font-size: 24px;
-  /* font-weight: 600; */
+  font-size: 32px;
+  font-weight: 400;
   margin-bottom: 20px;
+  font-family: "Playfair Display";
 }
 
 .posts-grid {

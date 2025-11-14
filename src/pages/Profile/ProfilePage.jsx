@@ -458,13 +458,20 @@ const ProfilePage = () => {
               <div>
                 <p className="txt_level">Date of Birth</p>
                 <div className="track_septor">
-                  {localLoading ? (
+                  {/* {localLoading ? (
                     <Skeleton width={100} />
                   ) : (
                     profileData?.dob &&
                     new Date(profileData.dob)
                       .toLocaleDateString("en-GB")
                       .replaceAll("/", "-")
+                  )} */}
+                  {localLoading ? (
+                    <Skeleton width={100} />
+                  ) : profileData?.dob ? (
+                    new Date(profileData.dob).toLocaleDateString("en-GB").replaceAll("/", "-")
+                  ) : (
+                    <span style={{ opacity: 0.6 }}>—</span> // placeholder to avoid squeezing
                   )}
                 </div>
               </div>
@@ -931,6 +938,9 @@ const ProfilePage = () => {
       {showOtpModal && (
         <div className="verify-modal-overlay">
           <div className="verify-modal-box">
+            <button className="verify-close" onClick={() => setShowOtpModal(false)}>
+              ✕
+            </button>
             <h3 className="verify-title">Verify Your Email to Continue</h3>
             <p className="verify-subtitle">
               A verification code has been sent to{" "}

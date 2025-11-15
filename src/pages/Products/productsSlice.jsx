@@ -7,19 +7,10 @@ export const fetchProducts = createAsyncThunk(
     category,
     subcategory = "",
     page = 1,
-    limit = 20,
+    limit = 40,
     filters = {},
   }) => {
     const params = new URLSearchParams({ page, limit });
-    // Append selected filters as query params
-    //     Object.entries(filters).forEach(([key, value]) => {
-    //     if (Array.isArray(value)) {
-    //       value.forEach((v) => params.append(key, v));
-    //     } else {
-    //       params.append(key, value);
-    //     }
-    //   });
-
     Object.entries(filters).forEach(([key, value]) => {
       if (Array.isArray(value) && value.length > 0) {
         params.append(key, value.join(","));

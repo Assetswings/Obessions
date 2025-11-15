@@ -21,10 +21,6 @@ import Mobileansbar from "./Mobileansbar";
 import { IoLogoWhatsapp } from "react-icons/io";
 import newsdrwimage from "../../assets/images/navimage.png";
 import API from "../../app/api";
-import {
-  fetchSearchResults,
-  clearSearchResults,
-} from "../../pages/Home/searchSlice";
 import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const MobileNav = () => {
@@ -41,14 +37,12 @@ const MobileNav = () => {
   const [showUserPopup, setShowUserPopup] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [query, setQuery] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
   const inputRef = useRef(null);
   const userWrapperRef = useRef(null);
   const { data } = useSelector((state) => state.megamenu);
   const [wdata, setData] = useState("");
-
-  const searchState = useSelector((state) => state.search || {});
-  const { results = [], loading } = searchState;
+  const [searchData, setSearchData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     chatsupport();
@@ -125,12 +119,6 @@ const MobileNav = () => {
     setOpenCategory((prev) => (prev === id ? null : id));
   };
 
-  const handleWishlistClick = () => {
-    toggleDrawer();
-    if (isLoggedIn) setShowWishlist(true);
-    else setShowLoginPrompt(true);
-  };
-
   const handleUserClick = (e) => {
     e.stopPropagation();
     if (!isLoggedIn) navigate("/login");
@@ -153,21 +141,30 @@ const MobileNav = () => {
   };
 
   useEffect(() => {
-    if (results.length > 0) setSearchResult(results);
-    else setSearchResult([]);
-  }, [results]);
-
-  useEffect(() => {
     if (!query.trim()) {
-      dispatch(clearSearchResults());
-      setSearchResult([]);
+      setSearchData([]);
       return;
     }
     const timeoutId = setTimeout(() => {
-      dispatch(fetchSearchResults(query));
+      setLoading(true);
+      handleSearch(query);
     }, 400);
+
     return () => clearTimeout(timeoutId);
   }, [query, dispatch]);
+
+  const handleSearch = async (query) => {
+    try {
+      const res = await API.get(`search?q=${query}`);
+      if (res.data.status === 200) {
+        setLoading(false);
+        setSearchData(res.data?.data?.products);
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (showSearch && inputRef.current) inputRef.current.focus();
@@ -177,8 +174,7 @@ const MobileNav = () => {
   const clearSearch = () => {
     setShowSearch(false);
     setQuery("");
-    setSearchResult([]);
-    dispatch(clearSearchResults());
+    setSearchData([]);
   };
 
   return (
@@ -350,7 +346,7 @@ const MobileNav = () => {
       )}
 
       {showSearch && (
-        <div className="search-overlay_mlb" onClick={clearSearch}>
+        <div className="search-overlay_mlb" onClick={() => {clearSearch();setSearchData([]);}}>
           <div
             className="search-modal-other"
             onClick={(e) => e.stopPropagation()}
@@ -370,6 +366,7 @@ const MobileNav = () => {
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && query.trim()) {
                     clearSearch();
+                    setSearchData([]);
                     navigate("/searchlist", { state: { query } });
                   }
                 }}
@@ -390,6 +387,7 @@ const MobileNav = () => {
                 disabled={!query?.trim()}
                 onClick={() => {
                   clearSearch();
+                  setSearchData([]);
                   navigate("/searchlist", { state: { query } });
                 }}
               >
@@ -397,15 +395,15 @@ const MobileNav = () => {
               </button>
             </div>
 
-            {Array.isArray(searchResult) && (
+            {Array.isArray(searchData) && (
               <>
-                {searchResult.length > 0 ? (
+                {searchData.length > 0 ? (
                   <div className="search-results-grid-other-mlb">
-                    {searchResult.slice(0, 6).map((item, index) => (
+                    {searchData.slice(0, 6).map((item, index) => (
                       <div
                         key={index}
                         className="search-card"
-                        onClick={() => clearSearch()}
+                        onClick={() => {clearSearch();setSearchData([]);}}
                       >
                         <Link
                           to={`/productsdetails/${item.action_url}`}

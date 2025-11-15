@@ -524,8 +524,7 @@ const ProductsPage = () => {
                     renderFilterGroup(key.replace(/_/g, " "), values, key)
                   )}
             </>
-          ) : (
-            // ❌ No filters found
+          ) : (  // ❌ No filters found            
             <p className="no-filters">No filters available.</p>
           )}
 
@@ -567,154 +566,155 @@ const ProductsPage = () => {
 
             </>
           }
-          <div className="product-grid mb-6">
-            {loading ? (
-              Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="product-card-dtl">
-                  <Skeleton height={200} />
-                  <Skeleton height={20} width={150} />
-                  <Skeleton height={20} width={100} />
-                </div>
-              ))
-            ) : products.length > 0 ? (
-              products.map((item) => {
-                const isWishlisted = item.is_wishlisted;
-                return (
-                  <div
-                    key={item.id}
-                    className="product-card-dtl pointer-crusser"
-                    style={{ cursor: "pointer" }}
-                  >
-                    <div className="product-img-box">
-                      <Link
-                        to={`/productsdetails/${item.action_url}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src={item.media_list?.main?.file}
-                          alt={item.name}
-                          title={item.name}
-                          className="main_image"
-                        />
-                        <img
-                          src={item.media_list?.hover?.file}
-                          alt={item.name}
-                          title={item.name}
-                          className="hover_image"
-                        />
-                      </Link>
+          <div className="mb-6">
+            {loading ? (  // Loading State
+              <div className="product-grid">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="product-card-dtl">
+                    <Skeleton height={200} />
+                    <Skeleton height={20} width={150} />
+                    <Skeleton height={20} width={100} />
+                  </div>
+                ))}
+              </div>
+            ) : products?.length > 0 ? (  // Product State
+              <div className="product-grid">
+                {products.map((item) => {
+                  const isWishlisted = item.is_wishlisted;
+                  return (
 
-                      {/* Wishlist Button */}
-                      <button
-                        className="wishlist-btn_products pointer-crusser"
-                        onClick={(e) => toggleWishlist(e, item)}
-                      >
-                        {animatedWish === item.id ? (
-                          <div
-                            style={{
-                              width: 20,
-                              height: 24,
-                              overflow: "hidden",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
+                    <div
+                      key={item.id}
+                      className="product-card-dtl pointer-crusser"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="product-img-box">
+                        <Link
+                          to={`/productsdetails/${item.action_url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            src={item.media_list?.main?.file}
+                            alt={item.name}
+                            title={item.name}
+                            className="main_image"
+                          />
+                          <img
+                            src={item.media_list?.hover?.file}
+                            alt={item.name}
+                            title={item.name}
+                            className="hover_image"
+                          />
+                        </Link>
+
+                        {/* Wishlist Button */}
+                        <button
+                          className="wishlist-btn_products pointer-crusser"
+                          onClick={(e) => toggleWishlist(e, item)}
+                        >
+                          {animatedWish === item.id ? (
+                            <div
+                              style={{
+                                width: 20,
+                                height: 24,
+                                overflow: "hidden",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Player
+                                autoplay
+                                keepLastFrame
+                                src={heartAnimation}
+                                style={{
+                                  width: 139,
+                                  height: 139,
+                                  transform: "scale(0.5)",
+                                  transformOrigin: "center",
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <Heart
+                              color={isWishlisted ? "#FF0000" : "#000"}
+                              fill={isWishlisted ? "#FF0000" : "none"}
+                              size={20}
+                              strokeWidth={2}
+                            />
+                          )}
+                        </button>
+
+                        {/* Quick View */}
+                        <div className="qucick_dv">
+                          <span
+                            className="quick-view_pd"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setQuickViewProduct(item);
+                              setShowModal(true);
                             }}
                           >
-                            <Player
-                              autoplay
-                              keepLastFrame
-                              src={heartAnimation}
-                              style={{
-                                width: 139,
-                                height: 139,
-                                transform: "scale(0.5)",
-                                transformOrigin: "center",
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <Heart
-                            color={isWishlisted ? "#FF0000" : "#000"}
-                            fill={isWishlisted ? "#FF0000" : "none"}
-                            size={20}
-                            strokeWidth={2}
-                          />
-                        )}
-                      </button>
-
-                      {/* Quick View */}
-                      <div className="qucick_dv">
-                        <span
-                          className="quick-view_pd"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setQuickViewProduct(item);
-                            setShowModal(true);
-                          }}
-                        >
-                          Quick View &nbsp;
-                          <Expand color="#000000" size={15} strokeWidth={1.25} />
-                        </span>
+                            Quick View &nbsp;
+                            <Expand color="#000000" size={15} strokeWidth={1.25} />
+                          </span>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Product Title */}
-                    <p className="product-title truncate pointer-crusser">
+                      {/* Product Title */}
+                      <p className="product-title truncate pointer-crusser">
+                        <Link
+                          to={`/productsdetails/${item.action_url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {item.name}
+                        </Link>
+                      </p>
+
+                      {/* Product Price */}
                       <Link
                         to={`/productsdetails/${item.action_url}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {item.name}
+                        <div className="product-price">
+                          <span>₹{item.selling_price}</span>
+                          {item.mrp && item.mrp !== item.selling_price && (
+                            <>
+                              <span className="original">₹{item.mrp}</span>
+                              <span className="discount">
+                                ({item.discount_percent}% OFF)
+                              </span>
+                            </>
+                          )}
+                        </div>
                       </Link>
-                    </p>
-
-                    {/* Product Price */}
-                    <Link
-                      to={`/productsdetails/${item.action_url}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <div className="product-price">
-                        <span>₹{item.selling_price}</span>
-                        {item.mrp && item.mrp !== item.selling_price && (
-                          <>
-                            <span className="original">₹{item.mrp}</span>
-                            <span className="discount">
-                              ({item.discount_percent}% OFF)
-                            </span>
-                          </>
-                        )}
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })
-            ) : (
-              <></>
-            )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : products?.length == 0 ? (  // Empty Product State
+              <div className="empty-product">
+                <img
+                  src={emptyproduct}
+                  alt="Empty cart"
+                  className="empty-cart-image"
+                />
+                <p className="empty-cart-subtitle">
+                  We couldn’t find a match, but there’s more waiting to be discovered.
+                </p>
+                <button
+                  className="empty-cart-btn"
+                  onClick={() => navigate("/")} // ✅ send user back to home/shop
+                >
+                  EXPLORE &nbsp;
+                </button>
+              </div>
+            ): (<></>)}
           </div>
 
-
-          {!loading && products?.length === 0 &&
-            <div className="empty-product">
-              <img
-                src={emptyproduct}
-                alt="Empty cart"
-                className="empty-cart-image"
-              />
-              <p className="empty-cart-subtitle">
-                We couldn’t find a match, but there’s more waiting to be discovered.
-              </p>
-              <button
-                className="empty-cart-btn"
-                onClick={() => navigate("/")} // ✅ send user back to home/shop
-              >
-                EXPLORE &nbsp;
-              </button>
-            </div>
-          }
           <Pagination
             className="mt-6"
             currentPage={currentPage}
@@ -735,27 +735,6 @@ const ProductsPage = () => {
       {showLoginPrompt && (
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
-
-
-      {/* <nav aria-label="Page navigation example">
-        <ul class="pagination custom-pagination">
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&lsaquo;</span>
-            </a>
-          </li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">...</a></li>
-          <li class="page-item"><a class="page-link" href="#">10</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&rsaquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav> */}
 
       <section className="top-picks-section">
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>

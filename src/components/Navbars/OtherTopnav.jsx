@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaSearch } from "react-icons/fa";
 import {
   Heart,
   CircleUser,
@@ -9,23 +8,15 @@ import {
   Search,
 } from "lucide-react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import MegaMenu from "./MegaMenu";
 import MegamenuDuo from "./MegamenuDuo";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import "./OtherTopnav.css";
-import logo from "../../assets/icons/Obslogo.png";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
-import {
-  fetchSearchResults,
-  clearSearchResults,
-} from "../../pages/Home/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { toast, ToastContainer } from "react-toastify";
 import { IoLogoWhatsapp } from "react-icons/io";
 import API from "../../app/api";
 import { useCartWishlist } from "../../app/CartWishlistContext";
 import searchicon from "../../assets/icons/Searchicon.svg";
-import logowhite from "../../assets/icons/logo-white.png"
 
 const OtherTopnav = () => {
   const dispatch = useDispatch();
@@ -40,17 +31,13 @@ const OtherTopnav = () => {
   const [disableHover, setDisableHover] = useState(false);
   const [query, setQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [searchResult, setSearchResult] = useState([]);
+  const [searchData, setSearchData] = useState([]);
   const navigate = useNavigate();
   const userWrapperRef = useRef(null);
   const inputRef = useRef(null);
-  const searchState = useSelector((state) => state.search || {});
-  const { results = [], loading, error } = searchState;
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState("");
 
-  const currentPath = location.pathname;
-  const hideIconPaths = ["/searchlist"];
-  const shouldHideIcon = hideIconPaths.includes(currentPath);
   useEffect(() => {
     chatsupport();
   }, []);
@@ -80,12 +67,6 @@ const OtherTopnav = () => {
   }, []);
 
   useEffect(() => {
-    if (results.length > 0) {
-      setSearchResult(results);
-    }
-  }, [results]);
-
-  useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         userWrapperRef.current &&
@@ -101,15 +82,29 @@ const OtherTopnav = () => {
 
   useEffect(() => {
     if (!query.trim()) {
-      dispatch(clearSearchResults());
+      setSearchData([]);
       return;
     }
     const timeoutId = setTimeout(() => {
-      dispatch(fetchSearchResults(query));
+      setLoading(true);
+      handleSearch(query);
     }, 400);
 
     return () => clearTimeout(timeoutId);
   }, [query, dispatch]);
+
+  const handleSearch = async (query) => {
+    try {
+      const res = await API.get(`search?q=${query}`);
+      if (res.data.status === 200) {
+        setLoading(false);
+        setSearchData(res.data?.data?.products);
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (showSearch) {
@@ -129,7 +124,6 @@ const OtherTopnav = () => {
       document.body.style.overflow = "auto";
     };
   }, [showSearch]);
-  const handleLogoClick = () => navigate("/");
   const handleCartClick = (e) => {
     const token = localStorage.getItem("token");
 
@@ -172,11 +166,6 @@ const OtherTopnav = () => {
     navigate("/");
   };
 
-  const handleProfile = () => {
-    setShowUserPopup(false);
-    navigate("/ProfilePage");
-  };
-
   const handleUserClick = () => {
     checkSession();
     if (!isLoggedIn) {
@@ -186,44 +175,39 @@ const OtherTopnav = () => {
     }
   };
 
-  const handelroute = (route) => {
-    navigate(route);
-  };
-
   const claersearch = () => {
     setShowSearch(false);
     // dispatch(clearSearchResults());
     setQuery("");
-    setSearchResult([]);
+    setSearchData([]);
   };
 
-   const closeTimer = useRef(null);
+  const closeTimer = useRef(null);
   const handleMouseEnter = () => {
-  if (disableHover) return; // ❌ prevent reopening while disabled
-  clearTimeout(closeTimer.current);
-  setShowMegaMenu(true);
-};
+    if (disableHover) return; // ❌ prevent reopening while disabled
+    clearTimeout(closeTimer.current);
+    setShowMegaMenu(true);
+  };
 
-const handleMouseLeave = () => {
-  if (disableHover) return; // ❌ prevent closing while disabled
-  closeTimer.current = setTimeout(() => {
+  const handleMouseLeave = () => {
+    if (disableHover) return; // ❌ prevent closing while disabled
+    closeTimer.current = setTimeout(() => {
+      setShowMegaMenu(false);
+    }, 200);
+  };
+
+  const handleItemClick = () => {
+    clearTimeout(closeTimer.current);
+    setDisableHover(true);
     setShowMegaMenu(false);
-  }, 200);
-};
 
-const handleItemClick = () => {
-  clearTimeout(closeTimer.current);
-  setDisableHover(true);     
-  setShowMegaMenu(false);
-
-  // re-enable hover after a short delay
-  setTimeout(() => setDisableHover(false), 200);
-};
+    // re-enable hover after a short delay
+    setTimeout(() => setDisableHover(false), 200);
+  };
   return (
     <>
       {/* <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} /> */}
       <nav className="other-topnav">
-
         <div
           className="nav-logo"
           style={{ cursor: "pointer" }}>
@@ -231,53 +215,20 @@ const handleItemClick = () => {
             <img src="https://efi-s3-private.s3.ap-south-1.amazonaws.com/b2c-img/EnvogueImages/ReactJs_App/assets/logo-white.png" alt="Obsession" />
           </Link>
         </div>
-
-
         <ul className="nav-links">
-          {/* <li onMouseEnter={() => setShowMegaMenu(true)}>SHOP</li> */}
-          {/* <li >
-            <div
-             className="root_base"
-              
-              >
-                 <div  className="track_poster" > 
-                   <span > SHOP</span>
-     
-                 </div>
-           
+          <li
+            className="shop-wrapper"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="track_poster">
+              <span>SHOP</span>
             </div>
-            {showMegaMenu && (
-              <div
-                className="megamenu-wrapper"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                style={{
-                  position: "absolute",
-                  top: "100%",
-                  left: 0,
-                  zIndex: 1000,
-                  background: "#fff",
-                  boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                }}>
-                <MegamenuDuo closeMenu={() => setShowMegaMenu(false)} />
-              </div>
-            )}
-          </li> */}
 
-      <li
-      className="shop-wrapper"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="track_poster">
-        <span>SHOP</span>
-      </div>
-
-      <div className={`megamenu-wrapper ${showMegaMenu ? "visible" : ""}`}>
-        <MegamenuDuo closeMenu={handleItemClick} />
-      </div>
-    </li>
-
+            <div className={`megamenu-wrapper ${showMegaMenu ? "visible" : ""}`}>
+              <MegamenuDuo closeMenu={handleItemClick} />
+            </div>
+          </li>
           <li>
             <NavLink to="/new-arrivals" className={({ isActive }) => (isActive ? "active-tab" : "")}>
               <div className="track_poster">
@@ -307,10 +258,7 @@ const handleItemClick = () => {
         </ul>
 
         <div className="nav-actions">
-          {!shouldHideIcon && (
-            <img src={searchicon} alt="search" onClick={() => setShowSearch(true)} className="pointer-crusser"/>
-          )}
-
+          <img src={searchicon} alt="search" onClick={() => setShowSearch(true)} className="pointer-crusser" />
           {/* User Icon */}
           <div
             ref={userWrapperRef}
@@ -377,15 +325,7 @@ const handleItemClick = () => {
           </div>
         </div>
       </nav>
-
       <div style={{ height: "50px" }}></div>
-      {/* <div style={{height:"60px"}}></div> */}
-
-      {/* {showMegaMenu && (
-        <div className="megamenu-wrapper">
-          <MegamenuDuo closeMenu={() => setShowMegaMenu(false)} />
-        </div>
-      )} */}
 
       {showWishlist && <WishlistModal onClose={() => setShowWishlist(false)} />}
       {showLoginPrompt && (
@@ -394,7 +334,7 @@ const handleItemClick = () => {
 
       {/* 🔹 Fullscreen Search Modal */}
       {showSearch && (
-        <div className="search-overlay" onClick={() => claersearch()}>
+        <div className="search-overlay" onClick={() => {claersearch(); setSearchData([]);}}>
           <div
             className="search-modal-other"
             onClick={(e) => e.stopPropagation()}
@@ -418,6 +358,7 @@ const handleItemClick = () => {
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && query.trim()) {
                     claersearch();
+                    setSearchData([]);
                     navigate("/searchlist", { state: { query } });
                   }
                 }}
@@ -439,6 +380,7 @@ const handleItemClick = () => {
                 disabled={!query?.trim()}
                 onClick={() => {
                   claersearch();
+                  setSearchData([]);
                   navigate("/searchlist", {
                     state: { query: query },
                   });
@@ -448,16 +390,17 @@ const handleItemClick = () => {
               </button>
             </div>
 
-            {Array.isArray(searchResult) && (
+            {Array.isArray(searchData) && (
               <>
-                {searchResult.length > 0 ? (
+                {searchData.length > 0 ? (
                   <div className="search-results-grid-other">
-                    {searchResult.slice(0, 8).map((item, index) => (
+                    {searchData.slice(0, 8).map((item, index) => (
                       <div
                         key={index}
                         className="search-card"
                         onClick={() => {
                           claersearch();
+                          setSearchData([]);
                         }}>
                         <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
                           <img

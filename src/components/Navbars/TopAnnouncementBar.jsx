@@ -12,17 +12,14 @@ import {
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
-import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import "./TopAnnouncementBar.css";
 import API from "../../app/api";
 import { useCartWishlist, useHeader } from "../../app/CartWishlistContext";
-import { FaSearch } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { clearSearchResults, fetchSearchResults } from "../../pages/Home/searchSlice";
+import { useDispatch } from "react-redux";
 import searchicon from "../../assets/icons/Searchicon.svg";
 
-  const TopAnnouncementBar = () => {
+const TopAnnouncementBar = () => {
   const dispatch = useDispatch();
   const { countData } = useCartWishlist();
   const { showSearchIcon } = useHeader();
@@ -35,28 +32,27 @@ import searchicon from "../../assets/icons/Searchicon.svg";
   const [slideDirection, setSlideDirection] = useState("right");
   const [showSearch, setShowSearch] = useState(false);
   const inputRef = useRef(null);
-  const searchState = useSelector((state) => state.search || {});
-  const { results = [], loading, error } = searchState;
   const [query, setQuery] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
+  const [searchData, setSearchData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
   const userWrapperRef = useRef(null);
 
   // ✅ Check login status
-      useEffect(() => {
-      const checkLogin = () => {
+  useEffect(() => {
+    const checkLogin = () => {
       const token = localStorage.getItem("token");
       setIsLoggedIn(!!token);
     };
-      checkLogin();
-      window.addEventListener("storage", checkLogin);
-      return () => window.removeEventListener("storage", checkLogin);
+    checkLogin();
+    window.addEventListener("storage", checkLogin);
+    return () => window.removeEventListener("storage", checkLogin);
   }, []);
 
   // ✅ Close popup when clicking outside
-    useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         userWrapperRef.current &&
@@ -65,12 +61,12 @@ import searchicon from "../../assets/icons/Searchicon.svg";
         setShowUserPopup(false);
       }
     };
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // ✅ Fetch banner data
-    useEffect(() => {
+  useEffect(() => {
     axios
       .get("https://apis-staging.obsessions.co.in/v1/banners/announce-bar", {
         headers: { accept: "application/json" },
@@ -95,22 +91,30 @@ import searchicon from "../../assets/icons/Searchicon.svg";
   }, [banners]);
 
   useEffect(() => {
-    if (results.length > 0) {
-      setSearchResult(results);
-    }
-  }, [results]);
-
-  useEffect(() => {
     if (!query.trim()) {
-      dispatch(clearSearchResults());
+      setSearchData([]);
       return;
     }
     const timeoutId = setTimeout(() => {
-      dispatch(fetchSearchResults(query));
+      setLoading(true);
+      handleSearch(query);
     }, 400);
 
     return () => clearTimeout(timeoutId);
   }, [query, dispatch]);
+
+  const handleSearch = async (query) => {
+    try {
+      const res = await API.get(`search?q=${query}`);
+      if (res.data.status === 200) {
+        setLoading(false);
+        setSearchData(res.data?.data?.products);
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (showSearch) {
@@ -169,11 +173,6 @@ import searchicon from "../../assets/icons/Searchicon.svg";
     navigate("/");
   };
 
-  const handleProfile = () => {
-    setShowUserPopup(false);
-    navigate("/ProfilePage");
-  };
-
   const handleWishlistClick = () => {
     if (isLoggedIn) setShowWishlist(true);
     else setShowLoginPrompt(true);
@@ -181,7 +180,6 @@ import searchicon from "../../assets/icons/Searchicon.svg";
 
   const handleCartClick = (e) => {
     const token = localStorage.getItem("token");
-
     if (!token) {
       e.preventDefault(); // Stop <Link> navigation
       // Show your login modal or redirect
@@ -192,9 +190,8 @@ import searchicon from "../../assets/icons/Searchicon.svg";
   // Search login 
   const claersearch = () => {
     setShowSearch(false);
-    // dispatch(clearSearchResults());
     setQuery("");
-    setSearchResult([]);
+    setSearchData([]);
   };
 
   return (
@@ -238,7 +235,7 @@ import searchicon from "../../assets/icons/Searchicon.svg";
 
         <div className="icons">
           {showSearchIcon && (
-            <img src={searchicon} alt="search" onClick={() => setShowSearch(true)} className="pointer-crusser"/>
+            <img src={searchicon} alt="search" onClick={() => setShowSearch(true)} className="pointer-crusser" />
           )}
           <div
             ref={userWrapperRef}
@@ -312,7 +309,7 @@ import searchicon from "../../assets/icons/Searchicon.svg";
 
       {/* 🔹 Fullscreen Search Modal */}
       {showSearch && (
-        <div className="search-overlay" onClick={() => claersearch()}>
+        <div className="search-overlay" onClick={() => {claersearch();setSearchData([]);}}>
           <div
             className="search-modal-other"
             onClick={(e) => e.stopPropagation()}
@@ -327,15 +324,14 @@ import searchicon from "../../assets/icons/Searchicon.svg";
                 onChange={(e) => {
                   // Allow only letters, numbers, and spaces (no special characters)
                   let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
-
                   // Remove leading spaces
                   value = value.replace(/^\s+/, "");
-
                   setQuery(value);
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && query.trim()) {
                     claersearch();
+                    setSearchData([]);
                     navigate("/searchlist", { state: { query } });
                   }
                 }}
@@ -357,6 +353,7 @@ import searchicon from "../../assets/icons/Searchicon.svg";
                 disabled={!query?.trim()}
                 onClick={() => {
                   claersearch();
+                  setSearchData([]);
                   navigate("/searchlist", {
                     state: { query: query },
                   });
@@ -366,16 +363,17 @@ import searchicon from "../../assets/icons/Searchicon.svg";
               </button>
             </div>
 
-            {Array.isArray(searchResult) && (
+            {Array.isArray(searchData) && (
               <>
-                {searchResult.length > 0 ? (
+                {searchData.length > 0 ? (
                   <div className="search-results-grid-other">
-                    {searchResult.slice(0, 8).map((item, index) => (
+                    {searchData.slice(0, 8).map((item, index) => (
                       <div
                         key={index}
                         className="search-card"
                         onClick={() => {
                           claersearch();
+                          setSearchData([]);
                         }}>
                         <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
                           <img

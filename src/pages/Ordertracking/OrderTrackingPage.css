@@ -10,7 +10,7 @@
 .order-left {
   flex: 2 1;
   min-width: 300px;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
   border-right: 1px solid #ddd;
 }
 

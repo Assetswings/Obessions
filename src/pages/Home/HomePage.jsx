@@ -92,7 +92,7 @@ const HomePage = () => {
       return;
     }
     const timeoutId = setTimeout(() => {
-      dispatch(fetchSearchResults(query));
+      dispatch(fetchSearchResults({query}));
     }, 400);
 
     return () => clearTimeout(timeoutId);

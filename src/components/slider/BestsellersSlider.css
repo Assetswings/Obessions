@@ -9,9 +9,20 @@
 
 .bestseller-slider {
   display: flex;
-  align-items: stretch;
-  margin: 0 auto;
-  gap: 1rem;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+  gap: 15px;
+}
+
+.slider-track-wrapper {
+  overflow: hidden;
+  flex: 1;
+}
+
+.slider-track {
+  display: flex;
+  gap: 20px;
 }
 
 .slider-strip {
@@ -28,7 +39,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
 .img_main_asp{
@@ -110,7 +121,7 @@
 .product-info .title,
 .product-info-card .title {
   font-family: "Canela Trial", serif !important;
-  font-weight: 400;
+  font-weight: 400 !important;
   font-size: 15px;
   line-height: 120%;
   letter-spacing: 0.03em;
@@ -145,6 +156,7 @@
   padding: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
+  height: 100%;
 }
 
 .bestseller-fixed-card em {
@@ -173,6 +185,15 @@
   display: none;
  }
 
+ .arrow-img {
+  font-size: 14px;
+  filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%);
+  transition: filter 0.3s;
+}
+
+.btn_arrow:hover .arrow-img {
+  filter: invert(20%) sepia(90%) saturate(7000%) hue-rotate(-10deg) brightness(100%) contrast(105%);
+}
 /* Responsive */
 /* @media (max-width: 768px) {
   .bestseller-slider {
@@ -214,7 +235,7 @@
 }
 
 .btn_arrow img {
-  width: 40px; /* adjust as needed */
+  width: 37px; /* adjust as needed */
   height: auto;
   
 }

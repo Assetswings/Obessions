@@ -564,16 +564,25 @@ const ProfilePage = () => {
             onClick={(e) => handleModalClick(e, () => setShowEditModal(false))}
           >
             <div className="side-modal">
-              <button
-                className="close-btn"
-                onClick={() => {
-                  setShowEditModal(false);
-                  setErrors({});
-                }}
-              >
-                <IoMdClose />
-              </button>
-              <h3>Edit Profile</h3>
+
+              <div className="set_top_edit">
+                <div>
+                  <h3>Edit Profile</h3>
+                </div>
+                <div>
+                  <button
+                    className="close-btn"
+                    onClick={() => {
+                      setShowEditModal(false);
+                      setErrors({});
+                    }}
+                  >
+                    <IoMdClose />
+                  </button>
+                </div>
+              </div>
+
+
               <form onSubmit={handleSubmitEditForm}>
                 <label>
                   First Name

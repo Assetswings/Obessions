@@ -127,7 +127,7 @@ const CarpetFinder = () => {
             <div className="finder-grid">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="finder-card">
-                  <Skeleton height={140} />
+                  <Skeleton height={180} />
                   <div className="card-label">
                     <Skeleton width={100} height={15} />
                   </div>
@@ -211,7 +211,7 @@ const CarpetFinder = () => {
                     width:
                       steps[currentStep]?.title === "Which Size or Shape fits your Space?"
                         ? "300px"
-                        : "140px",
+                        : "175px",
                   }}
                   onClick={() => toggleOption(currentStep, label, key)}
                 >

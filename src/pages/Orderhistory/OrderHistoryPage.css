@@ -32,7 +32,7 @@
 
 .clear-all {
   display: block;
-  margin-top: 1rem;
+  
   font-size: 0.85rem;
   color: #555;
   text-decoration: underline;
@@ -94,9 +94,9 @@
 .status_key {
   position: relative;
   left: 5px;
-  font-family: 'Canela Trial', sans-serif;
   font-size: 14px;
   font-weight: 400;
+  color: #625E55;
 }
 .order-item {
   display: flex;

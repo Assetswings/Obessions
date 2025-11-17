@@ -125,6 +125,11 @@
   font-size: 13px;
   cursor: pointer;
 }
+.wishlist-header-count-cart{
+  font-size: 22px;
+  position: relative;
+  bottom: 12px !important; 
+}
 
 /* ---------- SUMMARY ---------- */
 .summary-row.total {

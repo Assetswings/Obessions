@@ -625,6 +625,9 @@ background-color: #F2F2F2;
     font-size: 2rem; /* smaller heading for mobile */
   }
 
+   .hero-text-table{
+padding: 0rem 0rem 4rem 0rem;
+}
   .hero-text-table h1 {
     font-size: 33px; /* smaller heading for mobile */
     font-family: "Canela Trial", sans-serif;

@@ -20,6 +20,7 @@ import { checkPincode, resetPincodeState } from "./pincodeSlice";
 import CartToast from "../../components/AddtoCartToster/CartToast";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 import { useCartWishlist } from "../../app/CartWishlistContext";
+import { LocationTick } from "iconsax-react";
 
 const tabs = [
   { id: "highlights", label: "HIGHLIGHTS" },
@@ -500,53 +501,60 @@ const ProductDetailPage = () => {
         </div>
 
         {/* Share Button or Skeleton */}
-        {localLoading ? (
-          <div className="share_btn">
+       {localLoading ? (
+  <div className="share_btn"></div>
+) : (
+  !open && (
+    <div
+      className="share_btn"
+      onMouseEnter={() => setOpen(true)}
+    >
+      <span><Share2 size={14} /></span> <span style={{fontSize:'13px'}}>SHARE</span> 
+    </div>
+     )
+     )}
 
-          </div>
-        ) : (
-          !open && (
-            <div
-              className="share_btn"
-              onMouseEnter={() => setOpen(true)}
-            >
-              <span ><Share2 size={14} /></span> share
-            </div>
-          )
-        )}
+     {/* Dropdown */}
+      {open && !loading && (
+       <>
+      <div className="relative">
+      <div
+        className="absolute left-1/2 -translate-x-1/2  shadow-lg rounded-xl p-3 mt-2 flex gap-3 z-999999  track_bound"
+        onMouseLeave={() => setOpen(false)}
+        onMouseEnter={() => setOpen(true)}>
+        {/* WhatsApp */}
+        <a
+          href={shareLinks.whatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 rounded-full hover:bg-gray-100 transition"
+        >
+        <MessageCircle size={16} className="text-green-600" />
+        </a>
 
-        {/* Dropdown */}
-        {open && !loading && (
-          <div
-            className="absolute bg-white shadow-lg rounded-lg p-2 mt-2 z-50"
-            onMouseLeave={() => setOpen(false)}
-          >
-            <a
-              href={shareLinks.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded"
-            >
-              <MessageCircle size={16} className="text-green-600" />
-            </a>
-            <a
-              href={shareLinks.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded"
-            >
-              <Facebook size={16} className="text-blue-600" />
-            </a>
-            <a
-              href={shareLinks.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded"
-            >
-              <Instagram size={16} className="text-sky-500" />
-            </a>
-          </div>
-        )}
+        {/* Facebook */}
+        <a
+          href={shareLinks.facebook}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 rounded-full hover:bg-gray-100 transition"
+        >
+          <Facebook size={16} className="text-blue-600" />
+        </a>
+        {/* Instagram */}
+        <a
+          href={shareLinks.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 rounded-full hover:bg-gray-100 transition"
+        >
+          <Instagram size={16} className="text-pink-500" />
+        </a>
+      </div>
+    </div>
+  </>
+)}
+        
       </div>
       <div className="product-page">
         {/* Main Product Image */}
@@ -922,7 +930,11 @@ const ProductDetailPage = () => {
                 )} */}
                 {!pinloading && pincodeDetails?.pincode && pincodeDetails?.is_active && (
                   <p style={{ color: "green", marginTop: "15px" }}>
-                    ✅ Delivery available at {pincodeDetails?.city},{" "}
+                   <span style={{position:'relative',bottom:'5px'}}>   <LocationTick
+ size="24"
+ color="green"
+ variant="Bold"
+/></span> Delivery available at {pincodeDetails?.city},{" "}
                     {pincodeDetails?.state} ({pincodeDetails?.delivery_tat})
                   </p>
                 )}

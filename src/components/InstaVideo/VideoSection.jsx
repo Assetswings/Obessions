@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./VideoSection.css";
@@ -11,33 +11,63 @@ const VideoSection = () => {
   const reelVideoRefs = useRef([]);
   const [activeIndex, setActiveIndex] = useState(null);
   const [playingIndex, setPlayingIndex] = useState(null);
+
   const galleries = useSelector((state) => state.home?.data?.galleries || []);
 
+  /** 🔥 Infinite loop list */
+  const loopList = [...galleries, ...galleries];
 
-  // Horizontal scroll
+  /** 🔥 Maintain the loop scroll */
+  const handleInfiniteScroll = () => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+
+    const halfWidth = slider.scrollWidth / 2;
+
+    // If scrolled beyond the first clone → jump back
+    if (slider.scrollLeft >= halfWidth) {
+      slider.scrollTo({ left: 1, behavior: "instant" });
+    }
+
+    // If scrolled too back → jump to end clone
+    if (slider.scrollLeft <= 0) {
+      slider.scrollTo({ left: halfWidth - 1, behavior: "instant" });
+    }
+  };
+
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+
+    slider.addEventListener("scroll", handleInfiniteScroll);
+    return () => slider.removeEventListener("scroll", handleInfiniteScroll);
+  }, []);
+
+  /** Left/Right buttons */
   const scroll = (direction) => {
     if (!sliderRef.current) return;
     const scrollAmount = 320;
+
     sliderRef.current.scrollBy({
       left: direction === "left" ? -scrollAmount : scrollAmount,
       behavior: "smooth",
     });
   };
 
-  // Play a video and pause all others
   const handlePlay = (index, isReel = false) => {
     setPlayingIndex(index);
     const refs = isReel ? reelVideoRefs.current : videoRefs.current;
+
     refs.forEach((v, i) => {
       if (i !== index && v) {
         v.pause();
-        v.currentTime = 0; // reset to show poster
+        v.currentTime = 0;
       }
     });
+
     if (refs[index]) refs[index].play();
   };
 
-  // Open reel mode
   const handleVideoClick = (index) => {
     videoRefs.current.forEach((v) => v && v.pause());
     setActiveIndex(index);
@@ -55,7 +85,6 @@ const VideoSection = () => {
     }, 100);
   };
 
-  // Close reel
   const closeReel = () => {
     setActiveIndex(null);
     setPlayingIndex(null);
@@ -63,11 +92,11 @@ const VideoSection = () => {
     reelVideoRefs.current.forEach((v) => v && v.pause());
   };
 
-  // Toggle play/pause
   const togglePause = (index, isReel = false) => {
     const refs = isReel ? reelVideoRefs.current : videoRefs.current;
-    if (!refs[index]) return;
     const video = refs[index];
+    if (!video) return;
+
     if (video.paused) {
       video.play();
       setPlayingIndex(index);
@@ -75,11 +104,10 @@ const VideoSection = () => {
       video.pause();
       setPlayingIndex(null);
     }
-    };
+  };
 
   return (
     <section className="video-section">
-      {/* Header */}
       <div className="video-header">
         <h2 className="video-heading">
           <span className="track_ost">Obsessions in</span> <em>Action</em>
@@ -94,11 +122,11 @@ const VideoSection = () => {
         </Link>
       </div>
 
-      {/* Horizontal Slider */}
+      {/* 🔥 Horizontal Infinite Loop Slider */}
       <div className="video-slider-wrapper">
         <div className="video-slider" ref={sliderRef}>
-          {galleries.map((video, index) => (
-            <div className="video-card" key={video.id || index}>
+          {loopList.map((video, index) => (
+            <div className="video-card" key={index}>
               <div className="video-wrapper">
                 {video.uploaded_media ? (
                   <>
@@ -112,7 +140,7 @@ const VideoSection = () => {
                       onClick={() => togglePause(index)}
                       onPlay={() => handlePlay(index)}
                     />
-                    {/* Poster overlay if video is not playing */}
+
                     {playingIndex !== index && (
                       <img
                         src={video.poster_image}
@@ -123,7 +151,11 @@ const VideoSection = () => {
                     )}
                   </>
                 ) : (
-                  <img src={video.poster_image} alt="thumbnail" className="video-poster" />
+                  <img
+                    src={video.poster_image}
+                    alt="thumbnail"
+                    className="video-poster"
+                  />
                 )}
               </div>
             </div>
@@ -140,14 +172,24 @@ const VideoSection = () => {
         </div>
       </div>
 
-      {/* Fullscreen Reels */}
+      {/* Reel View */}
       {activeIndex !== null && (
         <div className="reel-viewer">
-          <button className="close-reel" onClick={closeReel}>✕</button>
+          <button className="close-reel" onClick={closeReel}>
+            ✕
+          </button>
           <div className="reel-container">
             {galleries.map((video, index) => (
-              <div className={`reel-video ${index === activeIndex ? "active" : ""}`} key={index}>
-                <div className="reel-video-wrapper" onClick={() => togglePause(index, true)}>
+              <div
+                className={`reel-video ${
+                  index === activeIndex ? "active" : ""
+                }`}
+                key={index}
+              >
+                <div
+                  className="reel-video-wrapper"
+                  onClick={() => togglePause(index, true)}
+                >
                   {video.uploaded_media ? (
                     <>
                       <video
@@ -160,17 +202,21 @@ const VideoSection = () => {
                         poster={video.poster_image}
                         onPlay={() => handlePlay(index, true)}
                       />
+
                       {playingIndex !== index && (
                         <img
                           src={video.poster_image}
                           className="video-poster"
                           alt="thumbnail"
-                          onClick={() => handlePlay(index, true)}
                         />
                       )}
                     </>
                   ) : (
-                    <img src={video.poster_image} alt="thumbnail" className="video-poster" />
+                    <img
+                      src={video.poster_image}
+                      alt="thumbnail"
+                      className="video-poster"
+                    />
                   )}
                 </div>
               </div>

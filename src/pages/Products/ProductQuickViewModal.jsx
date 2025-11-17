@@ -24,6 +24,7 @@ import {
 } from "../Productdetails/pincodeSlice";
 import CartToast from "../../components/AddtoCartToster/CartToast";
 import { useCartWishlist } from "../../app/CartWishlistContext";
+import { LocationTick } from "iconsax-react";
 
 const ProductQuickViewModal = ({ show, product, onHide }) => {
   const { getCartWishlistCount } = useCartWishlist();
@@ -607,7 +608,11 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     )}
                     {pincodeDetails?.pincode && pincodeDetails?.is_active && (
                       <p style={{ color: "green", marginTop: "15px" }}>
-                        ✅ Delivery available at {pincodeDetails?.city}, {pincodeDetails?.state} (
+                        <span style={{position:'relative',bottom:'4px'}}>   <LocationTick
+                       size="24"
+                       color="green"
+                       variant="Bold"
+                      /></span> Delivery available at {pincodeDetails?.city}, {pincodeDetails?.state} (
                         {pincodeDetails?.delivery_tat})
                       </p>
                     )}

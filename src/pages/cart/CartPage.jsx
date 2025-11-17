@@ -120,19 +120,22 @@ const CartPage = () => {
   ];
   return (
     <>
-      <ToastContainer
+        <ToastContainer
         style={{ zIndex: 9999999999999 }}
         position="top-right"
         autoClose={3000}
-      />
+        />
+
       <Breadcrumbs paths={breadcrumbPaths} />
+
       <div className="root-title-chk">
-        <span className="title_chk">My Cart ({items?.length})</span>
+      <span className="title_chk">My Cart <span className="wishlist-header-count-cart"> ({items?.length}) </span> </span>
       </div>
 
       <div className="cart_mlb">
-        <span className="txt_mlb_my"> My Cart ({items?.length})</span>
+      <span className="txt_mlb_my"> My Cart ({items?.length})</span>
       </div>
+
       <div className="cart-container">
         <div className="cart-left">
           {items.length === 0 ? (
@@ -285,6 +288,7 @@ const CartPage = () => {
                       Move to Wishlist
                     </span>
                   </div>
+
                 </div>
               </div>
             ))
@@ -321,6 +325,7 @@ const CartPage = () => {
           </div>
         )}
       </div>
+
       {items.length === 0 && (
         <section className="top-picks-section">
           <h2 className="top-picks-heading">Don’t miss these top picks.</h2>

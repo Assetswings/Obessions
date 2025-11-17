@@ -2,7 +2,7 @@ import { CircleCheck } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const CartToast = ({ product, onViewCart, onCheckout, onClose }) => {
+    const CartToast = ({ product, onViewCart, onCheckout, onClose }) => {
     const navigate = useNavigate();
   return (
     <div style={{ width: "360px", fontFamily: "Helvetica Neue sans-serif" }}>

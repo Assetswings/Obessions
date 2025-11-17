@@ -59,6 +59,7 @@
   margin-top: 8px;
   line-height: 1.4;
   font-weight: 500;
+  max-width: 400px;
 }
 
 .read-time {

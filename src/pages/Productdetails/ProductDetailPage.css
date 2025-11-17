@@ -16,9 +16,9 @@ font-family: "Playfair Display", serif; */
    
 }
 
-.share_btn {
-  margin-top: 10px;
-  margin-right: 10px;
+
+.share-tooltip {
+  animation: fadeIn 0.18s ease-out;
 }
 
 .product-page {
@@ -28,6 +28,10 @@ font-family: "Playfair Display", serif; */
   font-family: "Arial", sans-serif;
 }
 
+.track_bound{
+  position: relative;
+  background-color: white;
+}
 .product-gallery {
   flex: 1;
   min-width: 300px;

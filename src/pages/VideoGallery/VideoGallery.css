@@ -85,7 +85,7 @@
   object-fit: cover;
 }
 
-.close-btn {
+.close-btn-vd {
   position: absolute;
   top: 8px;
   right: 10px;
@@ -100,7 +100,7 @@
   transition: background 0.2s ease;
 }
 
-.close-btn:hover {
+.close-btn-vd:hover {
   background: rgba(255,255,255,0.3);
 }
 

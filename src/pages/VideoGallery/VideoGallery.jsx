@@ -159,7 +159,7 @@ export default function VideoGallery() {
                 className="modal-video"
               />
             )}
-            <button className="close-btn" onClick={closeModal}>
+            <button className="close-btn-vd" onClick={closeModal}>
               ✕
             </button>
           </div>

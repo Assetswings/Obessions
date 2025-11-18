@@ -202,14 +202,14 @@ const BestsellersSlider = ({ onQuickView }) => {
         <div className="bestseller-slider">
           <div className="bestseller-fixed-card">
             <h3>Get the <em>Bestsellers</em></h3>
-           <div className="arrow-controls">
-  <button className="btn_arrow left" onClick={handlePrev}>
-    <img src={arrowleft} alt="prev" className="arrow-img" />
-  </button>
-  <button className="btn_arrow right" onClick={handleNext}>
-    <img src={arrowright} alt="next" className="arrow-img" />
-  </button>
-</div>
+            <div className="arrow-controls">
+              <button className="btn_arrow left" onClick={handlePrev}>
+                <img src={arrowleft} alt="prev" className="arrow-img" />
+              </button>
+              <button className="btn_arrow right" onClick={handleNext}>
+                <img src={arrowright} alt="next" className="arrow-img" />
+              </button>
+            </div>
           </div>
 
           <div className="slider-track-wrapper">
@@ -235,50 +235,52 @@ const BestsellersSlider = ({ onQuickView }) => {
                       </button>
                     </div>
                     <button
-                  className="wishlist-btn_products"
-                  onClick={(e) => toggleWishlist(e, item)}
-                >
-                  {animatedWish === item.id ? (
-                    <div style={{
-                      width: 20,
-                      height: 24,
-                      overflow: "hidden",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}>
-                      <Player
-                        autoplay
-                        keepLastFrame
-                        src={heartAnimation}
-                        style={{
-                          width: 139,
-                          height: 139,
-                          transform: "scale(0.5)",
-                          transformOrigin: "center",
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <Heart
-                      color={item.is_wishlisted ? "#FF0000" : "#000"}
-                      fill={item.is_wishlisted ? "#FF0000" : "none"}
-                      size={20}
-                      strokeWidth={2}
-                    />
-                  )}
-                </button>
+                      className="wishlist-btn_products"
+                      onClick={(e) => toggleWishlist(e, item)}
+                    >
+                      {animatedWish === item.id ? (
+                        <div style={{
+                          width: 20,
+                          height: 24,
+                          overflow: "hidden",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}>
+                          <Player
+                            autoplay
+                            keepLastFrame
+                            src={heartAnimation}
+                            style={{
+                              width: 139,
+                              height: 139,
+                              transform: "scale(0.5)",
+                              transformOrigin: "center",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <Heart
+                          color={item.is_wishlisted ? "#FF0000" : "#000"}
+                          fill={item.is_wishlisted ? "#FF0000" : "none"}
+                          size={20}
+                          strokeWidth={2}
+                        />
+                      )}
+                    </button>
                   </div>
                   <div className="product-info">
-                    <span className="title">{item.name}</span>
+                    <Link to={`/productsdetails/${item.action_url}`}>
+                      <span className="title">{item.name}</span>
+                    </Link>
                     <span className="price">₹{item.selling_price}</span>
-                      {item.mrp && item.mrp !== item.selling_price && (
-                  <>
-                    &nbsp;
-                    <span className="original"><del>₹{item.mrp}</del></span>
-                    <span className="discount"> {""}({item?.discount_percent}% OFF)</span>
-                  </>
-                )}
+                    {item.mrp && item.mrp !== item.selling_price && (
+                      <>
+                        &nbsp;
+                        <span className="original"><del>₹{item.mrp}</del></span>
+                        <span className="discount"> {""}({item?.discount_percent}% OFF)</span>
+                      </>
+                    )}
                   </div>
                 </div>
               ))}

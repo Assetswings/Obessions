@@ -231,6 +231,7 @@
   cursor: pointer;
   /* top: 75%; */
   position: relative;
+  width: 20%;
 }
 
 .modal-box h3 {

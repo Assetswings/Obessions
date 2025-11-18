@@ -22,6 +22,8 @@ import {
 } from "./addressSlice";
 import { useLocation } from "react-router-dom";
 import { checkPincode } from "../Productdetails/pincodeSlice";
+import logo from "../../assets/icons/Obslogo.png";
+import { X } from "lucide-react";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -647,16 +649,17 @@ const ProfilePage = () => {
             }
           >
             <div className="side-modal">
-              <button
-                className="close-btn"
-                onClick={() => {
-                  setShowAddAddressModal(false);
-                  setErrors({});
-                }}
-              >
-                <IoMdClose />
-              </button>
-              <h3>Add New Address</h3>
+              <div className="head-modal">
+                <button className="close-btn"
+                  onClick={() => {
+                    setShowAddAddressModal(false);
+                    setErrors({});
+                  }}
+                >
+                  <IoMdClose />
+                </button>
+                <h3>Add New Address</h3>
+              </div>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -945,18 +948,15 @@ const ProfilePage = () => {
         )}
       </div>
       {showOtpModal && (
-        <div className="verify-modal-overlay">
-          <div className="verify-modal-box">
-            <button className="verify-close" onClick={() => setShowOtpModal(false)}>
-              ✕
-            </button>
-            <h3 className="verify-title">Verify Your Email to Continue</h3>
-            <p className="verify-subtitle">
-              A verification code has been sent to{" "}
-              <strong>{profileData?.email}</strong>
+        <div className="login-prompt-backdrop">
+          <div className="login-prompt-modal">
+            <button className="close-btn-md" onClick={() => setShowOtpModal(false)}><X /></button>
+            {/* <img src={logo} alt="Logo" className="modal-logo" /> */}
+            <h2 className="modal-heading">Verify Your Email to Continue</h2>
+            <p className="modal-subtext">
+              A verification code has been sent to{" "} <strong>{profileData?.email}</strong>
             </p>
-
-            <div className="verify-input-wrap">
+            <div className="verify-input-wrap mb-4">
               <input
                 type="text"
                 value={otp}
@@ -965,10 +965,7 @@ const ProfilePage = () => {
                 required
               />
             </div>
-
-            <button className="verify-btn" onClick={handleVerifyOtp}>
-              VERIFY
-            </button>
+            <button className="login-btn" onClick={handleVerifyOtp}>VERIFY</button>
 
             <p className="verify-resend">
               Didn’t receive code?{" "}

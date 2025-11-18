@@ -537,7 +537,7 @@ background-color: #F2F2F2;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4rem 2rem;
+  padding: 4rem 0rem;
   background-color:#EDE7DF; /* light beige background */
   font-family: "Playfair Display", serif;
   flex-wrap: wrap;

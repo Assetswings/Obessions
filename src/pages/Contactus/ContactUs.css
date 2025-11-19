@@ -222,7 +222,7 @@ button[type="submit"]:hover {
 
   .mobileres {
     display: block;
-    padding-bottom: 10%;
+    padding-bottom: 20%;
   }
 
   .webres {
@@ -235,5 +235,8 @@ button[type="submit"]:hover {
 
   .help-guides {
     padding: 5rem 0rem;
+  }
+  .contact-form h2 {
+    font-size: 32px;
   }
 }

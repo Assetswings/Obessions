@@ -299,10 +299,11 @@
   }
 
   .actions_mlb {
-    display: block;
+    display: flex;
     font-size: 12px;
     margin-top: 10px;
     text-decoration: underline;
+    gap: 30%;
   }
 
   .item-price {
@@ -370,4 +371,14 @@
     font-family: "Playfair Display", serif;
   }
 
+}
+
+@media (max-width: 480px) {
+  .product-name-span {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;      /* show only 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

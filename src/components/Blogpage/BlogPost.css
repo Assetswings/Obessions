@@ -6,7 +6,8 @@
 .hero {
   width: 100%;
 }
-.hero-image {
+
+.hero-image-blog {
   width: 100%;
   height: auto;
   object-fit: cover;
@@ -44,7 +45,7 @@
   font-size: 1.5rem;
   font-weight: 400;
   margin-bottom: 2rem;
-  color: #000;  
+  color: #000;
   font-family: "Playfair Display", serif;
 }
 
@@ -99,10 +100,11 @@
   margin: 0;
   color: #222;
 }
-.finder_track{
+
+.finder_track {
   display: flex;
-      width: 344px;
-      gap: 20px;
+  width: 344px;
+  gap: 20px;
 }
 
 .related-list span {
@@ -121,6 +123,10 @@
 
 /* ✅ Mobile View Fix */
 @media (max-width: 768px) {
+  .hero-image-blog {
+    padding: 5px;
+  }
+
   .post-wrapper {
     flex-direction: column;
     gap: 2rem;
@@ -155,9 +161,22 @@
   .related-list li {
     flex-direction: row;
   }
-  .main-img_2{
+
+  .main-img_2 {
     width: 100%;
     margin-bottom: 15px;
   }
- 
+
+  .related-list p {
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0;
+    color: #222;
+    padding: 5px;
+  }
+
+  .txt_btn_recomend {
+    display: flex;
+    gap: 25%;
+  }
 }

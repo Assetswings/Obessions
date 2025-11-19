@@ -265,17 +265,19 @@ const StyleGuide = () => {
             <h2 className="guide-title">{data?.content[0]?.title}</h2>
 
             {/* Tabs */}
-            <div className="tab-container">
-              {data?.content[0]?.size_guides.map((shape) => (
-                <button
-                  key={shape.id}
-                  className={`tab-btn ${activeShape === shape.id ? "active" : ""
-                    }`}
-                  onClick={() => setGuidetabdata(shape.id)}
-                >
-                  {shape.name.split(" ")[0].toUpperCase()}
-                </button>
-              ))}
+            <div className="tab-scroll-wrapper">
+              <div className="tab-container">
+                {data?.content[0]?.size_guides.map((shape) => (
+                  <button
+                    key={shape.id}
+                    className={`tab-btn ${activeShape === shape.id ? "active" : ""
+                      }`}
+                    onClick={() => setGuidetabdata(shape.id)}
+                  >
+                    {shape.name.split(" ")[0].toUpperCase()}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Content Section */}
@@ -294,16 +296,18 @@ const StyleGuide = () => {
           <section className="roomguide-section">
             <h2 className="roomguide-title">Room to Room Guide</h2>
 
-            <div className="roomguide-tabs">
-              {data?.content[1]?.size_guides.map((key) => (
-                <button
-                  key={key.id}
-                  className={`roomguide-tab ${activeRoom === key.id ? "active" : ""
-                    }`}
-                  onClick={() => setRoomtabdata(key.id)}>
-                  {key?.name.toUpperCase()}
-                </button>
-              ))}
+            <div className="tab-scroll-wrapper">
+              <div className="roomguide-tabs">
+                {data?.content[1]?.size_guides.map((key) => (
+                  <button
+                    key={key.id}
+                    className={`roomguide-tab ${activeRoom === key.id ? "active" : ""
+                      }`}
+                    onClick={() => setRoomtabdata(key.id)}>
+                    {key?.name.toUpperCase()}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="roomguide-content">

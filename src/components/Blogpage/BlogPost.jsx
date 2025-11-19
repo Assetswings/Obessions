@@ -49,7 +49,7 @@ const BlogPost = () => {
           <img
             src={data?.blog?.media}
             alt={data?.blog?.name}
-            className="hero-image"
+            className="hero-image-blog"
           />
         </section>
 
@@ -57,14 +57,14 @@ const BlogPost = () => {
         <section className="post-wrapper">
           {/* Left Blog Content */}
           <div className="post-main">
-            <p className="post-date">
+            {/* <p className="post-date">
               Posted on{" "}
               {new Date(data?.blog?.created_at).toLocaleDateString("en-GB", {
                 day: "2-digit",
                 month: "short",
                 year: "numeric",
               })}
-            </p>
+            </p> */}
 
             <div className="terms-container">
               <div dangerouslySetInnerHTML={{ __html: data.blog?.description }} />

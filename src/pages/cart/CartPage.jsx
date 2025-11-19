@@ -184,7 +184,7 @@ const CartPage = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {item.product?.name}
+                      <span className="product-name-span">{item.product?.name}</span>
                     </Link>
                   </h4>
                   <span className="price_details_cart">

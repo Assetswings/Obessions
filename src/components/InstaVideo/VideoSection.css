@@ -108,12 +108,13 @@
   .txt_sub_video_tag {
     font-size: 15px;
     width: 90%;
-    text-align: left;
+    text-align: center;
   }
   .video-heading {
     font-size: 32px;
-    text-align: left;
+    text-align: center;
   }
+  
   .track_ost{
     font-weight: 600;
   }
@@ -128,7 +129,7 @@
   }
   .track_btn_glr{
     display: flex;
-    justify-content: start;
+    justify-content:center;
   }
 }
 

@@ -455,7 +455,7 @@ const ProductsPage = () => {
               {" "}
               <SlidersHorizontal size={15} />
             </span>{" "}
-            Filters
+            FILTERS
           </div>
         </div>
       }
@@ -714,14 +714,16 @@ const ProductsPage = () => {
               </div>
             ): (<></>)}
           </div>
-
-          <Pagination
+  <div className="pagination_track"> 
+  <Pagination
             className="mt-6"
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
             totalitems={products.length}
           />
+  </div>
+          
         </main>
 
         <ProductQuickViewModal

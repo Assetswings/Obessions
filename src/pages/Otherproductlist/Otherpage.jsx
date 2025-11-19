@@ -613,12 +613,14 @@ const Otherpage = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
+  <div className="pagination_track_btm">   
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
         totalitems={products.length}
       />
+</div>
 
       <section className="top-picks-section">
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>

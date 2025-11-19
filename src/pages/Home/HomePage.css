@@ -644,18 +644,19 @@ padding: 0rem 0rem 4rem 0rem;
   .hero-button-table{
     padding: 0.75rem 1.5rem;
     border: 1px solid #111;
-    background: black;
-    color: white;
+    background: transparent;
+    color: rgb(12, 10, 10);
     cursor: pointer;
     font-size: 0.85rem;
     transition: all 0.3s ease;
     font-family: "Helvetica Neue", sans-serif;
   }
-  
 
   .hero-text p {
     font-size: 0.9rem;
   }
+
+ 
 }
 
  /* _______ Tbltop section end ________*/
@@ -1193,6 +1194,16 @@ padding: 0rem 0rem 4rem 0rem;
   .obsession-image{
     display: none;
   }
+  .obsessed-card p {
+    margin-top: 0.5rem;
+    font-weight: 400;
+    font-size: 20px;
+    color: #222;
+    font-family: 'Canela Trial', sans-serif;
+    text-align:start ;
+    text-transform: uppercase;
+    
+}
 }
 
 @media (max-width: 480px) {

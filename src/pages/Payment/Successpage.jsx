@@ -7,18 +7,17 @@ import { fetchAddOns } from "../Products/otherproductSlice";
 import { UseDispatch } from "react-redux";
 import Footer from "../../components/Footer/Footer";
 import SuccessIcon from "../../assets/icons/Success-Icon.png";
-const Successpage = () => {
+  const Successpage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-
   const { verifyResponse } = location.state || {};
   const { addOns } = useSelector((state) => state.toppick);
 
-  useEffect(() => {
+    useEffect(() => {
     document.title = "Obsession - Payment Success";
     dispatch(fetchAddOns());
-  }, [dispatch]);
+  },[dispatch]);
 
   return (
     <>
@@ -47,7 +46,7 @@ const Successpage = () => {
               }
             )}</span>
           </p>
-          <p className="arrival-id">
+          <p className="arrival-id-order">
             Order ID : <span>{verifyResponse?.data?.order_no}</span>
           </p>
         </div>
@@ -55,14 +54,13 @@ const Successpage = () => {
         {/* ✅ Buttons */}
         <div className="button-group">
           <Link to={`/OrderTrackingPage/${verifyResponse?.data?.order_no}`}>
-            <button
-              className="btn-outline"
-            >
-              TRACK ORDER
+              <button
+              className="btn-outline">
+              Track Order 
             </button>
           </Link>&nbsp;
-          <button onClick={() => navigate("/")} className="btn-primary">
-            CONTINUE SHOPPING
+          <button onClick={() => navigate("/")} className="btn-outline-continue">
+            Continue Shopping
           </button>
         </div>
       </div>

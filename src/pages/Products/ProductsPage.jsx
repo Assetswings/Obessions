@@ -712,18 +712,18 @@ const ProductsPage = () => {
                   EXPLORE &nbsp;
                 </button>
               </div>
-            ): (<></>)}
+            ) : (<></>)}
           </div>
-  <div className="pagination_track"> 
-  <Pagination
-            className="mt-6"
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            totalitems={products.length}
-          />
-  </div>
-          
+          <div className="pagination_track">
+            <Pagination
+              className="mt-6"
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              totalitems={products.length}
+            />
+          </div>
+
         </main>
 
         <ProductQuickViewModal

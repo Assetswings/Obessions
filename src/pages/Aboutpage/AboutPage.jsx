@@ -22,12 +22,12 @@ const AboutPage = () => {
   className="about-hero"
   style={{
     backgroundImage: `url(${data?.bg_media})`,
-    height: "105vh",
+   
     backgroundSize: "cover",       // makes image fully cover section
     backgroundPosition: "center",  // centers the image
     backgroundRepeat: "no-repeat", // prevents tiling
   }}
->
+  >
   <div className="hero-overlay">
     <h1>
       <p
@@ -39,6 +39,13 @@ const AboutPage = () => {
     </h1>
   </div>
 </section>
+
+<section> 
+ <div className="slogan_part"> 
+ <span><img class="img_turner" src="https://i.ibb.co/qL71DQj5/icon.png"/> &nbsp;</span> Good design doesn’t ask for attention; it earns it. <span/>
+ </div>
+ </section>
+
         {/* Text Content Section */}
         {/* Styled Text Section */}
         <section className="about-text-section">
@@ -59,6 +66,15 @@ const AboutPage = () => {
           />
         </section>
 
+         
+          <div className="philosophy-right-mlb">
+            <img
+              src={data.our_philosophy?.right}
+              alt="Craftsman Weaving"
+            />
+          </div>
+          
+
         <section className="philosophy-section">
           <div className="philosophy-left">
             <h2>
@@ -74,12 +90,14 @@ const AboutPage = () => {
               {data.our_philosophy?.description}
             </p>
           </div>
+
           <div className="philosophy-right">
             <img
               src={data.our_philosophy?.right}
               alt="Craftsman Weaving"
             />
           </div>
+          
         </section>
       </div>
 
@@ -133,12 +151,9 @@ const AboutPage = () => {
         </div>
       </section>
 
-
       <section className="thirty-years-section-mlb ">
         <div className="container">
           <div className="row align-items-center">
-
-
             {/* Left Image Columns */}
             <div className="col-md-6 ">
               <div className="row">

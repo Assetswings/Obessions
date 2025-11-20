@@ -56,13 +56,12 @@ const CancelSuccess = () => {
                 <div className="button-group">
                     <Link to={`/OrderTrackingPage/${orderNo}`}>
                         <button
-                            className="btn-outline"
-                        >
-                            TRACK ORDER
+                        className="btn-outline">
+                        Track Oder
                         </button>
                     </Link>&nbsp;
                     <button onClick={() => navigate("/")} className="btn-primary">
-                        CONTINUE SHOPPING
+                        Continue Shopping
                     </button>
                 </div>
             </div>

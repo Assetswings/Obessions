@@ -48,9 +48,15 @@
 }
 
 .arrival-id {
-  font-size: 14px;
+  font-size: 15px;
   color: #1B170E;
   margin-top: 6px;
+  position: relative;
+}
+.arrival-id-order{
+  position: relative;
+  bottom: 10px;
+   font-size: 14px;
 }
 
 .arrival-id span {
@@ -59,7 +65,7 @@
 
 .button-group {
   display: flex;
-  gap: 15px;
+  gap: 5px;
 }
 
 .btn-outline {
@@ -67,25 +73,27 @@
   border: 1px solid #111827;
   background: #fff;
   color: #111827;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 150px;
 }
 
 .btn-outline:hover {
   background: #f3f4f6;
 }
 
-.btn-primary {
-  padding: 10px 22px;
-  border: none;
-  background: #111827;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 300;
+.btn-outline-continue {
+ padding: 10px 22px;
+  border: 1px solid #111827;
+  background:#111827;
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 150px;
 }
 
 .btn-primary:hover {
@@ -156,7 +164,7 @@
 
 @media (max-width: 480px) {
   .top-pick-title {
-    font-size: 10px;
+    font-size: 7px;
   }
   .top-picks-section {
     padding: 0px 0px 0px 5px;

@@ -4,6 +4,9 @@ import Footer from "../Footer/Footer";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import API from "../../app/api";
 import Breadcrumbs from "../Breadcum/Breadcrumbs";
+import insta from '../../assets/icons/Insta.png';
+import facebookimg from "../../assets/icons/facebook.png"
+import youtube from '../../assets/icons/youtube.png';     
 
 const BlogPost = () => {
   const location = useLocation();
@@ -65,11 +68,13 @@ const BlogPost = () => {
                 year: "numeric",
               })}
             </p> */}
-
+            
             <div className="terms-container">
               <div dangerouslySetInnerHTML={{ __html: data.blog?.description }} />
             </div>
-
+   <div className="track_social-mlb"> 
+          <div className="track-flex-social"> Connect With Us : <div> <img src={insta}/></div> <div> <img src={facebookimg }/></div>  <div> <img src={youtube }/></div></div>
+           </div>
             {/* <h1 className="post-title">{data?.blog?.name}</h1> */}
             {/* <div className="sector_image">
             <div>
@@ -163,9 +168,9 @@ const BlogPost = () => {
               <i className="fa-brands fa-youtube"></i>
             </div> */}
           </div>
-
+     
           {/* Right Sidebar */}
-          <aside className="post-sidebar">
+           <aside className="post-sidebar">
             <h4 className="sidebar-title">Related Posts</h4>
             <ul className="related-list">
               {data?.related?.map((post, index) => (
@@ -184,14 +189,17 @@ const BlogPost = () => {
                       </span>
                     </div>
                        </div>  
-                    
-
                   </Link>
                 </li>
               ))}
             </ul>
-          </aside>
-        </section>
+           </aside>
+          </section>
+
+        <div className="track_social"> 
+          <div className="track-flex-social"> Connect With Us : <div> <img src={insta}/></div> <div> <img src={facebookimg }/></div>  <div> <img src={youtube }/></div></div>
+           </div>
+
         {/* Recommended Posts */}
         <section className="recommended-posts">
           <h2 className="recommended-title">Recommended Posts</h2>

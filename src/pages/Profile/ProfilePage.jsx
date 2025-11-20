@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile, updateUserProfile } from "./profileSlice";
 import OrderHistoryPage from "../Orderhistory/OrderHistoryPage";
 import API from "../../app/api";
-import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
 import plusicon from "../../assets/icons/plusicon.png";
 import Skeleton from "react-loading-skeleton";
@@ -24,6 +23,7 @@ import { useLocation } from "react-router-dom";
 import { checkPincode } from "../Productdetails/pincodeSlice";
 import logo from "../../assets/icons/Obslogo.png";
 import { X } from "lucide-react";
+import { ToastContainer, toast } from "react-toastify";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -148,6 +148,7 @@ const ProfilePage = () => {
             border: "1px solid black",
             padding: "16px",
             color: "black",
+            
           },
           iconTheme: {
             primary: "black",
@@ -377,7 +378,8 @@ const ProfilePage = () => {
 
   return (
     <>
-      <Toaster position="top-right" reverseOrder={false} />
+      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
+     
       <div className="profile-container">
         <div className="root_tab">
           <div className="tabs">
@@ -405,10 +407,10 @@ const ProfilePage = () => {
                 <p className="txt_level">Name</p>
                 <div className="track_septor">
                   {localLoading ? (
-                    <Skeleton width={180} />
-                  ) : (
+                  <Skeleton width={180} />
+                    ) : (
                     <>
-                      {profileData?.first_name} {profileData?.last_name}
+                    {profileData?.first_name} {profileData?.last_name}
                     </>
                   )}
                 </div>

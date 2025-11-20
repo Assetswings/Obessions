@@ -8,9 +8,9 @@
 
 /* Hero Section */
 .about-hero {
+  height: 105vh;
   background-size: cover;
   background-position: center;
-  height: 120vh;
   position: relative;
   display: flex;
   align-items: center;
@@ -83,7 +83,7 @@
     font-size: 1rem;
   }
   .track_set_hader {
-  font-size: 1.7rem;
+  font-size: 1.9rem;
  position: relative;
   bottom: 120px;
   text-align: left;    
@@ -144,6 +144,16 @@
   .bottom-right-icon {
     font-size: 1.2rem;
   }
+
+   .about-hero {
+   height: 75vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
 }
 
 .philosophy-section {
@@ -200,7 +210,28 @@
   height: 100%;
   object-fit: cover;
 }
+ .root_track_pr {
+  padding: 60px;
+}
 
+.philosophy-right{
+  display: inline;
+}
+ .philosophy-right-mlb img{
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slogan_part{
+  display: flex;
+  justify-content: center;
+  height: 60px;
+  align-items: center;
+  background-color: #F2F2F2;
+  font-size: 13px;
+  font-weight: 400;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -218,9 +249,24 @@
     width: 100%;
     max-width: 300px;
   }
+    .root_track_pr {
+  padding: 0px;
+}
+ 
+.philosophy-right{
+  display: none;
+}
+.philosophy-right-mlb{
+  display:block ;  
+}
+.philosophy-right-mlb img{
+  display: inline;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-
+}
 
 .tr_div {
   height: 100%;
@@ -239,9 +285,6 @@
 
 }
 
-.root_track_pr {
-  padding: 60px;
-}
 
 .promise-section {
   background-color: #faf4ec;

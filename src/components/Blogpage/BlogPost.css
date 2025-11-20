@@ -36,7 +36,7 @@
 
 /* Recommended section */
 .recommended-posts {
-  max-width: 1200px;
+  max-width: 1165px;
   margin: 4rem auto;
   padding: 0 1rem;
 }
@@ -111,13 +111,26 @@
   font-size: 0.8rem;
   color: #777;
 }
+ 
+ .track_social{
+  margin-left: 13%;
+   font-family: 'Canela Trial', sans-serif;
+ }
+ .track_social-mlb{
+  display: none;
 
+ }
+.track-flex-social{
+  display: flex;
+  gap:15px ;
+  font-family: 'Canela Trial', sans-serif;
+}
 /* Responsive Design */
 
 /* Tablets */
 @media (max-width: 1024px) {
-  .recommended-grid {
-    grid-template-columns: repeat(2, 1fr);
+.recommended-grid {
+grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -179,4 +192,11 @@
     display: flex;
     gap: 25%;
   }
+  .track_social{
+ display: none;
+ }
+  .track_social-mlb{
+    display: inline;
+  }
+
 }

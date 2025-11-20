@@ -44,9 +44,10 @@ const ProductDetailPage = () => {
   const [productDetails, setProductsDetails] = useState([]);
   const [similarStyle, setSimilarStyle] = useState([]);
   const [matchingFound, setMatchingFound] = useState([]);
-  const [showSpecs, setShowSpecs] = useState(false);
-  const [showCare, setShowCare] = useState(false);
-  const [showDesc, setShowDesc] = useState(true);
+  // const [showSpecs, setShowSpecs] = useState(false);
+  // const [showCare, setShowCare] = useState(false);
+  // const [showDesc, setShowDesc] = useState(true);
+  const [activeSection, setActiveSection] = useState(null);
   const dispatch = useDispatch();
   const sectionsRef = useRef({});
   const prevSlugRef = useRef(null);
@@ -468,6 +469,10 @@ const ProductDetailPage = () => {
     setSelectedColor(size?.product_colors[0]);
     setSelectedImage(size?.product_colors[0]?.product_media[0]?.media);
   };
+
+  const handleToggle = (section) => {
+    setActiveSection(prev => (prev === section ? null : section));
+  };
   const breadcrumbPaths = [
     { label: data?.sub_category_action_url, to: `/products/${data?.category_action_url}/${data?.sub_category_action_url}` },
     { label: 'Product Details', to: "" }, // last one (no link)
@@ -501,60 +506,60 @@ const ProductDetailPage = () => {
         </div>
 
         {/* Share Button or Skeleton */}
-       {localLoading ? (
-  <div className="share_btn"></div>
-) : (
-  !open && (
-    <div
-      className="share_btn"
-      onMouseEnter={() => setOpen(true)}
-    >
-      <span><Share2 size={14} /></span> <span style={{fontSize:'13px'}}>SHARE</span> 
-    </div>
-     )
-     )}
+        {localLoading ? (
+          <div className="share_btn"></div>
+        ) : (
+          !open && (
+            <div
+              className="share_btn"
+              onMouseEnter={() => setOpen(true)}
+            >
+              <span><Share2 size={14} /></span> <span style={{ fontSize: '13px' }}>SHARE</span>
+            </div>
+          )
+        )}
 
-     {/* Dropdown */}
-      {open && !loading && (
-       <>
-      <div className="relative">
-      <div
-        className="absolute left-1/2 -translate-x-1/2  shadow-lg rounded-xl p-3 mt-2 flex gap-3 z-999999  track_bound"
-        onMouseLeave={() => setOpen(false)}
-        onMouseEnter={() => setOpen(true)}>
-        {/* WhatsApp */}
-        <a
-          href={shareLinks.whatsapp}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-2 rounded-full hover:bg-gray-100 transition"
-        >
-        <MessageCircle size={16} className="text-green-600" />
-        </a>
+        {/* Dropdown */}
+        {open && !loading && (
+          <>
+            <div className="relative">
+              <div
+                className="absolute left-1/2 -translate-x-1/2  shadow-lg rounded-xl p-3 mt-2 flex gap-3 z-999999  track_bound"
+                onMouseLeave={() => setOpen(false)}
+                onMouseEnter={() => setOpen(true)}>
+                {/* WhatsApp */}
+                <a
+                  href={shareLinks.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full hover:bg-gray-100 transition"
+                >
+                  <MessageCircle size={16} className="text-green-600" />
+                </a>
 
-        {/* Facebook */}
-        <a
-          href={shareLinks.facebook}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-2 rounded-full hover:bg-gray-100 transition"
-        >
-          <Facebook size={16} className="text-blue-600" />
-        </a>
-        {/* Instagram */}
-        <a
-          href={shareLinks.instagram}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-2 rounded-full hover:bg-gray-100 transition"
-        >
-          <Instagram size={16} className="text-pink-500" />
-        </a>
-      </div>
-    </div>
-  </>
-)}
-        
+                {/* Facebook */}
+                <a
+                  href={shareLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full hover:bg-gray-100 transition"
+                >
+                  <Facebook size={16} className="text-blue-600" />
+                </a>
+                {/* Instagram */}
+                <a
+                  href={shareLinks.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full hover:bg-gray-100 transition"
+                >
+                  <Instagram size={16} className="text-pink-500" />
+                </a>
+              </div>
+            </div>
+          </>
+        )}
+
       </div>
       <div className="product-page">
         {/* Main Product Image */}
@@ -930,11 +935,11 @@ const ProductDetailPage = () => {
                 )} */}
                 {!pinloading && pincodeDetails?.pincode && pincodeDetails?.is_active && (
                   <p style={{ color: "green", marginTop: "15px" }}>
-                   <span style={{position:'relative',bottom:'5px'}}>   <LocationTick
- size="24"
- color="green"
- variant="Bold"
-/></span> Delivery available at {pincodeDetails?.city},{" "}
+                    <span style={{ position: 'relative', bottom: '5px' }}>   <LocationTick
+                      size="24"
+                      color="green"
+                      variant="Bold"
+                    /></span> Delivery available at {pincodeDetails?.city},{" "}
                     {pincodeDetails?.state} ({pincodeDetails?.delivery_tat})
                   </p>
                 )}
@@ -1026,10 +1031,9 @@ const ProductDetailPage = () => {
             )}
           </div>
 
-          {productDetails?.product_info &&
+          {/* {productDetails?.product_info &&
             Object.keys(productDetails.product_info).length > 0 ? (
             <>
-              {/* DESCRIPTION */}
               <div className="pdp-accordion">
                 <div
                   className="pdp-accordion-header"
@@ -1056,7 +1060,6 @@ const ProductDetailPage = () => {
                 )}
               </div>
 
-              {/* SPECIFICATIONS */}
               <div className="pdp-accordion">
                 <div
                   className="pdp-accordion-header"
@@ -1086,7 +1089,6 @@ const ProductDetailPage = () => {
                 )}
               </div>
 
-              {/* CARE INSTRUCTIONS */}
               <div className="pdp-accordion">
                 <div
                   className="pdp-accordion-header"
@@ -1113,7 +1115,87 @@ const ProductDetailPage = () => {
             </>
           ) : (
             <></>
-          )}
+          )} */}
+          {productDetails?.product_info &&
+            Object.keys(productDetails.product_info).length > 0 ? (
+            <>
+              {/* DESCRIPTION */}
+              <div className="pdp-accordion">
+                <div
+                  className="pdp-accordion-header"
+                  onClick={() => handleToggle("description")}
+                >
+                  <h3>
+                    {localLoading ? <Skeleton width={180} /> : "PRODUCT DESCRIPTION"}
+                  </h3>
+                  {!localLoading && <span>{activeSection === "description" ? "−" : "+"}</span>}
+                </div>
+
+                {!localLoading && activeSection === "description" && (
+                  <div className="pdp-accordion-content">
+                    <p className="pdp-care-text">
+                      {productDetails?.product_info?.description}
+                    </p>
+                  </div>
+                )}
+
+                {localLoading && (
+                  <div className="pdp-accordion-content">
+                    <Skeleton count={3} />
+                  </div>
+                )}
+              </div>
+
+              {/* SPECIFICATIONS */}
+              <div className="pdp-accordion">
+                <div
+                  className="pdp-accordion-header"
+                  onClick={() => handleToggle("specs")}
+                >
+                  <h3>SPECIFICATIONS</h3>
+                  <span>{activeSection === "specs" ? "−" : "+"}</span>
+                </div>
+
+                {activeSection === "specs" && (
+                  <div className="pdp-accordion-content">
+                    <table className="pdp-specs-table">
+                      <tbody>
+                        {Object.entries(productDetails.product_info)
+                          .filter(([key]) => key !== "description")
+                          .map(([key, value]) => (
+                            <tr key={key}>
+                              <td style={{ textTransform: "capitalize" }}>
+                                {key.replace(/_/g, " ")}
+                              </td>
+                              <td>{value}</td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              {/* CARE INSTRUCTIONS */}
+              <div className="pdp-accordion">
+                <div
+                  className="pdp-accordion-header"
+                  onClick={() => handleToggle("care")}
+                >
+                  <h3>CARE INSTRUCTIONS</h3>
+                  <span>{activeSection === "care" ? "−" : "+"}</span>
+                </div>
+
+                {activeSection === "care" && (
+                  <div className="pdp-accordion-content">
+                    <p className="pdp-care-text">
+                      Transform your space with our luxurious Chamois Carpet...
+                    </p>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : null}
 
 
         </div>
@@ -1281,7 +1363,7 @@ const ProductDetailPage = () => {
                           />
                         </div>
                         <div className="sector_group_txt">
-                          <h4 className="title-size-gid">{det?.titel}</h4>
+                          <h4 className="title-size-gid">{det?.title}</h4>
                           {det?.content?.map((con, idx) => (
                             <div>
                               <span className="txt-ft">{con?.size}:</span>{" "}
@@ -1297,7 +1379,7 @@ const ProductDetailPage = () => {
                     <div>
                       <span className="pp-mc-txt">
                         Not sure which size fits best? Explore our{" "}
-                        <span className="sub-pp-mc"><Link to="/style-guide">Size Guide</Link></span> to find
+                        <span className="sub-pp-mc"><Link to="/size-guide">Size Guide</Link></span> to find
                         your perfect match.
                       </span>
                     </div>

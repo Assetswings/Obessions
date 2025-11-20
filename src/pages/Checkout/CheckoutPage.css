@@ -260,7 +260,7 @@ root_promo_sector {
   border: none;
   background: none;
   text-decoration: underline;
-  font-family: "Helvetica Neue", sans-serif 
+  font-family: "Helvetica Neue", sans-serif
 }
 
 .sector1 {
@@ -329,7 +329,7 @@ root_promo_sector {
   align-items: center;
   font-family: "Helvetica Neue", sans-serif !important;
   font-weight: 500;
-
+  display: flex;
 }
 
 .txt_title_cal {
@@ -358,14 +358,25 @@ root_promo_sector {
   .price {
     margin: 0;
   }
+
   .per-row-input {
-    flex-direction: column; /* stack vertically */
+    flex-direction: column;
+    /* stack vertically */
   }
 
   .input_checkout {
-    width: 100%; /* full width on mobile */
+    width: 100%;
+    /* full width on mobile */
   }
- 
+
+  .add_ads {
+    font-size: 12px;
+  }
+
+  .ship_info h4 {
+    font-size: 12px;
+  }
+
 }
 
 @media (max-width: 480px) {
@@ -398,5 +409,5 @@ root_promo_sector {
   .price-summary {
     margin-top: -10px !important;
   }
- 
+
 }

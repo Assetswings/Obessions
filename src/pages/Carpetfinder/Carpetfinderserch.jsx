@@ -162,7 +162,7 @@ const Carpetfinderserch = () => {
     );
   };
   const breadcrumbPaths = [
-    { label: "Floor Matcher", to: "" }, // last one (no link)
+    { label: "Floor Matcher Result", to: "" }, // last one (no link)
   ];
   return (
     <>

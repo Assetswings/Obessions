@@ -176,6 +176,13 @@ const MobileOtherNav = () => {
     setSearchData([]);
   };
 
+  const getMenuTitle = () => {
+    if (activeMenu === "main") return "";
+    if (activeMenu === "shop") return "SHOP";
+    if (activeMenu === "category") return currentSection?.name || "";
+    return "";
+  };
+
   return (
     <>
       <header className="topbar_mlb">
@@ -233,6 +240,12 @@ const MobileOtherNav = () => {
               <ChevronLeft />
             </span>
           )}
+
+          {/* 🚀 Add this title */}
+          {activeMenu !== "main" && (
+            <span className="drawer-title">{getMenuTitle()}</span>
+          )}
+
           <div className="track_sector_close">
             <span onClick={toggleDrawer} className="close-btn-mlb">
               ✕
@@ -345,7 +358,7 @@ const MobileOtherNav = () => {
       )}
 
       {showSearch && (
-        <div className="search-overlay_mlb" onClick={() => {clearSearch();setSearchData([]);}}>
+        <div className="search-overlay_mlb" onClick={() => { clearSearch(); setSearchData([]); }}>
           <div
             className="search-modal-other"
             onClick={(e) => e.stopPropagation()}
@@ -402,7 +415,7 @@ const MobileOtherNav = () => {
                       <div
                         key={index}
                         className="search-card"
-                        onClick={() => {clearSearch(); setSearchData([]);}}
+                        onClick={() => { clearSearch(); setSearchData([]); }}
                       >
                         <Link
                           to={`/productsdetails/${item.action_url}`}

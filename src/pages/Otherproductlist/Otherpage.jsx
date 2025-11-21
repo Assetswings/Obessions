@@ -136,7 +136,7 @@ const Otherpage = () => {
     return () => {
       // Only clear if navigating away from this page
       // if (prevPath === "/products" && location.pathname !== "/products") {
-        localStorage.removeItem("selectedFilters");
+      localStorage.removeItem("selectedFilters");
       // }
     };
   }, [location.pathname]);
@@ -466,7 +466,7 @@ const Otherpage = () => {
               Filters
             </button>
           </div>
-          <p style={{fontWeight:"bold"}}>
+          <p style={{ fontWeight: "bold" }}>
             {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
           </p>
           <div className="custom-products-grid">
@@ -613,14 +613,14 @@ const Otherpage = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-  <div className="pagination_track_btm">   
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-        totalitems={products.length}
-      />
-</div>
+      <div className="pagination_track_btm">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          totalitems={products.length}
+        />
+      </div>
 
       <section className="top-picks-section">
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>

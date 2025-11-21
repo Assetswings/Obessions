@@ -36,6 +36,7 @@ const carpetFinderSlice = createSlice({
     data: null,
     filteredData: null,
     filters:{},
+    pagination: {},
     loading: false,
     filterLoading: false,
     error: null,
@@ -67,7 +68,12 @@ const carpetFinderSlice = createSlice({
       .addCase(filterCarpet.fulfilled, (state, action) => {
         state.filterLoading = false;
         state.filteredData = action.payload.products;
-        state.filters = action.payload.filters.product_filter || {};
+        state.pagination = {
+          total: action.payload.total,
+          current_page: action.payload.current_page,
+          limit: action.payload.limit,
+        };
+        state.filters = action.payload.filters || {};
       })
       .addCase(filterCarpet.rejected, (state, action) => {
         state.filterLoading = false;

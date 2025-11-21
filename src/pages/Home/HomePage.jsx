@@ -65,15 +65,15 @@ const HomePage = () => {
   const { setShowSearchIcon } = useHeader();
   console.log("data----->home banner", data);
 
-     useEffect(() => {
-     const observer = new IntersectionObserver(
+  useEffect(() => {
+    const observer = new IntersectionObserver(
       ([entry]) => {
         // When section is visible => hide icon
         // When not visible => show icon
         setShowSearchIcon(!entry.isIntersecting);
-      },{
-        threshold: 0.1, // triggers when 10% of element is visible
-      }
+      }, {
+      threshold: 0.1, // triggers when 10% of element is visible
+    }
     );
     if (searchSectionRef.current) {
       observer.observe(searchSectionRef.current);
@@ -92,7 +92,7 @@ const HomePage = () => {
       return;
     }
     const timeoutId = setTimeout(() => {
-      dispatch(fetchSearchResults({query}));
+      dispatch(fetchSearchResults({ query }));
     }, 400);
 
     return () => clearTimeout(timeoutId);
@@ -661,11 +661,11 @@ const HomePage = () => {
       {/* ────────────────── 🥀💎💎 🐉 OUR OBSESSIONS BY SECTION 🐉 💎💎🥀 ────────────────── */}
       < section className="obsession-section" >
         <div className="txt_root_warp">
-          <h2 className="obsession-title">OUR OBSESSIONS</h2>
-        </div>
-        <div className="obsession-image_mlb">
-          <img src={data?.bottom_content?.media} className="img_video_track" alt="Our team" />
-          {/* <img src={videoimage} className="img_video_track" alt="Our team" /> */}
+          <h2 className="obsession-title web">OUR OBSESSIONS</h2>
+          <div style={{marginBottom:"35px"}}>
+            <h2 className="obsession-title mob">OUR</h2>
+            <h2 className="obsession-title mob">OBSESSIONS</h2>
+          </div>
         </div>
 
         <div className="obsession-content">
@@ -683,6 +683,11 @@ const HomePage = () => {
                 MORE ABOUT US
               </button>
             </Link>
+
+            <div className="obsession-image_mlb">
+              <img src={data?.bottom_content?.media} className="img_video_track" alt="Our team" />
+              {/* <img src={videoimage} className="img_video_track" alt="Our team" /> */}
+            </div>
           </div>
         </div>
       </section >

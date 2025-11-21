@@ -274,6 +274,7 @@ body {
 .set_input_mlb{
    position: relative;
    right: 30px;
+   width: 270px;
 }
 .button_search_mlb {
   border-radius: 0 0px 0px 0;

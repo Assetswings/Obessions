@@ -47,6 +47,7 @@ const ProductDetailPage = () => {
   // const [showSpecs, setShowSpecs] = useState(false);
   // const [showCare, setShowCare] = useState(false);
   // const [showDesc, setShowDesc] = useState(true);
+  const [unit, setUnit] = useState("cm");
   const [activeSection, setActiveSection] = useState(null);
   const dispatch = useDispatch();
   const sectionsRef = useRef({});
@@ -493,7 +494,7 @@ const ProductDetailPage = () => {
       try {
         await navigator.share({
           title: selectedSize?.name,
-          text: "Check out this product on our store!",
+          text: `Check out ${selectedSize?.name} on our store!`,
           url: window.location.href,
         });
       } catch (e) {
@@ -604,11 +605,12 @@ const ProductDetailPage = () => {
                 <iframe
                   width="100%"
                   height="100%"
-                  src={`${getEmbedUrl(selectedColor.video_source)}?autoplay=1&mute=1`}
+                  src={`${selectedColor.video_source}?autoplay=1&mute=1&playsinline=1`}
                   title="YouTube video player"
                   frameBorder="0"
-                  allow="autoplay; encrypted-media"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
+                  referrerPolicy="strict-origin-when-cross-origin"
                   style={{ borderRadius: "10px", width: "100%", height: "100%" }}
                 ></iframe>
               ) : (
@@ -659,17 +661,15 @@ const ProductDetailPage = () => {
                 <iframe
                   width="100%"
                   height="100%"
-                  src={`${selectedColor.video_source}?autoplay=1&mute=1`}
+                  src={`${selectedColor.video_source}?autoplay=1&mute=1&playsinline=1`}
                   title="YouTube video player"
                   frameBorder="0"
-                  allow="autoplay; encrypted-media"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
-                  style={{
-                    borderRadius: "10px",
-                    width: "100%",
-                    height: "100%",
-                  }}
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  style={{ borderRadius: "10px", width: "100%", height: "100%" }}
                 ></iframe>
+
               ) : (
                 <video
                   controls
@@ -747,9 +747,14 @@ const ProductDetailPage = () => {
 
         {/* Product Info */}
         <div className="product-info">
-          <div className="share_btn mobshare" onClick={handleShare} >
-            <span><Share2 size={14} /></span> <span style={{ fontSize: '13px' }}>SHARE</span>
-          </div>
+          {localLoading ? (
+            <Skeleton width={200} />
+          ) : (
+            <div className="share_btn mobshare" onClick={handleShare}>
+              <span><Share2 size={14} /></span>
+              <span style={{ fontSize: '13px' }}>SHARE</span>
+            </div>
+          )}
           <h1 className="title_details">
             {localLoading ? <Skeleton width={200} /> : selectedSize?.name}
           </h1>
@@ -803,6 +808,26 @@ const ProductDetailPage = () => {
                     CHOOSE A SIZE :&nbsp;
                     {selectedSize && <strong>{selectedSize.size}</strong>}
                   </p>
+                )}
+                {productDetails?.sub_category_action_url === "carpet" ? (
+
+                  <div className="unit-toggle">
+                    <button
+                      className={unit === "cm" ? "active" : ""}
+                      onClick={() => setUnit("cm")}
+                    >
+                      Cm
+                    </button>
+
+                    <button
+                      className={unit === "ft" ? "active" : ""}
+                      onClick={() => setUnit("ft")}
+                    >
+                      Feet
+                    </button>
+                  </div>
+                ) : (
+                  <></>
                 )}
                 <div className="size-options">
                   {productDetails.product_sizes.map((size) => (

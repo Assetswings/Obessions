@@ -177,9 +177,9 @@ button[type="submit"]:hover {
 }
 
 .guide-item img {
-  width: 27px;
-  height: 27px;
-  object-fit: contain;
+    width: 21px;
+    height: 43px;
+    object-fit: contain;
 }
 
 .guide-item p {
@@ -209,7 +209,7 @@ button[type="submit"]:hover {
 
   .guides-container {
     /* flex-direction: column; */
-    gap: 15%
+    gap: 17%
   }
 
   .contact-info {

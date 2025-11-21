@@ -96,10 +96,10 @@ const OrderTrackingPage = () => {
     }
   };
 
-  // const allCancelable = selectedItems.length > 0 && selectedItems.every(item => item.allow_cancellation);
   const allReturnable = selectedItem.length > 0 && selectedItem.every(item => item.allow_return);
   const allExchangeable = selectedItem.length > 0 && selectedItem.every(item => item.allow_exchange);
   const allCancelable = selectedItem.length > 0 && selectedItem.every(item => item.allow_cancellation);
+
 
   if (loading) return <p>Loading order details...</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
@@ -114,28 +114,37 @@ const OrderTrackingPage = () => {
       <div className="order-tracking-container">
         <div className="order-left">
           <div className="order-track-head">
-            <div>
-              <h2>Order Details</h2>
-            </div>
-            <div className="track-head-button-group">
-              {allCancelable &&
-                <button
-                  className="continue_shoping_track" onClick={()=>setShowcnModal(true)}>
-                  CANCEL
-                </button>
-              }
-              {allReturnable &&
-                <button className="continue_shoping_track" onClick={() => { setShowModal(true); setOption('exchange'); }}>
-                  RETURN
-                </button>
-              }
-              {allExchangeable &&
-                <button className="continue_shoping_track" onClick={() => { setShowModal(true); setOption('return'); }}>
-                  EXCHANGE
-                </button>
-              }
+            <div className="root_tracker_dtl">
+              <div>
+                <h2>Order Details</h2>
+              </div>
+              <div>
+                <div className="track-head-button-group">
+
+                  {allReturnable &&
+                    <button className="continue_shoping_track" onClick={() => { setShowModal(true); setOption('exchange'); }}>
+                      RETURN
+                    </button>
+                  }
+
+                  {allExchangeable &&
+                    <button className="continue_shoping_track" onClick={() => { setShowModal(true); setOption('return'); }}>
+                      EXCHANGE
+                    </button>
+                  }
+
+                  {allCancelable &&
+                    <button
+                      className="continue_shoping_track" onClick={() => setShowcnModal(true)}>
+                      CANCEL
+                    </button>
+                  }
+                </div>
+              </div>
+
             </div>
           </div>
+           <hr/>
           <p className="delivered-msg">Order was delivered on --</p>
 
           <div className="order-info">
@@ -178,43 +187,7 @@ const OrderTrackingPage = () => {
               ))}
             </div>
           </div>
-
-          {selectedItem.length > 0 && (
-            <>
-              <span
-                onClick={() => {
-                  if (allExchangeable) setShowModal(true); setOption('exchange');
-                }}
-                style={{
-                  marginRight: "20px",
-                  cursor: allExchangeable ? "pointer" : "not-allowed",
-                  pointerEvents: allExchangeable ? "auto" : "none",
-                  opacity: allExchangeable ? 1 : 0.5,
-                  color: allExchangeable ? "#000" : "#999",
-                  textDecoration: allExchangeable ? "underline" : "none",
-                }}
-              >
-                <u>Exchange</u>
-              </span>
-
-              <span
-                onClick={() => {
-                  if (allReturnable) setShowModal(true); setOption('return');
-                }}
-                style={{
-                  marginRight: "20px",
-                  cursor: allReturnable ? "pointer" : "not-allowed",
-                  pointerEvents: allReturnable ? "auto" : "none",
-                  opacity: allReturnable ? 1 : 0.5,
-                  color: allReturnable ? "#000" : "#999",
-                  textDecoration: allReturnable ? "underline" : "none",
-                }}
-              >
-                <u>Return</u>
-              </span>
-
-            </>
-          )}
+    
           {order.order_items?.map((item, i) => (
             <div className="product-item" key={i}>
               <input
@@ -310,29 +283,30 @@ const OrderTrackingPage = () => {
               </div>
             </div>
           )}
+
           {/* Cancel Modal */}
           {showcnModal && (
-          <div className="modal-overlay-history">
-            <div className="modal-box">
-              <h3>Cancel Order</h3>
-              <p>Are you sure you want to cancel this order?</p>
-              <div className="modal-actions">
-                <button
-                  className="go-back"
-                  onClick={() => {
-                    setShowcnModal(false);
-                    setSelectedItem([]);
-                  }}
-                >
-                  DON'T CANCEL
-                </button>
-                <button className="proceed" onClick={handleProceedcn}>
-                  CANCEL ORDER
-                </button>
+            <div className="modal-overlay-history">
+              <div className="modal-box">
+                <h3>Cancel Order</h3>
+                <p>Are you sure you want to cancel this order?</p>
+                <div className="modal-actions">
+                  <button
+                    className="go-back"
+                    onClick={() => {
+                      setShowcnModal(false);
+                      setSelectedItem([]);
+                    }}
+                  >
+                    DON'T CANCEL
+                  </button>
+                  <button className="proceed" onClick={handleProceedcn}>
+                    CANCEL ORDER
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
           <div className="price-details">
             <div>

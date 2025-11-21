@@ -133,7 +133,7 @@ const CartPage = () => {
       </div>
 
       <div className="cart_mlb">
-      <span className="txt_mlb_my"> My Cart ({items?.length})</span>
+      <span className="txt_mlb_my"> My Cart <span className="wishlist-header-count-cart"> ({items?.length}) </span></span>
       </div>
 
       <div className="cart-container">
@@ -304,11 +304,11 @@ const CartPage = () => {
 
               <p className="terms-text">
                 Before proceed further you can review{" "}
-                <a href="/tc-of-sale" style={{fontWeight:"600"}}>
+                <a href="/tc-of-sale" style={{fontWeight:"500"}}>
                   <u>Terms & Conditions of Sale</u>
                 </a>{" "}
                 and{" "}
-                <a href="/privacy-policy" style={{fontWeight:"600"}}>
+                <a href="/privacy-policy" style={{fontWeight:"500"}}>
                   <u>Privacy Policy</u>
                 </a>
               </p>

@@ -19,10 +19,35 @@
   min-width: 250px;
 }
 
+.root_tracker_dtl{
+  display: flex;
+  width: 100%;
+ justify-content: space-between; 
+ align-items: center;
+}
 .delivered-msg {
   color: #555;
   margin: 0.5rem 0 1rem;
   font-size: 0.95rem;
+}
+
+
+@media (max-width: 768px) {
+  .root_tracker_dtl {
+    flex-direction: column;   /* stack into two rows */
+    align-items: flex-start;  /* left alignment */
+    gap: 12px;
+  }
+
+  .track-head-button-group {
+    display: flex;
+    flex-direction: row;      /* keep buttons in 1 line */
+    gap: 10px;
+    width: 100%;
+    flex-wrap: nowrap;        /* prevent wrapping */
+    overflow-x: auto;         /* allows horizontal scroll if too many */
+    padding-bottom: 4px;
+  }
 }
 
 .order-info p {

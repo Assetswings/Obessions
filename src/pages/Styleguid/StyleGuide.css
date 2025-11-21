@@ -202,12 +202,16 @@
   font-family: "Playfair Display";
 }
 
-.roomguide-tabs {
+
+ @media (min-width: 1025px) {
+  .roomguide-tabs {
   display: flex;
   justify-content: center;
   gap: 25px;
   margin-bottom: 20px;
   flex-wrap: wrap;
+}
+  /* desktop styles here */
 }
 
 .roomguide-tab {
@@ -333,6 +337,7 @@
 @media (max-width: 768px) {
   .hero-text-sz {
     left: 10px;
+    bottom: 13px;
   }
 
   .hero-text-sz h1 {
@@ -340,7 +345,7 @@
   }
 
   .hero-text-sz p {
-    font-size: 11px;
+    font-size: 14px;
   }
 
   .tab-scroll-wrapper {
@@ -371,10 +376,7 @@
     height: 8px;
   }
 
-  .tab-container::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.15);
-  }
+
 
   /* or to hide: .tab-container::-webkit-scrollbar { display: none; } */
 
@@ -405,39 +407,33 @@
 
   /* Horizontal scroll tabs */
   .roomguide-tabs {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
+    display: flex ;
+    flex-direction: row ;
+    flex-wrap: nowrap ;
     gap: 10px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
-    padding: 8px 0px 10px 250px;
+    padding: 10px 0;     /* <-- fixed, no large padding */
     /* same as your first tab */
     margin-bottom: 10px;
     white-space: nowrap;
   }
 
+  .roomguide-tab {
+  flex-shrink: 0;
+}
   /* Scrollbar styling */
   .roomguide-tabs::-webkit-scrollbar {
-    height: 8px;
+    height: 6px;
   }
-
+/* 
   .roomguide-tabs::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.15);
-  }
-
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.2);
+  } */
   /* Tab button styling */
-  .roomguide-tab {
-    flex: 0 0 auto;
-    white-space: nowrap;
-    padding: 8px 14px;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    background: #fff;
-    cursor: pointer;
-  }
+
 
   /* Active tab styling */
   .roomguide-tab.active {
@@ -453,4 +449,5 @@
   .tab-scroll-wrapper .roomguide-tabs .roomguide-tab {
     flex-shrink: 0 !important;
   }
+
 }

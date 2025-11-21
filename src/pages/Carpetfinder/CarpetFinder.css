@@ -199,7 +199,7 @@
   }
 
   .finder-card {
-    width: 140px;
+    width: 130px;
   }
 
   .stepper-right {
@@ -209,6 +209,13 @@
   .finder-buttons {
     margin-bottom: 20%;
   }
+  .main_file_tracker{
+      padding: 20px;
+  }
+  .card-label {
+    font-size: 13px;
+ 
+}
 }
 
 @media (max-width: 480px) {
@@ -220,7 +227,7 @@
     width: 140px;
   }
   .finder-title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 400;
   }
   .finder-wrapper {
@@ -260,4 +267,23 @@
   position: relative;
   bottom: 1px;
   left: 5px;
+}
+/* default desktop widths */
+.big-card {
+  width: 300px;
+}
+
+.small-card {
+  width: 175px;
+}
+
+/* mobile changes */
+@media (max-width: 768px) {
+  .small-card {
+    width: 150px !important;   /* your request */
+  }
+
+  .big-card {
+    width: 260px; /* if you wanna shrink big one, optional */
+  }
 }

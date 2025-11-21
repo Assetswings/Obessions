@@ -190,6 +190,7 @@ const OrderTrackingPage = () => {
     
           {order.order_items?.map((item, i) => (
             <div className="product-item" key={i}>
+               <div className="track_checkbox">  
               <input
                 type="checkbox"
                 checked={selectedItem.some((it) => it.itemId === item.id)}
@@ -244,6 +245,8 @@ const OrderTrackingPage = () => {
                   }
                 }}
               />
+               </div>
+           
               <img src={item.product_media} alt={item.product_name} />
               <div className="product-details">
                 <p>{item.product_name}</p>

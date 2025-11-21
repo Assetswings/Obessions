@@ -124,7 +124,8 @@ const CarpetFinder = () => {
 
           {/* Simulated grid */}
           <div className="track-desk">
-            <div className="finder-grid">
+             <div className="main_file_tracker"> 
+                <div className="finder-grid">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="finder-card">
                   <Skeleton height={180} />
@@ -134,6 +135,7 @@ const CarpetFinder = () => {
                 </div>
               ))}
             </div>
+             </div>
           </div>
 
           {/* Buttons */}
@@ -203,18 +205,15 @@ const CarpetFinder = () => {
                 }`}
             >
               {steps[currentStep]?.options.map(({ label, image, key }) => (
-                <div
-                  key={label}
-                  className={`finder-card ${isSelected(currentStep, label) ? "selected" : ""
-                    }`}
-                  style={{
-                    width:
-                      steps[currentStep]?.title === "Which Size or Shape fits your Space?"
-                        ? "300px"
-                        : "175px",
-                  }}
-                  onClick={() => toggleOption(currentStep, label, key)}
-                >
+               <div
+  key={label}
+  className={`finder-card ${isSelected(currentStep, label) ? "selected" : ""} ${
+    steps[currentStep]?.title === "Which Size or Shape fits your Space?"
+      ? "big-card"
+      : "small-card"
+  }`}
+  onClick={() => toggleOption(currentStep, label, key)}
+>
                   {image ? (
                     <img src={image} alt={label} />
                   ) : (

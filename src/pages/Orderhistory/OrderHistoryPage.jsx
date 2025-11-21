@@ -249,49 +249,53 @@ const OrderHistoryPage = () => {
                       </div>
 
                       <div className="order-header_2">
-                        <div>
-                          <div
-                            className={`txt_cation ${!allExchangeable ? "disabled" : ""}`}
-                            onClick={() => {
-                              if (allExchangeable) setShowModal(true); setOption('exchange');
-                            }}
-                            style={{
-                              cursor: allExchangeable ? "pointer" : "not-allowed",
-                              opacity: allExchangeable ? 1 : 0.5,
-                            }}
-                          >
-                            <u>Exchange</u>
+                        {allExchangeable &&
+                          <div>
+                            <div
+                              className={`txt_cation ${!allExchangeable ? "disabled" : ""}`}
+                              onClick={() => {
+                                if (allExchangeable) setShowModal(true); setOption('exchange');
+                              }}
+                              style={{
+                                cursor: allExchangeable ? "pointer" : "not-allowed",
+                                opacity: allExchangeable ? 1 : 0.5,
+                              }}
+                            >
+                              <u>Exchange</u>
+                            </div>
                           </div>
-                        </div>
-
-                        <div className="trac">
-                          <div
-                            onClick={() => {
-                              if (allReturnable) setShowModal(true); setOption('return');
-                            }}
-                            style={{
-                              cursor: allReturnable ? "pointer" : "not-allowed",
-                              opacity: allReturnable ? 1 : 0.5,
-                            }}
-                          >
-                            <u>Return</u>
+                        }
+                        {allReturnable &&
+                          <div className="trac">
+                            <div
+                              onClick={() => {
+                                if (allReturnable) setShowModal(true); setOption('return');
+                              }}
+                              style={{
+                                cursor: allReturnable ? "pointer" : "not-allowed",
+                                opacity: allReturnable ? 1 : 0.5,
+                              }}
+                            >
+                              <u>Return</u>
+                            </div>
                           </div>
-                        </div>
-
-                        <div className="order-actions">
-                          <p
-                            className="cancel-order"
-                            onClick={() => {
-                              if (allCancellable) setShowcnModal(true);
-                            }}
-                            style={{
-                              cursor: allCancellable ? "pointer" : "not-allowed",
-                              opacity: allCancellable ? 1 : 0.5,
-                            }}
-                          >
-                            <u>Cancel Order</u>
-                          </p>
-                        </div>
+                        }
+                        {allCancellable &&
+                          <div className="order-actions">
+                            <p
+                              className="cancel-order"
+                              onClick={() => {
+                                if (allCancellable) setShowcnModal(true);
+                              }}
+                              style={{
+                                cursor: allCancellable ? "pointer" : "not-allowed",
+                                opacity: allCancellable ? 1 : 0.5,
+                              }}
+                            >
+                              <u>Cancel Order</u>
+                            </p>
+                          </div>
+                        }
                       </div>
                     </div>
 
@@ -384,7 +388,7 @@ const OrderHistoryPage = () => {
                   </div>
                 )
               })}
-              <p style={{ fontWeight: "bold",textAlign:"center" }}>
+              <p style={{ fontWeight: "bold", textAlign: "center" }}>
                 {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
               </p>
               <Pagination

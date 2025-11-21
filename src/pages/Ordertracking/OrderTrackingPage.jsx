@@ -17,6 +17,7 @@ const OrderTrackingPage = () => {
   const [selectedItem, setSelectedItem] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showcnModal, setShowcnModal] = useState(false);
   const { orderNo: order_no } = useParams();
   // const { order_no } = orderNo || null;
   const { results, loading, error } = useSelector((state) => state.orders);
@@ -81,7 +82,16 @@ const OrderTrackingPage = () => {
     setShowModal(false);
     if (selectedItem) {
       navigate("/returnexchange", {
-        state: { item: selectedItem, orderNo: selectedOrder, selectOption : option },
+        state: { item: selectedItem, orderNo: selectedOrder, selectOption: option },
+      });
+    }
+  };
+  const handleProceedcn = () => {
+    setShowcnModal(false);
+    // return false
+    if (selectedItem) {
+      navigate("/cancelorder", {
+        state: { item: selectedItem, orderNo: selectedOrder },
       });
     }
   };
@@ -89,6 +99,7 @@ const OrderTrackingPage = () => {
   // const allCancelable = selectedItems.length > 0 && selectedItems.every(item => item.allow_cancellation);
   const allReturnable = selectedItem.length > 0 && selectedItem.every(item => item.allow_return);
   const allExchangeable = selectedItem.length > 0 && selectedItem.every(item => item.allow_exchange);
+  const allCancelable = selectedItem.length > 0 && selectedItem.every(item => item.allow_cancellation);
 
   if (loading) return <p>Loading order details...</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
@@ -102,7 +113,29 @@ const OrderTrackingPage = () => {
       <Breadcrumbs paths={breadcrumbPaths} />
       <div className="order-tracking-container">
         <div className="order-left">
-          <h2>Order Details</h2>
+          <div className="order-track-head">
+            <div>
+              <h2>Order Details</h2>
+            </div>
+            <div className="track-head-button-group">
+              {allCancelable &&
+                <button
+                  className="continue_shoping_track" onClick={()=>setShowcnModal(true)}>
+                  CANCEL
+                </button>
+              }
+              {allReturnable &&
+                <button className="continue_shoping_track" onClick={() => { setShowModal(true); setOption('exchange'); }}>
+                  RETURN
+                </button>
+              }
+              {allExchangeable &&
+                <button className="continue_shoping_track" onClick={() => { setShowModal(true); setOption('return'); }}>
+                  EXCHANGE
+                </button>
+              }
+            </div>
+          </div>
           <p className="delivered-msg">Order was delivered on --</p>
 
           <div className="order-info">
@@ -254,7 +287,7 @@ const OrderTrackingPage = () => {
             </div>
           ))}
 
-          {/*Exchange Modal */}
+          {/* Exchange Modal */}
           {showModal && (
             <div className="modal-overlay-history">
               <div className="modal-box">
@@ -277,6 +310,29 @@ const OrderTrackingPage = () => {
               </div>
             </div>
           )}
+          {/* Cancel Modal */}
+          {showcnModal && (
+          <div className="modal-overlay-history">
+            <div className="modal-box">
+              <h3>Cancel Order</h3>
+              <p>Are you sure you want to cancel this order?</p>
+              <div className="modal-actions">
+                <button
+                  className="go-back"
+                  onClick={() => {
+                    setShowcnModal(false);
+                    setSelectedItem([]);
+                  }}
+                >
+                  DON'T CANCEL
+                </button>
+                <button className="proceed" onClick={handleProceedcn}>
+                  CANCEL ORDER
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
           <div className="price-details">
             <div>

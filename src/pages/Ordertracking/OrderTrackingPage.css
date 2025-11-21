@@ -175,6 +175,28 @@
   display: block;
 }
 
+.order-track-head {
+  display: flex;
+}
+
+.continue_shoping_track {
+  width: 100%;
+  padding: 6px 12px 6px 12px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #fff;
+  border: 2px solid black;
+  color: black;
+}
+
+.track-head-button-group {
+  display: flex;
+  gap: 12px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .order-tracking-container {
@@ -198,5 +220,10 @@
 
   .webview {
     display: none;
+  }
+
+  .continue_shoping_track {
+    padding: 3px 6px 3px 6px;
+    font-size: 12px;
   }
 }

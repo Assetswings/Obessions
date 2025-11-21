@@ -487,6 +487,38 @@ const ProductDetailPage = () => {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
     instagram: `https://www.instagram.com/?url=${encodedUrl}`,
   };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: selectedSize?.name,
+          text: "Check out this product on our store!",
+          url: window.location.href,
+        });
+      } catch (e) {
+        console.log("Share cancelled");
+      }
+    } else {
+      alert("Sharing not supported on this browser");
+    }
+  };
+
+  const getEmbedUrl = (url) => {
+    if (!url) return "";
+
+    // If already embed format
+    if (url.includes("youtube.com/embed")) return url;
+
+    // Extract video ID
+    const match = url.match(/(?:v=|\.be\/)([^&?]+)/);
+    const videoId = match ? match[1] : null;
+
+    if (!videoId) return "";
+
+    return `https://www.youtube.com/embed/${videoId}`;
+  };
+
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
@@ -511,7 +543,7 @@ const ProductDetailPage = () => {
         ) : (
           !open && (
             <div
-              className="share_btn"
+              className="share_btn webshare"
               onMouseEnter={() => setOpen(true)}
             >
               <span><Share2 size={14} /></span> <span style={{ fontSize: '13px' }}>SHARE</span>
@@ -572,7 +604,7 @@ const ProductDetailPage = () => {
                 <iframe
                   width="100%"
                   height="100%"
-                  src={`${selectedColor.video_source}?autoplay=1&mute=1`}
+                  src={`${getEmbedUrl(selectedColor.video_source)}?autoplay=1&mute=1`}
                   title="YouTube video player"
                   frameBorder="0"
                   allow="autoplay; encrypted-media"
@@ -715,10 +747,12 @@ const ProductDetailPage = () => {
 
         {/* Product Info */}
         <div className="product-info">
+          <div className="share_btn mobshare" onClick={handleShare} >
+            <span><Share2 size={14} /></span> <span style={{ fontSize: '13px' }}>SHARE</span>
+          </div>
           <h1 className="title_details">
             {localLoading ? <Skeleton width={200} /> : selectedSize?.name}
           </h1>
-
           <p className="price_details">
             {localLoading ? (
               <Skeleton width={120} />

@@ -42,6 +42,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const [similarStyle, setSimilarStyle] = useState([]);
   const [matchingFound, setMatchingFound] = useState([]);
   const [pincodeDetails, setPincodeDetails] = useState({});
+  const [unit, setUnit] = useState("cm");
 
   const modalRef = useRef();
   const sectionsRef = useRef({});
@@ -461,6 +462,25 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                           {selectedSize && <strong>{selectedSize.size}</strong>}
                         </p>
                       )}
+                      {productDetails?.sub_category_action_url === "carpet" ? (
+                        <div className="unit-toggle mt-2">
+                          <button
+                            className={unit === "cm" ? "active" : ""}
+                            onClick={() => setUnit("cm")}
+                          >
+                            Cm
+                          </button>
+
+                          <button
+                            className={unit === "ft" ? "active" : ""}
+                            onClick={() => setUnit("ft")}
+                          >
+                            Feet
+                          </button>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
 
                       <div className="size-options">
                         {productDetails.product_sizes.map((size) => (
@@ -568,38 +588,38 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 ) : (
                   <>
                     <p className="check-heading">CHECK AVAILABILITY</p>
-                   <div className="input-wrapper-quick-2">
-  <input
-    className="checkup_track_txt"
-    type="text"
-    placeholder="Enter Delivery Pincode"
-    value={pincode}
-    onChange={(e) => {
-      const onlyNums = e.target.value.replace(/\D/g, '');
-      setPincode(onlyNums);
-    }}
-    onKeyDown={(e) => {
-      const onlyNums = e.target.value.replace(/\D/g, '');
-      if (e.key === "Enter" && onlyNums.trim()) {
-        handleCheck();
-      }
-    }}
-  />
+                    <div className="input-wrapper-quick-2">
+                      <input
+                        className="checkup_track_txt"
+                        type="text"
+                        placeholder="Enter Delivery Pincode"
+                        value={pincode}
+                        onChange={(e) => {
+                          const onlyNums = e.target.value.replace(/\D/g, '');
+                          setPincode(onlyNums);
+                        }}
+                        onKeyDown={(e) => {
+                          const onlyNums = e.target.value.replace(/\D/g, '');
+                          if (e.key === "Enter" && onlyNums.trim()) {
+                            handleCheck();
+                          }
+                        }}
+                      />
 
-  <div className="btn-group">
-    {pincode && (
-      <button onClick={handleReset} className="rest-btn">
-        Reset
-      </button>
-    )}
+                      <div className="btn-group">
+                        {pincode && (
+                          <button onClick={handleReset} className="rest-btn">
+                            Reset
+                          </button>
+                        )}
 
-    {!pincodeDetails?.is_active && (
-      <button onClick={handleCheck} className="check-btn-2">
-        Check
-      </button>
-    )}
-  </div>
-</div>
+                        {!pincodeDetails?.is_active && (
+                          <button onClick={handleCheck} className="check-btn-2">
+                            Check
+                          </button>
+                        )}
+                      </div>
+                    </div>
                     {pinloading && <p>Checking...</p>}
                     {pinerror && (
                       <p style={{ color: "red", marginTop: "15px" }}>
@@ -608,11 +628,11 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     )}
                     {pincodeDetails?.pincode && pincodeDetails?.is_active && (
                       <p style={{ color: "green", marginTop: "15px" }}>
-                        <span style={{position:'relative',bottom:'4px'}}>   <LocationTick
-                       size="24"
-                       color="green"
-                       variant="Bold"
-                      /></span> Delivery available at {pincodeDetails?.city}, {pincodeDetails?.state} (
+                        <span style={{ position: 'relative', bottom: '4px' }}>   <LocationTick
+                          size="24"
+                          color="green"
+                          variant="Bold"
+                        /></span> Delivery available at {pincodeDetails?.city}, {pincodeDetails?.state} (
                         {pincodeDetails?.delivery_tat})
                       </p>
                     )}
@@ -621,36 +641,38 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
               </div>
 
               {/* 🟡 Cart & Wishlist */}
-              <div className="add-cart-section">
-                {loading ? (
-                  <>
-                    <Skeleton height={45} width={180} borderRadius={8} style={{ marginRight: 20 }} />
-
-                  </>
-                ) : (
-                  <>
-                    <button className="add-to-cart-btn_qucick" onClick={handleAddToCart}>
-                      ADD TO CART
-                    </button>
-                    <div className="wst_box_quick pointer-crusser" onClick={(e) => toggleWishlist(e, selectedSize)}>
-                      {selectedSize?.is_wishlisted == 1 ? (
-                        <Player
-                          autoplay
-                          keepLastFrame
-                          src={heartAnimation}
-                          style={{ width: 102, height: 102 }}
-                        />
-                      ) : (
-                        <Heart
-                          size={27}
-                          color={selectedSize?.is_wishlisted ? "#FF0000" : "#000"}
-                          fill={selectedSize?.is_wishlisted ? "#FF0000" : "none"}
-                        />
-                      )}
-                    </div>
-                  </>
-                )}
+              <div className="add-cart-sticky-wrapper">
+                <div className="add-cart-section">
+                  {loading ? (
+                    <>
+                      <Skeleton height={45} width={180} borderRadius={8} style={{ marginRight: 20 }} />
+                    </>
+                  ) : (
+                    <>
+                      <button className="add-to-cart-btn_qucick" onClick={handleAddToCart}>
+                        ADD TO CART
+                      </button>
+                      <div className="wst_box_quick pointer-crusser" onClick={(e) => toggleWishlist(e, selectedSize)}>
+                        {selectedSize?.is_wishlisted == 1 ? (
+                          <Player
+                            autoplay
+                            keepLastFrame
+                            src={heartAnimation}
+                            style={{ width: 102, height: 102 }}
+                          />
+                        ) : (
+                          <Heart
+                            size={27}
+                            color={selectedSize?.is_wishlisted ? "#FF0000" : "#000"}
+                            fill={selectedSize?.is_wishlisted ? "#FF0000" : "none"}
+                          />
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
+
 
               {/* 🟡 Return Info */}
               <div className="root_return_details">

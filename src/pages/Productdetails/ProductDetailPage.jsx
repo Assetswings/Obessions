@@ -810,7 +810,6 @@ const ProductDetailPage = () => {
                   </p>
                 )}
                 {productDetails?.sub_category_action_url === "carpet" ? (
-
                   <div className="unit-toggle">
                     <button
                       className={unit === "cm" ? "active" : ""}

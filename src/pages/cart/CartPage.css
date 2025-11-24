@@ -304,9 +304,10 @@
     font-size: 12px;
     margin-top: 10px;
     text-decoration: underline;
-    gap: 30%;
+    gap: 12%;
   }
 
+ 
   .item-price {
     font-size: 15px;
     font-weight: 600;

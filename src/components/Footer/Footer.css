@@ -162,15 +162,26 @@
 .img_tracker_footer{
   width: 400px;
 }
+
+ .desk-foot{
+    display: inline;
+  }
+
+  .footer-col.shop-col.mllbb-shp {
+    display: none;
+}
+
 @media (max-width: 768px) {
-  .email-signup {
-    flex-direction: column;
+   .email-signup {
+    flex-direction: row;
     align-items: center;
   }
 
+     .email-signup input {
+    width: 100% !important;
+  }
   .footer-bottom {
     flex-direction: column;
-    text-align: center;
     gap: 10px;
   }
 
@@ -180,37 +191,25 @@
   }
 
   .footer-links>div {
-    margin: 10px 0;
+    
     text-align: center;
   }
+  .footer-links>div {
+  
+  margin: 0px 0px;
 }
-
-
-@media (max-width: 768px) {
-  .email-signup {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .email-signup input {
-    width: 100% !important;
-  }
-
   .sub_text {
     font-size: 8px;
   }
-
    .newsletter h2 {
     font-size: 19px;
   }
-
    .newsletter input {
     flex: 1;
     min-width: 0;
   }
-
    .email-signup button {
-    padding: 4.7% 4%;
+    padding: 4.1% 4%;
     font-size: 11px;
   }
   .sub-icon {
@@ -218,17 +217,79 @@
   }
 }
 
+
+/* MOBILE TWO-COLUMN FOOTER LIST FIX */
+@media (max-width: 768px) {
+  /* Make footer links container full width */
+  .footer-links {
+    width: 100%;
+    padding: 0 10px;
+    margin-top: 20px;
+  }
+
+  /* Each section inside footer-links */
+  .footer-links > div {
+    width: 100%;
+    text-align: left;
+    margin: 0 0 25px 0;
+  }
+
+  /* Make UL into grid */
+  .footer-links ul {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    padding-left: 0;
+    margin-top: 10px;
+  }
+
+  /* Individual list items */
+  .footer-links li {
+    margin-bottom: 6px;
+    text-align: left !important;
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  /* Titles like SHOP, COMPANY, RESOURCES */
+  .footer-links h4 {
+    text-align: left;
+    margin-bottom: 12px;
+  }
+
+  /* Contact section aligns left too */
+  .contact {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .sub-icon {
+    justify-content: flex-start !important;
+  }
+  .desk-foot{
+    display: none;
+  }
+   .footer-col.shop-col.mllbb-shp {
+    display: inline;
+}
+
+}
+
+
   @media (max-width: 480px) {
   .footer {
     background-color: #1c150f;
     color: #f0f0f0;
-    padding: 10% 10%;
+    padding: 10% 6%;
     font-family: 'Arial', sans-serif;
-   
+    margin-bottom: 50px;
     position: relative;
   }
 
   .img_tracker_footer{
    width: 300px;
   }
+  .footer-links>div {
+    flex: 0 0 0px;
+    margin: 10px 10px;
+}
 }

@@ -37,7 +37,8 @@ const BottomTab = () => {
   }, [location.pathname]);
 
   const handleWishlistClick = () => {
-    if (isLoggedIn) {
+    const token = localStorage.getItem("token");
+    if (token) {
       setShowwishlist(true);
     } else {
       navigate("/login");

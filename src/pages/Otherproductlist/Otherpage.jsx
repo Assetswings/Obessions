@@ -170,6 +170,7 @@ const Otherpage = () => {
         if (wishlistItem) {
           await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
+            autoClose: 3000,
             style: {
               border: "1px solid #713200",
               padding: "16px",
@@ -198,6 +199,7 @@ const Otherpage = () => {
           addToWishlist({ product_id: product.id })
         ).unwrap();
         toast.success("Added to wishlist", {
+          autoClose: 3000,
           style: {
             border: "1px solid #713200",
             padding: "16px",

@@ -203,7 +203,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
           />,
           {
             position: "top-right",
-            autoClose: 6000,
+            autoClose: 3000,
             hideProgressBar: true,
             closeButton: false, // custom close already inside
             style: {
@@ -236,6 +236,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
         if (wishlistItem) {
           await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
+            autoClose: 3000,
             style: {
               border: "1px solid #713200",
               padding: "16px",
@@ -270,6 +271,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
           addToWishlist({ product_id: product.id })
         ).unwrap();
         toast.success("Added to wishlist", {
+          autoClose: 3000,
           style: {
             border: "1px solid #713200",
             padding: "16px",

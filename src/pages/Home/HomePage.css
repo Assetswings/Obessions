@@ -673,7 +673,7 @@ section.shopby {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4rem 0rem;
+  padding: 0rem 0rem;
   background-color: #EDE7DF;
   /* light beige background */
   font-family: "Playfair Display", serif;
@@ -1016,6 +1016,7 @@ section.shopby {
   padding: 4rem 1rem;
   overflow: hidden;
   text-align: center;
+  margin-bottom: 30px;
 }
 
 .matcher-content {
@@ -1258,7 +1259,7 @@ section.shopby {
 .obsession-image img {
   width: 75%;
   height: auto;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 .obsession-text {
@@ -1324,7 +1325,7 @@ section.shopby {
   .obsession-image_mlb img {
     width: 80%;
     height: auto;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     margin-bottom: 20px;
     position: relative;
     padding-top: 24px;

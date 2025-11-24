@@ -265,7 +265,7 @@ body {
 .input_global_mlb{
   flex: 1;
   height: 45px;
-  font-size: 14px;
+  font-size: 12px;
   padding-left: 15px;
   border-radius: 0px 0 0 0px;
   width: 350px;
@@ -373,4 +373,11 @@ body {
 .border-buttom {
   border-bottom: 1px solid #E5E7E9;
   padding-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+  .mobile_logo_track {
+  position: relative;
+  left: 62%;
+}
 }

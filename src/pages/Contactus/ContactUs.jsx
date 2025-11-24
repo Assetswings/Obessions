@@ -347,7 +347,7 @@ const ContactUs = () => {
                   src={helpchat}
                   alt="FAQ Icon"
                 />
-                <p>FAQ’s</p>
+                <p>FAQs</p>
               </Link>
             </div>
             <div className="guide-item">

@@ -221,7 +221,7 @@ const ProductDetailPage = () => {
           />,
           {
             position: "top-right",
-            autoClose: 6000,
+            autoClose: 3000,
             hideProgressBar: true,
             closeButton: false, // custom close already inside
             style: {
@@ -259,6 +259,7 @@ const ProductDetailPage = () => {
         if (wishlistItem) {
           await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
+            autoClose: 3000,
             style: {
               border: "1px solid #713200",
               padding: "16px",
@@ -294,6 +295,7 @@ const ProductDetailPage = () => {
           addToWishlist({ product_id: product.id })
         ).unwrap();
         toast.success("Added to wishlist", {
+          autoClose: 3000,
           style: {
             border: "1px solid #713200",
             padding: "16px",
@@ -353,6 +355,7 @@ const ProductDetailPage = () => {
         if (wishlistItem) {
           await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
+            autoClose: 3000,
             style: {
               border: "1px solid #713200",
               padding: "16px",
@@ -391,6 +394,7 @@ const ProductDetailPage = () => {
           addToWishlist({ product_id: product.id })
         ).unwrap();
         toast.success("Added to wishlist", {
+          autoClose: 3000,
           style: {
             border: "1px solid #713200",
             padding: "16px",
@@ -476,7 +480,7 @@ const ProductDetailPage = () => {
   };
   const breadcrumbPaths = [
     { label: data?.sub_category_action_url, to: `/products/${data?.category_action_url}/${data?.sub_category_action_url}` },
-    { label: 'Product Details', to: "" }, // last one (no link)
+    // { label: 'Product Details', to: "" }, // last one (no link)
   ];
 
   // Build full product URL (works with #/ hash routing)
@@ -503,21 +507,6 @@ const ProductDetailPage = () => {
     } else {
       alert("Sharing not supported on this browser");
     }
-  };
-
-  const getEmbedUrl = (url) => {
-    if (!url) return "";
-
-    // If already embed format
-    if (url.includes("youtube.com/embed")) return url;
-
-    // Extract video ID
-    const match = url.match(/(?:v=|\.be\/)([^&?]+)/);
-    const videoId = match ? match[1] : null;
-
-    if (!videoId) return "";
-
-    return `https://www.youtube.com/embed/${videoId}`;
   };
 
   return (

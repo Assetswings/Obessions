@@ -68,7 +68,18 @@ const BestsellersSlider = ({ onQuickView }) => {
         const wishlistItem = product.wishlist[0]?.wishlist_id;
         if (wishlistItem) {
           await dispatch(removeFromWishlist(wishlistItem)).unwrap();
-          toast.success("Removed from wishlist");
+          toast.success("Removed from wishlist", {
+            autoClose: 3000,
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+            iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+          });
           getCartWishlistCount();
           setBestsellers((prev) =>
             prev.map((p) =>
@@ -78,7 +89,18 @@ const BestsellersSlider = ({ onQuickView }) => {
         }
       } else {
         const addedWishlistItem = await dispatch(addToWishlist({ product_id: product.id })).unwrap();
-        toast.success("Added to wishlist");
+        toast.success("Added to wishlist", {
+          autoClose: 3000,
+          style: {
+            border: "1px solid #713200",
+            padding: "16px",
+            color: "#713200",
+          },
+          iconTheme: {
+            primary: "#713200",
+            secondary: "#FFFAEE",
+          },
+        });
         getCartWishlistCount();
         setAnimatedWish(product.id);
         const wishlist = Array.isArray(addedWishlistItem)

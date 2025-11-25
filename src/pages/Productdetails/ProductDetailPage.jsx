@@ -65,6 +65,8 @@ const ProductDetailPage = () => {
     (state) => state.pincode
   );
 
+   console.log("selectedColor---->", selectedColor);
+
   useEffect(() => {
     document.title = "Obsession - Products Details ";
     let storagePin = localStorage.getItem('pincode');

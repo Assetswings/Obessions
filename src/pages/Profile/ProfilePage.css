@@ -55,20 +55,21 @@
 }
 
 .edit-btn {
-  background: #15130f;
-  color: #fff;
-  font-size: 12px;
-  padding: 8px 14px;
-  border-radius: 2px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: all 0.2s ease-in-out;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  top: 15px;
+ background: #15130f;
+    color: #fff;
+    font-size: 12px;
+    /* padding: 19px 14px; */
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    /* align-items: center; */
+    transition: all 0.2s ease-in-out;
+    /* display: flex; */
+    justify-content: center;
+    /* align-items: center; */
+    position: relative;
+    top: 15px;
+    height: 43px;
 }
 
 .txt_level {
@@ -389,6 +390,7 @@
 .address_title_text {
   overflow-wrap: break-word;
   color: #625E55;
+  margin-bottom: 20px;
 }
 
 .verify-close {

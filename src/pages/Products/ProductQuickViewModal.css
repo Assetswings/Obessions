@@ -169,9 +169,6 @@
   background: #fff;
   padding: 0px 0px 10px 0px;
   z-index: 1000;
-  /* border-top: 1px solid #e5e5e5; */
-
-  /* Ensures it only sticks inside the right section */
   width: 100%;
 }
 

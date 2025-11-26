@@ -149,6 +149,9 @@ const ProductDetailPage = () => {
     // setPincode("");
     // setPincodeChecked(false);
 
+     const data = productDetails;
+       
+
     if (productDetails?.sub_category_action_url === "carpet") {
       const observer = new IntersectionObserver(
         (entries) => {

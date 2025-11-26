@@ -233,9 +233,9 @@ const TopAnnouncementBar = () => {
           )}
         </div>
 
-        <div className="icons">
+        <div className="icons-ann">
           {showSearchIcon && (
-            <img src={searchicon} alt="search" onClick={() => setShowSearch(true)} className="pointer-crusser" />
+            <img src={searchicon} alt="search" onClick={() => setShowSearch(true)} className="pointer-crusser search-icon-ann" />
           )}
           <div
             ref={userWrapperRef}
@@ -246,7 +246,7 @@ const TopAnnouncementBar = () => {
             <span style={{ fontSize: "12px", paddingRight: "7px" }}>{localStorage.getItem('userName') ?? ''}</span>
             <CircleUser
               color="#FFFFFF"
-              size={22}
+              size={26}
               strokeWidth={1}
               style={{ cursor: "pointer" }}
               onClick={handleUserClick}
@@ -261,12 +261,12 @@ const TopAnnouncementBar = () => {
                 <div className="popup-triangle_an"></div>
                 <div className="popup-item">
                   <Link to='/ProfilePage'>
-                    <User size={22} style={{ marginRight: 8 }} />
+                    <User size={26} style={{ marginRight: 8 }} />
                     <span>Profile</span>
                   </Link>
                 </div>
                 <div className="popup-item" onClick={handleLogout}>
-                  <LogOut size={20} style={{ marginRight: 8 }} />
+                  <LogOut size={26} style={{ marginRight: 8 }} />
                   <span>Logout</span>
                 </div>
               </div>
@@ -275,24 +275,29 @@ const TopAnnouncementBar = () => {
 
           <div title="Wish List">
             <Heart
-              size={22}
+              size={26}
               onClick={handleWishlistClick}
               style={{ cursor: "pointer" }}
               strokeWidth={1}
               title="Wishlist"
             />
-            <span className="wishlist-badge" style={{ right: "21px" }}>{countData?.wishlist_count ?? ''}</span>
+            <span className="wishlist-badge" style={{ right: "30px" }}>
+              <span style={{ position: 'relative', top: '1px' }}>
+                {countData?.wishlist_count ?? ''}
+              </span>
+            </span>
           </div>
+
           <div title="Cart">
             <Link to="/cart" onClick={handleCartClick} style={{ position: "relative" }}>
               <ShoppingCart
-                size={22}
+                size={26}
                 style={{ cursor: "pointer" }}
                 strokeWidth={1}
                 title="Cart"
               />
-              <span className="wishlist-badge" style={{ left: "93%" }}>
-                {countData?.cart_count ?? ""}
+              <span className="cart-badge" style={{ left: "93%", top: "-5px" }}>
+                <span style={{ position: 'relative', top: '1px' }}> {countData?.cart_count ?? ""} </span>
               </span>
             </Link>
             {/* <ShoppingCart
@@ -309,7 +314,7 @@ const TopAnnouncementBar = () => {
 
       {/* 🔹 Fullscreen Search Modal */}
       {showSearch && (
-        <div className="search-overlay" onClick={() => {claersearch();setSearchData([]);}}>
+        <div className="search-overlay" onClick={() => { claersearch(); setSearchData([]); }}>
           <div
             className="search-modal-other"
             onClick={(e) => e.stopPropagation()}

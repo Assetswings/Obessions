@@ -13,7 +13,7 @@ body {
 
 /* ─────────────── HERO ─────────────── */
 .homepage {
-  height: 120vh;
+  height: 100vh;
   background: #F2F2F2;
   overflow: hidden;
 }
@@ -26,7 +26,7 @@ body {
 }
 
 .obsessions-text {
-  top: 100px;
+
   left: 0;
   z-index: 0;
   font-size: 19vw;
@@ -41,9 +41,9 @@ body {
 }
 
 .category-list {
-  top: 72%;
-  left: 40px;
-  z-index: 2;
+ top: 65%;
+    left: 40px;
+    z-index: 2;
 }
 
 .category-list li {
@@ -73,7 +73,7 @@ body {
 
 .search-wrapper {
   position: absolute;
-  bottom: 50%;
+  bottom: 56%;
   left: 50%;
   width: 600px;
   transform: translate(-50%, 200px);
@@ -267,7 +267,7 @@ body {
 }
 
 .footer-note {
-  bottom: 15px;
+  bottom: 60px;
   transform: translateX(-50%);
   color: #333;
   z-index: 2;
@@ -329,54 +329,54 @@ body {
 /* ─── Set 0 ─── */
 .set-0 .img-center {
   top: 45%;
-  left: 45%;
-  width: 11vw;
-  z-index: 25;
-  transform: rotate(-16deg);
+    left: 45%;
+    width: 9vw;
+    z-index: 25;
+    transform: rotate(-16deg);
 }
 
 .set-0 .img-left {
-  top: 44%;
-  left: 9%;
-  width: 10vw;
+  top: 41%;
+  left: 10%;
+  width: 8vw;
   transform: rotate(-3deg);
 }
 
 .set-0 .img-top {
-  top: 4%;
-  left: 39%;
-  width: 2.5vw;
-  transform: rotate(12deg);
+top: 6%;
+    left: 39%;
+    width: 2.3vw;
+    transform: rotate(12deg);
 }
 
 .set-0 .img-right {
-  top: 24%;
-  right: 21%;
-  width: 10vw;
-  z-index: 25;
-  transform: rotate(8deg);
+     top: 24%;
+    right: 21%;
+    width: 8vw;
+    z-index: 25;
+    transform: rotate(8deg);
 }
 
 /* ─── Set 1 ─── */
 .set-1 .img-center {
   top: 45%;
   left: 50%;
-  width: 20vw;
+  width: 16vw;
   z-index: 25;
   transform: translateX(-50%);
 }
 
 .set-1 .img-left {
-  top: 39%;
-  left: 9%;
-  width: 10vw;
-  transform: rotate(-3deg);
+    top: 39%;
+    left: 11%;
+    width: 8vw;
+    transform: rotate(-3deg);
 }
 
 .set-1 .img-top {
   top: 5%;
   left: 35%;
-  width: 9vw;
+  width: 7vw;
   transform: rotate(9deg);
 }
 
@@ -390,9 +390,9 @@ body {
 
 /* ─── Set 2 ─── */
 .set-2 .img-center {
-  top: 21%;
-  left: 30%;
-  width: 40vw;
+  top: 17%;
+  left: 32%;
+  width: 31vw;
   z-index: 25;
   transform: rotate(14deg);
 }
@@ -400,15 +400,15 @@ body {
 .set-2 .img-left {
   top: 32%;
   left: 9%;
-  width: 16vw;
+  width: 13vw;
   transform: rotate(-3deg);
 }
 
 .set-2 .img-top {
-  top: 5%;
-  left: 40%;
-  width: 5vw;
-  transform: rotate(-9deg);
+    top: 6%;
+    left: 40%;
+    width: 4vw;
+    transform: rotate(-9deg);
 }
 
 .set-2 .img-right {
@@ -421,17 +421,17 @@ body {
 
 /* ─── Set 3 ─── */
 .set-3 .img-center {
-  top: 32%;
-  left: 37%;
-  width: 29vw;
-  z-index: 25;
-  transform: rotate(10deg);
+  top: 23%;
+    left: 37%;
+    width: 22vw;
+    z-index: 25;
+    transform: rotate(10deg);
 }
 
 .set-3 .img-left {
-  top: 45%;
-  left: 9%;
-  width: 9vw;
+ top: 38%;
+    left: 9%;
+    width: 9vw;
 }
 
 .set-3 .img-top {

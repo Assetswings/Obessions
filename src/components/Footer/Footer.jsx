@@ -66,101 +66,84 @@ const Footer = () => {
     }
 
     try {
-      setLoading(true);
       setMessage("");
-
-      const res = await API.post(
-        "/forms/newsletter-subscribe",
-        { email },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
-
+      const res = await API.post( "/forms/newsletter-subscribe", { email } );
       if (res.data) {
-        // keep skeleton/loader until data is ready if you want
-        setTimeout(() => {
           setMessage("✅ Subscribed successfully!");
           setEmail(""); // clear input
-          setLoading(false);
-        }, 800); // optional small delay to mimic your pattern
       }
     } catch (err) {
       console.error(err);
       setMessage("❌ Something went wrong. Please try again later.");
-      setLoading(false);
     }
   };
 
   return (
-  <footer className="footer">
-  <div className="newsletter">
-    <h2>
-      Your Home Just Got <em>More Interesting</em>
-    </h2>
-    <p className="sub_text">
-      Get updates on new collections, trending products, and curated content
-      you'll love.
-    </p>
-    <div className="email-signup">
-      <input
-        type="email"
-        placeholder="ENTER EMAIL ADDRESS"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        disabled={loading}
-      />
-      <button onClick={handleSubscribe} disabled={loading}>
-        {loading ? (
-          "Signing up..."
-        ) : (
-          <>
-            SIGN UP
-            <img
-              src={rightarrow}
-              alt="arrow"
-              style={{ width: "16px", marginLeft: "6px", paddingBottom: "4%" }}
-            />
-          </>
-        )}
-      </button>
-    </div>
-
-    {message && (
-      <div className="response-container">
-        <div className="sub-track-res">
-          <p className="response-message">{message}</p>
+    <footer className="footer">
+      <div className="newsletter">
+        <h2>
+          Your Home Just Got <em>More Interesting</em>
+        </h2>
+        <p className="sub_text">
+          Get updates on new collections, trending products, and curated content
+          you'll love.
+        </p>
+        <div className="email-signup">
+          <input
+            type="email"
+            placeholder="ENTER EMAIL ADDRESS"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
+          />
+          <button onClick={handleSubscribe} disabled={loading}>
+            {loading ? (
+              "Signing up..."
+            ) : (
+              <>
+                SIGN UP
+                <img
+                  src={rightarrow}
+                  alt="arrow"
+                  style={{ width: "16px", marginLeft: "6px", paddingBottom: "4%" }}
+                />
+              </>
+            )}
+          </button>
         </div>
+
+        {message && (
+          <div className="response-container">
+            <div className="sub-track-res">
+              <p className="response-message">{message}</p>
+            </div>
+          </div>
+        )}
+
+        <Link to={`/tc-of-sale`}>
+          <p className="sub_text mt-2">
+            By signing up you agree with our <u className="pointer-crusser">Terms & Conditions</u>.
+          </p>
+        </Link>
       </div>
-    )}
 
-    <Link to={`/tc-of-sale`}>
-      <p className="sub_text mt-2">
-        By signing up you agree with our <u className="pointer-crusser">Terms & Conditions</u>.
-      </p>
-    </Link>
-  </div>
+      {/* Footer Links */}
+      {/* FOOTER LINKS */}
+      <div className="footer-links">
 
-  {/* Footer Links */}
- {/* FOOTER LINKS */}
-     <div className="footer-links">
-
-       {/* SHOP (3 columns) */}
-  <div className="footer-col shop-col mllbb-shp ">
-    <h4>SHOP</h4>
-    <ul className="shop-grid-3">
-      {SHOP?.map((item, idx) => (
-        <li key={idx}>
-          <Link to={`/products/${item.action_url}`}>
-            {item.title.toLowerCase()}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  </div>
+        {/* SHOP (3 columns) */}
+        <div className="footer-col shop-col mllbb-shp ">
+          <h4>SHOP</h4>
+          <ul className="shop-grid-3">
+            {SHOP?.map((item, idx) => (
+              <li key={idx}>
+                <Link to={`/products/${item.action_url}`}>
+                  {item.title.toLowerCase()}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
         {/* SHOP */}
         <div className="desk-foot">
@@ -249,14 +232,14 @@ const Footer = () => {
         </div>
       </div>
 
-  {/* Bottom */}
-  <div className="footer-bottom">
-    <p>© 2025 obsessions.co.in | All Rights Reserved</p>
-    <div className="payments">
-      <img className="img_tracker_footer" src={marstrcards} alt="Visa" />
-    </div>
-  </div>
-</footer>
+      {/* Bottom */}
+      <div className="footer-bottom">
+        <p>© 2025 obsessions.co.in | All Rights Reserved</p>
+        <div className="payments">
+          <img className="img_tracker_footer" src={marstrcards} alt="Visa" />
+        </div>
+      </div>
+    </footer>
 
   );
 };

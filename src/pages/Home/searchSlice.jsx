@@ -44,6 +44,7 @@ const searchSlice = createSlice({
   initialState: {
     results: [],
     pagination: {},
+    sorting:{},
     filters: {},
     loading: false,
     error: null,

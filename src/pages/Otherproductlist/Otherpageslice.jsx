@@ -40,6 +40,7 @@ const otherproductSlice = createSlice({
     data: [],
     filters: {},
     pagination: {},
+    sorting:{},
     loading: false,
     error: null,
   },

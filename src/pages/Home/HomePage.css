@@ -461,7 +461,7 @@ body {
 /* ───────────── COLLECTION ───────────── */
 
 .section_collection {
-  height: 150vh;
+  height: 100vh;
   background-color: #F2F2F2;
 }
 
@@ -503,7 +503,7 @@ body {
 
 .collection-img.img-right {
   right: 0;
-  top: 80px;
+  top: 10%;
   width: 312px;
   height: 500px;
 }
@@ -751,6 +751,7 @@ section.shopby {
     flex-direction: column;
     /* stack items */
     text-align: center;
+    padding: 3rem 0rem 3rem 0rem;
   }
 
   .hero-text {
@@ -1409,7 +1410,7 @@ section.shopby {
   .txt_dynamic_betlt {
     display: flex;
     justify-content: center;
-    margin-left: 100%;
+    margin-left: 90%;
     margin-top: 30px;
 
   }
@@ -1428,19 +1429,32 @@ section.shopby {
     width: 250px;
   }
 
-  .collection-img.img-left {
+  /* .collection-img.img-left {
     left: 0;
     top: 120vh;
     width: 205px;
     height: 300px;
     transform: translateY(-25%);
+  } */
+  .collection-img.img-left {
+    left: 0;
+    top: 95vh;
+    width: 184px;
+    height: 290px;
+    transform: translateY(-25%);
   }
 
-  .collection-img.img-right {
+  /* .collection-img.img-right {
     right: 0;
     top: 30px;
     width: 205px;
     height: 300px;
+  } */
+  .collection-img.img-right {
+    right: 0;
+    top: 10px;
+    width: 179px;
+    height: 290px;
   }
 
   .section_collection {
@@ -1455,8 +1469,8 @@ section.shopby {
   .collection-content {
     max-width: 300px;
     z-index: 2;
-    margin-top: 0rem;
-    text-align: center;
+    margin-top: 11rem;
+    /* text-align: center; */
   }
 
   .lead-copy {
@@ -1645,7 +1659,7 @@ section.shopby {
   section.shopby {
     height: 84vh;
     /* margin-top: 50px; */
-    padding-top: 150px;
+    padding-top: 35vh;
     background-color: #F2F2F2;
   }
 

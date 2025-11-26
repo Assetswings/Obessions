@@ -265,7 +265,7 @@
     scroll-behavior: smooth;  
     scrollbar-width: none; 
     -ms-overflow-style: none;
-    padding: 1.5rem 1rem; 
+    padding: 10rem 1rem; 
   }
 
   /* ✅ Hide scrollbar (Chrome, Safari, Opera) */

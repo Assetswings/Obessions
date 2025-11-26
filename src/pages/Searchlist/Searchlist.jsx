@@ -34,7 +34,7 @@ const Searchlist = () => {
   const query = location.state?.query;
 
   const searchState = useSelector((state) => state.search || {});
-  const { results = [], pagination, filters, loading } = searchState;
+  const { results = [], pagination, sorting, filters, loading } = searchState;
   const [products, setProducts] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -47,6 +47,7 @@ const Searchlist = () => {
   const [tempMobileFilters, setTempMobileFilters] = useState({});
   const [expandedGroups, setExpandedGroups] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
+  const [selected, setSelected] = useState("Recommended");
 
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
@@ -63,6 +64,8 @@ const Searchlist = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log('||||||||||',Array.isArray(results) ? results : []);
+    
     setProducts(Array.isArray(results) ? results : []);
   }, [results]);
 
@@ -382,6 +385,11 @@ const Searchlist = () => {
     }
   }, [isFilterOpen]);
 
+  const handleSelect = (option) => {
+    setSelected(option);
+    handleFilterChange('sort_by', option);
+  };
+
   const breadcrumbPaths = [
     {
       label: "Search List", to: ""
@@ -394,7 +402,7 @@ const Searchlist = () => {
       {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&
         <div className="track_filter">
-          {/* <div className="sortby-container">
+          <div className="sortby-container">
             <div className="dropdown">
               <div
                 className="dropdown-toggle sortby-btn"
@@ -417,7 +425,7 @@ const Searchlist = () => {
                 ))}
               </ul>
             </div>
-          </div> */}
+          </div>
           <div
             className="mobile-filter-btn"
             onClick={() => setIsFilterOpen(true)}
@@ -510,7 +518,7 @@ const Searchlist = () => {
                   </span>
 
                 </div>
-                {/* <div className="dropdown">
+                <div className="dropdown">
                   <div
                     className="dropdown-toggle sortby-btn"
                     id="dropdownMenuButton"
@@ -531,7 +539,7 @@ const Searchlist = () => {
                       </li>
                     ))}
                   </ul>
-                </div> */}
+                </div>
               </div>
 
             </>

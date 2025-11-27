@@ -401,7 +401,7 @@ const Otherpage = () => {
       </div>
     );
   };
- 
+
   const handleSelect = (option) => {
     setSelected(option);
     handleFilterChange('sort_by', option);
@@ -712,7 +712,7 @@ const Otherpage = () => {
 
 
 
-      <section className="top-picks-section">
+      {/* <section className="top-picks-section">
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
         <div className="top-picks-grid">
           {items.map((item) => (
@@ -732,6 +732,56 @@ const Otherpage = () => {
             </div>
           ))}
         </div>
+      </section> */}
+      <section className="top-picks-section">
+        <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
+        <div className="desk-top-picks">
+          <div className="top-picks-grid">
+            {items.map((item) => (
+              <div key={item.id} className="top-pick-card">
+                <Link to={`/products${item.action_url}`}>
+                  <img
+                    src={item.media}
+                    alt={item.name}
+                    className="top-pick-image pointer-crusser"
+                  />
+                  <p
+                    className="top-pick-title pointer-crusser"
+                  >
+                    {item.name}
+                  </p>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+
+
+        <div className="mlb-top-picks">
+          <section className="flat_overview">
+            <div className="promo-section">
+              {items.map((item) => (
+                <div
+                  className="promo-card"
+                  key={item.id}
+                >
+
+                  <Link to={`/products${item.action_url}`}>
+                    <img
+                      src={item.media}
+                      alt={item.name}
+                      className="promo-image pointer-crusser"
+                    />
+                    <p className="promo-title pointer-crusser">{item.name}</p>
+
+                  </Link>
+                </div >
+              ))}
+            </div >
+          </section >
+        </div>
+
+
       </section>
       {/* SLIDE FILTER MODAL (Mobile) */}
       <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>

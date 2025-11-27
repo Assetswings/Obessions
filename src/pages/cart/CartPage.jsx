@@ -120,27 +120,27 @@ const CartPage = () => {
   ];
   return (
     <>
-        <ToastContainer
+      <ToastContainer
         style={{ zIndex: 9999999999999 }}
         position="top-right"
         autoClose={3000}
-        />
+      />
 
       <Breadcrumbs paths={breadcrumbPaths} />
 
       <div className="root-title-chk">
-      <span className="title_chk">My Cart <span className="wishlist-header-count-cart"> ({items?.length}) </span> </span>
+        <span className="title_chk">My Cart <span className="wishlist-header-count-cart"> ({items?.length}) </span> </span>
       </div>
 
       <div className="cart_mlb">
-      <span className="txt_mlb_my"> My Cart <span className="wishlist-header-count-cart"> ({items?.length}) </span></span>
+        <span className="txt_mlb_my"> My Cart <span className="wishlist-header-count-cart"> ({items?.length}) </span></span>
       </div>
 
       <div className="cart-container">
         <div className="cart-left">
           {items.length === 0 ? (
             <div className="empty-cart">
-               <img
+              <img
                 src={blankcart}
                 alt="Empty cart"
                 className="empty-cart-image"
@@ -304,11 +304,11 @@ const CartPage = () => {
 
               <p className="terms-text">
                 Before proceed further you can review{" "}
-                <a href="/tc-of-sale" style={{fontWeight:"500"}}>
+                <a href="/tc-of-sale" style={{ fontWeight: "500" }}>
                   <u>Terms & Conditions of Sale</u>
                 </a>{" "}
                 and{" "}
-                <a href="/privacy-policy" style={{fontWeight:"500"}}>
+                <a href="/privacy-policy" style={{ fontWeight: "500" }}>
                   <u>Privacy Policy</u>
                 </a>
               </p>
@@ -327,22 +327,72 @@ const CartPage = () => {
       </div>
 
       {items.length === 0 && (
+        // <section className="top-picks-section">
+        //   <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
+        //   <div className="top-picks-grid">
+        //     {toppickItems?.map((item) => (
+        //       <div key={item.id} className="top-pick-card">
+        //         <Link to={`/products${item.action_url}`}>
+        //           <img
+        //             src={item.media}
+        //             alt={item.name}
+        //             className="top-pick-image"
+        //           />
+        //           <p className="top-pick-title">{item.name}</p>
+        //         </Link>
+        //       </div>
+        //     ))}
+        //   </div>
+        // </section>
         <section className="top-picks-section">
           <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
-          <div className="top-picks-grid">
-            {toppickItems?.map((item) => (
-              <div key={item.id} className="top-pick-card">
-                <Link to={`/products${item.action_url}`}>
-                  <img
-                    src={item.media}
-                    alt={item.name}
-                    className="top-pick-image"
-                  />
-                  <p className="top-pick-title">{item.name}</p>
-                </Link>
-              </div>
-            ))}
+          <div className="desk-top-picks">
+            <div className="top-picks-grid">
+              {toppickItems.map((item) => (
+                <div key={item.id} className="top-pick-card">
+                  <Link to={`/products${item.action_url}`}>
+                    <img
+                      src={item.media}
+                      alt={item.name}
+                      className="top-pick-image pointer-crusser"
+                    />
+                    <p
+                      className="top-pick-title pointer-crusser"
+                    >
+                      {item.name}
+                    </p>
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
+
+
+          <div className="mlb-top-picks">
+            <section className="flat_overview">
+              <div className="promo-section">
+                {toppickItems.map((item) => (
+                  <div
+                    className="promo-card"
+                    key={item.id}
+                  >
+
+                    <Link to={`/products${item.action_url}`}>
+                      <img
+                        src={item.media}
+                        alt={item.name}
+                        className="promo-image pointer-crusser"
+                      />
+                      <p className="promo-title pointer-crusser">{item.name}</p>
+
+                    </Link>
+                  </div >
+                ))}
+              </div >
+            </section >
+          </div>
+
+
         </section>
       )}
       <Footer />

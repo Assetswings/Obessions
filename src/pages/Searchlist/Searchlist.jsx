@@ -64,8 +64,8 @@ const Searchlist = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log('||||||||||',Array.isArray(results) ? results : []);
-    
+    console.log('||||||||||', Array.isArray(results) ? results : []);
+
     setProducts(Array.isArray(results) ? results : []);
   }, [results]);
 
@@ -231,6 +231,12 @@ const Searchlist = () => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"   // remove "smooth" if you want instant scroll
+    });
+  };
   const renderFilterGroup = (title, options, key, isMobile = false) => {
     const isExpanded = expandedGroups[key] || false;
     const visibleOptions = isExpanded ? options : options?.slice(0, 5);
@@ -250,7 +256,7 @@ const Searchlist = () => {
             <input
               type="checkbox"
               checked={currentFilters[key]?.includes(opt) || false}
-              onChange={() => onChangeHandler(key, opt)}
+              onChange={() => { scrollToTop(); onChangeHandler(key, opt) }}
             />
             <span className="txt_checkbox">{opt.trim()}</span>
           </label>
@@ -296,7 +302,7 @@ const Searchlist = () => {
                 checked={
                   currentFilters.categories?.includes(sub.name) || false
                 }
-                onChange={() => onChangeHandler("categories", sub.name)}
+                onChange={() => {scrollToTop(); onChangeHandler("categories", sub.name)}}
               />
               <span className="txt_checkbox">{sub.name}</span>
             </label>
@@ -326,7 +332,7 @@ const Searchlist = () => {
       //         checked={
       //           currentFilters.price_filter?.includes(price.filter_value) || false
       //         }
-      //         onChange={() => handlePriceChange(price.filter_value)}
+      //         onChange={() => {scrollToTop(); handlePriceChange(price.filter_value)}}
       //       />
       //       <span className="txt_checkbox">{price.range_lebel}</span>
       //     </label>
@@ -353,7 +359,7 @@ const Searchlist = () => {
                 currentFilters.discount_filter?.includes(disc.discount_range) ||
                 false
               }
-              onChange={() => onChangeHandler("discount_filter", disc.discount_range)}
+              onChange={() => {scrollToTop(); onChangeHandler("discount_filter", disc.discount_range)}}
             />
             <span className="txt_checkbox">
               {disc.discount_range}% Off ({disc.total_items})

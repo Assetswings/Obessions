@@ -357,98 +357,76 @@ const MobileOtherNav = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-      {showSearch && (
-        <div className="search-overlay_mlb" onClick={() => { clearSearch(); setSearchData([]); }}>
-          <div
-            className="search-modal-other"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="d-flex set_input_mlb">
-              <input
-                ref={inputRef}
-                type="text"
-                className="form-control border-0 input_global_mlb"
-                placeholder="WHAT ARE YOU LOOKING FOR"
-                value={query}
-                onChange={(e) => {
-                  let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
-                  value = value.replace(/^\s+/, "");
-                  setQuery(value);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && query.trim()) {
-                    clearSearch();
-                    setSearchData([]);
-                    navigate("/searchlist", { state: { query } });
-                  }
-                }}
-              />
-              {loading && (
-                <div style={{ backgroundColor: "white" }} className="sarchlader">
-                  <div
-                    className="spinner-border text-secondary"
-                    style={{ width: "20px", height: "20px" }}
-                    role="status"
-                  >
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
+         {showSearch && (
+      <div className="search-fullscreen" onClick={clearSearch}>
+        <div
+          className="search-sheet"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* TOP SEARCH BAR */}
+          
+          <div className="search-header">
+            <Search size={20} strokeWidth={1.4} />
+            <input
+              ref={inputRef}
+              type="text"
+              className="search-input"
+              placeholder="Search for jewellery"
+              value={query}
+              onChange={(e) => {
+                let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
+                value = value.replace(/^\s+/, "");
+                setQuery(value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && query.trim()) {
+                  clearSearch();
+                  navigate("/searchlist", { state: { query } });
+                }
+              }}
+            />
+    
+            <X className="close-search" onClick={clearSearch} />
+          </div>
+    
+          {/* RESULTS / LOADER */}
+          {loading ? (
+            <div className="loader-box">
+              <div className="spinner-border text-secondary" />
+            </div>
+          ) : (
+            <>
+              {Array.isArray(searchData) && searchData.length > 0 && (
+                <div className="search-results-wrapper">
+                  {searchData.slice(0, 8).map((item, i) => (
+                    <Link
+                      to={`/productsdetails/${item.action_url}`}
+                      className="search-result-row"
+                      key={i}
+                      onClick={clearSearch}
+                    >
+                      <img
+                        src={item.media_list?.main?.file}
+                        alt={item.name}
+                        className="result-thumb"
+                      />
+                      <div className="result-info">
+                        <p>{item.name}</p>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               )}
-              <button
-                className="btn btn-dark button_search_mlb"
-                disabled={!query?.trim()}
-                onClick={() => {
-                  clearSearch();
-                  setSearchData([]);
-                  navigate("/searchlist", { state: { query } });
-                }}
-              >
-                <Search strokeWidth={1.25} />
-              </button>
-            </div>
-
-            {Array.isArray(searchData) && (
-              <>
-                {searchData.length > 0 ? (
-                  <div className="search-results-grid-other-mlb">
-                    {searchData.slice(0, 6).map((item, index) => (
-                      <div
-                        key={index}
-                        className="search-card"
-                        onClick={() => { clearSearch(); setSearchData([]); }}
-                      >
-                        <Link
-                          to={`/productsdetails/${item.action_url}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <img
-                            src={item.media_list?.main?.file}
-                            alt={item.name}
-                            className="search-card-img"
-                          />
-                          <div className="search-card-body">
-                            <h6 className="search-card-title">
-                              {item.name.split(" ").slice(0, 5).join(" ")}
-                            </h6>
-                          </div>
-                        </Link>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  !loading &&
-                  query?.trim() && (
-                    <div className="no-data-found-top_mlb">
-                      <p>No Result found</p>
-                    </div>
-                  )
-                )}
-              </>
-            )}
-          </div>
+              {!loading && query.trim() && searchData.length === 0 && (
+                <div className="no-result-box">
+                  <p>No results found</p>
+                </div>
+              )}
+            </>
+          )}
         </div>
-      )}
+      </div>
+    )}
 
       <a
         href={`https://api.whatsapp.com/send?phone=${wdata?.phone}&text=${wdata?.text}`}

@@ -375,3 +375,118 @@ body {
 }
 
  
+/* Fullscreen Black Blur Background */
+.search-fullscreen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
+  z-index: 99999999999;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Sliding Bottom Sheet */
+.search-sheet {
+  width: 100%;
+  height: 90vh;          /* full screen feel */
+  background: #fff;
+  border-radius: 18px 18px 0 0;
+  animation: slideUp 0.35s ease forwards;
+  padding: 18px;
+  overflow-y: auto;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Search Bar at Top */
+.search-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background:  white;
+  padding: 14px 15px;
+  border-radius: 12px;
+  border: 1.5px solid #5a575d;
+  background-color: white;
+ 
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  background: transparent;
+  font-size: 15px;
+  
+}
+
+.close-search {
+  cursor: pointer;
+}
+
+/* Results */
+.search-results-wrapper {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;          /* scroll only this area */
+  padding-right: 4px;
+  max-height: calc(90vh - 110px);  
+  align-items: center;
+}
+
+ /* Hide scrollbar (Chrome, Edge, Safari) */
+.search-results-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar (Firefox) */
+.search-results-wrapper {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar (IE/Old Edge) */
+.search-results-wrapper {
+  -ms-overflow-style: none;
+}
+.search-result-row {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  text-decoration: none;
+  color: #333;
+}
+
+.result-thumb {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.result-info p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  position: relative;
+  top: 15px;
+}
+
+/* No Result */
+.no-result-box {
+  padding-top: 40px;
+  text-align: center;
+  color: #444;
+  font-size: 16px;
+}
+
+.loader-box {
+  margin-top: 40px;
+  text-align: center;
+}

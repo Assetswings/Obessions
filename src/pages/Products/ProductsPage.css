@@ -496,12 +496,19 @@
   background: #fff;
 }
 
+ .desk-top-picks{
+  display: inline; 
+  }
+.mlb-top-picks{
+  display: none;
+}
+
 /* Show button only on mobile */
 @media (max-width: 768px) {
+
   .mobile-filter-btn {
     display: flex;
   }
-
   /* .track_filter {
     display: flex;
     justify-content: flex-end;
@@ -567,6 +574,12 @@
 .pagination_track_btm{
   margin-bottom: 45px;
   margin-top: 10px;
+}
+  .desk-top-picks{
+  display: none; 
+  }
+  .mlb-top-picks{
+  display: inline;
 }
 }
 

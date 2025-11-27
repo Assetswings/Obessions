@@ -6,7 +6,7 @@ import API from "../../app/api";
 import Breadcrumbs from "../Breadcum/Breadcrumbs";
 import insta from '../../assets/icons/Insta.png';
 import facebookimg from "../../assets/icons/facebook.png"
-import youtube from '../../assets/icons/youtube.png';     
+import youtube from '../../assets/icons/youtube.png';
 
 const BlogPost = () => {
   const location = useLocation();
@@ -68,13 +68,13 @@ const BlogPost = () => {
                 year: "numeric",
               })}
             </p> */}
-            
+
             <div className="terms-container">
               <div dangerouslySetInnerHTML={{ __html: data.blog?.description }} />
             </div>
-   <div className="track_social-mlb"> 
-          <div className="track-flex-social"> Connect With Us : <div> <img src={insta}/></div> <div> <img src={facebookimg }/></div>  <div> <img src={youtube }/></div></div>
-           </div>
+            <div className="track_social-mlb">
+              <div className="track-flex-social"> Connect With Us : <div> <img src={insta} /></div> <div> <img src={facebookimg} /></div>  <div> <img src={youtube} /></div></div>
+            </div>
             {/* <h1 className="post-title">{data?.blog?.name}</h1> */}
             {/* <div className="sector_image">
             <div>
@@ -168,50 +168,87 @@ const BlogPost = () => {
               <i className="fa-brands fa-youtube"></i>
             </div> */}
           </div>
-     
+
           {/* Right Sidebar */}
 
-           <aside className="post-sidebar">
+          <aside className="post-sidebar web">
             <h4 className="sidebar-title">Related Posts</h4>
             <ul className="related-list">
               {data?.related?.map((post, index) => (
                 <li key={index}>
                   <Link to={`/blog-details/${post?.action_url}`}>
-                     <div className="finder_track">  
-                     <div>
-                     <img src={post?.media} alt="Related 1" className="pointer-crusser" />
-                     </div> 
-                 
-                    <div className="pointer-crusser">
-                      <p>{post?.name}</p>
-                      <span>
-                        {post?.description?.split(" ").slice(0, 15).join(" ")}
-                        {post?.description?.split(" ").length > 15 ? "..." : ""}
-                      </span>
+                    <div className="finder_track">
+                      <div>
+                        <img src={post?.media} alt="Related 1" className="pointer-crusser" />
+                      </div>
+
+                      <div className="pointer-crusser">
+                        <p>{post?.name}</p>
+                        <span>
+                          {post?.description?.split(" ").slice(0, 15).join(" ")}
+                          {post?.description?.split(" ").length > 15 ? "..." : ""}
+                        </span>
+                      </div>
                     </div>
-                       </div>  
                   </Link>
                 </li>
               ))}
             </ul>
+          </aside>
+        </section>
 
-
-        {/* <section className="flat_overview">
-        <div className="promo-section">
-          {data?.related?.map((post, index) => (
-            <div
-              className="promo-card"
-              key={index.id} >
+        <div className="track_social">
+          <div className="track-flex-social"> Connect With Us : <div> <img src={insta} /></div> <div> <img src={facebookimg} /></div>  <div> <img src={youtube} /></div></div>
+        </div>
+        {/* Recommended Posts Mobile */}
+        <section on className="flat_overview mob">
+          <h4 className="releted-head">Recommended Posts</h4>
+          <div className="promo-section relet-blog-sec">
+            {data?.recommended?.map((post, index) => (
+              <div
+                className="promo-card"
+                key={index.id} >
                 <img
                   src={post?.media}
                   alt={post?.name}
-                  className="promo-image pointer-crusser"
+                  className="promo-image pointer-crusser relet-blog-img-sec"
                 />
-                  <div >
-                  <p>{post?.name}</p>
-                  </div>
+                <div >
+                  <p className="relatedpost-mob">
+                    {post?.name
+                      ? post?.name.substring(0, 40) + (post?.name.length > 40 ? "..." : "")
+                      : ""}
+                  </p>
+                </div>
 
-             <div className="txt_btn_recomend">
+                <div className="txt_btn_recomend">
+                  <p className="reletepost-mob-poston">
+                    Posted on{" "}
+                    {new Date(post?.created_at).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
+                  <Link to={`/blog-details/${post?.action_url}`} className="releted-readmore">
+                    <u>Read More</u>
+                  </Link>
+                </div>
+              </div >
+            ))}
+          </div >
+        </section>
+        {/* Recommended Posts */}
+        <section className="recommended-posts web">
+          <h2 className="recommended-title">Recommended Posts</h2>
+          <div className="recommended-grid">
+            {data?.recommended?.map((post, index) => (
+              <div className="recommended-card pointer-crusser" key={index}>
+                <Link to={`/blog-details/${post?.action_url}`}>
+                  <img src={post?.media} alt="Post 1" />
+                </Link>
+                <p className="relet-post-name">{post?.name}</p>
+                <div className="txt_btn_recomend">
                   <p>
                     Posted on{" "}
                     {new Date(post?.created_at).toLocaleDateString("en-GB", {
@@ -224,23 +261,15 @@ const BlogPost = () => {
                     <u>Read More</u>
                   </Link>
                 </div>
-            </div >
-          ))}
-        </div >
-      </section> */}
-
-           </aside>
-          </section>
-
-        <div className="track_social"> 
-          <div className="track-flex-social"> Connect With Us : <div> <img src={insta}/></div> <div> <img src={facebookimg }/></div>  <div> <img src={youtube }/></div></div>
-           </div>
-
-        {/* Recommended Posts */}
-        <section className="recommended-posts">
-          <h2 className="recommended-title">Recommended Posts</h2>
+              </div>
+            ))}
+          </div>
+        </section>
+        {/* Releted Posts Mobile*/}
+        <section className="recommended-posts mob">
+          <h2 className="recommended-title">Related Posts</h2>
           <div className="recommended-grid">
-            {data?.recommended?.map((post, index) => (
+            {data?.related?.map((post, index) => (
               <div className="recommended-card pointer-crusser" key={index}>
                 <Link to={`/blog-details/${post?.action_url}`}>
                   <img src={post?.media} alt="Post 1" />

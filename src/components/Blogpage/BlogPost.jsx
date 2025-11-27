@@ -170,6 +170,7 @@ const BlogPost = () => {
           </div>
      
           {/* Right Sidebar */}
+
            <aside className="post-sidebar">
             <h4 className="sidebar-title">Related Posts</h4>
             <ul className="related-list">
@@ -193,6 +194,41 @@ const BlogPost = () => {
                 </li>
               ))}
             </ul>
+
+
+        {/* <section className="flat_overview">
+        <div className="promo-section">
+          {data?.related?.map((post, index) => (
+            <div
+              className="promo-card"
+              key={index.id} >
+                <img
+                  src={post?.media}
+                  alt={post?.name}
+                  className="promo-image pointer-crusser"
+                />
+                  <div >
+                  <p>{post?.name}</p>
+                  </div>
+
+             <div className="txt_btn_recomend">
+                  <p>
+                    Posted on{" "}
+                    {new Date(post?.created_at).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
+                  <Link to={`/blog-details/${post?.action_url}`}>
+                    <u>Read More</u>
+                  </Link>
+                </div>
+            </div >
+          ))}
+        </div >
+      </section> */}
+
            </aside>
           </section>
 

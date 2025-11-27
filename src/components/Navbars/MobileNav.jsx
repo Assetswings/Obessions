@@ -194,7 +194,7 @@ const MobileNav = () => {
           </div>
 
           <div className="mobile_logo_track" onClick={() => navigate("/")}>
-            <img src={mobilelogo} width={105} alt="logo" />
+            <img src={mobilelogo} width={130} alt="logo" />
           </div>
         </div>
 
@@ -236,6 +236,19 @@ const MobileNav = () => {
 
       <div className={`drawer ${isOpen ? "open" : ""}`}>
         <div className="drawer-header">
+
+          <div>
+            <img src={mobilelogo} width={105} alt="logo" />
+          </div>
+
+          <div className="track_sector_close">
+            <span onClick={toggleDrawer} className="close-btn-mlb">
+              ✕
+            </span>
+          </div>
+        </div>
+
+        <div className="trac_back_access">
           {activeMenu !== "main" && (
             <span className="back-btn" onClick={goBack}>
               <ChevronLeft />
@@ -245,11 +258,6 @@ const MobileNav = () => {
           {activeMenu !== "main" && (
             <span className="drawer-title">{getMenuTitle()}</span>
           )}
-          <div className="track_sector_close">
-            <span onClick={toggleDrawer} className="close-btn-mlb">
-              ✕
-            </span>
-          </div>
         </div>
 
         <div className="menu-container">

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import mobilelogo from "../../assets/icons/White.png";
+import mobilelogo1 from "../../assets/icons/Black.png";
 import { fetchMegamenuData } from "./megamenuSlice";
 import { Link, useNavigate } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
@@ -193,7 +194,7 @@ const MobileOtherNav = () => {
           </div>
 
           <div className="mobile_logo_track" onClick={() => navigate("/")}>
-            <img src={mobilelogo} width={105} alt="logo" />
+            <img src={mobilelogo} width={130} alt="logo" />
           </div>
         </div>
 
@@ -231,26 +232,30 @@ const MobileOtherNav = () => {
         </div>
       </header>
 
-
-
       <div className={`drawer ${isOpen ? "open" : ""}`}>
         <div className="drawer-header">
-          {activeMenu !== "main" && (
-            <span className="back-btn" onClick={goBack}>
-              <ChevronLeft />
-            </span>
-          )}
 
-          {/* 🚀 Add this title */}
-          {activeMenu !== "main" && (
-            <span className="drawer-title">{getMenuTitle()}</span>
-          )}
+          <div>
+            <img src={mobilelogo1} width={105} alt="logo" />
+          </div>
 
           <div className="track_sector_close">
             <span onClick={toggleDrawer} className="close-btn-mlb">
               ✕
             </span>
           </div>
+        </div>
+
+        <div className="trac_back_access">
+          {activeMenu !== "main" && (
+            <span className="back-btn" onClick={goBack}>
+              <ChevronLeft />
+            </span>
+          )}
+          {/* 🚀 Add this title */}
+          {activeMenu !== "main" && (
+            <span className="drawer-title">{getMenuTitle()}</span>
+          )}
         </div>
 
         <div className="menu-container">
@@ -357,76 +362,76 @@ const MobileOtherNav = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-         {showSearch && (
-      <div className="search-fullscreen" onClick={clearSearch}>
-        <div
-          className="search-sheet"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* TOP SEARCH BAR */}
-          
-          <div className="search-header">
-            <Search size={20} strokeWidth={1.4} />
-            <input
-              ref={inputRef}
-              type="text"
-              className="search-input"
-              placeholder="WHAT ARE YOU LOOKING FOR ?"
-              value={query}
-              onChange={(e) => {
-                let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
-                value = value.replace(/^\s+/, "");
-                setQuery(value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && query.trim()) {
-                  clearSearch();
-                  navigate("/searchlist", { state: { query } });
-                }
-              }}
-            />
-    
-            <X className="close-search" onClick={clearSearch} />
-          </div>
-    
-          {/* RESULTS / LOADER */}
-          {loading ? (
-            <div className="loader-box">
-              <div className="spinner-border text-secondary" />
+      {showSearch && (
+        <div className="search-fullscreen" onClick={clearSearch}>
+          <div
+            className="search-sheet"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* TOP SEARCH BAR */}
+
+            <div className="search-header">
+              <Search size={20} strokeWidth={1.4} />
+              <input
+                ref={inputRef}
+                type="text"
+                className="search-input"
+                placeholder="WHAT ARE YOU LOOKING FOR ?"
+                value={query}
+                onChange={(e) => {
+                  let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
+                  value = value.replace(/^\s+/, "");
+                  setQuery(value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && query.trim()) {
+                    clearSearch();
+                    navigate("/searchlist", { state: { query } });
+                  }
+                }}
+              />
+
+              <X className="close-search" onClick={clearSearch} />
             </div>
-          ) : (
-            <>
-              {Array.isArray(searchData) && searchData.length > 0 && (
-                <div className="search-results-wrapper">
-                  {searchData.slice(0, 8).map((item, i) => (
-                    <Link
-                      to={`/productsdetails/${item.action_url}`}
-                      className="search-result-row"
-                      key={i}
-                      onClick={clearSearch}
-                    >
-                      <img
-                        src={item.media_list?.main?.file}
-                        alt={item.name}
-                        className="result-thumb"
-                      />
-                      <div className="result-info">
-                        <p>{item.name}</p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-              {!loading && query.trim() && searchData.length === 0 && (
-                <div className="no-result-box">
-                  <p>No results found</p>
-                </div>
-              )}
-            </>
-          )}
+
+            {/* RESULTS / LOADER */}
+            {loading ? (
+              <div className="loader-box">
+                <div className="spinner-border text-secondary" />
+              </div>
+            ) : (
+              <>
+                {Array.isArray(searchData) && searchData.length > 0 && (
+                  <div className="search-results-wrapper">
+                    {searchData.slice(0, 8).map((item, i) => (
+                      <Link
+                        to={`/productsdetails/${item.action_url}`}
+                        className="search-result-row"
+                        key={i}
+                        onClick={clearSearch}
+                      >
+                        <img
+                          src={item.media_list?.main?.file}
+                          alt={item.name}
+                          className="result-thumb"
+                        />
+                        <div className="result-info">
+                          <p>{item.name}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+                {!loading && query.trim() && searchData.length === 0 && (
+                  <div className="no-result-box">
+                    <p>No results found</p>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
-      </div>
-    )}
+      )}
 
       <a
         href={`https://api.whatsapp.com/send?phone=${wdata?.phone}&text=${wdata?.text}`}

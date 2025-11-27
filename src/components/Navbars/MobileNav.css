@@ -123,6 +123,8 @@ body {
   overflow: hidden;
   width: 100%;
   height: calc(100% - 40px);
+  /* background-color: tomato; */
+  /* margin-top: 10px; */
 }
 
  .drawer-image {
@@ -489,4 +491,13 @@ body {
 .loader-box {
   margin-top: 40px;
   text-align: center;
+}
+
+.trac_back_access{
+position: relative;
+bottom: 10px;  
+}
+.drawer-title{
+  font-size: 13px;
+  font-weight: 500;
 }

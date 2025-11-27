@@ -1,11 +1,11 @@
 import { CircleCheck } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import './Carttost.css';
     const CartToast = ({ product, onViewCart, onCheckout, onClose }) => {
     const navigate = useNavigate();
   return (
-    <div style={{ width: "360px", fontFamily: "Helvetica Neue sans-serif" }}>
+    <div className="root_cart" >
       {/* Header */}
       <div
         style={{
@@ -16,8 +16,8 @@ import { useNavigate } from "react-router-dom";
           marginBottom: "10px",
         }}
       >
-        <span style={{ color: "green"}}>
-          <CircleCheck color="#ffffffff" variant="Bold" fill="currentColor"/> <span style={{ color: "black", fontSize: "20px"}}>Added to your Cart</span>
+        <span className="icon_color">
+          <CircleCheck color="#ffffffff" variant="Bold" fill="currentColor"/> &nbsp; <span style={{ color: "black", fontSize: "20px"}}>Added to your Cart</span>
         </span>
         <span
           style={{
@@ -48,7 +48,7 @@ import { useNavigate } from "react-router-dom";
 
         {/* Details */}
         <div style={{ flex: 1 }}>
-          <p style={{ margin: "0 0 4px" }}>{product.name?.length > 40 ? product.name.slice(0, 40) + "..." : product.name}</p>
+          <span style={{ margin: "0 0 4px" }}>{product.name?.length > 40 ? product.name.slice(0, 40) + "..." : product.name}</span>
           <p style={{ margin: "4px 0", fontSize: "14px", fontFamily:"Helvetica Neue" }}>₹{product.price}</p>
           <p style={{ margin: "2px 0", fontSize: "13px", color: "#666", fontFamily:"Helvetica Neue" }}>
             Quantity: {product.quantity}

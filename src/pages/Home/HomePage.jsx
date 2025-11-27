@@ -530,6 +530,9 @@ const HomePage = () => {
         </ul>
       </section>
       {/* ────────────────── 🥀💎💎 🐉 BestsellersSlider BY SECTION 🐉 💎💎🥀 ────────────────── */}
+
+       
+            
       <section className="bestsellersSlider">
         <BestsellersSlider onQuickView={handleQuickView} />
       </section>

@@ -1,0 +1,32 @@
+
+
+ .root_cart{
+ width:360px ;
+border-radius: inherit !important;
+ }
+.icon_color{
+    color: green;
+    position: relative;
+   align-items: center;
+   display: flex;
+}
+.Toastify__toast {
+    --y: 0;
+    position: relative;
+    touch-action: none;
+    width: var(--toastify-toast-width);
+    min-height: var(--toastify-toast-min-height);
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    padding: var(--toastify-toast-padding);
+    border-radius: var(--toastify-toast-bd-radius);
+    box-shadow: var(--toastify-toast-shadow);
+    max-height: var(--toastify-toast-max-height);
+    font-family: var(--toastify-font-family);
+    z-index: 0;
+    display: flex;
+    flex: 1 auto;
+    align-items: center;
+    word-break: break-word;
+    border-radius: inherit !important;
+}

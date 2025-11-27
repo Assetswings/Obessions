@@ -9,7 +9,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 import { SlidersHorizontal, X } from "lucide-react";
 
-const CollectionPage = () => {
+  const CollectionPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -52,7 +52,7 @@ const CollectionPage = () => {
     <>
       <Breadcrumbs paths={breadcrumbPaths} />
        <div>
-          <div className="track_filter">
+          {/* <div className="track_filter">
             <button
               className="mobile-filter-btn"
               onClick={() => setIsFilterOpen(true)}
@@ -63,7 +63,20 @@ const CollectionPage = () => {
               </span>{" "}
               Filters
             </button>
-          </div>
+          </div> */}
+
+            <div className="track_filter">
+                     <div
+                       className="mobile-filter-btn"
+                       onClick={() => setIsFilterOpen(true)}
+                     >
+                       <span>
+                         {" "}
+                         <SlidersHorizontal size={15} />
+                       </span>{" "}
+                       FILTERS
+                     </div>
+                   </div>
         </div>
       <div className="collection-container">
         {/* 🧱 Sidebar */}

@@ -151,11 +151,18 @@ const BestsellersSlider = ({ onQuickView }) => {
   }, [slideIndex, slidingProducts.length]);
 
   return (
-    <div className="bestseller-container">
-      <ToastContainer style={{ zIndex: 99999999999 }} position="top-right" autoClose={3000} />
 
+      <>
+           {/* <div className="bestseller-mobile-title">
+      <h3>Get the <em>Bestsellers</em></h3>
+    </div> */}
+       
+       <div className="bestseller-container">
+      <ToastContainer style={{ zIndex: 99999999999 }} position="top-right" autoClose={3000} />
       {isMobile ? (
-        // ✅ Mobile version: horizontal scroll
+          <>
+      {/* ⭐ MOBILE TITLE FIXED ABOVE */}
+
         <div className="slider-strip">
           {bestsellers?.map((item) => (
             <div className="bestseller-card" key={item.id}>
@@ -219,6 +226,7 @@ const BestsellersSlider = ({ onQuickView }) => {
             </div>
           ))}
         </div>
+          </>
       ) : (
         // ✅ Desktop: infinite loop slider
         <div className="bestseller-slider">
@@ -313,6 +321,8 @@ const BestsellersSlider = ({ onQuickView }) => {
 
       {showLoginPrompt && <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />}
     </div>
+      </>
+   
   );
 };
 

@@ -203,7 +203,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
           />,
           {
             position: "top-right",
-            autoClose: 300000,
+            autoClose: 3000,
             hideProgressBar: true,
             closeButton: false, // custom close already inside
             style: {

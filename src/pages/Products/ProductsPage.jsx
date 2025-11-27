@@ -51,7 +51,8 @@ const ProductsPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false); // NEW: mobile filter modal state
   const [tempMobileFilters, setTempMobileFilters] = useState({});
   const [expandedGroups, setExpandedGroups] = useState({});
-  const [selected, setSelected] = useState("Recommended");
+  const [selected, setSelected] = useState("");
+  const [showShort, setShowShort] = useState("");
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
   const [customerfavourite, setCustomerfavourite] = useState();
@@ -404,8 +405,9 @@ const ProductsPage = () => {
     }
   }, [isFilterOpen]);
 
-  const handleSelect = (option) => {
+  const handleSelect = (option, key) => {
     setSelected(option);
+    setShowShort(key);
     handleFilterChange('sort_by', option);
   };
   const breadcrumbPaths = [
@@ -433,14 +435,16 @@ const ProductsPage = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                SORT BY
+                SORT BY {showShort
+                  ? showShort.substring(0, 13) + (showShort.length > 6 ? "..." : "")
+                  : ""}
               </div>
               <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 {Object.entries(sorting).map(([key, label]) => (
                   <li key={key}>
                     <button
                       className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                      onClick={() => handleSelect(key)}
+                      onClick={() => handleSelect(key, label)}
                     >
                       {label}
                     </button>
@@ -549,14 +553,16 @@ const ProductsPage = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    SORT BY
+                    SORT BY {showShort
+                      ? showShort.substring(0, 13) + (showShort.length > 6 ? "..." : "")
+                      : ""}
                   </div>
                   <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {Object.entries(sorting).map(([key, label]) => (
                       <li key={key}>
                         <button
                           className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                          onClick={() => handleSelect(key)}
+                          onClick={() => handleSelect(key, label)}
                         >
                           {label}
                         </button>

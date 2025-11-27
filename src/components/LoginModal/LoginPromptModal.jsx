@@ -28,7 +28,7 @@ const LoginPromptModal = ({ onClose }) => {
         <img src={logo} alt="Logo" className="modal-logo" />
         <h2 className="modal-heading">Make yourself at home</h2>
         <p className="modal-subtext">
-          Log in to view your wishlist, track your orders, and unlock exclusive collections.
+          Log in to view your cart, wishlist, track your orders, and unlock exclusive collections.
         </p>
         <button className="login-btn" onClick={handleLogin}>LOG IN</button>
       </div>

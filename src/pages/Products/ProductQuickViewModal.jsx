@@ -718,7 +718,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
               </div>
 
               {/* 🟡 Product Description */}
-              <div className="product-description">
+              {/* <div className="product-description">
                 {loading ? (
                   <>
                     <Skeleton height={20} width={180} style={{ marginBottom: 10 }} />
@@ -730,7 +730,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     <p>{data?.product_info?.description}</p>
                   </>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

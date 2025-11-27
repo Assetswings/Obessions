@@ -377,6 +377,10 @@ root_promo_sector {
     font-size: 12px;
   }
 
+  .root_promo_sector {
+    right: 0px;
+  }
+
 }
 
 @media (max-width: 480px) {

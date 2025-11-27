@@ -216,7 +216,7 @@ const TopAnnouncementBar = () => {
           >
             {banners.length > 0 ? (
               <a
-                href={`#${banners[currentIndex]?.action_url}`}
+                href={`${banners[currentIndex]?.action_url}`}
                 rel="noopener noreferrer"
               >
                 {banners[currentIndex]?.title}

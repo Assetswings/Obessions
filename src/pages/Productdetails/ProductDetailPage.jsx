@@ -65,7 +65,7 @@ const ProductDetailPage = () => {
     (state) => state.pincode
   );
 
-   console.log("selectedColor---->", selectedColor);
+  console.log("selectedColor---->", selectedColor);
 
   useEffect(() => {
     document.title = "Obsession - Products Details ";
@@ -149,8 +149,8 @@ const ProductDetailPage = () => {
     // setPincode("");
     // setPincodeChecked(false);
 
-     const data = productDetails;
-       
+    const data = productDetails;
+
 
     if (productDetails?.sub_category_action_url === "carpet") {
       const observer = new IntersectionObserver(
@@ -460,9 +460,12 @@ const ProductDetailPage = () => {
   }
 
   const handleCheck = () => {
+    toast.dismiss();
     if (pincode.trim()) {
       dispatch(checkPincode(pincode));
       localStorage.setItem('pincode', pincode);
+    } else {
+      toast.error("Please Input a Pincode!");
     }
   };
 

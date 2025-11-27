@@ -148,7 +148,7 @@ const ProfilePage = () => {
             border: "1px solid black",
             padding: "16px",
             color: "black",
-            
+
           },
           iconTheme: {
             primary: "black",
@@ -379,7 +379,7 @@ const ProfilePage = () => {
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
-     
+
       <div className="profile-container">
         <div className="root_tab">
           <div className="tabs">
@@ -407,10 +407,10 @@ const ProfilePage = () => {
                 <p className="txt_level">Name</p>
                 <div className="track_septor">
                   {localLoading ? (
-                  <Skeleton width={180} />
-                    ) : (
+                    <Skeleton width={180} />
+                  ) : (
                     <>
-                    {profileData?.first_name} {profileData?.last_name}
+                      {profileData?.first_name} {profileData?.last_name}
                     </>
                   )}
                 </div>
@@ -630,10 +630,17 @@ const ProfilePage = () => {
                 </label>
                 <label>
                   Date of Birth
+                  {/* <input
+                    type="date"
+                    name="dob"
+                    value={dob}
+                    onChange={handleEditChange}
+                  /> */}
                   <input
                     type="date"
                     name="dob"
                     value={dob}
+                    onFocus={(e) => e.target.showPicker && e.target.showPicker()}
                     onChange={handleEditChange}
                   />
                   {errors.dob && <p className="error">{errors.dob}</p>}

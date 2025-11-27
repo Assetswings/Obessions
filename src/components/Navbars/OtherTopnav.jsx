@@ -309,7 +309,7 @@ const OtherTopnav = () => {
               onClick={handleWishlistClick}
               style={{ cursor: "pointer" }}
             />
-            <span className="wishlist-badge" style={{ right: "65px", top: "10px" }}>
+            <span className="wishlist-badge" style={{ right: "68px", top: "10px" }}>
                <span style={{ position: 'relative', top: '1px' }}> {countData?.wishlist_count ?? ''}</span>
               </span>
           </div>
@@ -322,7 +322,7 @@ const OtherTopnav = () => {
                 size={25}
                 style={{ cursor: "pointer" }}
               />
-              <span className="wishlist-badge" style={{ right: "22px", top: "10px" }}>
+              <span className="wishlist-badge" style={{ right: "27px", top: "10px" }}>
                  <span style={{ position: 'relative', top: '1px' }}>{countData?.cart_count ?? ''} </span>
                </span>
             </Link>

@@ -141,6 +141,7 @@
 @media (max-width: 768px) {
   .hero-image-blog {
     padding: 10px 17px 10px 15px;
+    height: 250px;
   }
 
   .post-wrapper {

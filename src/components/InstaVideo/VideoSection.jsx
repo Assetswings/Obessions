@@ -117,7 +117,7 @@ const VideoSection = () => {
         </p>
         <Link to={`/videogallery`}>
           <div className="track_btn_glr">
-            <button className="matcher-btn">VIEW THE GALLERY</button>
+            <button className="hero-button">VIEW THE GALLERY</button>
           </div>
         </Link>
       </div>

@@ -359,7 +359,7 @@ const MobileNav = () => {
           ref={inputRef}
           type="text"
           className="search-input"
-          placeholder="Search for jewellery"
+          placeholder="WHAT ARE YOU LOOKING FOR ?"
           value={query}
           onChange={(e) => {
             let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");

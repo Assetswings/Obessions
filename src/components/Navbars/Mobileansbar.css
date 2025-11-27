@@ -99,6 +99,7 @@
   
   .user-click-wrapper {
     position: relative;
+    bottom: 2px;
   }
   
   /* .user-popup_AN {

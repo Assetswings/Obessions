@@ -281,7 +281,7 @@ const TopAnnouncementBar = () => {
               strokeWidth={1}
               title="Wishlist"
             />
-            <span className="wishlist-badge" style={{ right: "30px" }}>
+            <span className="wishlist-badge" style={{ right: "33px" }}>
               <span style={{ position: 'relative', top: '1px' }}>
                 {countData?.wishlist_count ?? ''}
               </span>
@@ -296,7 +296,7 @@ const TopAnnouncementBar = () => {
                 strokeWidth={1}
                 title="Cart"
               />
-              <span className="cart-badge" style={{ left: "93%", top: "-5px" }}>
+              <span className="cart-badge" style={{ left: "85%", top: "-5px" }}>
                 <span style={{ position: 'relative', top: '1px' }}> {countData?.cart_count ?? ""} </span>
               </span>
             </Link>

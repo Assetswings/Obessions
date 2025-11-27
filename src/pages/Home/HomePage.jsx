@@ -626,7 +626,7 @@ const HomePage = () => {
             right floor covering.
           </p>
           <Link to={`/carpet-finder`}>
-            <button className="matcher-btn" >
+            <button className="hero-button" >
               TRY FLOOR MATCHER
             </button>
           </Link>
@@ -678,7 +678,7 @@ const HomePage = () => {
 
             <Link to={data?.bottom_content?.action_url}>
               <button
-                className="matcher-btn"
+                className="hero-button"
               >
                 MORE ABOUT US
               </button>

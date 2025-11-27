@@ -48,15 +48,19 @@
 }
 
 .arrival-id {
-  font-size: 15px;
+  font-size: 16px;
   color: #1B170E;
   margin-top: 6px;
   position: relative;
+  font-weight: 400;
+  margin-bottom: 15px;
 }
+
 .arrival-id-order{
   position: relative;
   bottom: 10px;
-   font-size: 14px;
+   font-size: 16px;
+   font-weight: 400;
 }
 
 .arrival-id span {

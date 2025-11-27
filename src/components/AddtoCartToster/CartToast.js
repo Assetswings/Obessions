@@ -49,11 +49,11 @@ import { useNavigate } from "react-router-dom";
         {/* Details */}
         <div style={{ flex: 1 }}>
           <p style={{ margin: "0 0 4px" }}>{product.name?.length > 40 ? product.name.slice(0, 40) + "..." : product.name}</p>
-          <p style={{ margin: "4px 0", fontSize: "14px" }}>₹{product.price}</p>
-          <p style={{ margin: "2px 0", fontSize: "13px", color: "#666" }}>
+          <p style={{ margin: "4px 0", fontSize: "14px", fontFamily:"Helvetica Neue" }}>₹{product.price}</p>
+          <p style={{ margin: "2px 0", fontSize: "13px", color: "#666", fontFamily:"Helvetica Neue" }}>
             Quantity: {product.quantity}
           </p>
-          <p style={{ margin: "2px 0", fontSize: "13px", color: "#666" }}>
+          <p style={{ margin: "2px 0", fontSize: "13px", color: "#666", fontFamily:"Helvetica Neue" }}>
             Color: {product.color}
           </p>
         </div>

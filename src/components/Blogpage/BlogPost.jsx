@@ -209,7 +209,7 @@ const BlogPost = () => {
                 <Link to={`/blog-details/${post?.action_url}`}>
                   <img src={post?.media} alt="Post 1" />
                 </Link>
-                <p>{post?.name}</p>
+                <p className="relet-post-name">{post?.name}</p>
                 <div className="txt_btn_recomend">
                   <p>
                     Posted on{" "}

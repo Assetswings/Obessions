@@ -18,33 +18,33 @@ const AboutPage = () => {
     <>
       <div className="about-wrapper">
         {/* Hero Section */}
-       <section
-  className="about-hero"
-  style={{
-    backgroundImage: `url(${data?.bg_media})`,
-   
-    backgroundSize: "cover",       // makes image fully cover section
-    backgroundPosition: "center",  // centers the image
-    backgroundRepeat: "no-repeat", // prevents tiling
-  }}
-  >
-  <div className="hero-overlay">
-    <h1>
-      <p
-        className="track_set_hader"
-        dangerouslySetInnerHTML={{
-          __html: data?.bg_short_desc?.replace(/\{\"\s*\"\}/g, " "),
-        }}
-      />
-    </h1>
-  </div>
-</section>
+        <section
+          className="about-hero"
+          style={{
+            backgroundImage: `url(${data?.bg_media})`,
 
-<section> 
- <div className="slogan_part"> 
- <span><img class="img_turner" src="https://i.ibb.co/qL71DQj5/icon.png"/> &nbsp;</span> Good design doesn’t ask for attention; it earns it. <span/>
- </div>
- </section>
+            backgroundSize: "cover",       // makes image fully cover section
+            backgroundPosition: "center",  // centers the image
+            backgroundRepeat: "no-repeat", // prevents tiling
+          }}
+        >
+          <div className="hero-overlay">
+            <h1>
+              <p
+                className="track_set_hader"
+                dangerouslySetInnerHTML={{
+                  __html: data?.bg_short_desc?.replace(/\{\"\s*\"\}/g, " "),
+                }}
+              />
+            </h1>
+          </div>
+        </section>
+
+        <section>
+          <div className="slogan_part">
+            <span><img class="img_turner" src="https://i.ibb.co/qL71DQj5/icon.png" /> &nbsp;</span> Good design doesn’t ask for attention; it earns it. <span />
+          </div>
+        </section>
 
         {/* Text Content Section */}
         {/* Styled Text Section */}
@@ -66,19 +66,19 @@ const AboutPage = () => {
           />
         </section>
 
-         
-          <div className="philosophy-right-mlb">
-            <img
-              src={data.our_philosophy?.right}
-              alt="Craftsman Weaving"
-            />
-          </div>
-          
+
+        <div className="philosophy-right-mlb">
+          <img
+            src={data.our_philosophy?.right}
+            alt="Craftsman Weaving"
+          />
+        </div>
+
 
         <section className="philosophy-section">
           <div className="philosophy-left">
             <h2>
-              <span style={{color:'black'}} className="italic">Our</span>{" "}
+              <span style={{ color: 'black' }} className="italic">Our</span>{" "}
               <span className="ph_txt">Philosophy</span>
             </h2>
             <img
@@ -97,7 +97,7 @@ const AboutPage = () => {
               alt="Craftsman Weaving"
             />
           </div>
-          
+
         </section>
       </div>
 

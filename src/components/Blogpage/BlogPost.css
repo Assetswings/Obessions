@@ -111,26 +111,29 @@
   font-size: 0.8rem;
   color: #777;
 }
- 
- .track_social{
-  margin-left: 13%;
-   font-family: 'Canela Trial', sans-serif;
- }
- .track_social-mlb{
-  display: none;
 
- }
-.track-flex-social{
-  display: flex;
-  gap:15px ;
+.track_social {
+  margin-left: 13%;
   font-family: 'Canela Trial', sans-serif;
 }
+
+.track_social-mlb {
+  display: none;
+
+}
+
+.track-flex-social {
+  display: flex;
+  gap: 15px;
+  font-family: 'Canela Trial', sans-serif;
+}
+
 /* Responsive Design */
 
 /* Tablets */
 @media (max-width: 1024px) {
-.recommended-grid {
-grid-template-columns: repeat(2, 1fr);
+  .recommended-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -181,25 +184,36 @@ grid-template-columns: repeat(2, 1fr);
   }
 
   .related-list p {
-    font-size: 13px;
-    font-weight: 500;
-    margin: 0;
-    color: #222;
-    padding: 5px;
+    font-family: "Playfair Display";
+    font-weight: 400;
+    font-size: 16px;
+    /* line-height: 100%; */
+    letter-spacing: 3%;
+    padding-bottom: 10px;
   }
 
   .txt_btn_recomend {
     display: flex;
     gap: 25%;
   }
-  .track_social{
- display: none;
- }
-  .track_social-mlb{
+
+  .track_social {
+    display: none;
+  }
+
+  .track_social-mlb {
     display: inline;
   }
 
+  .relet-post-name {
+    font-family: "Canela Trial";
+    font-weight: 400;
+    font-size: 20px;
+    letter-spacing: 3%;
+    padding-bottom: 12px;
+  }
 }
+
 p {
   margin-bottom: 0px;
 }

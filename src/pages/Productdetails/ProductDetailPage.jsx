@@ -195,7 +195,7 @@ const ProductDetailPage = () => {
     }
 
     if (!pincodeChecked || !pincodeDetails?.is_active) {
-      toast.error("Please check delivery availability before adding to cart", {
+      toast.error("Verify delivery pincode before adding this item.", {
         style: {
           background: "#1f1f1f",
           color: "#fff",

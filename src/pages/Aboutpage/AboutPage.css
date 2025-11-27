@@ -20,16 +20,18 @@
 .hero-overlay {
   padding: 2rem 3rem;
   text-align: center;
-   max-width: 680px;;
+  max-width: 680px;
+  ;
   border-radius: 12px;
   margin-top: 608px;
   margin-left: 5%;
 }
 
-.ph_txt{
-   font-family: "Playfair Display", serif;
-   font-weight: 400;
+.ph_txt {
+  font-family: "Playfair Display", serif;
+  font-weight: 400;
 }
+
 .hero-overlay h1 {
   font-size: 2.0rem;
   color: #ffffff;
@@ -42,10 +44,10 @@
 
 .track_set_hader {
   font-size: 3.8rem;
- position: relative;
+  position: relative;
   bottom: 60px;
-  text-align: left;    
-  right:14%;
+  text-align: left;
+  right: 14%;
 }
 
 .italic {
@@ -72,6 +74,10 @@
   font-weight: 500;
 }
 
+.italic{
+  font-family: "Playfair Display", serif;
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -82,13 +88,22 @@
   .about-text p {
     font-size: 1rem;
   }
+
+  /* .track_set_hader {
+    font-size: 1.9rem;
+    position: relative;
+    bottom: 120px;
+    text-align: left;
+    right: 14%;
+  } */
+
   .track_set_hader {
-  font-size: 1.9rem;
- position: relative;
-  bottom: 120px;
-  text-align: left;    
-  right:14%;
-}
+    font-size: 29px;
+    position: relative;
+    bottom: 60px;
+    text-align: left;
+    right: 18%;
+  }
 
 }
 
@@ -145,15 +160,15 @@
     font-size: 1.2rem;
   }
 
-   .about-hero {
-   height: 75vh;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
+  .about-hero {
+    height: 75vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
 }
 
 .philosophy-section {
@@ -210,20 +225,23 @@
   height: 100%;
   object-fit: cover;
 }
- .root_track_pr {
+
+.root_track_pr {
   padding: 60px;
 }
 
-.philosophy-right{
+.philosophy-right {
   display: inline;
 }
- .philosophy-right-mlb img{
+
+.philosophy-right-mlb img {
   display: none;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.slogan_part{
+
+.slogan_part {
   display: flex;
   justify-content: center;
   height: 60px;
@@ -249,22 +267,25 @@
     width: 100%;
     max-width: 300px;
   }
-    .root_track_pr {
-  padding: 0px;
-}
- 
-.philosophy-right{
-  display: none;
-}
-.philosophy-right-mlb{
-  display:block ;  
-}
-.philosophy-right-mlb img{
-  display: inline;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+
+  .root_track_pr {
+    padding: 0px;
+  }
+
+  .philosophy-right {
+    display: none;
+  }
+
+  .philosophy-right-mlb {
+    display: block;
+  }
+
+  .philosophy-right-mlb img {
+    display: inline;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
 }
 
@@ -381,16 +402,18 @@
     font-weight: 400;
     font-family: 'Segoe UI', sans-serif;
   }
-    }
+}
 
 
- .thirty-years-section {
+.thirty-years-section {
   background-color: #fff;
 }
-.track_section{
+
+.track_section {
   width: 300px;
   height: 600px;
 }
+
 .photo-col img {
   width: 100%;
   margin-bottom: 20px;
@@ -431,26 +454,29 @@
   margin-top: 10px;
   font-family: "Playfair Display", serif;
 }
-.sub_txt{
+
+.sub_txt {
   font-size: 30px;
 }
-.container{
-   display: flex;
+
+.container {
+  display: flex;
 }
 
 
 @media (max-width: 768px) {
   .thirty-years-section {
-   display: none;
+    display: none;
   }
 
 }
 
-.thirty-years-section-mlb{
-  display:none ;
+.thirty-years-section-mlb {
+  display: none;
 }
-   /* Force 2-column collage layout on all devices */
-.thirty-years-section-mlb .row > .col-md-6:first-child .row {
+
+/* Force 2-column collage layout on all devices */
+.thirty-years-section-mlb .row>.col-md-6:first-child .row {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
@@ -465,11 +491,12 @@
 
 /* Optional: tighten spacing for mobile */
 @media (max-width: 768px) {
-  .thirty-years-section-mlb{
-    display:inline;
+  .thirty-years-section-mlb {
+    display: inline;
   }
-  .thirty-years-section-mlb .row > .col-md-6:first-child .row {
+
+  .thirty-years-section-mlb .row>.col-md-6:first-child .row {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
-   }
+}

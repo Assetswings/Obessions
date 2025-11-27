@@ -171,7 +171,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
     }
 
     if (!pincodeChecked || !pincodeDetails?.is_active) {
-      toast.error("Please check delivery availability before adding to cart", {
+      toast.error("Verify delivery pincode before adding this item.", {
         style: {
           background: "#1f1f1f",
           color: "#fff",
@@ -203,7 +203,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
           />,
           {
             position: "top-right",
-            autoClose: 3000,
+            autoClose: 300000,
             hideProgressBar: true,
             closeButton: false, // custom close already inside
             style: {

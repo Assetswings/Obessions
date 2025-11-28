@@ -169,8 +169,8 @@ const BestsellersSlider = ({ onQuickView }) => {
               <div className="image-wrapper">
                 <div className="wrp_main">
                   <Link to={`/productsdetails/${item.action_url}`}>
-                    <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.name} />
-                    <img className="img_main_asp_hvr" src={item?.media_list?.hover?.file} alt={item.name} />
+                    <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.fullname} />
+                    <img className="img_main_asp_hvr" src={item?.media_list?.hover?.file} alt={item.fullname} />
                   </Link>
                 </div>
 
@@ -212,7 +212,7 @@ const BestsellersSlider = ({ onQuickView }) => {
 
               <div className="product-info">
                 <span className="title">
-                  <Link to={`/productsdetails/${item.action_url}`}>{item.name}</Link>
+                  <Link to={`/productsdetails/${item.action_url}`}>{item.fullname}</Link>
                 </span>
                 <span className="price">₹{item.selling_price}</span>
                 {item.mrp && item.mrp !== item.selling_price && (
@@ -256,8 +256,8 @@ const BestsellersSlider = ({ onQuickView }) => {
                 <div className="bestseller-card" key={idx}>
                   <div className="image-wrapper">
                     <Link to={`/productsdetails/${item.action_url}`}>
-                      <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.name} />
-                      <img className="img_main_asp_hvr" src={item?.media_list?.hover?.file} alt={item.name} />
+                      <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.fullname} />
+                      <img className="img_main_asp_hvr" src={item?.media_list?.hover?.file} alt={item.fullname} />
                     </Link>
                     <div className="order_view_btn">
                       <button className="quick-view" onClick={() => onQuickView && onQuickView(item)}>
@@ -301,7 +301,7 @@ const BestsellersSlider = ({ onQuickView }) => {
                   </div>
                   <div className="product-info">
                     <Link to={`/productsdetails/${item.action_url}`}>
-                      <span className="title">{item.name}</span>
+                      <span className="title">{item.fullname}</span>
                     </Link>
                     <span className="price">₹{item.selling_price}</span>
                     {item.mrp && item.mrp !== item.selling_price && (

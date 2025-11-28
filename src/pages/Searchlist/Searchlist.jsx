@@ -290,9 +290,9 @@ const Searchlist = () => {
     return (
       <div className="custom-filter-group" key="categories">
         <h4>Other Categories</h4>
-        <label>
+        {/* <label>
           <span className="txt_checkbox">{categories.name}</span>
-        </label>
+        </label> */}
 
         <div className="subcategory-list">
           {categories.subcategories.map((sub) => (

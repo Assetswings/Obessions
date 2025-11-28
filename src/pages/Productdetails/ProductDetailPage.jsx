@@ -226,7 +226,7 @@ const ProductDetailPage = () => {
           />,
           {
             position: "top-right",
-            autoClose: 3000,
+            autoClose: 2000,
             hideProgressBar: true,
             closeButton: false, // custom close already inside
             style: {
@@ -1262,7 +1262,7 @@ const ProductDetailPage = () => {
         <>
           <div className="product-tabs-container">
             <div className="tabs-bar">
-              {/* {tabs.map((tab) => (
+              {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   disabled={true}
@@ -1271,7 +1271,7 @@ const ProductDetailPage = () => {
                 >
                   {tab.label}
                 </button>
-              ))} */}
+              ))}
             </div>
 
             <div className="track_box_pr">
@@ -1434,7 +1434,7 @@ const ProductDetailPage = () => {
                     <div>
                       <span className="pp-mc-txt">
                         Not sure which size fits best? Explore our{" "}
-                        <span className="sub-pp-mc"><Link to="/size-guide">Size Guide</Link></span> to find
+                        <span className="sub-pp-mc"><Link to="/size-guide"  target="_blank" rel="noopener noreferrer">Size Guide</Link></span> to find
                         your perfect match.
                       </span>
                     </div>

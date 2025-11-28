@@ -4,7 +4,7 @@
 
 .custom-products-page {
   display: flex;
-  padding: 20px;
+  padding: 20px 20px 20px 40px;
   gap: 30px;
   font-family: Arial, sans-serif;
 }
@@ -32,7 +32,7 @@
 }
 
 .custom-filters {
-  width: 250px;
+  width: 400px;
   flex-shrink: 0;
   font-size: 14px;
 }

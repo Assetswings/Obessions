@@ -425,15 +425,9 @@ const Otherpage = () => {
       {products.length > 0 &&
         <div className="track_filter">
           <div className="title_hader_filter">
-            {/* <h2 className="title_prd_roots">
-              {loading ? (
-                <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
-              ) : subcategory ? (
-                formatTitle(subcategory)
-              ) : (
-                formatTitle(category)
-              )}
-            </h2> */}
+            <h2 className="title_prd_roots">
+              {Titelslug}
+            </h2>
           </div>
 
           <div className="root_btn_filter_hader">

@@ -324,7 +324,7 @@ const ProductsPage = () => {
                 checked={
                   currentFilters.categories?.includes(sub.name) || false
                 }
-                onChange={() => {scrollToTop(); onChangeHandler("categories", sub.name)}}
+                onChange={() => { scrollToTop(); onChangeHandler("categories", sub.name) }}
               />
               <span className="txt_checkbox">{sub.name}</span>
             </label>
@@ -353,7 +353,7 @@ const ProductsPage = () => {
               checked={
                 currentFilters.price_filter?.includes(price.filter_value) || false
               }
-              onChange={() => {scrollToTop(); handlePriceChange(price.filter_value)}}
+              onChange={() => { scrollToTop(); handlePriceChange(price.filter_value) }}
             />
             <span className="txt_checkbox">{price.range_lebel}</span>
           </label>
@@ -380,7 +380,7 @@ const ProductsPage = () => {
                 currentFilters.discount_filter?.includes(disc.discount_range) ||
                 false
               }
-              onChange={() => {scrollToTop(); onChangeHandler("discount_filter", disc.discount_range)}}
+              onChange={() => { scrollToTop(); onChangeHandler("discount_filter", disc.discount_range) }}
             />
             <span className="txt_checkbox">
               {disc.discount_range}% Off ({disc.total_items})
@@ -434,6 +434,15 @@ const ProductsPage = () => {
       {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&
         <div className="track_filter">
+          <h2 className="title_prd_roots">
+            {loading ? (
+              <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
+            ) : subcategory ? (
+              formatTitle(subcategory)
+            ) : (
+              formatTitle(category)
+            )}
+          </h2>
           <div className="sortby-container">
             <div className="dropdown">
               <div
@@ -442,9 +451,7 @@ const ProductsPage = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                SORT BY {showShort
-                  ? showShort.substring(0, 13) + (showShort.length > 6 ? "..." : "")
-                  : ""}
+                SORT BY
               </div>
               <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 {Object.entries(sorting).map(([key, label]) => (
@@ -553,16 +560,14 @@ const ProductsPage = () => {
                   </span>
 
                 </div>
-                <div className="dropdown">
+                <div className="dropdown" style={{display:"flex", gap:"10px"}}>
                   <div
                     className="dropdown-toggle sortby-btn"
                     id="dropdownMenuButton"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    SORT BY {showShort
-                      ? showShort.substring(0, 13) + (showShort.length > 6 ? "..." : "")
-                      : ""}
+                    SORT BY
                   </div>
                   <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {Object.entries(sorting).map(([key, label]) => (
@@ -576,6 +581,9 @@ const ProductsPage = () => {
                       </li>
                     ))}
                   </ul>
+                  <div className="sort-name">
+                    {showShort}
+                  </div>
                 </div>
               </div>
 
@@ -882,6 +890,15 @@ const ProductsPage = () => {
         </div>
         {/* ✅ Sticky Footer Apply Button */}
         <div className="mobile-filter-footer">
+          <button
+            className="apply-filter-btn"
+            onClick={() => {
+              setSelectedFilters(tempMobileFilters);
+              setIsFilterOpen(false);
+            }}
+          >
+            APPLY
+          </button>
           <button
             className="apply-filter-btn"
             onClick={() => {

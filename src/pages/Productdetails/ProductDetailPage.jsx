@@ -48,7 +48,7 @@ const ProductDetailPage = () => {
   // const [showCare, setShowCare] = useState(false);
   // const [showDesc, setShowDesc] = useState(true);
   const [unit, setUnit] = useState("cm");
-  const [activeSection, setActiveSection] = useState(null);
+  const [activeSection, setActiveSection] = useState('description');
   const dispatch = useDispatch();
   const sectionsRef = useRef({});
   const prevSlugRef = useRef(null);

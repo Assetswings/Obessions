@@ -85,12 +85,8 @@ const OtherTopnav = () => {
       setSearchData([]);
       return;
     }
-    const timeoutId = setTimeout(() => {
-      setLoading(true);
-      handleSearch(query);
-    }, 400);
-
-    return () => clearTimeout(timeoutId);
+    setLoading(true);
+    handleSearch(query);
   }, [query, dispatch]);
 
   const handleSearch = async (query) => {
@@ -310,8 +306,8 @@ const OtherTopnav = () => {
               style={{ cursor: "pointer" }}
             />
             <span className="wishlist-badge" style={{ right: "68px", top: "10px" }}>
-               <span style={{ position: 'relative', top: '1px' }}> {countData?.wishlist_count ?? ''}</span>
-              </span>
+              <span style={{ position: 'relative', top: '1px' }}> {countData?.wishlist_count ?? ''}</span>
+            </span>
           </div>
           <div title="Cart">
             <Link to="/cart" onClick={handleCartClick}>
@@ -323,8 +319,8 @@ const OtherTopnav = () => {
                 style={{ cursor: "pointer" }}
               />
               <span className="wishlist-badge" style={{ right: "27px", top: "10px" }}>
-                 <span style={{ position: 'relative', top: '1px' }}>{countData?.cart_count ?? ''} </span>
-               </span>
+                <span style={{ position: 'relative', top: '1px' }}>{countData?.cart_count ?? ''} </span>
+              </span>
             </Link>
           </div>
         </div>
@@ -338,7 +334,7 @@ const OtherTopnav = () => {
 
       {/* 🔹 Fullscreen Search Modal */}
       {showSearch && (
-        <div className="search-overlay" onClick={() => {claersearch(); setSearchData([]);}}>
+        <div className="search-overlay" onClick={() => { claersearch(); setSearchData([]); }}>
           <div
             className="search-modal-other"
             onClick={(e) => e.stopPropagation()}

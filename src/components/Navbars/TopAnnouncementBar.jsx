@@ -95,12 +95,8 @@ const TopAnnouncementBar = () => {
       setSearchData([]);
       return;
     }
-    const timeoutId = setTimeout(() => {
-      setLoading(true);
-      handleSearch(query);
-    }, 400);
-
-    return () => clearTimeout(timeoutId);
+    setLoading(true);
+    handleSearch(query);
   }, [query, dispatch]);
 
   const handleSearch = async (query) => {

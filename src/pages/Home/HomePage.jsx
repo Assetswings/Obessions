@@ -91,11 +91,7 @@ const HomePage = () => {
       dispatch(clearSearchResults());
       return;
     }
-    const timeoutId = setTimeout(() => {
-      dispatch(fetchSearchResults({ query }));
-    }, 400);
-
-    return () => clearTimeout(timeoutId);
+    dispatch(fetchSearchResults({ query }));
   }, [query, dispatch]);
 
   useEffect(() => {
@@ -531,8 +527,8 @@ const HomePage = () => {
       </section>
       {/* ────────────────── 🥀💎💎 🐉 BestsellersSlider BY SECTION 🐉 💎💎🥀 ────────────────── */}
 
-       
-            
+
+
       <section className="bestsellersSlider">
         <BestsellersSlider onQuickView={handleQuickView} />
       </section>
@@ -665,7 +661,7 @@ const HomePage = () => {
       < section className="obsession-section" >
         <div className="txt_root_warp">
           <h2 className="obsession-title web">OUR OBSESSIONS</h2>
-          <div style={{marginBottom:"35px"}}>
+          <div style={{ marginBottom: "35px" }}>
             <h2 className="obsession-title mob">OUR</h2>
             <h2 className="obsession-title mob">OBSESSIONS</h2>
           </div>

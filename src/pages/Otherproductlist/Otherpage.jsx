@@ -63,7 +63,8 @@ const Otherpage = () => {
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const [selected, setSelected] = useState("Recommended");
+  const [selected, setSelected] = useState("");
+   const [showShort, setShowShort] = useState("");
 
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
@@ -408,8 +409,9 @@ const Otherpage = () => {
     );
   };
 
-  const handleSelect = (option) => {
+  const handleSelect = (option,key) => {
     setSelected(option);
+    setShowShort(key);
     handleFilterChange('sort_by', option);
   };
   const breadcrumbPaths = [
@@ -437,7 +439,7 @@ const Otherpage = () => {
                   <li key={key}>
                     <button
                       className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                      onClick={() => handleSelect(key)}
+                      onClick={() => handleSelect(key, label)}
                     >
                       {label}
                     </button>
@@ -518,7 +520,7 @@ const Otherpage = () => {
                   </span>
 
                 </div>
-                <div className="dropdown">
+                <div className="dropdown" style={{display:"flex", gap:"10px"}}>
                   <div
                     className="dropdown-toggle sortby-btn"
                     id="dropdownMenuButton"
@@ -532,13 +534,16 @@ const Otherpage = () => {
                       <li key={key}>
                         <button
                           className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                          onClick={() => handleSelect(key)}
+                          onClick={() => handleSelect(key, label)}
                         >
                           {label}
                         </button>
                       </li>
                     ))}
                   </ul>
+                  <div className="sort-name">
+                    {showShort}
+                  </div>
                 </div>
               </div>
 

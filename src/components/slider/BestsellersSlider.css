@@ -42,10 +42,11 @@
   transition: transform 0.5s ease;
 }
 
-.img_main_asp{
+.img_main_asp {
   height: 200px;
 }
-.img_main_asp_hvr{
+
+.img_main_asp_hvr {
   height: 200px;
   display: none;
 }
@@ -85,17 +86,17 @@
   pointer-events: auto;
 }
 
- .bestseller-card:hover .quick-view {
+.bestseller-card:hover .quick-view {
   opacity: 1;
   pointer-events: auto;
 }
 
- .bestseller-card:hover .img_main_asp_hvr {
- display: inline;
+.bestseller-card:hover .img_main_asp_hvr {
+  display: inline;
 }
 
- .bestseller-card:hover .img_main_asp {
- display: none;
+.bestseller-card:hover .img_main_asp {
+  display: none;
 }
 
 .fav-icon {
@@ -145,18 +146,22 @@
   font-family: 'Helvetica Neue', sans-serif;
 }
 
-/* Fixed middle card */
 .bestseller-fixed-card {
   width: 220px;
   background: white;
-  display: flex;
   flex-direction: column;
   font-family: "Playfair Display", serif;
   font-size: 1.5rem;
   padding: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
-      height: 47vh;
+
+  /* 🔥 FIXED */
+  height: auto;
+  /* remove fixed height */
+  min-height: 330px;
+  /* matches your slider card height */
+
 }
 
 .bestseller-fixed-card em {
@@ -169,7 +174,8 @@
   gap: 1rem;
   margin-top: 1rem;
 }
-.order_view_btn{
+
+.order_view_btn {
   display: flex;
 }
 
@@ -181,11 +187,11 @@
 }
 
 
- .bestseller-fixed-card-mlb{
+.bestseller-fixed-card-mlb {
   display: none;
- }
+}
 
- .arrow-img {
+.arrow-img {
   font-size: 14px;
   filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%);
   transition: filter 0.3s;
@@ -194,6 +200,7 @@
 .btn_arrow:hover .arrow-img {
   filter: invert(20%) sepia(90%) saturate(7000%) hue-rotate(-10deg) brightness(100%) contrast(105%);
 }
+
 /* Responsive */
 /* @media (max-width: 768px) {
   .bestseller-slider {
@@ -235,9 +242,10 @@
 }
 
 .btn_arrow img {
-  width: 37px; /* adjust as needed */
+  width: 37px;
+  /* adjust as needed */
   height: auto;
-  
+
 }
 
 .btn_arrow .hover {
@@ -255,23 +263,44 @@
   opacity: 1;
 }
 
-.bestseller-mobile-title{
-background-color: #f2f2f2;
-/* margin: 20px; */
-height: 30px;
+.bestseller-mobile-title {
+  background-color: #f2f2f2;
+  /* margin: 20px; */
+  height: 30px;
+  font-family: "Playfair Display", serif;
+}
+
+.sub-root-mlb {
+  position: relative;
+  left: 10%;
+  width: 50%;
+  margin-bottom: 20px;
+}
+
+.sub-root-mlb h3 {
+  font-size: 30px;
 
 }
 
- @media (max-width: 768px) {
+.bestseller-mobile-title {
+  display: none;
+}
+
+@media (max-width: 768px) {
   .bestseller-container {
-    overflow-x: auto;      
-    overflow-y: hidden;       
-      padding: 35px 1rem;
-    -webkit-overflow-scrolling: touch; /* ✅ smooth scrolling on iOS */
-    scroll-behavior: smooth;  
-    scrollbar-width: none; 
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 75px 1rem;
+    -webkit-overflow-scrolling: touch;
+    /* ✅ smooth scrolling on iOS */
+    scroll-behavior: smooth;
+    scrollbar-width: none;
     -ms-overflow-style: none;
 
+  }
+
+  .bestseller-mobile-title {
+    display: block;
   }
 
   /* ✅ Hide scrollbar (Chrome, Safari, Opera) */
@@ -279,13 +308,13 @@ height: 30px;
     display: none;
   }
 
-   bestseller-card:hover {
-  transform: none;
-  box-shadow:none
+  bestseller-card:hover {
+    transform: none;
+    box-shadow: none
+  }
 
-}
   .bestseller-slider {
-    flex-wrap: nowrap; 
+    flex-wrap: nowrap;
   }
 
   .bestseller-fixed-card {
@@ -294,7 +323,7 @@ height: 30px;
     display: none;
   }
 
- .bestseller-fixed-card-mlb{
+  .bestseller-fixed-card-mlb {
     display: block;
     position: relative;
     display: flex;
@@ -303,25 +332,29 @@ height: 30px;
     padding-top: 15px;
     padding-left: 20px;
     padding-right: 20px;
-    background-color:#F2F2F2;
+    background-color: #F2F2F2;
   }
+
   .txt_mlb_haed {
-    
+
     font-size: 30px;
   }
 
   .slider-strip {
-    flex: 0 0 auto;     /* ✅ prevent shrinking */
+    flex: 0 0 auto;
+    /* ✅ prevent shrinking */
   }
 
   .bestseller-card {
-    flex: 0 0 auto;     /* ✅ cards keep width */
+    flex: 0 0 auto;
+    /* ✅ cards keep width */
   }
-  .order_view_btn{
-     display: none;
+
+  .order_view_btn {
+    display: none;
   }
-  .quick-view{
+
+  .quick-view {
     display: none;
   }
 }
-

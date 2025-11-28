@@ -153,9 +153,12 @@ const BestsellersSlider = ({ onQuickView }) => {
   return (
 
       <>
-           {/* <div className="bestseller-mobile-title">
-      <h3>Get the <em>Bestsellers</em></h3>
-    </div> */}
+           <div className="bestseller-mobile-title">
+      <div className="sub-root-mlb"> 
+      <h3> <span style={{fontWeight:'500'}}>Get the</span> <em>Bestsellers</em></h3>
+             </div>
+    
+    </div>
        
        <div className="bestseller-container">
       <ToastContainer style={{ zIndex: 99999999999 }} position="top-right" autoClose={3000} />

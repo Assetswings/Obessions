@@ -1655,10 +1655,10 @@ section.shopby {
   }
 
   section.shopby {
-    height: 100vh;
-    /* margin-top: 50px; */
-    padding-top: 35vh;
-    background-color: #F2F2F2;
+        height: 105vh;
+        /* margin-top: 50px; */
+        padding-top: 35vh;
+        background-color: #F2F2F2;
   }
 
   .spacer_track {

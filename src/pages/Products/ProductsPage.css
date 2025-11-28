@@ -304,6 +304,7 @@
 
   .custom-products-page {
     flex-direction: column;
+    padding: 10px 10px 10px 10px ;
   }
 
   .custom-filters {
@@ -821,4 +822,10 @@
     display: block;     /* forces next line */
     margin-top: 4px;    /* optional spacing */
   }
+  .custom-products-page {
+  display: flex;
+  padding: 20px 20px 20px 15px;
+  gap: 30px;
+  font-family: Arial, sans-serif;
+}
 }

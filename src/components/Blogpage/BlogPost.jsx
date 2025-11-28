@@ -275,7 +275,7 @@ const BlogPost = () => {
                   <img src={post?.media} alt="Post 1" />
                 </Link>
                 <p className="relet-post-name">{post?.name}</p>
-                <div className="txt_btn_recomend">
+                {/* <div className="txt_btn_recomend">
                   <p>
                     Posted on{" "}
                     {new Date(post?.created_at).toLocaleDateString("en-GB", {
@@ -285,6 +285,19 @@ const BlogPost = () => {
                     })}
                   </p>
                   <Link to={`/blog-details/${post?.action_url}`}>
+                    <u>Read More</u>
+                  </Link>
+                </div> */}
+                <div className="txt_btn_recomend">
+                  <p className="reletepost-mob-poston">
+                    Posted on{" "}
+                    {new Date(post?.created_at).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
+                  <Link to={`/blog-details/${post?.action_url}`} className="releted-readmore">
                     <u>Read More</u>
                   </Link>
                 </div>

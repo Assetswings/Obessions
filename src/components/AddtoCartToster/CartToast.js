@@ -17,7 +17,7 @@ import './Carttost.css';
         }}
       >
         <span className="icon_color">
-          <CircleCheck color="#ffffffff" variant="Bold" fill="currentColor"/> &nbsp; <span style={{ color: "black", fontSize: "20px"}}>Added to your Cart</span>
+          <CircleCheck color="#ffffffff" variant="Bold" fill="currentColor"/> &nbsp; <span style={{ color: "black", fontSize: "20px", fontFamily:"Canela Trial"}}>Added to your Cart</span>
         </span>
         <span
           style={{

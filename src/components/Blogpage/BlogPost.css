@@ -150,12 +150,13 @@
 @media (max-width: 768px) {
   .hero-image-blog {
     padding: 10px 17px 10px 15px;
-    height: 250px;
+    height: 300px;
   }
 
   .post-wrapper {
     flex-direction: column;
     gap: 2rem;
+    padding: 0rem 1rem;
   }
 
   /* Move sections vertically */
@@ -204,7 +205,8 @@
 
   .txt_btn_recomend {
     display: flex;
-    gap: 25%;
+    /* gap: 25%; */
+    justify-content: space-between;
   }
 
   .track_social {
@@ -241,21 +243,20 @@
   }
 
   .reletepost-mob-poston {
-    font-family: "Helvetica Neue";
     font-weight: 400;
-    font-size: 9px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 3%;
+    color: #625E55;
   }
 
   .releted-readmore {
-    font-family: Helvetica Neue;
     font-weight: 400;
-    font-size: 11px;
+    font-size: 14px;
     line-height: 100%;
     letter-spacing: 3%;
     position: relative;
-    left: 14%;
+    /* left: 14%; */
   }
 
   .releted-head {
@@ -271,8 +272,13 @@
   .relet-blog-sec {
     padding-top: 15px;
   }
-  .relet-blog-img-sec{
+
+  .relet-blog-img-sec {
     height: 171px !important;
+  }
+
+  .track-flex-social {
+    margin-bottom: 40px;
   }
 }
 

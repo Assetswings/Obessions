@@ -891,7 +891,6 @@ const ProductsPage = () => {
           >
             APPLY
           </button>
-
         </div>
       </div>
       {/* Fotter section  */}

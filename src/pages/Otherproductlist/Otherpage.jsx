@@ -64,7 +64,7 @@ const Otherpage = () => {
   const [maxPrice, setMaxPrice] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [selected, setSelected] = useState("");
-   const [showShort, setShowShort] = useState("");
+  const [showShort, setShowShort] = useState("");
 
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
@@ -335,7 +335,7 @@ const Otherpage = () => {
                 checked={
                   currentFilters.categories?.includes(sub.name) || false
                 }
-                onChange={() => {scrollToTop(); onChangeHandler("categories", sub.name)}}
+                onChange={() => { scrollToTop(); onChangeHandler("categories", sub.name) }}
               />
               <span className="txt_checkbox">{sub.name}</span>
             </label>
@@ -371,7 +371,7 @@ const Otherpage = () => {
               checked={
                 currentFilters.price_filter?.includes(price.filter_value) || false
               }
-              onChange={() => {scrollToTop(); handlePriceChange(price.filter_value)}}
+              onChange={() => { scrollToTop(); handlePriceChange(price.filter_value) }}
             />
             <span className="txt_checkbox">{price.range_lebel}</span>
           </label>
@@ -398,7 +398,7 @@ const Otherpage = () => {
                 currentFilters.discount_filter?.includes(disc.discount_range) ||
                 false
               }
-              onChange={() => {scrollToTop(); onChangeHandler("discount_filter", disc.discount_range)}}
+              onChange={() => { scrollToTop(); onChangeHandler("discount_filter", disc.discount_range) }}
             />
             <span className="txt_checkbox">
               {disc.discount_range}% Off ({disc.total_items})
@@ -409,7 +409,7 @@ const Otherpage = () => {
     );
   };
 
-  const handleSelect = (option,key) => {
+  const handleSelect = (option, key) => {
     setSelected(option);
     setShowShort(key);
     handleFilterChange('sort_by', option);
@@ -424,39 +424,50 @@ const Otherpage = () => {
       {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&
         <div className="track_filter">
-          <div className="sortby-container">
-            <div className="dropdown">
-              <div
-                className="dropdown-toggle sortby-btn"
-                id="dropdownMenuButton"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                SORT BY
-              </div>
-              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {Object.entries(sorting).map(([key, label]) => (
-                  <li key={key}>
-                    <button
-                      className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                      onClick={() => handleSelect(key, label)}
-                    >
-                      {label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="title_hader_filter">
+            {/* <h2 className="title_prd_roots">
+              {loading ? (
+                <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
+              ) : subcategory ? (
+                formatTitle(subcategory)
+              ) : (
+                formatTitle(category)
+              )}
+            </h2> */}
           </div>
-          <div
-            className="mobile-filter-btn"
-            onClick={() => setIsFilterOpen(true)}
-          >
-            <span>
-              {" "}
-              <SlidersHorizontal size={15} />
-            </span>{" "}
-            FILTERS
+
+          <div className="root_btn_filter_hader">
+            <div
+              className="mobile-filter-btn"
+              onClick={() => setIsFilterOpen(true)}
+            >
+              FILTERS
+            </div>
+            {/* shop by */}
+            <div className="sortby-container">
+              <div className="dropdown">
+                <div
+                  className="dropdown-toggle sortby-btn"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  SORT BY
+                </div>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {Object.entries(sorting).map(([key, label]) => (
+                    <li key={key}>
+                      <button
+                        className={`dropdown-item ${selected === key ? "active-option" : ""}`}
+                        onClick={() => handleSelect(key, label)}
+                      >
+                        {label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       }
@@ -520,7 +531,7 @@ const Otherpage = () => {
                   </span>
 
                 </div>
-                <div className="dropdown" style={{display:"flex", gap:"10px"}}>
+                <div className="dropdown" style={{ display: "flex", gap: "10px" }}>
                   <div
                     className="dropdown-toggle sortby-btn"
                     id="dropdownMenuButton"
@@ -721,29 +732,6 @@ const Otherpage = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-
-
-      {/* <section className="top-picks-section">
-        <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
-        <div className="top-picks-grid">
-          {items.map((item) => (
-            <div key={item.id} className="top-pick-card">
-              <Link to={`/products${item.action_url}`}>
-                <img
-                  src={item.media}
-                  alt={item.name}
-                  className="top-pick-image pointer-crusser"
-                />
-                <p
-                  className="top-pick-title pointer-crusser"
-                >
-                  {item.name}
-                </p>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </section> */}
       <section className="top-picks-section">
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
         <div className="desk-top-picks">
@@ -802,11 +790,6 @@ const Otherpage = () => {
         </div>
 
         <div className="mobile-filter-body">
-          <div className="track-lock">
-            <p className="clr-all" onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}>
-              clear all
-            </p>
-          </div>
 
           {filters && (
             <>
@@ -830,6 +813,12 @@ const Otherpage = () => {
         </div>
         {/* ✅ Sticky Footer Apply Button */}
         <div className="mobile-filter-footer">
+          <button
+            className="apply-filter-btn-clr"
+            onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}
+          >
+            CLEAR ALL
+          </button>
           <button
             className="apply-filter-btn"
             onClick={() => {

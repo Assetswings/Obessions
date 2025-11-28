@@ -302,7 +302,7 @@ const Searchlist = () => {
                 checked={
                   currentFilters.categories?.includes(sub.name) || false
                 }
-                onChange={() => {scrollToTop(); onChangeHandler("categories", sub.name)}}
+                onChange={() => { scrollToTop(); onChangeHandler("categories", sub.name) }}
               />
               <span className="txt_checkbox">{sub.name}</span>
             </label>
@@ -359,7 +359,7 @@ const Searchlist = () => {
                 currentFilters.discount_filter?.includes(disc.discount_range) ||
                 false
               }
-              onChange={() => {scrollToTop(); onChangeHandler("discount_filter", disc.discount_range)}}
+              onChange={() => { scrollToTop(); onChangeHandler("discount_filter", disc.discount_range) }}
             />
             <span className="txt_checkbox">
               {disc.discount_range}% Off ({disc.total_items})
@@ -408,39 +408,50 @@ const Searchlist = () => {
       {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&
         <div className="track_filter">
-          <div className="sortby-container">
-            <div className="dropdown">
-              <div
-                className="dropdown-toggle sortby-btn"
-                id="dropdownMenuButton"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                SORT BY
-              </div>
-              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {Object.entries(sorting).map(([key, label]) => (
-                  <li key={key}>
-                    <button
-                      className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                      onClick={() => handleSelect(key)}
-                    >
-                      {label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="title_hader_filter">
+            {/* <h2 className="title_prd_roots">
+              {loading ? (
+                <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
+              ) : subcategory ? (
+                formatTitle(subcategory)
+              ) : (
+                formatTitle(category)
+              )}
+            </h2> */}
           </div>
-          <div
-            className="mobile-filter-btn"
-            onClick={() => setIsFilterOpen(true)}
-          >
-            <span>
-              {" "}
-              <SlidersHorizontal size={15} />
-            </span>{" "}
-            Filters
+
+          <div className="root_btn_filter_hader">
+            <div
+              className="mobile-filter-btn"
+              onClick={() => setIsFilterOpen(true)}
+            >
+              FILTERS
+            </div>
+            {/* shop by */}
+            <div className="sortby-container">
+              <div className="dropdown">
+                <div
+                  className="dropdown-toggle sortby-btn"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  SORT BY
+                </div>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {Object.entries(sorting).map(([key, label]) => (
+                    <li key={key}>
+                      <button
+                        className={`dropdown-item ${selected === key ? "active-option" : ""}`}
+                        onClick={() => handleSelect(key, label)}
+                      >
+                        {label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       }
@@ -728,11 +739,6 @@ const Searchlist = () => {
         </div>
 
         <div className="mobile-filter-body">
-          <div className="track-lock">
-            <p className="clr-all" onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}>
-              clear all
-            </p>
-          </div>
           {filters && (
             <>
               {filters.categories &&
@@ -755,6 +761,12 @@ const Searchlist = () => {
         </div>
         {/* ✅ Sticky Footer Apply Button */}
         <div className="mobile-filter-footer">
+          <button
+            className="apply-filter-btn-clr"
+            onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}
+          >
+            CLEAR ALL
+          </button>
           <button
             className="apply-filter-btn"
             onClick={() => {

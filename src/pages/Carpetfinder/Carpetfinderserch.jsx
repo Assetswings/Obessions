@@ -23,6 +23,7 @@ import { fetchTopPicks } from "../Products/otherproductSlice";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 import { toast, ToastContainer } from "react-toastify";
 import Pagination from "../../components/Pagination/Pagination";
+import emptyproduct from "../../assets/images/empty-product.png";
 
 const Carpetfinderserch = () => {
   const dispatch = useDispatch();
@@ -277,7 +278,7 @@ const Carpetfinderserch = () => {
                 checked={
                   currentFilters.categories?.includes(sub.name) || false
                 }
-                onChange={() => {scrollToTop(); onChangeHandler("categories", sub.name)}}
+                onChange={() => { scrollToTop(); onChangeHandler("categories", sub.name) }}
               />
               <span className="txt_checkbox">{sub.name}</span>
             </label>
@@ -334,7 +335,7 @@ const Carpetfinderserch = () => {
                 currentFilters.discount_filter?.includes(disc.discount_range) ||
                 false
               }
-              onChange={() => {scrollToTop(); onChangeHandler("discount_filter", disc.discount_range)}}
+              onChange={() => { scrollToTop(); onChangeHandler("discount_filter", disc.discount_range) }}
             />
             <span className="txt_checkbox">
               {disc.discount_range}% Off ({disc.total_items})
@@ -351,9 +352,58 @@ const Carpetfinderserch = () => {
     <>
       <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
       <Breadcrumbs paths={breadcrumbPaths} />
+      {products.length > 0 &&
+        <div className="track_filter">
+          <div className="title_hader_filter">
+            {/* <h2 className="title_prd_roots">
+              {loading ? (
+                <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
+              ) : subcategory ? (
+                formatTitle(subcategory)
+              ) : (
+                formatTitle(category)
+              )}
+            </h2> */}
+          </div>
+
+          <div className="root_btn_filter_hader">
+            <div
+              className="mobile-filter-btn"
+              onClick={() => setIsFilterOpen(true)}
+            >
+              FILTERS
+            </div>
+            {/* shop by */}
+            {/* <div className="sortby-container">
+              <div className="dropdown">
+                <div
+                  className="dropdown-toggle sortby-btn"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  SORT BY
+                </div>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {Object.entries(sorting).map(([key, label]) => (
+                    <li key={key}>
+                      <button
+                        className={`dropdown-item ${selected === key ? "active-option" : ""}`}
+                        onClick={() => handleSelect(key, label)}
+                      >
+                        {label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div> */}
+          </div>
+        </div>
+      }
       <div className="custom-products-page">
         <aside className="custom-filters">
-          {/* <h2 className="title_prd_roots">{slug ? formatTitle(slug) : ""}</h2> */}
+          <h2 className="title_prd_roots">Carpet finder Result</h2>
           <div className="root_devider_flt">
             <h2>Filters</h2>
             {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
@@ -402,150 +452,202 @@ const Carpetfinderserch = () => {
         </aside>
 
         <main className="custom-product-list">
-          <div className="track_filter">
-            <button
-              className="mobile-filter-btn"
-              onClick={() => setIsFilterOpen(true)}>
-              <span>
-                {" "}
-                <SlidersHorizontal />
-              </span>{" "}
-              Filters
-            </button>
-          </div>
-          <p style={{ fontWeight: "bold" }}>
-            {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
-          </p>
-          <div className="custom-products-grid">
-            {loading
-              ? Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="custom-product-card">
-                  <div className="custom-product-image">
-                    <Skeleton height={250} width={230} />
-                  </div>
-                  <p className="custom-product-title">
-                    <Skeleton width={180} height={16} />
-                  </p>
-                  <p className="custom-product-price">
-                    <Skeleton width={100} height={16} />
-                  </p>
-                </div>
-              ))
-              : products.map((item) => {
-                const isWishlisted = item.is_wishlisted;
-                return (
-                  <div
-                    key={item.id}
-                    className="product-card-dtl pointer-crusser"
-                    style={{ cursor: "pointer" }}
-                  >
-                    <div className="product-img-box">
-                      <Link
-                        to={`/productsdetails/${item.action_url}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src={item.media_list?.main?.file}
-                          alt={item.name}
-                          title={item.name}
-                          className="main_image"
-                        />
-                        <img
-                          src={item.media_list?.hover?.file}
-                          alt={item.name}
-                          title={item.name}
-                          className="hover_image"
-                        />
-                      </Link>
+          {products.length > 0 &&
+            <>
+              <div className="sortby-container-mlb">
+                <div>
+                  <span style={{ fontWeight: "bold" }} className="track_contuing">
+                    {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
+                  </span>
 
-                      {/* Wishlist Button */}
-                      <button
-                        className="wishlist-btn_products pointer-crusser"
-                        onClick={(e) => toggleWishlist(e, item)}
-                      >
-                        {animatedWish === item.id ? (
-                          <div
-                            style={{
-                              width: 20,
-                              height: 24,
-                              overflow: "hidden",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
+                </div>
+                {/* <div className="dropdown" style={{ display: "flex", gap: "10px" }}>
+                  <div
+                    className="dropdown-toggle sortby-btn"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    SORT BY
+                  </div>
+                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {Object.entries(sorting).map(([key, label]) => (
+                      <li key={key}>
+                        <button
+                          className={`dropdown-item ${selected === key ? "active-option" : ""}`}
+                          onClick={() => handleSelect(key, label)}
+                        >
+                          {label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="sort-name">
+                    {showShort}
+                  </div>
+                </div> */}
+              </div>
+
+            </>
+          }
+          <div className="mb-6">
+            {loading ? (  // Loading State
+              <div className="product-grid">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="product-card-dtl">
+                    <Skeleton height={200} />
+                    <Skeleton height={20} width={150} />
+                    <Skeleton height={20} width={100} />
+                  </div>
+                ))}
+              </div>
+            ) : products?.length > 0 ? (  // Product State
+              <div className="product-grid">
+                {products.map((item) => {
+                  const isWishlisted = item.is_wishlisted;
+                  return (
+
+                    <div
+                      key={item.id}
+                      className="product-card-dtl pointer-crusser"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="product-img-box">
+                        <Link
+                          to={`/productsdetails/${item.action_url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            src={item.media_list?.main?.file}
+                            alt={item.name}
+                            title={item.name}
+                            className="main_image"
+                          />
+                          <img
+                            src={item.media_list?.hover?.file}
+                            alt={item.name}
+                            title={item.name}
+                            className="hover_image"
+                          />
+                        </Link>
+
+                        {/* Wishlist Button */}
+                        <button
+                          className="wishlist-btn_products pointer-crusser"
+                          onClick={(e) => toggleWishlist(e, item)}
+                        >
+                          {animatedWish === item.id ? (
+                            <div
+                              style={{
+                                width: 20,
+                                height: 24,
+                                overflow: "hidden",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Player
+                                autoplay
+                                keepLastFrame
+                                src={heartAnimation}
+                                style={{
+                                  width: 139,
+                                  height: 139,
+                                  transform: "scale(0.5)",
+                                  transformOrigin: "center",
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <Heart
+                              color={isWishlisted ? "#FF0000" : "#000"}
+                              fill={isWishlisted ? "#FF0000" : "none"}
+                              size={20}
+                              strokeWidth={2}
+                            />
+                          )}
+                        </button>
+
+                        {/* Quick View */}
+                        <div className="qucick_dv">
+                          <span
+                            className="quick-view_pd"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setQuickViewProduct(item);
+                              setShowModal(true);
                             }}
                           >
-                            <Player
-                              autoplay
-                              keepLastFrame
-                              src={heartAnimation}
-                              style={{
-                                width: 139,
-                                height: 139,
-                                transform: "scale(0.5)",
-                                transformOrigin: "center",
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <Heart
-                            color={isWishlisted ? "#FF0000" : "#000"}
-                            fill={isWishlisted ? "#FF0000" : "none"}
-                            size={20}
-                            strokeWidth={2}
-                          />
-                        )}
-                      </button>
-
-                      {/* Quick View */}
-                      <div className="qucick_dv">
-                        <span
-                          className="quick-view_pd"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setQuickViewProduct(item);
-                            setShowModal(true);
-                          }}
-                        >
-                          Quick View &nbsp;
-                          <Expand color="#000000" size={15} strokeWidth={1.25} />
-                        </span>
+                            Quick View &nbsp;
+                            <Expand color="#000000" size={15} strokeWidth={1.25} />
+                          </span>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Product Title */}
-                    <p className="product-title truncate pointer-crusser">
+                      {/* Product Title */}
+                      <p className="product-title truncate pointer-crusser">
+                        <Link
+                          to={`/productsdetails/${item.action_url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {item.name}
+                        </Link>
+                      </p>
+
+                      {/* Product Price */}
                       <Link
                         to={`/productsdetails/${item.action_url}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {item.name}
+                        <div className="product-price">
+                          <span>₹{item.selling_price}</span>
+                          {item.mrp && item.mrp !== item.selling_price && (
+                            <>
+                              <span className="original">₹{item.mrp}</span>
+                              <span className="discount">
+                                ({item.discount_percent}% OFF)
+                              </span>
+                            </>
+                          )}
+                        </div>
                       </Link>
-                    </p>
-
-                    {/* Product Price */}
-                    <Link
-                      to={`/productsdetails/${item.action_url}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <div className="product-price">
-                        <span>₹{item.selling_price}</span>
-                        {item.mrp && item.mrp !== item.selling_price && (
-                          <>
-                            <span className="original">₹{item.mrp}</span>
-                            <span className="discount">
-                              ({item.discount_percent}% OFF)
-                            </span>
-                          </>
-                        )}
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : products?.length == 0 ? (  // Empty Product State
+              <div className="empty-product">
+                <img
+                  src={emptyproduct}
+                  alt="Empty cart"
+                  className="empty-cart-image"
+                />
+                <p className="empty-cart-subtitle">
+                  We couldn’t find a match, but there’s more waiting to be discovered.
+                </p>
+                <button
+                  className="empty-cart-btn"
+                  onClick={() => navigate("/")} // ✅ send user back to home/shop
+                >
+                  EXPLORE &nbsp;
+                </button>
+              </div>
+            ) : (<></>)}
           </div>
+          <div className="pagination_track">
+            <Pagination
+              className="mt-6"
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              totalitems={products.length}
+            />
+          </div>
+
         </main>
 
         <ProductQuickViewModal
@@ -560,36 +662,6 @@ const Carpetfinderserch = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-      <div className="pagination_track_btm">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-          totalitems={products.length}
-        />
-      </div>
-
-      {/* <section className="top-picks-section">
-        <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
-        <div className="top-picks-grid">
-          {items.map((item) => (
-            <div key={item.id} className="top-pick-card">
-              <Link to={`/products${item.action_url}`}>
-                <img
-                  src={item.media}
-                  alt={item.name}
-                  className="top-pick-image pointer-crusser"
-                />
-                <p
-                  className="top-pick-title pointer-crusser"
-                >
-                  {item.name}
-                </p>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </section> */}
       <section className="top-picks-section">
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
         <div className="desk-top-picks">
@@ -676,6 +748,12 @@ const Carpetfinderserch = () => {
         </div>
         {/* ✅ Sticky Footer Apply Button */}
         <div className="mobile-filter-footer">
+          <button
+            className="apply-filter-btn-clr"
+            onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}
+          >
+            CLEAR ALL
+          </button>
           <button
             className="apply-filter-btn"
             onClick={() => {

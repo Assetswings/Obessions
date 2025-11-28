@@ -231,7 +231,8 @@ font-family: "Playfair Display", serif; */
 
 .root_avl {
   position: relative;
-  top: 10px
+  top: 10px;
+  margin-bottom: 25px;
 }
 
 .size-btn {
@@ -1299,4 +1300,27 @@ font-family: "Playfair Display", serif; */
 
 .unit-toggle button:not(.active):hover {
   background: #e8e8e8;
+}
+
+ul.custom-tick-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul.custom-tick-list li {
+  position: relative;
+  padding-left: 28px; /* space for tick image */
+  margin-bottom: 8px;
+}
+
+ul.custom-tick-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  background-image: url('../../assets/icons/tick.png'); /* your tick image path */
+  background-size: contain;
+  background-repeat: no-repeat;
 }

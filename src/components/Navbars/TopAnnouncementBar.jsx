@@ -238,6 +238,7 @@ const TopAnnouncementBar = () => {
             className="user-click-wrapper"
             style={{ position: "relative" }}
             title="User Profile"
+            onClick={handleUserClick}
           >
             <span style={{ fontSize: "12px", paddingRight: "7px" }}>{localStorage.getItem('userName') ?? ''}</span>
             <CircleUser
@@ -245,7 +246,6 @@ const TopAnnouncementBar = () => {
               size={26}
               strokeWidth={1}
               style={{ cursor: "pointer" }}
-              onClick={handleUserClick}
             />
 
             {/* ✅ Fixed Popup */}

@@ -271,6 +271,7 @@ GENERAL .sizeguide-container {
 
   .style-content {
     max-width: 100%;
+    margin-right: 0px !important;
   }
 
   .section-title {

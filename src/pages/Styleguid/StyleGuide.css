@@ -365,7 +365,7 @@
     -webkit-overflow-scrolling: touch;
     /* smooth iOS scrolling */
     scroll-behavior: smooth;
-    padding: 8px 0px 10px 250px;
+    padding: 8px 0px 10px 170px;
     margin-bottom: 10px;
     white-space: nowrap;
     /* prevent wrapping inside children */
@@ -390,6 +390,7 @@
     border: 1px solid transparent;
     background: #fff;
     cursor: pointer;
+    margin-right: 0px !important;
   }
 
   .tab-btn.active {

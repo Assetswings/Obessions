@@ -534,8 +534,19 @@ const ProductDetailPage = () => {
             <Breadcrumbs paths={breadcrumbPaths} />
           )}
         </div>
+        {/* Share Button or Skeleton for Mobile */}
+        <div>
+          {localLoading ? (
+            <Skeleton width={200} />
+          ) : (
+            <div className="share_btn mobshare" onClick={handleShare}>
+              <span><Share2 size={14} /></span>
+              <span style={{ fontSize: '13px', paddingLeft:"5px" }}>SHARE</span>
+            </div>
+          )}
+        </div>
 
-        {/* Share Button or Skeleton */}
+        {/* Share Button or Skeleton for Web */}
         {localLoading ? (
           <div className="share_btn"></div>
         ) : (
@@ -976,7 +987,7 @@ const ProductDetailPage = () => {
                     </p>
                   </div>
                   <div>
-                    <span className="avl_3">
+                    <span className="avl_trck">
                       Shipping Charges calculated at checkout.
                     </span>
                   </div>
@@ -1434,7 +1445,7 @@ const ProductDetailPage = () => {
                     <div>
                       <span className="pp-mc-txt">
                         Not sure which size fits best? Explore our{" "}
-                        <span className="sub-pp-mc"><Link to="/size-guide"  target="_blank" rel="noopener noreferrer">Size Guide</Link></span> to find
+                        <span className="sub-pp-mc"><Link to="/size-guide" target="_blank" rel="noopener noreferrer">Size Guide</Link></span> to find
                         your perfect match.
                       </span>
                     </div>
@@ -1467,7 +1478,7 @@ const ProductDetailPage = () => {
 
               <div className="good-to-know-section">
                 <h4>GOOD TO KNOW</h4>
-                <ul>
+                <ul className="custom-tick-list">
                   <li>
                     Edges may curl initially; lay flat or reverse-roll to settle
                   </li>

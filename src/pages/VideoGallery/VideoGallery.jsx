@@ -2,58 +2,48 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../app/api";
 import "./VideoGallery.css";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function VideoGallery() {
   const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   const scrollRef = useRef(null);
   const videoRefs = useRef([]);
 
   const COLUMNS = 4;
 
-  // Fetch videos
-  const fetchVideos = async (pageNum = 1) => {
+  // 🔥 Preload all videos at once
+  const preloadAllVideos = async () => {
     setLoading(true);
     try {
-      const res = await API.get(`/gallery?page=${pageNum}`);
-      if (res.data?.status === 200 && Array.isArray(res.data.data)) {
-        if (res.data.data.length === 0) {
-          setHasMore(false);
-        } else {
-          // Pre-generate consistent heights for new videos
-          const newVideos = res.data.data.map((v) => ({
+      let allData = [];
+
+      for (let p = 1; p <= 40; p++) {
+        const res = await API.get(`/gallery?page=${p}`);
+        if (res.data?.status === 200 && Array.isArray(res.data.data)) {
+          const mapped = res.data.data.map((v) => ({
             ...v,
-            height: v.height || Math.floor(Math.random() * 80) + 320, // increase min height
+            height: v.height || Math.floor(Math.random() * 80) + 320,
           }));
-          setVideos((prev) => [...prev, ...newVideos]);
+          allData = [...allData, ...mapped];
         }
       }
+
+      setVideos(allData);
     } catch (err) {
-      console.error("Gallery fetch error:", err);
+      console.error("Gallery preload error:", err);
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchVideos(page);
-  }, [page]);
+    preloadAllVideos();
+  }, []);
 
-  // Infinite scroll
-  const handleScroll = () => {
-    const el = scrollRef.current;
-    if (!el || loading || !hasMore) return;
-    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 200) {
-      setPage((prev) => prev + 1);
-    }
-  };
-
-  // Distribute videos into columns
+  // Masonry layout
   const columns = Array.from({ length: COLUMNS }, () => []);
   const heights = Array.from({ length: COLUMNS }, () => 0);
 
@@ -63,25 +53,38 @@ export default function VideoGallery() {
     heights[minIndex] += video.height + 14;
   });
 
-  // Hover play logic
-  const handleMouseEnter = (index) => {
-    const video = videoRefs.current[index];
+  const handleMouseEnter = (i) => {
+    const video = videoRefs.current[i];
     if (video) video.play().catch(() => {});
   };
 
-  const handleMouseLeave = (index) => {
-    const video = videoRefs.current[index];
+  const handleMouseLeave = (i) => {
+    const video = videoRefs.current[i];
     if (video) {
       video.pause();
-      video.load(); // reset to poster
+      video.load();
     }
   };
 
-  const handleVideoClick = (v) => setSelectedVideo(v);
-  const closeModal = () => setSelectedVideo(null);
+  const openModal = (index) => setSelectedIndex(index);
+  const closeModal = () => setSelectedIndex(null);
 
-  if (!videos.length && !loading)
-    return <div className="gallery-loading">Loading videos...</div>;
+  const showNext = () => {
+    if (selectedIndex < videos.length - 1) setSelectedIndex((prev) => prev + 1);
+  };
+
+  const showPrevious = () => {
+    if (selectedIndex > 0) setSelectedIndex((prev) => prev - 1);
+  };
+
+  const selectedVideo = selectedIndex !== null ? videos[selectedIndex] : null;
+
+  if (loading)
+    return (
+      <div className="gallery-full-loader">
+        <div className="loader-ring"></div>
+      </div>
+    );
 
   return (
     <>
@@ -89,7 +92,7 @@ export default function VideoGallery() {
         <ChevronLeft />
       </button>
 
-      <div ref={scrollRef} className="gallery-wrapper" onScroll={handleScroll}>
+      <div ref={scrollRef} className="gallery-wrapper">
         {columns.map((col, colIndex) => (
           <div key={colIndex} className="gallery-column">
             {col.map((v) => {
@@ -97,8 +100,8 @@ export default function VideoGallery() {
               const isVideo =
                 v.media &&
                 (v.media.endsWith(".mp4") ||
-                  v.media.endsWith(".webm") ||
-                  v.media.endsWith(".mov"));
+                  v.media.endsWith(".mov") ||
+                  v.media.endsWith(".webm"));
 
               return (
                 <div
@@ -107,7 +110,7 @@ export default function VideoGallery() {
                   style={{ height: v.height }}
                   onMouseEnter={() => handleMouseEnter(videoIndex)}
                   onMouseLeave={() => handleMouseLeave(videoIndex)}
-                  onClick={() => handleVideoClick(v)}
+                  onClick={() => openModal(videoIndex)}
                 >
                   {isVideo ? (
                     <video
@@ -118,12 +121,12 @@ export default function VideoGallery() {
                       muted
                       loop
                       playsInline
-                      preload="metadata"
+                      preload="auto"
                     />
                   ) : (
                     <img
                       src={v.poster_image || "/fallback.jpg"}
-                      alt="Video thumbnail"
+                      alt=""
                       className="video-box"
                     />
                   )}
@@ -132,36 +135,41 @@ export default function VideoGallery() {
             })}
           </div>
         ))}
-        {loading && <div className="gallery-loading">Loading more videos...</div>}
       </div>
 
-      {/* Modal */}
       {selectedVideo && (
         <div className="video-modal" onClick={closeModal}>
-          <div className="video-modal-content" onClick={(e) => e.stopPropagation()}>
-            {selectedVideo.media &&
-            (selectedVideo.media.endsWith(".mp4") ||
-              selectedVideo.media.endsWith(".webm") ||
-              selectedVideo.media.endsWith(".mov")) ? (
-              <video
-                key={selectedVideo.media} // force reload on change
-                src={selectedVideo.media}
-                autoPlay
-                muted={false}
-                controls
-                playsInline
-                className="modal-video"
-              />
-            ) : (
-              <img
-                src={selectedVideo.poster_image || "/fallback.jpg"}
-                alt="Video thumbnail"
-                className="modal-video"
-              />
-            )}
+          <div
+            className="video-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <video
+              key={selectedVideo.media}
+              src={selectedVideo.media}
+              autoPlay
+              controls
+              className="modal-video"
+            />
+
             <button className="close-btn-vd" onClick={closeModal}>
               ✕
             </button>
+
+            {selectedIndex > 0 && (
+              <button className="prev-btn" onClick={showPrevious}>
+                <span className="left_btn">
+                  <ChevronLeft />
+                </span>
+              </button>
+            )}
+
+            {selectedIndex < videos.length - 1 && (
+              <button className="next-btn" onClick={showNext}>
+                <span className="right_btn">
+                  <ChevronRight />
+                </span>
+              </button>
+            )}
           </div>
         </div>
       )}

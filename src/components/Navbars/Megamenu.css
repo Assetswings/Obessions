@@ -62,7 +62,7 @@
 
   /* Sections */
   .mega-menu-left {
-    width: 15%;
+    width: 25%;
     border-right: 1px solid #eee;
     position: sticky;
     top: 0px;
@@ -71,6 +71,7 @@
   .menu-categories {
     list-style: none;
     padding: 0;
+    padding-left: 26%;
   }
   
   .menu-categories li {
@@ -96,7 +97,7 @@
   }
   
   .mega-menu-center {
-    width: 60%;
+    width: 80%;
     max-height: 300px;
     display: flex;
     flex-wrap: wrap;

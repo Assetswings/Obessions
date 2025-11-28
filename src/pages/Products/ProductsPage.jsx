@@ -854,21 +854,6 @@ const ProductsPage = () => {
         </div>
 
         <div className="mobile-filter-body">
-          <div className="track-lock">
-            <p className="clr-all" onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}>
-              clear all
-            </p>
-          </div>
-
-          {/* {filters &&
-            Object.entries(filters).map(([filterKey, values]) =>
-              renderFilterGroup(
-                filterKey.replace(/_/g, " "),
-                values,
-                filterKey,
-                true
-              )
-            )} */}
           {filters && (
             <>
               {filters.categories &&
@@ -892,13 +877,10 @@ const ProductsPage = () => {
         {/* ✅ Sticky Footer Apply Button */}
         <div className="mobile-filter-footer">
           <button
-            className="apply-filter-btn"
-            onClick={() => {
-              setSelectedFilters(tempMobileFilters);
-              setIsFilterOpen(false);
-            }}
+            className="apply-filter-btn-clr"
+            onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}
           >
-            APPLY
+            CLEAR ALL
           </button>
           <button
             className="apply-filter-btn"
@@ -909,6 +891,7 @@ const ProductsPage = () => {
           >
             APPLY
           </button>
+
         </div>
       </div>
       {/* Fotter section  */}

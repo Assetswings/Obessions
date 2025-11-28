@@ -465,7 +465,6 @@
   overflow-y: auto;
   /* only body scrolls */
   padding: 20px;
-  margin-bottom: 120px;
 }
 
 /* Sticky footer */
@@ -488,7 +487,18 @@
   padding: 14px;
   font-size: 16px;
   font-weight: bold;
-  border-radius: 4px;
+ 
+  cursor: pointer;
+}
+.apply-filter-btn-clr {
+  width: 100%;
+  background: none !important;
+  color: #080505;
+  border: 2px solid black !important;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
 }
 

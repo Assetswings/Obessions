@@ -65,15 +65,11 @@ import { SlidersHorizontal, X } from "lucide-react";
             </button>
           </div> */}
 
-            <div className="track_filter">
+            <div className="track_filter_cll">
                      <div
                        className="mobile-filter-btn"
                        onClick={() => setIsFilterOpen(true)}
                      >
-                       <span>
-                         {" "}
-                         <SlidersHorizontal size={15} />
-                       </span>{" "}
                        FILTERS
                      </div>
                    </div>

@@ -400,11 +400,9 @@
   display: none;
   /* position: fixed;
   bottom: 20px; */
-  right: 20px;
-  background: white;
   color: #333;
   height: 40px;
-  width: 130px;
+  width: 86px;
   font-weight: 500;
   border: none;
   font-size: 14px;
@@ -414,7 +412,14 @@
   justify-content: center;
   align-items: center;
   gap: 6px;
-  box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
+  position: relative;
+  top: 0px;
+
+}
+
+.title_hader_filter {
+  position: relative;
+  left: 20px;
 }
 
 .track_filter {
@@ -465,12 +470,14 @@
 
 /* Sticky footer */
 .mobile-filter-footer {
-  border-top: 1px solid #eee;
-  padding: 15px 20px;
-  background: #fff;
-  position: sticky;
-  bottom: 0;
-  margin-bottom: 100px;
+ border-top: 1px solid #eee;
+    padding: 35px 20px;
+    background: #fff;
+    position: sticky;
+    bottom: 0;
+    margin-bottom: 100px;
+    display: flex;
+    gap: 10px;
 }
 
 .apply-filter-btn {
@@ -531,22 +538,19 @@
 
   .track_filter {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     position: sticky;
     top: 48px;
-    width: 100%;
     height: 55px;
     z-index: 1000;
     padding: 8px 12px;
-    /* ✨ Glass effect */
-    background: rgba(255, 255, 255, 0.15);
-    /* light transparent layer */
-    backdrop-filter: blur(3px);
-    /* frosted blur */
-    -webkit-backdrop-filter: blur(10px);
-    /* Safari support */
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    /* subtle border */
+    background-color: white;
+    align-items: center;
+  }
+
+  .root_btn_filter_hader {
+    display: flex;
+
   }
 
   .top-picks-heading {
@@ -580,7 +584,7 @@
     display: flex;
     height: 40px;
     width: 100px;
-    box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
+
   }
 
   .pagination_track {
@@ -615,7 +619,7 @@
   display: inline-block;
   display: flex;
   justify-content: flex-end;
-  width: 98%;
+
 
 }
 
@@ -847,6 +851,11 @@
     padding: 20px 20px 20px 15px;
     gap: 30px;
     font-family: Arial, sans-serif;
+  }
+
+  .title_prd_roots {
+    font-family: "Playfair Display", serif;
+    font-size: 18px !important;
   }
 }
 

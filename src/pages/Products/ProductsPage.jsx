@@ -434,7 +434,7 @@ const ProductsPage = () => {
       {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&
         <div className="track_filter">
-          <h2 className="title_prd_roots">
+          <div className="title_hader_filter"> <h2 className="title_prd_roots">
             {loading ? (
               <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
             ) : subcategory ? (
@@ -443,39 +443,40 @@ const ProductsPage = () => {
               formatTitle(category)
             )}
           </h2>
-          <div className="sortby-container">
-            <div className="dropdown">
-              <div
-                className="dropdown-toggle sortby-btn"
-                id="dropdownMenuButton"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                SORT BY
-              </div>
-              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {Object.entries(sorting).map(([key, label]) => (
-                  <li key={key}>
-                    <button
-                      className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                      onClick={() => handleSelect(key, label)}
-                    >
-                      {label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
-          <div
-            className="mobile-filter-btn"
-            onClick={() => setIsFilterOpen(true)}
-          >
-            <span>
-              {" "}
-              <SlidersHorizontal size={15} />
-            </span>{" "}
-            FILTERS
+
+          <div className="root_btn_filter_hader">
+            <div
+              className="mobile-filter-btn"
+              onClick={() => setIsFilterOpen(true)}
+            >
+              FILTERS
+            </div>
+            {/* shop by */}
+            <div className="sortby-container">
+              <div className="dropdown">
+                <div
+                  className="dropdown-toggle sortby-btn"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  SORT BY
+                </div>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {Object.entries(sorting).map(([key, label]) => (
+                    <li key={key}>
+                      <button
+                        className={`dropdown-item ${selected === key ? "active-option" : ""}`}
+                        onClick={() => handleSelect(key, label)}
+                      >
+                        {label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       }
@@ -560,7 +561,7 @@ const ProductsPage = () => {
                   </span>
 
                 </div>
-                <div className="dropdown" style={{display:"flex", gap:"10px"}}>
+                <div className="dropdown" style={{ display: "flex", gap: "10px" }}>
                   <div
                     className="dropdown-toggle sortby-btn"
                     id="dropdownMenuButton"

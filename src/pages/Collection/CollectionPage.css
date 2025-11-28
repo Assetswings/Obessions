@@ -96,7 +96,7 @@ font-family: "Playfair Display", serif; */
 }
 
 
- 
+
 
 
 @media (max-width: 768px) {
@@ -147,27 +147,6 @@ font-family: "Playfair Display", serif; */
   }
 }
 
- /* Mobile filter button */
-.mobile-filter-btn {
-  display: none;
-  /* position: fixed;
-  bottom: 20px; */
-  right: 20px;
-  background: white;
-  color:#333;
-  height: 40px;
-  width: 130px;
-  font-weight: 500;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
-}
 
 .track_filter {
   display: flex;
@@ -176,4 +155,16 @@ font-family: "Playfair Display", serif; */
   top: 10px;
   z-index: 1000;
   display: none;
+}
+
+.track_filter_cll {
+  display: flex;
+  position: sticky;
+  top: 48px;
+  height: 55px;
+  z-index: 1000;
+  padding: 8px 12px;
+  background-color: white;
+  align-items: center;
+  justify-content: flex-end;
 }

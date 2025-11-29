@@ -10,7 +10,7 @@
   align-items: center;
   padding: 12px 0;
   height: 70px;
-  z-index: 99999999;
+  z-index: 9999;
 }
 
 .tab-item {

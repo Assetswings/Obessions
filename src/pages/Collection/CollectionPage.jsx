@@ -179,7 +179,7 @@ import { SlidersHorizontal, X } from "lucide-react";
           <X size={20} onClick={() => setIsFilterOpen(false)} />
         </div>
 
-        <div className="mobile-filter-body">
+        <div className="mobile-filter-body collbdy">
           <div className="track-lock">
             <p className="clr-all" onClick={() => setTempMobileFilters({})}>
               clear all

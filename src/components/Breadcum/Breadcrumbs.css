@@ -33,5 +33,6 @@
   @media (max-width: 768px) {
     .breadcrumb-wrapper{
        font-size: 10px;
+        padding-left: 20px;
     }
   }

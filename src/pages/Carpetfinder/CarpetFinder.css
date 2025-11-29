@@ -151,15 +151,19 @@
   font-weight: 500;
 }
 
+/* Keep stepper height fixed ALWAYS */
 .stepper-right {
-  width: 40px;
+  height: 350px;      /* fixed height so it never grows */
+  flex-shrink: 0;     /* stops it from resizing */
   display: flex;
   flex-direction: column;
+  justify-content: space-between; /* evenly spread circles */
   align-items: center;
-  gap: -0.5rem;
   margin-left: 1.5rem;
-  justify-content: center;
+  position: sticky;
+  top: 130px;         /* optional – keeps it in view */
 }
+
 
 .stepper-line-wrapper {
   display: flex;

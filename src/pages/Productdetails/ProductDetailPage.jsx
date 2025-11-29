@@ -520,16 +520,12 @@ const ProductDetailPage = () => {
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
+
       <div className="root_br_head">
         {/* Breadcrumbs or Skeleton */}
         <div>
           {localLoading ? (
-            <Skeleton width={180} height={20}
-              style={{
-                position: "relative",
-                left: "20px",
-              }}
-            />
+           <> </>
           ) : (
             <Breadcrumbs paths={breadcrumbPaths} />
           )}
@@ -537,7 +533,9 @@ const ProductDetailPage = () => {
         {/* Share Button or Skeleton for Mobile */}
         <div>
           {localLoading ? (
-            <Skeleton width={200} />
+              <> 
+              </>
+            // <Skeleton width={200} />
           ) : (
             <div className="share_btn mobshare" onClick={handleShare}>
               <span><Share2 size={14} /></span>
@@ -600,8 +598,9 @@ const ProductDetailPage = () => {
             </div>
           </>
         )}
-
       </div>
+
+
       <div className="product-page">
         {/* Main Product Image */}
         <div className="product-gallery">
@@ -661,7 +660,6 @@ const ProductDetailPage = () => {
                   width="100%"
                   baseColor="#e0e0e0"
                   highlightColor="#f5f5f5"
-                  borderRadius={10}
                 />
               </div>
             ) : selectedImage === "video" ? (
@@ -687,7 +685,7 @@ const ProductDetailPage = () => {
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
-                    borderRadius: "10px",
+                  
                   }}
                 >
                   <source src={selectedColor?.video_source} type="video/mp4" />
@@ -704,7 +702,7 @@ const ProductDetailPage = () => {
                   height: "auto",
                   mixBlendMode: "darken",
                   objectFit: "cover",
-                  borderRadius: "10px",
+                  
                 }}
               />
             )}
@@ -755,14 +753,7 @@ const ProductDetailPage = () => {
 
         {/* Product Info */}
         <div className="product-info">
-          {localLoading ? (
-            <Skeleton width={200} />
-          ) : (
-            <div className="share_btn mobshare" onClick={handleShare}>
-              <span><Share2 size={14} /></span>
-              <span style={{ fontSize: '13px' }}>SHARE</span>
-            </div>
-          )}
+         
           <h1 className="title_details">
             {localLoading ? <Skeleton width={200} /> : selectedSize?.name}
           </h1>
@@ -1278,7 +1269,7 @@ const ProductDetailPage = () => {
                   key={tab.id}
                   disabled={true}
                   // onClick={() => scrollToSection(tab.id)}
-                  className={`tab-btn ${activeTab === tab.id ? "active" : ""}`}
+                  className={`tab-btn-pdp ${activeTab === tab.id ? "active" : ""}`}
                 >
                   {tab.label}
                 </button>
@@ -1499,6 +1490,23 @@ const ProductDetailPage = () => {
                   YOUR LIFESTYLE, NOT AGAINST IT.
                 </p>
               </div>
+
+     <div className="msg_track-mlb-main" > 
+      <div className="msg_track-mlb">
+
+                    <div>
+                    <img
+                      className="image_good"
+                      src="https://i.ibb.co/s9gxd00H/Untitled-Artwork-4-2.png"
+                    />
+                  </div>{" "}
+                <div>
+                 
+                  MADE FOR LOW-FUSS LIVING: BECAUSE YOUR CARPET SHOULD WORK WITH
+                  YOUR LIFESTYLE, NOT AGAINST IT.
+                </div>
+              </div>
+             </div>    
             </div>
           </div>
         </>

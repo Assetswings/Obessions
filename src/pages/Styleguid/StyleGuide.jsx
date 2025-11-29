@@ -66,13 +66,55 @@ const StyleGuide = () => {
   return (
     <>
       {loading ? (
-        <div className="loading-skeleton" style={{ textAlign: "center" }}>
-          {/* Paragraph-style skeleton */}
-          <Skeleton width="80%" height={30} style={{ marginBottom: 15 }} />
-          <Skeleton count={6} height={18} style={{ marginBottom: 8 }} />
-          <Skeleton width="90%" height={18} style={{ marginBottom: 8 }} />
-          <Skeleton width="80%" height={18} style={{ marginBottom: 8 }} />
-          {/* <Skeleton count={2} height={18} style={{ marginBottom: 8 }} /> */}
+        <div className="styleguide-skeleton" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
+
+          {/* ---------- HERO SKELETON ---------- */}
+          <div style={{ position: "relative", height: "471px", marginBottom: 50 }}>
+            <Skeleton width="100%" height="100%" />
+            <div style={{ position: "absolute", bottom: 50, left: 70, maxWidth: 600 }}>
+              <Skeleton width="70%" height={40} style={{ marginBottom: 15 }} />
+              <Skeleton width="90%" height={20} count={2} style={{ marginBottom: 10 }} />
+            </div>
+          </div>
+
+          {/* ---------- CARPET GUIDE TABS ---------- */}
+          <Skeleton width="40%" height={30} style={{ margin: "0 auto 20px" }} /> {/* Guide title */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap", marginBottom: 40 }}>
+            {[...Array(4)].map((_, i) => (
+              <Skeleton key={i} width={80} height={30} />
+            ))}
+          </div>
+
+          {/* ---------- CARPET GUIDE CONTENT ---------- */}
+          <div style={{ display: "flex", gap: 40, flexWrap: "wrap", marginBottom: 80 }}>
+            <Skeleton width={600} height={500} /> {/* Image */}
+            <div style={{ flex: 1, minWidth: 250 }}>
+              <Skeleton width="60%" height={24} style={{ marginBottom: 12 }} /> {/* Name */}
+              <Skeleton width="100%" height={16} count={3} style={{ marginBottom: 12 }} /> {/* Short desc */}
+              <Skeleton width="100%" height={16} count={5} style={{ marginBottom: 20 }} /> {/* HTML content */}
+              <Skeleton width={120} height={36} /> {/* Button */}
+            </div>
+          </div>
+
+          {/* ---------- ROOM GUIDE ---------- */}
+          <Skeleton width="35%" height={28} style={{ margin: "0 auto 20px" }} /> {/* Room guide title */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 15, flexWrap: "wrap", marginBottom: 30 }}>
+            {[...Array(4)].map((_, i) => (
+              <Skeleton key={i} width={80} height={28} />
+            ))}
+          </div>
+
+          {/* ---------- ROOM GUIDE CONTENT ---------- */}
+          <div style={{ display: "flex", gap: 30, flexWrap: "wrap", marginBottom: 80 }}>
+            <Skeleton width="50%" height={350} /> {/* Room image */}
+            <div style={{ flex: 1, minWidth: 250 }}>
+              <Skeleton width="60%" height={20} style={{ marginBottom: 10 }} /> {/* Name */}
+              <Skeleton width="100%" height={14} count={3} style={{ marginBottom: 10 }} /> {/* Short desc */}
+              <Skeleton width="100%" height={14} count={5} style={{ marginBottom: 12 }} /> {/* HTML content */}
+              <Skeleton width={120} height={36} /> {/* Button */}
+            </div>
+          </div>
+
         </div>
       ) : (
         <div className="styleguide-container">

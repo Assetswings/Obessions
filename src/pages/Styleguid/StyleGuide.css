@@ -359,13 +359,13 @@
     flex-direction: row !important;
     flex-wrap: nowrap !important;
     /* force single row */
-    gap: 10px;
+    gap: 0px;
     overflow-x: auto;
     /* horizontal scrolling */
     -webkit-overflow-scrolling: touch;
     /* smooth iOS scrolling */
     scroll-behavior: smooth;
-    padding: 8px 0px 10px 170px;
+    padding: 8px 0px 10px 83px;
     margin-bottom: 10px;
     white-space: nowrap;
     /* prevent wrapping inside children */
@@ -385,7 +385,7 @@
     flex: 0 0 auto;
     /* do not shrink, keep intrinsic width */
     white-space: nowrap;
-    padding: 8px 14px;
+    padding: 8px 10px;
     border-radius: 999px;
     border: 1px solid transparent;
     background: #fff;

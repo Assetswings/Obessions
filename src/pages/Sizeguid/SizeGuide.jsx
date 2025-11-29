@@ -33,13 +33,52 @@ const SizeGuide = () => {
   return (
     <>
       {loading ? (
-        <div className="loading-skeleton" style={{ textAlign: "center" }}>
-          {/* Paragraph-style skeleton */}
-          <Skeleton width="80%" height={30} style={{ marginBottom: 15 }} />
-          <Skeleton count={6} height={18} style={{ marginBottom: 8 }} />
-          <Skeleton width="90%" height={18} style={{ marginBottom: 8 }} />
-          <Skeleton width="80%" height={18} style={{ marginBottom: 8 }} />
-          {/* <Skeleton count={2} height={18} style={{ marginBottom: 8 }} /> */}
+        <div className="sizeguide-skeleton">
+          {/* ---------- HERO SKELETON ---------- */}
+          <div className="hero-skeleton" style={{ position: "relative", height: "471px", marginBottom: "50px" }}>
+            <Skeleton width="100%" height="100%" />
+            <div style={{ position: "absolute", bottom: 50, left: 70, maxWidth: 600 }}>
+              <Skeleton width="70%" height={40} style={{ marginBottom: 15 }} />
+              <Skeleton width="90%" height={20} count={2} style={{ marginBottom: 10 }} />
+            </div>
+          </div>
+
+          {/* ---------- STEPS SKELETON ---------- */}
+          <div className="steps-skeleton" style={{ marginBottom: "60px" }}>
+            <Skeleton width="30%" height={28} style={{ marginBottom: 30 }} /> {/* Steps heading */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "60px 100px" }}>
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="step-item-skeleton" style={{ display: "flex", gap: "20px" }}>
+                  <Skeleton width={50} height={50} />
+                  <div>
+                    <Skeleton width={120} height={20} style={{ marginBottom: 8 }} />
+                    <Skeleton width={180} height={16} count={2} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ---------- STYLE BLOCKS SKELETON ---------- */}
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className={`style-block-skeleton ${index % 2 !== 0 ? "reverse-layout" : ""}`} style={{ display: "flex", gap: 60, marginBottom: 60 }}>
+              <Skeleton width={600} height={600} /> {/* Style Image */}
+              <div style={{ flex: 1, maxWidth: 500 }}>
+                <Skeleton width="60%" height={24} style={{ marginBottom: 16 }} /> {/* Title */}
+                <Skeleton width="100%" height={16} count={3} style={{ marginBottom: 20 }} /> {/* Description */}
+                <Skeleton width="40%" height={20} style={{ marginBottom: 12 }} /> {/* Recommends Title */}
+                <div style={{ display: "flex", gap: 16 }}>
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i}>
+                      <Skeleton width={55} height={70} />
+                      <Skeleton width={50} height={12} style={{ marginTop: 4 }} />
+                    </div>
+                  ))}
+                </div>
+                <Skeleton width={120} height={36} style={{ marginTop: 20 }} /> {/* Explore Button */}
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
         <div className="sizeguide-container">

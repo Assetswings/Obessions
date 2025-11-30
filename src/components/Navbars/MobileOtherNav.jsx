@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import mobilelogo from "../../assets/icons/White.png";
 import mobilelogo1 from "../../assets/icons/Black.png";
 import { fetchMegamenuData } from "./megamenuSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
 import newsdrwimage from "../../assets/images/navimage.png";
@@ -26,6 +26,7 @@ import { useCartWishlist } from "../../app/CartWishlistContext";
 const MobileOtherNav = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const { getCartWishlistCount } = useCartWishlist();
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("main");
@@ -43,7 +44,11 @@ const MobileOtherNav = () => {
   const [wdata, setData] = useState("");
   const [searchData, setSearchData] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [mergedCategories, setmergedCategories] = useState([]);
+  useEffect(() => {
+    const hero_banner_categories = JSON.parse(localStorage.getItem('hero_banner_categories') || '[]');
+    setmergedCategories(hero_banner_categories);
+  }, [location.pathname]);
   useEffect(() => {
     chatsupport();
     dispatch(fetchMegamenuData());
@@ -427,6 +432,27 @@ const MobileOtherNav = () => {
                     <p>No results found</p>
                   </div>
                 )}
+                {!query &&
+                  <div className="search-results-wrapper rap-nores">
+                    {mergedCategories.slice(0, 8).map((item, i) => (
+                      <Link
+                        to={`/productsdetails/${item.action_url}`}
+                        className="search-result-row"
+                        key={i}
+                        onClick={clearSearch}
+                      >
+                        <img
+                          src={item.media}
+                          alt={item.name}
+                          className="result-thumb"
+                        />
+                        <div className="result-info">
+                          <p>{item.name}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                }
               </>
             )}
           </div>

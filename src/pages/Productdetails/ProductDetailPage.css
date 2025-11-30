@@ -1411,4 +1411,12 @@ ul.custom-tick-list li::before {
   .similar-styles-section-2 {
     padding: 30px 20px;
   }
+
+  .truncate-similar {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 206px !important;
+    display: inline-block;
+  }
 }

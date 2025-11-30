@@ -1596,7 +1596,7 @@ const ProductDetailPage = () => {
                       )}
                     </button>
                   </div>
-                  <p className="product-title pointer-crusser truncate">
+                  <p className="product-title pointer-crusser truncate truncate-similar">
                     <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
                   </p>
                   <Link to={`/productsdetails/${item.action_url}`}>
@@ -1700,7 +1700,7 @@ const ProductDetailPage = () => {
                     </button>
                   </div>
 
-                  <p className="product-title truncate">
+                  <p className="product-title pointer-crusser truncate truncate-similar">
                     <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
                   </p>
                   <Link to={`/productsdetails/${item.action_url}`}>

@@ -436,7 +436,7 @@ const MobileOtherNav = () => {
                   <div className="search-results-wrapper rap-nores">
                     {mergedCategories.slice(0, 8).map((item, i) => (
                       <Link
-                        to={`/productsdetails/${item.action_url}`}
+                        to={`/products/${item.action_url}`}
                         className="search-result-row"
                         key={i}
                         onClick={clearSearch}

@@ -152,121 +152,31 @@ const BestsellersSlider = ({ onQuickView }) => {
 
   return (
 
-      <>
-           <div className="bestseller-mobile-title">
-      <div className="sub-root-mlb"> 
-      <h3> <span style={{fontWeight:'500'}}>Get the</span> <em>Bestsellers</em></h3>
-             </div>
-    
-    </div>
-       
-       <div className="bestseller-container">
-      <ToastContainer style={{ zIndex: 99999999999 }} position="top-right" autoClose={3000} />
-      {isMobile ? (
-          <>
-      {/* ⭐ MOBILE TITLE FIXED ABOVE */}
-
-        <div className="slider-strip">
-          {bestsellers?.map((item) => (
-            <div className="bestseller-card" key={item.id}>
-              <div className="image-wrapper">
-                <div className="wrp_main">
-                  <Link to={`/productsdetails/${item.action_url}`}>
-                    <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.fullname} />
-                    <img className="img_main_asp_hvr" src={item?.media_list?.hover?.file} alt={item.fullname} />
-                  </Link>
-                </div>
-
-                <button
-                  className="wishlist-btn_products"
-                  onClick={(e) => toggleWishlist(e, item)}
-                >
-                  {animatedWish === item.id ? (
-                    <div style={{
-                      width: 20,
-                      height: 24,
-                      overflow: "hidden",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}>
-                      <Player
-                        autoplay
-                        keepLastFrame
-                        src={heartAnimation}
-                        style={{
-                          width: 139,
-                          height: 139,
-                          transform: "scale(0.5)",
-                          transformOrigin: "center",
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <Heart
-                      color={item.is_wishlisted ? "#FF0000" : "#000"}
-                      fill={item.is_wishlisted ? "#FF0000" : "none"}
-                      size={20}
-                      strokeWidth={2}
-                    />
-                  )}
-                </button>
-              </div>
-
-              <div className="product-info">
-                <span className="title">
-                  <Link to={`/productsdetails/${item.action_url}`}>{item.fullname}</Link>
-                </span>
-                <span className="price">₹{item.selling_price}</span>
-                {item.mrp && item.mrp !== item.selling_price && (
-                  <>
-                    &nbsp;
-                    <span className="original"><del>₹{item.mrp}</del></span>
-                    <span className="discount">({item?.discount_percent}% OFF)</span>
-                  </>
-                )}
-              </div>
-            </div>
-          ))}
+    <>
+      <div className="bestseller-mobile-title">
+        <div className="sub-root-mlb">
+          <h3> <span style={{ fontWeight: '500' }}>Get the</span> <em>Bestsellers</em></h3>
         </div>
-          </>
-      ) : (
-        // ✅ Desktop: infinite loop slider
-        <div className="bestseller-slider">
-          <div className="bestseller-fixed-card">
-            <h3>Get the <em>Bestsellers</em></h3>
-            <div className="arrow-controls">
-              <button className="btn_arrow left" onClick={handlePrev}>
-                <img src={arrowleft} alt="prev" className="arrow-img" />
-              </button>
-              <button className="btn_arrow right" onClick={handleNext}>
-                <img src={arrowright} alt="next" className="arrow-img" />
-              </button>
-            </div>
-          </div>
 
-          <div className="slider-track-wrapper">
-            <div
-              className="slider-track"
-              ref={sliderRef}
-              style={{
-                transform: `translateX(-${slideIndex * (cardWidth + gap)}px)`,
-                transition: transitionEnabled ? "transform 0.6s ease" : "none",
-                width: `${totalProducts.length * (cardWidth + gap)}px`,
-              }}
-            >
-              {totalProducts.map((item, idx) => (
-                <div className="bestseller-card" key={idx}>
+      </div>
+
+      <div className="bestseller-container">
+        <ToastContainer style={{ zIndex: 99999999999 }} position="top-right" autoClose={3000} />
+        {isMobile ? (
+          <>
+            {/* ⭐ MOBILE TITLE FIXED ABOVE */}
+
+            <div className="slider-strip">
+              {bestsellers?.map((item) => (
+                <div className="bestseller-card" key={item.id}>
                   <div className="image-wrapper">
-                    <Link to={`/productsdetails/${item.action_url}`}>
-                      <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.fullname} />
-                      <img className="img_main_asp_hvr" src={item?.media_list?.hover?.file} alt={item.fullname} />
-                    </Link>
-                    <div className="order_view_btn">
-                      <button className="quick-view" onClick={() => onQuickView && onQuickView(item)}>
-                        Quick View <Expand color="#000" size={15} strokeWidth={1.25} />
-                      </button>
+                    <div className="wrp_main">
+                      <Link to={`/productsdetails/${item.action_url}`}>
+                        <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.fullname} />
+                        <img className="img_main_asp_hvr" src={item?.media_list?.hover?.file} alt={item.fullname} />
+                      </Link>
                     </div>
+
                     <button
                       className="wishlist-btn_products"
                       onClick={(e) => toggleWishlist(e, item)}
@@ -302,30 +212,122 @@ const BestsellersSlider = ({ onQuickView }) => {
                       )}
                     </button>
                   </div>
+
                   <div className="product-info">
-                    <Link to={`/productsdetails/${item.action_url}`}>
-                      <span className="title">{item.fullname}</span>
-                    </Link>
+                    <span className="title">
+                      <Link to={`/productsdetails/${item.action_url}`}>{item?.name}
+                        {/* {item.fullname.length > 38 ? item.fullname.substring(0, 38) + "..." : item.fullname} */}
+                      </Link>
+                    </span>
                     <span className="price">₹{item.selling_price}</span>
                     {item.mrp && item.mrp !== item.selling_price && (
                       <>
                         &nbsp;
                         <span className="original"><del>₹{item.mrp}</del></span>
-                        <span className="discount"> {""}({item?.discount_percent}% OFF)</span>
+                        <span className="discount">({item?.discount_percent}% OFF)</span>
                       </>
                     )}
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        ) : (
+          // ✅ Desktop: infinite loop slider
+          <div className="bestseller-slider">
+            <div className="bestseller-fixed-card">
+              <h3>Get the <em>Bestsellers</em></h3>
+              <div className="arrow-controls">
+                <button className="btn_arrow left" onClick={handlePrev}>
+                  <img src={arrowleft} alt="prev" className="arrow-img" />
+                </button>
+                <button className="btn_arrow right" onClick={handleNext}>
+                  <img src={arrowright} alt="next" className="arrow-img" />
+                </button>
+              </div>
+            </div>
 
-      {showLoginPrompt && <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />}
-    </div>
-      </>
-   
+            <div className="slider-track-wrapper">
+              <div
+                className="slider-track"
+                ref={sliderRef}
+                style={{
+                  transform: `translateX(-${slideIndex * (cardWidth + gap)}px)`,
+                  transition: transitionEnabled ? "transform 0.6s ease" : "none",
+                  width: `${totalProducts.length * (cardWidth + gap)}px`,
+                }}
+              >
+                {totalProducts.map((item, idx) => (
+                  <div className="bestseller-card" key={idx}>
+                    <div className="image-wrapper">
+                      <Link to={`/productsdetails/${item.action_url}`}>
+                        <img className="img_main_asp" src={item?.media_list?.main?.file} alt={item.fullname} />
+                        <img className="img_main_asp_hvr" src={item?.media_list?.hover?.file} alt={item.fullname} />
+                      </Link>
+                      <div className="order_view_btn">
+                        <button className="quick-view" onClick={() => onQuickView && onQuickView(item)}>
+                          Quick View <Expand color="#000" size={15} strokeWidth={1.25} />
+                        </button>
+                      </div>
+                      <button
+                        className="wishlist-btn_products"
+                        onClick={(e) => toggleWishlist(e, item)}
+                      >
+                        {animatedWish === item.id ? (
+                          <div style={{
+                            width: 20,
+                            height: 24,
+                            overflow: "hidden",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}>
+                            <Player
+                              autoplay
+                              keepLastFrame
+                              src={heartAnimation}
+                              style={{
+                                width: 139,
+                                height: 139,
+                                transform: "scale(0.5)",
+                                transformOrigin: "center",
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <Heart
+                            color={item.is_wishlisted ? "#FF0000" : "#000"}
+                            fill={item.is_wishlisted ? "#FF0000" : "none"}
+                            size={20}
+                            strokeWidth={2}
+                          />
+                        )}
+                      </button>
+                    </div>
+                    <div className="product-info">
+                      <Link to={`/productsdetails/${item.action_url}`}>
+                        <span className="title">{item.fullname}</span>
+                      </Link>
+                      <span className="price">₹{item.selling_price}</span>
+                      {item.mrp && item.mrp !== item.selling_price && (
+                        <>
+                          &nbsp;
+                          <span className="original"><del>₹{item.mrp}</del></span>
+                          <span className="discount"> {""}({item?.discount_percent}% OFF)</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showLoginPrompt && <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />}
+      </div>
+    </>
+
   );
 };
 

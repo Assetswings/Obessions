@@ -525,7 +525,7 @@ const ProductDetailPage = () => {
         {/* Breadcrumbs or Skeleton */}
         <div>
           {localLoading ? (
-           <> </>
+            <> </>
           ) : (
             <Breadcrumbs paths={breadcrumbPaths} />
           )}
@@ -533,13 +533,13 @@ const ProductDetailPage = () => {
         {/* Share Button or Skeleton for Mobile */}
         <div>
           {localLoading ? (
-              <> 
-              </>
+            <>
+            </>
             // <Skeleton width={200} />
           ) : (
             <div className="share_btn mobshare" onClick={handleShare}>
               <span><Share2 size={14} /></span>
-              <span style={{ fontSize: '13px', paddingLeft:"5px" }}>SHARE</span>
+              <span style={{ fontSize: '13px', paddingLeft: "5px" }}>SHARE</span>
             </div>
           )}
         </div>
@@ -685,7 +685,7 @@ const ProductDetailPage = () => {
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
-                  
+
                   }}
                 >
                   <source src={selectedColor?.video_source} type="video/mp4" />
@@ -702,7 +702,7 @@ const ProductDetailPage = () => {
                   height: "auto",
                   mixBlendMode: "darken",
                   objectFit: "cover",
-                  
+
                 }}
               />
             )}
@@ -753,7 +753,7 @@ const ProductDetailPage = () => {
 
         {/* Product Info */}
         <div className="product-info">
-         
+
           <h1 className="title_details">
             {localLoading ? <Skeleton width={200} /> : selectedSize?.name}
           </h1>
@@ -1491,22 +1491,22 @@ const ProductDetailPage = () => {
                 </p>
               </div>
 
-     <div className="msg_track-mlb-main" > 
-      <div className="msg_track-mlb">
+              <div className="msg_track-mlb-main" >
+                <div className="msg_track-mlb">
 
-                    <div>
+                  <div>
                     <img
                       className="image_good"
                       src="https://i.ibb.co/s9gxd00H/Untitled-Artwork-4-2.png"
                     />
                   </div>{" "}
-                <div>
-                 
-                  MADE FOR LOW-FUSS LIVING: BECAUSE YOUR CARPET SHOULD WORK WITH
-                  YOUR LIFESTYLE, NOT AGAINST IT.
+                  <div>
+
+                    MADE FOR LOW-FUSS LIVING: BECAUSE YOUR CARPET SHOULD WORK WITH
+                    YOUR LIFESTYLE, NOT AGAINST IT.
+                  </div>
                 </div>
               </div>
-             </div>    
             </div>
           </div>
         </>

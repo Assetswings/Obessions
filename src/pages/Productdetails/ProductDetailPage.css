@@ -730,7 +730,7 @@ font-family: "Playfair Display", serif; */
     padding-bottom: 12px;
   }
 
-  .fe-mob{
+  .fe-mob {
     margin-bottom: 10px;
   }
 
@@ -1376,4 +1376,39 @@ ul.custom-tick-list li::before {
   /* your tick image path */
   background-size: contain;
   background-repeat: no-repeat;
+}
+
+/* Mobile: Horizontal scrolling */
+@media (max-width: 768px) {
+  .product-grid-2 {
+    display: flex;
+    overflow-x: auto;
+    gap: 0px;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .product-card-dtl {
+    min-width: 75%;
+    /* adjust based on card size */
+    scroll-snap-align: start;
+  }
+
+  /* Hide scrollbar (optional) */
+  .product-grid-2::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-grid-2 {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .similar-styles-section {
+    padding: 20px 20px;
+  }
+
+  .similar-styles-section-2 {
+    padding: 30px 20px;
+  }
 }

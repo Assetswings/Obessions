@@ -96,7 +96,18 @@ font-family: "Playfair Display", serif; */
 }
 
 
-
+.track_filter_cll {
+  display: flex;
+  position: sticky;
+  top: 48px;
+  height: 55px;
+  z-index: 1000;
+  padding: 8px 12px;
+  background-color: white;
+  align-items: center;
+  justify-content: flex-end;
+  display: none;
+}
 
 
 @media (max-width: 768px) {
@@ -148,6 +159,20 @@ font-family: "Playfair Display", serif; */
   .collbdy{
     margin-bottom: 60px;
   }
+
+   .track_filter_cll {
+  display: flex;
+  position: sticky;
+  justify-content: end;
+  top: 48px;
+  height: 55px;
+  z-index: 1000;
+  padding: 8px 12px;
+  background-color: white;
+  align-items: center;
+  justify-content: flex-end;
+  
+}
 }
 
 
@@ -160,14 +185,3 @@ font-family: "Playfair Display", serif; */
   display: none;
 }
 
-.track_filter_cll {
-  display: flex;
-  position: sticky;
-  top: 48px;
-  height: 55px;
-  z-index: 1000;
-  padding: 8px 12px;
-  background-color: white;
-  align-items: center;
-  justify-content: flex-end;
-}

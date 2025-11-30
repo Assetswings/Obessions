@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import "./HomePage.css";
 import BestsellersSlider from "../../components/slider/BestsellersSlider";
@@ -36,7 +36,10 @@ import videoimage from "../../assets/images/videoimage.png";
 import { Search } from "lucide-react";
 import useMeta from "../../app/useMeta";
 import { useHeader } from "../../app/CartWishlistContext";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
 
 const HomePage = () => {
   const token = localStorage.getItem("token");
@@ -63,7 +66,10 @@ const HomePage = () => {
 
   const searchSectionRef = useRef(null);
   const { setShowSearchIcon } = useHeader();
-  console.log("data----->home banner", data);
+  const centerRef = useRef(null);
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+  const topRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -187,31 +193,6 @@ const HomePage = () => {
     setShowModal(true);
   };
 
-
-  const handelcollectionDetails = (categorySlug) => {
-    if (!categorySlug) return;
-    // remove leading slash just in case
-    const cleanSlug = categorySlug.startsWith("/")
-      ? categorySlug.slice(1)
-      : categorySlug;
-
-    if (cleanSlug === "collections") {
-      // case: only /collections
-      navigate("/collections");
-    } else if (cleanSlug.startsWith("collections/")) {
-      // case: /collections/some-slug
-      const slug = cleanSlug.split("/")[1];
-      navigate("/collections", { state: { slug: slug } });
-    } else {
-      // fallback if anything unexpected
-      navigate("/collections");
-    }
-  };
-
-  const handelcarpet = () => {
-    navigate("/carpet-finder");
-  };
-
   useEffect(() => {
     if (data?.hero_banners) {
       const sets = Object.values(data.hero_banners);
@@ -230,6 +211,48 @@ const HomePage = () => {
     }
   }, [data, location.pathname]); // runs when data loads or you come back
 
+  // const renderImages = (set, extraClass = "") => {
+  //   if (!set) return null;
+
+  //   const centerImg = set.find((img) => img.sequence === 1)?.media;
+  //   const leftImg = set.find((img) => img.sequence === 2)?.media;
+  //   const rightImg = set.find((img) => img.sequence === 3)?.media;
+  //   const topImg = set.find((img) => img.sequence === 4)?.media;
+
+  //   return (
+  //     <>
+  //       {centerImg && (
+  //         <img
+  //           src={centerImg}
+  //           className={`floating-img img-center ${extraClass}`}
+  //           alt="center"
+  //         />
+  //       )}
+  //       {leftImg && (
+  //         <img
+  //           src={leftImg}
+  //           className={`floating-img img-left ${extraClass}`}
+  //           alt="left"
+  //         />
+  //       )}
+  //       {rightImg && (
+  //         <img
+  //           src={rightImg}
+  //           className={`floating-img img-right ${extraClass}`}
+  //           alt="right"
+  //         />
+  //       )}
+  //       {topImg && (
+  //         <img
+  //           src={topImg}
+  //           className={`floating-img img-top ${extraClass}`}
+  //           alt="top"
+  //         />
+  //       )}
+  //     </>
+  //   );
+  // };
+
   const renderImages = (set, extraClass = "") => {
     if (!set) return null;
 
@@ -242,6 +265,7 @@ const HomePage = () => {
       <>
         {centerImg && (
           <img
+            ref={centerRef}
             src={centerImg}
             className={`floating-img img-center ${extraClass}`}
             alt="center"
@@ -249,6 +273,7 @@ const HomePage = () => {
         )}
         {leftImg && (
           <img
+            ref={leftRef}
             src={leftImg}
             className={`floating-img img-left ${extraClass}`}
             alt="left"
@@ -256,6 +281,7 @@ const HomePage = () => {
         )}
         {rightImg && (
           <img
+            ref={rightRef}
             src={rightImg}
             className={`floating-img img-right ${extraClass}`}
             alt="right"
@@ -263,6 +289,7 @@ const HomePage = () => {
         )}
         {topImg && (
           <img
+            ref={topRef}
             src={topImg}
             className={`floating-img img-top ${extraClass}`}
             alt="top"
@@ -271,6 +298,35 @@ const HomePage = () => {
       </>
     );
   };
+
+  useLayoutEffect(() => {
+    if (!centerRef.current) return;
+
+    const images = [
+      { ref: centerRef.current, y: -450, rotate: 18, scale: 1.35 },
+      { ref: leftRef.current, y: -360, rotate: -22, scale: 1.28 },
+      { ref: rightRef.current, y: -340, rotate: 26, scale: 1.28 },
+      { ref: topRef.current, y: -520, rotate: -15, scale: 1.42 },
+    ];
+
+    images.forEach((img) => {
+      if (!img.ref) return;
+      gsap.to(img.ref, {
+        y: img.y,
+        rotate: img.rotate,
+        scale: img.scale,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: ".hero-banner",
+          start: "top top",
+          end: "bottom top",
+          scrub: 2.2, // stronger parallax elastic follow
+        },
+      });
+    });
+
+    return () => ScrollTrigger.killAll();
+  }, [currentSet]);
 
   useEffect(() => {
     if (isSearchActive) {

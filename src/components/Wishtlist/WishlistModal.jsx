@@ -10,51 +10,53 @@ import ArrowLeft from "../../assets/icons/ArrowLeft.png";
 import { useCartWishlist } from "../../app/CartWishlistContext";
 import { Link } from "react-router-dom";
 
-  const WishlistModal = ({ onClose }) => {
+const WishlistModal = ({ onClose }) => {
   const { getCartWishlistCount } = useCartWishlist();
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.wishlist);
 
-    useEffect(() => {
+  useEffect(() => {
     dispatch(fetchWishlist());
     document.body.style.overflow = "hidden";
     return () => {
-    document.body.style.overflow = "auto";
-                          };
-    }, [dispatch]);
+      document.body.style.overflow = "auto";
+    };
+  }, [dispatch]);
 
-       const handleRemove = (wishlistId) => {
-       dispatch(removeFromWishlist(wishlistId))
+  const handleRemove = (wishlistId) => {
+    dispatch(removeFromWishlist(wishlistId))
       .unwrap()
       .then(() => {
         getCartWishlistCount(); // refresh count after add
         dispatch(fetchWishlist());
+        getCartWishlistCount();
       });
-      };
+  };
 
-    const handleMoveToCart = (productId, wishlistId) => {
+  const handleMoveToCart = (productId, wishlistId) => {
     dispatch(moveToCart({ product_id: productId, quantity: 1 }));
     dispatch(removeFromWishlist(wishlistId))
       .unwrap()
       .then(() => {
         dispatch(fetchWishlist());
+        getCartWishlistCount();
       });
-      };
+  };
 
   return (
     <div className="wishlist-modal-overlay" onClick={onClose}>
       <div className="wishlist-modal">
-        
+
         <div className="wishlist-header">
           <h3>
             Wishlist{" "}
             {!loading && (
-            <span className="wishlist-header-count">({items.length})</span>
+              <span className="wishlist-header-count">({items.length})</span>
             )}
             {loading && <Skeleton width={30} height={20} />}
           </h3>
           <X onClick={onClose} className="close-icon-whst" />
-          </div>
+        </div>
 
         <div className="wishlist-content">
           {/* Skeleton loader */}
@@ -148,9 +150,9 @@ import { Link } from "react-router-dom";
                   Love something? Hit the heart to add it to your favourites.
                 </p>
                 <Link to={`/bestseller`}>
-                <button className="empty-wishlist-btn">
-                  Explore Bestsellers &nbsp; <img src={ArrowLeft} height={16} width={16} />
-                </button>
+                  <button className="empty-wishlist-btn">
+                    Explore Bestsellers &nbsp; <img src={ArrowLeft} height={16} width={16} />
+                  </button>
                 </Link>
               </div>
             </div>
@@ -172,7 +174,7 @@ import { Link } from "react-router-dom";
                     gap: "12px",
                     alignItems: "center",
                   }}
->
+                >
                   <Link to={`/productsdetails/${product.action_url}`} target="_blank" rel="noopener noreferrer">
                     <img
                       src={product.media}
@@ -194,13 +196,13 @@ import { Link } from "react-router-dom";
                       <span>
                         {product.mrp && product.mrp !== product.selling_price && (
                           <>
-                          <span><del>₹{product?.mrp}</del></span> &nbsp;
-                          <span className="discount">({product.discount}% OFF)</span>
+                            <span><del>₹{product?.mrp}</del></span> &nbsp;
+                            <span className="discount">({product.discount}% OFF)</span>
                           </>
                         )}
                       </span>
                     </div>
-                      <div
+                    <div
                       className="wishlist-actions"
                       style={{ marginTop: "8px" }}>
                       <button
@@ -211,7 +213,7 @@ import { Link } from "react-router-dom";
                         }
                         }>
                         MOVE TO CART
-                       </button>
+                      </button>
                       <button
                         className="move-to-cart"
                         onClick={(e) => { e.stopPropagation(); handleRemove(wishlistItem.id); }}

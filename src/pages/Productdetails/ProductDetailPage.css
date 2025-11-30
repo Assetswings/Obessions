@@ -194,7 +194,7 @@ font-family: "Playfair Display", serif; */
 .color-selector,
 .quantity-selector,
 .product-description {
-  margin: 20px 0;
+  margin: 24px 0;
 }
 
 .img-ruppee {
@@ -208,7 +208,7 @@ font-family: "Playfair Display", serif; */
 }
 
 .selected-size-label {
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .size-options {
@@ -362,7 +362,7 @@ font-family: "Playfair Display", serif; */
 }
 
 .pincode-check {
-  margin: 10px 0;
+  margin: 24px 0;
   font-family: Arial, sans-serif;
 }
 
@@ -537,8 +537,8 @@ font-family: "Playfair Display", serif; */
   display: flex;
   justify-content: space-around;
   position: sticky;
-  width: 43rem;
-   top: 48px;
+  width: 46rem;
+  top: 48px;
   background: #f1f3f1;
   z-index: 10;
   border-bottom: 1px solid #eee;
@@ -722,6 +722,16 @@ font-family: "Playfair Display", serif; */
     align-items: center;
     position: relative;
     top: 20px
+  }
+
+  .details_flx {
+    display: flow-root;
+    padding-top: 16px;
+    padding-bottom: 12px;
+  }
+
+  .fe-mob{
+    margin-bottom: 10px;
   }
 
 }
@@ -1271,7 +1281,7 @@ font-family: "Playfair Display", serif; */
   }
 
   .txt-Carpet-Finder {
-    width: 80%;
+    width: 100%;
   }
 
   .product-title {
@@ -1320,7 +1330,7 @@ font-family: "Playfair Display", serif; */
   display: inline-flex;
   border: 1px solid #ccc;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .unit-toggle button {

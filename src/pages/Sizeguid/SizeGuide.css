@@ -42,7 +42,7 @@ GENERAL .sizeguide-container {
 
 /* ------------------ STEPS SECTION ------------------ */
 .steps-section {
-  padding: 80px 100px;
+  padding: 60px 70px;
   background-color: #fff;
 }
 
@@ -146,10 +146,8 @@ GENERAL .sizeguide-container {
 }
 
 .know-style-container {
-  max-width: 1350px;
-  margin: 80px auto;
-  padding: 0 20px;
-
+  /* max-width: 1350px; */
+  padding: 60px 70px;
   color: #222;
 }
 
@@ -181,7 +179,7 @@ GENERAL .sizeguide-container {
 }
 
 .style-image img {
-  width: 600px;
+  width: 699px;
   height: 600px;
   object-fit: cover;
 }
@@ -276,5 +274,11 @@ GENERAL .sizeguide-container {
 
   .section-title {
     font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .know-style-container {
+    padding: 50px 30px;
   }
 }

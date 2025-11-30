@@ -419,7 +419,7 @@
 
 .title_hader_filter {
   position: relative;
-  left: 20px;
+  left: 0px;
 }
 
 .track_filter {
@@ -858,7 +858,7 @@
 
   .custom-products-page {
     display: flex;
-    padding: 20px 20px 20px 15px;
+    padding: 0px 0px 0px 0px;
     gap: 30px;
     font-family: Arial, sans-serif;
   }

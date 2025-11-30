@@ -203,14 +203,15 @@
 }
 
 
- @media (min-width: 1025px) {
+@media (min-width: 1025px) {
   .roomguide-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
   /* desktop styles here */
 }
 
@@ -408,27 +409,30 @@
 
   /* Horizontal scroll tabs */
   .roomguide-tabs {
-    display: flex ;
-    flex-direction: row ;
-    flex-wrap: nowrap ;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     gap: 10px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
-    padding: 10px 0;     /* <-- fixed, no large padding */
+    padding: 10px 0;
+    /* <-- fixed, no large padding */
     /* same as your first tab */
     margin-bottom: 10px;
     white-space: nowrap;
   }
 
   .roomguide-tab {
-  flex-shrink: 0;
-}
+    flex-shrink: 0;
+  }
+
   /* Scrollbar styling */
   .roomguide-tabs::-webkit-scrollbar {
     height: 6px;
   }
-/* 
+
+  /* 
   .roomguide-tabs::-webkit-scrollbar-thumb {
     border-radius: 6px;
     background: rgba(0, 0, 0, 0.2);
@@ -449,6 +453,13 @@
 
   .tab-scroll-wrapper .roomguide-tabs .roomguide-tab {
     flex-shrink: 0 !important;
+  }
+
+  .carpet-guide-container {
+    margin: 40px auto;
+  }
+  .guide-title {
+    margin-bottom: 10px;
   }
 
 }

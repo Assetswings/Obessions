@@ -16,6 +16,7 @@ import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const { countData } = useCartWishlist();
   const { getCartWishlistCount } = useCartWishlist();
   const [token] = useState(localStorage.getItem("token"));
   const { cartItems, loading, error } = useSelector((state) => state.cart);
@@ -44,7 +45,11 @@ const CartPage = () => {
     if (token) {
       dispatch(fetchCartDetails());
     }
-  }, [dispatch, token]);
+  }, [dispatch, token, ]);
+
+  useEffect(() => {
+    dispatch(fetchCartDetails());
+  }, [countData,dispatch]);
 
   // 🔹 Show toast on error only once
   useEffect(() => {
@@ -97,6 +102,7 @@ const CartPage = () => {
   const handleMoveToWishlist = async (item) => {
     await dispatch(addToWishlist({ product_id: item.product.id }));
     await dispatch(removeCartItem(item.id));
+    getCartWishlistCount();
   };
 
   const handleCheckout = () => {

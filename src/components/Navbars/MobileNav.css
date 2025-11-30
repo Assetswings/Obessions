@@ -408,7 +408,7 @@ body {
 .search-header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0px;
   background:  white;
   padding: 14px 15px;
   border-radius: 12px;
@@ -423,7 +423,7 @@ body {
   flex: 1;
   background: transparent;
   font-size: 12px;
-  
+  transform: scale(0.9);
 }
 
 .close-search {

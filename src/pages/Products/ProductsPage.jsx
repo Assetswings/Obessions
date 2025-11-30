@@ -430,7 +430,9 @@ const ProductsPage = () => {
   return (
     <>
       <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} />
-      <Breadcrumbs paths={breadcrumbPaths} />
+      <div style={{position:"relative",right:"6px"}}>
+        <Breadcrumbs paths={breadcrumbPaths} />
+      </div>
       {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&
         <div className="track_filter">

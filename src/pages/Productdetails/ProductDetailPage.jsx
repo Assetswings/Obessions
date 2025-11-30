@@ -1047,7 +1047,7 @@ const ProductDetailPage = () => {
             ) : (
               <>
                 <div className="details_flx">
-                  <div>
+                  <div className="fe-mob">
                     <img
                       src="https://i.ibb.co/twnnXYxQ/truck.png"
                       className="img-truck"

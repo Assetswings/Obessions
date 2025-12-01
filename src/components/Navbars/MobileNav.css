@@ -458,18 +458,19 @@ body {
 }
 .search-result-row {
   display: flex;
-  gap: 12px;
+  gap: 18px;
   padding-bottom: 12px;
   border-bottom: 1px solid #eee;
   text-decoration: none;
   color: #333;
+  align-items: center;
   width: 100%;
 }
 
 .result-thumb {
   width: 80px;
   height: 80px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   object-fit: cover;
 }
 
@@ -478,7 +479,6 @@ body {
   font-size: 15px;
   font-weight: 500;
   position: relative;
-  top: 15px;
 }
 
 /* No Result */

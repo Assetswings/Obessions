@@ -96,7 +96,7 @@ const Footer = () => {
             onChange={(e) => setEmail(e.target.value)}
             disabled={loading}
           />
-          <button onClick={handleSubscribe} disabled={loading}>
+          <button  className="button_fag"onClick={handleSubscribe} disabled={loading}>
             {loading ? (
               "Signing up..."
             ) : (

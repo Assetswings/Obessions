@@ -172,7 +172,7 @@ const MobileOtherNav = () => {
   };
 
   useEffect(() => {
-    if (showSearch && inputRef.current) inputRef.current.focus();
+
     document.body.style.overflow = showSearch ? "hidden" : "auto";
   }, [showSearch]);
 

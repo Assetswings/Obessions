@@ -46,14 +46,16 @@
 }
 
 .email-signup button {
-  background-color: #fff;
-  color: #000;
-  border: none;
-  padding: 10px 16px;
-  cursor: pointer;
-  /* font-weight: 600; */
-  border-radius: 2px;
-  margin-top: 15px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    /* font-weight: 600; */
+    border-radius: 2px;
+    margin-top: 15px;
+    position: relative;
+    right: 16px;
 }
 
 .sub_text {
@@ -271,6 +273,10 @@
   }
    .footer-col.shop-col.mllbb-shp {
     display: inline;
+}
+.button_fag{
+  position: relative;
+  right: 12px;
 }
 
 }

@@ -126,8 +126,14 @@ const MobileOtherNav = () => {
 
   const handleUserClick = (e) => {
     e.stopPropagation();
-    if (!isLoggedIn) navigate("/login");
-    else setShowUserPopup((prev) => !prev);
+    let logintoken = localStorage.getItem("token");
+    if (!logintoken) {
+      console.log('not logedin');
+      navigate("/login");
+    } else {
+      console.log('logedin');
+      setShowUserPopup(true);
+    }
   };
 
   const handleLogout = () => {
@@ -217,7 +223,7 @@ const MobileOtherNav = () => {
               size={25}
               onClick={handleUserClick}
             />
-            {isLoggedIn && showUserPopup && (
+            {showUserPopup && (
               <div
                 className="user-popup_AN"
                 onClick={(e) => e.stopPropagation()}

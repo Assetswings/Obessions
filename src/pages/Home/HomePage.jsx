@@ -211,48 +211,6 @@ const HomePage = () => {
     }
   }, [data, location.pathname]); // runs when data loads or you come back
 
-  // const renderImages = (set, extraClass = "") => {
-  //   if (!set) return null;
-
-  //   const centerImg = set.find((img) => img.sequence === 1)?.media;
-  //   const leftImg = set.find((img) => img.sequence === 2)?.media;
-  //   const rightImg = set.find((img) => img.sequence === 3)?.media;
-  //   const topImg = set.find((img) => img.sequence === 4)?.media;
-
-  //   return (
-  //     <>
-  //       {centerImg && (
-  //         <img
-  //           src={centerImg}
-  //           className={`floating-img img-center ${extraClass}`}
-  //           alt="center"
-  //         />
-  //       )}
-  //       {leftImg && (
-  //         <img
-  //           src={leftImg}
-  //           className={`floating-img img-left ${extraClass}`}
-  //           alt="left"
-  //         />
-  //       )}
-  //       {rightImg && (
-  //         <img
-  //           src={rightImg}
-  //           className={`floating-img img-right ${extraClass}`}
-  //           alt="right"
-  //         />
-  //       )}
-  //       {topImg && (
-  //         <img
-  //           src={topImg}
-  //           className={`floating-img img-top ${extraClass}`}
-  //           alt="top"
-  //         />
-  //       )}
-  //     </>
-  //   );
-  // };
-
   const renderImages = (set, extraClass = "") => {
     if (!set) return null;
 
@@ -299,34 +257,102 @@ const HomePage = () => {
     );
   };
 
+  // useLayoutEffect(() => {
+  //   if (!centerRef.current) return;
+
+  //   const images = [
+  //     { ref: centerRef.current, y: -450, rotate: 18, scale: 1.35 },
+  //     { ref: leftRef.current, y: -360, rotate: -22, scale: 1.28 },
+  //     { ref: rightRef.current, y: -340, rotate: 26, scale: 1.28 },
+  //     { ref: topRef.current, y: -520, rotate: -15, scale: 1.42 },
+  //   ];
+
+  //   images.forEach((img) => {
+  //     if (!img.ref) return;
+  //     gsap.to(img.ref, {
+  //       y: img.y,
+  //       rotate: img.rotate,
+  //       scale: img.scale,
+  //       ease: "power4.out",
+  //       scrollTrigger: {
+  //         trigger: ".hero-banner",
+  //         start: "top top",
+  //         end: "bottom top",
+  //         scrub: 2.2, // stronger parallax elastic follow
+  //       },
+  //     });
+  //   });
+
+  //   return () => ScrollTrigger.killAll();
+  // }, [currentSet]);
+
   useLayoutEffect(() => {
     if (!centerRef.current) return;
 
-    const images = [
-      { ref: centerRef.current, y: -450, rotate: 18, scale: 1.35 },
-      { ref: leftRef.current, y: -360, rotate: -22, scale: 1.28 },
-      { ref: rightRef.current, y: -340, rotate: 26, scale: 1.28 },
-      { ref: topRef.current, y: -520, rotate: -15, scale: 1.42 },
-    ];
+    // Center card → goes up **and slightly right**
+    gsap.to(centerRef.current, {
+      y: -480,
+      x: 60,
+      rotate: 15,
+      scale: 1.32,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".hero-banner",
+        start: "top top",
+        end: "bottom top",
+        scrub: 1.2,
+      },
+    });
 
-    images.forEach((img) => {
-      if (!img.ref) return;
-      gsap.to(img.ref, {
-        y: img.y,
-        rotate: img.rotate,
-        scale: img.scale,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: ".hero-banner",
-          start: "top top",
-          end: "bottom top",
-          scrub: 2.2, // stronger parallax elastic follow
-        },
-      });
+    // Left card → goes up and **more left**, rotates opposite
+    gsap.to(leftRef.current, {
+      y: -420,
+      x: -130,
+      rotate: -28,
+      scale: 1.25,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".hero-banner",
+        start: "top 30%",
+        end: "bottom top",
+        scrub: 2.4,
+      },
+    });
+
+    // Right card → goes up and **more right**
+    gsap.to(rightRef.current, {
+      y: -380,
+      x: 140,
+      rotate: 32,
+      scale: 1.27,
+      ease: "power4.out",
+      scrollTrigger: {
+        trigger: ".hero-banner",
+        start: "top 15%",
+        end: "bottom top",
+        scrub: 1.8,
+      },
+    });
+
+    // Top card → goes up **and slightly left**, most dramatic movement
+    gsap.to(topRef.current, {
+      y: -620,
+      x: -40,
+      rotate: -12,
+      scale: 1.45,
+      ease: "expo.out",
+      scrollTrigger: {
+        trigger: ".hero-banner",
+        start: "top -5%",
+        end: "bottom top",
+        scrub: 3.1,
+      },
     });
 
     return () => ScrollTrigger.killAll();
   }, [currentSet]);
+
+
 
   useEffect(() => {
     if (isSearchActive) {

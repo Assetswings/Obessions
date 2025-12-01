@@ -290,6 +290,7 @@
     font-family: 'Arial', sans-serif;
     margin-bottom: 50px;
     position: relative;
+    z-index: 9999;
   }
 
   .img_tracker_footer{

@@ -80,7 +80,7 @@
   transition: all 0.3s ease;
 }
 
-.tab-btn:hover,
+
 .tab-btn.active {
   color: #000;
   border-bottom: 2px solid #000;
@@ -367,7 +367,7 @@
     /* smooth iOS scrolling */
     scroll-behavior: smooth;
     padding: 8px 0px 10px 83px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     white-space: nowrap;
     /* prevent wrapping inside children */
   }
@@ -387,7 +387,6 @@
     /* do not shrink, keep intrinsic width */
     white-space: nowrap;
     padding: 8px 10px;
-    border-radius: 999px;
     border: 1px solid transparent;
     background: #fff;
     cursor: pointer;
@@ -396,7 +395,6 @@
 
   .tab-btn.active {
     font-weight: 600;
-    border-bottom: 0px;
   }
 
   .tab-scroll-wrapper .tab-container {

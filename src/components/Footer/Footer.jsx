@@ -20,7 +20,7 @@ const Footer = () => {
   useEffect(() => {
     const fetchFooterLinks = async () => {
       try {
-        const res = await API.get("/footer-links"); // baseURL is already in API.js
+        const res = await API.get("/footer-links");
         if (res.data.success) {
           setFooterData(res.data.data);
         } else {
@@ -35,12 +35,13 @@ const Footer = () => {
     fetchFooterLinks();
   }, []);
 
-  if (loading) return null; // or loader
+  if (loading) return null;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!footerData) return null;
+
   const { SHOP, COMPANY, RESOURCES, CONTACT_US, SOCIAL_MEDIA } = footerData;
 
-  // helper to render social icons
+  // social icons
   const renderIcon = (title) => {
     switch (title.toLowerCase()) {
       case "facebook":
@@ -54,11 +55,13 @@ const Footer = () => {
     }
   };
 
+  // email validation
   const handleSubscribe = async () => {
     if (!email.trim()) {
       setMessage("Please enter your email address.");
       return;
     }
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
       setMessage("Please enter a valid email address.");
@@ -67,16 +70,21 @@ const Footer = () => {
 
     try {
       setMessage("");
-      const res = await API.post( "/forms/newsletter-subscribe", { email } );
+      const res = await API.post("/forms/newsletter-subscribe", { email });
+
       if (res.data) {
-          setMessage("✅ Subscribed successfully!");
-          setEmail(""); // clear input
+        setMessage("Subscribed successfully!");
+        setEmail("");
       }
     } catch (err) {
-      console.error(err);
-      setMessage("❌ Something went wrong. Please try again later.");
+      setMessage("Something went wrong. Please try again later.");
     }
   };
+
+  // detect error msg
+  const isError =
+    message.includes("Please enter") ||
+    message.includes("Something went wrong");
 
   return (
     <footer className="footer">
@@ -85,9 +93,9 @@ const Footer = () => {
           Your Home Just Got <em>More Interesting</em>
         </h2>
         <p className="sub_text">
-          Get updates on new collections, trending products, and curated content
-          you'll love.
+          Get updates on new collections, trending products, and curated content you'll love.
         </p>
+
         <div className="email-signup">
           <input
             type="email"
@@ -96,7 +104,11 @@ const Footer = () => {
             onChange={(e) => setEmail(e.target.value)}
             disabled={loading}
           />
-          <button  className="button_fag"onClick={handleSubscribe} disabled={loading}>
+          <button
+            className="button_fag"
+            onClick={handleSubscribe}
+            disabled={loading}
+          >
             {loading ? (
               "Signing up..."
             ) : (
@@ -111,14 +123,55 @@ const Footer = () => {
             )}
           </button>
         </div>
+        {/* 
+        {message && (
+          <div className="response-container">
+            <div className="sub-track-res">
+              <p
+                className="response-message"
+                style={{
+                  color: isError ? "red" : "inherit",
+                
+                }}
+              >
+                {message}
+              </p>
+            </div>
+          </div>
+        )} */}
 
         {message && (
           <div className="response-container">
             <div className="sub-track-res">
-              <p className="response-message">{message}</p>
+              <p
+                className="response-message"
+                style={{
+                  color: isError ? "red" : "inherit",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+              >
+                {!isError && (
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#2ecc71"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                )}
+                {message}
+              </p>
             </div>
           </div>
         )}
+
 
         <Link to={`/tc-of-sale`}>
           <p className="sub_text mt-2">
@@ -128,11 +181,9 @@ const Footer = () => {
       </div>
 
       {/* Footer Links */}
-      {/* FOOTER LINKS */}
       <div className="footer-links">
-
-        {/* SHOP (3 columns) */}
-        <div className="footer-col shop-col mllbb-shp ">
+        {/* SHOP mobile */}
+        <div className="footer-col shop-col mllbb-shp">
           <h4>SHOP</h4>
           <ul className="shop-grid-3">
             {SHOP?.map((item, idx) => (
@@ -145,25 +196,23 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* SHOP */}
+        {/* SHOP desktop */}
         <div className="desk-foot">
           <h4>SHOP</h4>
           <ul>
             {SHOP?.slice(0, 7).map((item, idx) => (
-              <li style={{ textTransform: "capitalize" }}
-                key={idx}
-              >
+              <li style={{ textTransform: "capitalize" }} key={idx}>
                 <Link to={`/products/${item.action_url}`}>{item.title.toLowerCase()}</Link>
               </li>
             ))}
           </ul>
         </div>
-        <div className="desk-foot"><br />
+
+        <div className="desk-foot">
+          <br />
           <ul>
             {SHOP?.slice(7, 15).map((item, idx) => (
-              <li style={{ textTransform: "capitalize" }}
-                key={idx}
-              >
+              <li style={{ textTransform: "capitalize" }} key={idx}>
                 <Link to={`/products/${item.action_url}`}>{item.title.toLowerCase()}</Link>
               </li>
             ))}
@@ -175,7 +224,7 @@ const Footer = () => {
           <h4>COMPANY</h4>
           <ul>
             {COMPANY?.map((item, idx) => (
-              <li key={idx} >
+              <li key={idx}>
                 <Link to={`/${item.action_url}`}>{item.title}</Link>
               </li>
             ))}
@@ -199,12 +248,9 @@ const Footer = () => {
           <div className="ctn_txt">
             <h4>CONTACT US</h4>
             <p>A. {CONTACT_US?.address}</p>
-            {/* <p>T. {CONTACT_US?.phone}</p>
-            <p>E. {CONTACT_US?.email}</p> */}
             <p>
               T. <a href={`tel:${CONTACT_US?.phone}`}>{CONTACT_US?.phone}</a>
             </p>
-
             <p>
               E. <a href={`mailto:${CONTACT_US?.email}`}>{CONTACT_US?.email}</a>
             </p>
@@ -219,10 +265,7 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={item.title}
-                  style={{
-                    color: "#BDBDBD",
-                    marginRight: "10px",
-                  }}
+                  style={{ color: "#BDBDBD", marginRight: "10px" }}
                 >
                   {renderIcon(item.title)}
                 </a>
@@ -240,7 +283,6 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-
   );
 };
 

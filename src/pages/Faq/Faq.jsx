@@ -1,6 +1,6 @@
-import React, { useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./Faq.css";
-import { FiSearch, FiPlus } from "react-icons/fi";
+import { FiSearch, FiPlus, FiMinus } from "react-icons/fi";
 import Footer from "../../components/Footer/Footer";
 import { fetchFaqs } from "./faqSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,14 +14,15 @@ const Faq = () => {
   const [bannerimg, setBannerimg] = useState();
   const dispatch = useDispatch();
   const { faqs, loading, error } = useSelector((state) => state.faq);
+
   useEffect(() => {
     document.title = "Obsession - FAQ";
-    dispatch(fetchFaqs()); 
+    dispatch(fetchFaqs());
     getBaner();
   }, [dispatch]);
 
-      useEffect(() => {
-      if (faqs && faqs.length > 0) {
+  useEffect(() => {
+    if (faqs && faqs.length > 0) {
       setActiveSection(faqs[0].title);
     }
   }, [faqs]);
@@ -31,12 +32,10 @@ const Faq = () => {
   };
 
   const faqSearch = () => {
-    console.log(searchText);
-    dispatch(fetchFaqs(searchText)); 
-  }
+    dispatch(fetchFaqs(searchText));
+  };
 
-    // Send OTP API
-  const  getBaner = async () => {
+  const getBaner = async () => {
     try {
       const res = await API.get("/pages/faq-banners", {});
       if (res.data.success) {
@@ -50,41 +49,22 @@ const Faq = () => {
   if (loading) return <p>Loading FAQs...</p>;
   if (error) return <p>Error: {error}</p>;
 
-
   return (
     <>
       {/* Hero Section */}
       <section className="faq-hero">
-        <img
-          src={bannerimg?.left}
-          alt="Soap Decor"
-          className="faq-decor left"
-        />
+        <img src={bannerimg?.left} alt="Soap Decor" className="faq-decor left" />
         <div className="faq-content">
-          <h1>How can we help you today?</h1>
+          <h1>How can we help you today ?</h1>
           <p>Browse our most frequently asked questions.</p>
-          {/* <div className="faq-search-bar">
-            <input
-              type="text"
-              onChange={(e)=>{setSearchText(e.target.value)}}
-              placeholder='Search Topics'
-            />
-            <button onClick={faqSearch}>
-              <FiSearch size={18} />
-            </button>
-          </div> */}
         </div>
-        <img
-          src={bannerimg?.right}
-          alt="Tissue Decor"
-          className="faq-decor right"
-        />
+        <img src={bannerimg?.right} alt="Tissue Decor" className="faq-decor right" />
       </section>
 
       {/* Tab Navigation */}
       <section className="faq-scroll-page">
         <div className="faq-tab-buttons">
-          {faqs.map((item,index) => (
+          {faqs.map((item, index) => (
             <button
               key={index}
               className={activeSection === item.title ? "active" : ""}
@@ -97,18 +77,24 @@ const Faq = () => {
 
         {/* Selected FAQ Section */}
         <div className="faq-sections">
-          {faqs.map((item,index) => (
+          {faqs.map((item, index) => (
             <div
               key={index}
               className="faq-category"
-              style={{ display: activeSection === item.title ? "block" : "none" }}>
-              {/* <h3>{item.title}</h3> */}
+              style={{ display: activeSection === item.title ? "block" : "none" }}
+            >
               {item.faqs.map((data, i) => (
                 <details key={i} className="faq-item">
                   <summary>
                     <span>{data.question}</span>
-                    <FiPlus className="faq-icon" />
+
+                    {/* 🔥 Icon logic: + when closed, - when open */}
+                    <span className="faq-icon-wrapper">
+                      <FiPlus className="faq-icon plus" />
+                      <FiMinus className="faq-icon minus" />
+                    </span>
                   </summary>
+
                   <p className="ans_">{data.answer}</p>
                 </details>
               ))}
@@ -125,7 +111,7 @@ const Faq = () => {
           </div>
 
           <div className="faq-help-content">
-            <h3>Still need help?</h3>
+            <h3>Still need help ?</h3>
             <p>
               Check out our above FAQs for quick answers to common questions.
               <br />

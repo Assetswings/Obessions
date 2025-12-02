@@ -1244,6 +1244,8 @@ font-family: "Playfair Display", serif; */
 
   .image_track_mobile {
     display: block;
+    background-color: #f2f2f2;
+    
   }
 
   .thumbnail {
@@ -1419,4 +1421,8 @@ ul.custom-tick-list li::before {
     width: 206px !important;
     display: inline-block;
   }
+  .in-mlb {
+    display: flex;
+    align-items: start;
+}
 }

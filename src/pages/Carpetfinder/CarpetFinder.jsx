@@ -4,7 +4,7 @@ import { fetchCarpetFinder } from "./carpetFinderSlice";
 import { useNavigate } from "react-router-dom";
 import "./CarpetFinder.css";
 import { ToastContainer, toast } from "react-toastify";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, SquareCheck } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import arrowleft from "../../assets/icons/Vector_left.svg";
 import arrowright from "../../assets/icons/Vector_right.svg";
@@ -220,9 +220,11 @@ const CarpetFinder = () => {
                     <></>
                   )}
                   <span className="card-label">{label}</span>
-                  {isSelected(currentStep, label) && (
-                    <div className="checkmark">✔</div>
-                  )}
+                {isSelected(currentStep, label) && (
+  <div className="checkmark">
+    <SquareCheck size={22} color="#657567" />
+  </div>
+)}
                 </div>
               ))}
             </div>

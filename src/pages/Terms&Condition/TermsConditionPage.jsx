@@ -4,10 +4,9 @@ import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
 import Skeleton from "react-loading-skeleton";
 
-export default function TermsAndConditions() {
+  export default function TermsAndConditions() {
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(true);
-
   const handleTerms = async () => {
     try {
       const res = await API.get("/policy/tc-of-sale");
@@ -32,7 +31,8 @@ export default function TermsAndConditions() {
   return (
     <>
       <div className="terms-container">
-        {loading ? (
+           <div className="root_set">  
+{loading ? (
           <div className="loading-skeleton" style={{ textAlign: "center" }}>
             {/* Paragraph-style skeleton */}
             <Skeleton width="80%" height={30} style={{ marginBottom: 15 }} />
@@ -44,6 +44,8 @@ export default function TermsAndConditions() {
         ) : (
           <div dangerouslySetInnerHTML={{ __html: data?.content }} />
         )}
+           </div>
+        
       </div>
       <Footer />
     </>

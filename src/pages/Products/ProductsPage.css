@@ -559,7 +559,9 @@
   }
 
   .root_btn_filter_hader {
-    display: flex;
+        display: flex;
+        position: relative;
+        left: 10px;
 
   }
 
@@ -613,6 +615,23 @@
   .mlb-top-picks {
     display: inline;
   }
+  .wishlist-btn_products
+
+ {
+    position: absolute;
+    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    /* padding: inherit; */
+    top: 4%;
+    right: 4%;
+    border: none;
+    background: #fff;
+    /* border-radius: 50%; */
+    padding: -13px 6px;
+    /* font-size: 20px; */
+    cursor: pointer;
+}
 }
 
 .sortby-btn {

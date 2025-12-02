@@ -162,6 +162,7 @@ const ProductsPage = () => {
   };
 
   const toggleWishlist = async (e, product) => {
+    toast.dismiss();
     e.stopPropagation();
     if (!isLoggedIn) {
       setShowLoginPrompt(true);
@@ -175,7 +176,7 @@ const ProductsPage = () => {
         if (wishlistItem) {
           await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
-            autoClose: 3000,
+            autoClose: 1500,
             style: {
               border: "1px solid #713200",
               padding: "16px",
@@ -204,7 +205,7 @@ const ProductsPage = () => {
           addToWishlist({ product_id: product.id })
         ).unwrap();
         toast.success("Added to wishlist", {
-          autoClose: 3000,
+          autoClose: 1500,
           style: {
             border: "1px solid #713200",
             padding: "16px",

@@ -265,7 +265,8 @@ const ProductDetailPage = () => {
         if (wishlistItem) {
           await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
-            autoClose: 3000,
+         hideProgressBar: true,
+            autoClose: 1500,
             style: {
               border: "1px solid #713200",
               padding: "16px",
@@ -301,7 +302,8 @@ const ProductDetailPage = () => {
           addToWishlist({ product_id: product.id })
         ).unwrap();
         toast.success("Added to wishlist", {
-          autoClose: 3000,
+          autoClose: 1500,
+           hideProgressBar: true,
           style: {
             border: "1px solid #713200",
             padding: "16px",
@@ -361,7 +363,7 @@ const ProductDetailPage = () => {
         if (wishlistItem) {
           await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
-            autoClose: 3000,
+            autoClose: 1500,
             style: {
               border: "1px solid #713200",
               padding: "16px",
@@ -400,7 +402,7 @@ const ProductDetailPage = () => {
           addToWishlist({ product_id: product.id })
         ).unwrap();
         toast.success("Added to wishlist", {
-          autoClose: 3000,
+          autoClose: 1500,
           style: {
             border: "1px solid #713200",
             padding: "16px",
@@ -642,7 +644,7 @@ const ProductDetailPage = () => {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                   referrerPolicy="strict-origin-when-cross-origin"
-                  style={{ borderRadius: "10px", width: "100%", height: "100%" }}
+                  style={{  width: "100%", height: "100%" }}
                 ></iframe>
               ) : (
                 <video
@@ -653,7 +655,7 @@ const ProductDetailPage = () => {
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
-
+                  
                   }}
                 >
                   <source src={selectedColor?.video_source} type="video/mp4" />
@@ -754,7 +756,7 @@ const ProductDetailPage = () => {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                   referrerPolicy="strict-origin-when-cross-origin"
-                  style={{ borderRadius: "10px", width: "100%", height: "100%" }}
+                  style={{ width: "100%", height: "100%" }}
                 ></iframe>
               ) : (
                 <video autoPlay muted controls style={{ width: "100%", height: "100%", objectFit: "cover" }}>
@@ -766,7 +768,12 @@ const ProductDetailPage = () => {
                 src={selectedImage}
                 alt="Main Product"
                 className="main-image"
-                style={{ width: "100%", height: "auto", objectFit: "cover" }}
+                style={{
+  width: "100%",
+  height: "auto",
+  objectFit: "cover",
+  mixBlendMode: "darken",
+}}
               />
             )}
           </div>
@@ -1573,14 +1580,15 @@ const ProductDetailPage = () => {
           </div>
         </>
       ) : null
-      }
-
+                   }
       {/* Similar Products */}
       <div className="similar-styles-section">
         {localLoading ? (
           <Skeleton width={320} height={28} />
         ) : (
-          <h2>Discover Similar Styles</h2>
+           <div className="in-mlb">
+            <h2>Discover Similar Styles</h2>
+           </div> 
         )}
         {localLoading ? (
           <div className="product-grid">

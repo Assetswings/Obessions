@@ -136,6 +136,13 @@
   top: 0;
   z-index: 10;
   padding: 1rem 0;
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+ .faq-tab-buttons::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .faq-tab-buttons button {
@@ -161,6 +168,7 @@
   border-bottom: 2px solid #000;
   font-size: 16px;
 }
+ 
 
 .faq-category {
   margin-bottom: 3rem;
@@ -212,8 +220,10 @@
 
 /* Help Section */
 .faq-help-section {
-  background-color: #f7f7f7;
-  padding: 4rem 5rem;
+     background-color: #f7f7f7;
+    padding: 4rem 5rem;
+    /* margin-bottom: 30px; */
+    padding-bottom: 134px;
 }
 
 .faq-help-container {
@@ -297,6 +307,48 @@
     top: 524px;
     right: 90px;
   }
+
+  .faq-help-content {
+    text-align: center;
+    flex: 1 1;
+    position: relative;
+    /* top: -37px; */
+    bottom: 41px;
+  }
+}
+
+
+.faq-item summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.faq-icon-wrapper {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.faq-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: opacity 0.2s ease;
+}
+
+.faq-icon.minus {
+  opacity: 0;
+}
+
+/* When open: show minus, hide plus */
+details[open] .faq-icon.plus {
+  opacity: 0;
+}
+
+details[open] .faq-icon.minus {
+  opacity: 1;
 }
 
 @media (max-width: 480px) {}

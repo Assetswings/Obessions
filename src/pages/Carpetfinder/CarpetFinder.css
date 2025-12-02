@@ -81,14 +81,14 @@
 } */
 /* label section */
 .card-label {
-    padding: 11px 8px;
-    font-weight: 500;
-    font-size: 0.9rem;
-    background: #fff;
-    text-align: center;
-    width: 100%;
-    height: 44px;
-    align-items: center;
+  padding: 11px 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  background: #fff;
+  text-align: center;
+  width: 100%;
+  height: 44px;
+  align-items: center;
 }
 
 .finder-card.selected {
@@ -96,18 +96,17 @@
 }
 
 .checkmark {
-    position: absolute;
-    top: 10px;
-    right: 21px;
-    background-color: #4a5e52;
-    color: white;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
+  position: absolute;
+  top: 10px;
+  right: 21px;
+  background-color:white;
+  color: white;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
 }
 
 .finder-buttons {
@@ -139,11 +138,11 @@
   border: none;
   background-color: black;
   color: white;
-   padding: 10px;
-   position: relative;
-   bottom: 5px;
-   font-weight: 500;
-   
+  padding: 10px;
+  position: relative;
+  bottom: 5px;
+  font-weight: 500;
+
 }
 
 .arrow-stack {
@@ -153,15 +152,19 @@
 
 /* Keep stepper height fixed ALWAYS */
 .stepper-right {
-  height: 350px;      /* fixed height so it never grows */
-  flex-shrink: 0;     /* stops it from resizing */
+  height: 350px;
+  /* fixed height so it never grows */
+  flex-shrink: 0;
+  /* stops it from resizing */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* evenly spread circles */
+  justify-content: space-between;
+  /* evenly spread circles */
   align-items: center;
   margin-left: 1.5rem;
   position: sticky;
-  top: 130px;         /* optional – keeps it in view */
+  top: 130px;
+  /* optional – keeps it in view */
 }
 
 
@@ -213,13 +216,15 @@
   .finder-buttons {
     margin-bottom: 20%;
   }
-  .main_file_tracker{
-      padding: 20px;
+
+  .main_file_tracker {
+    padding: 20px;
   }
+
   .card-label {
     font-size: 13px;
- 
-}
+
+  }
 }
 
 @media (max-width: 480px) {
@@ -230,14 +235,21 @@
   .finder-card {
     width: 140px;
   }
+
   .finder-title {
     font-size: 20px;
     font-weight: 400;
+    font-size: 20px;
+    font-weight: 400;
+    margin: 10px;
+    margin-bottom: 20px;
   }
+
   .finder-wrapper {
     padding: 0px;
     margin-bottom: 50px;
   }
+
   .finder-grid {
     gap: 1rem;
   }
@@ -272,6 +284,7 @@
   bottom: 1px;
   left: 5px;
 }
+
 /* default desktop widths */
 .big-card {
   width: 300px;
@@ -284,10 +297,12 @@
 /* mobile changes */
 @media (max-width: 768px) {
   .small-card {
-    width: 150px !important;   /* your request */
+    width: 150px !important;
+    /* your request */
   }
 
   .big-card {
-    width: 260px; /* if you wanna shrink big one, optional */
+    width: 260px;
+    /* if you wanna shrink big one, optional */
   }
 }

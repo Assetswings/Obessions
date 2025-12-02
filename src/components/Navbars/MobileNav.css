@@ -146,6 +146,12 @@ body {
   opacity: 0;
   transform: translateX(100%);
   transition: transform 0.35s ease, opacity 0.35s ease;
+  overflow-y: auto; /* keeps scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.menu::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
 }
 
 .menu.active {
@@ -153,6 +159,14 @@ body {
   opacity: 1;
   transform: translateX(0);
   z-index: 2;
+
+  overflow-y: auto;          /* allow scroll */
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE/Edge */
+}
+
+.menu.active::-webkit-scrollbar {
+  display: none;              /* Chrome/Safari */
 }
 
 /* Animations */

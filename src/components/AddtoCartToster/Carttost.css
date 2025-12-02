@@ -15,7 +15,7 @@ border-radius: inherit !important;
     position: relative;
     touch-action: none;
     width: var(--toastify-toast-width);
-    min-height: var(--toastify-toast-min-height);
+    min-height: 20px !important;
     box-sizing: border-box;
     margin-bottom: 1rem;
     padding: var(--toastify-toast-padding);
@@ -29,4 +29,13 @@ border-radius: inherit !important;
     align-items: center;
     word-break: break-word;
     border-radius: inherit !important;
+    border: none !important;
+}
+.Toastify__close-button>svg {
+    fill: currentColor;
+    height: 16px;
+    width: 14px;
+    position: relative;
+    top: 8px;
+    right: 15px;
 }

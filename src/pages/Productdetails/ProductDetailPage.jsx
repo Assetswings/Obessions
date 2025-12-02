@@ -55,6 +55,7 @@ const ProductDetailPage = () => {
   const [pincodeDetails, setPincodeDetails] = useState({});
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [open, setOpen] = useState(false);
+  const [touchStart, setTouchStart] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
   const { itemSlug } = useParams();
@@ -517,6 +518,29 @@ const ProductDetailPage = () => {
     }
   };
 
+  const handleSwipe = (touchEndX) => {
+    const swipeDistance = touchStart - touchEndX;
+    const threshold = 50; // minimum distance to trigger swipe
+
+    // Collect all available media (images + video)
+    const medias = selectedColor?.product_media?.map(m => m.media) || [];
+    if (selectedColor?.video_source) medias.push("video");
+
+    const currentIndex = medias.indexOf(selectedImage);
+    if (currentIndex === -1) return;
+
+    if (swipeDistance > threshold) {
+      // swipe LEFT → next image
+      const next = (currentIndex + 1) % medias.length;
+      setSelectedImage(medias[next]);
+    } else if (swipeDistance < -threshold) {
+      // swipe RIGHT → previous image
+      const prev = (currentIndex - 1 + medias.length) % medias.length;
+      setSelectedImage(medias[prev]);
+    }
+  };
+
+
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
@@ -652,7 +676,7 @@ const ProductDetailPage = () => {
           </div>
 
           {/* Mobile view */}
-          <div className="image_track_mobile" style={{ width: "100%", minHeight: "250px" }}>
+          {/* <div className="image_track_mobile" style={{ width: "100%", minHeight: "250px" }}>
             {loading || !selectedImage ? (
               <div style={{ width: "100%", height: "100%" }}>
                 <Skeleton
@@ -706,8 +730,46 @@ const ProductDetailPage = () => {
                 }}
               />
             )}
-          </div>
+          </div> */}
 
+          {/* Mobile view */}
+          <div
+            className="image_track_mobile"
+            style={{ width: "100%", minHeight: "250px" }}
+            onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
+            onTouchEnd={(e) => handleSwipe(e.changedTouches[0].clientX)}
+          >
+            {loading || !selectedImage ? (
+              <div style={{ width: "100%", height: "100%" }}>
+                <Skeleton height="100%" width="100%" baseColor="#e0e0e0" highlightColor="#f5f5f5" />
+              </div>
+            ) : selectedImage === "video" ? (
+              selectedColor?.video_source?.includes("youtube.com") ? (
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={`${selectedColor.video_source}?autoplay=1&mute=1&playsinline=1`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  style={{ borderRadius: "10px", width: "100%", height: "100%" }}
+                ></iframe>
+              ) : (
+                <video autoPlay muted controls style={{ width: "100%", height: "100%", objectFit: "cover" }}>
+                  <source src={selectedColor?.video_source} type="video/mp4" />
+                </video>
+              )
+            ) : (
+              <img
+                src={selectedImage}
+                alt="Main Product"
+                className="main-image"
+                style={{ width: "100%", height: "auto", objectFit: "cover" }}
+              />
+            )}
+          </div>
 
           {/* Thumbnails */}
           <div className="thumbnail-row">

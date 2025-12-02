@@ -272,8 +272,8 @@
 
 .sub-root-mlb {
   position: relative;
-  left: 10%;
-  width: 50%;
+  left: 5%;
+  width: 73%;
   margin-bottom: 20px;
 }
 
@@ -290,7 +290,7 @@
   .bestseller-container {
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 75px 1rem;
+    padding: 35px 1rem;
     -webkit-overflow-scrolling: touch;
     /* ✅ smooth scrolling on iOS */
     scroll-behavior: smooth;

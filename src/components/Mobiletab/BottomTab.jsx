@@ -102,7 +102,7 @@ const BottomTab = () => {
       <div className={`category-drawer ${showCategories ? "open" : ""}`}>
         <div className="drawer-header_btm">
           <h3>Categories</h3>
-          <button className="close-btn" onClick={() => setShowCategories(false)}>
+          <button className="close-btn-nav" onClick={() => setShowCategories(false)}>
             <X size={20} />
           </button>
         </div>

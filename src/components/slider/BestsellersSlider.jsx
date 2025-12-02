@@ -155,7 +155,7 @@ const BestsellersSlider = ({ onQuickView }) => {
     <>
       <div className="bestseller-mobile-title">
         <div className="sub-root-mlb">
-          <h3> <span style={{ fontWeight: '500' }}>Get the</span> <span style={{fontFamily:"Playfair Display", fontStyle:"italic"}}>Bestsellers</span></h3>
+          <h3> <span style={{ fontWeight: '500' }}>Get the</span> <span style={{fontFamily:"Playfair Display", fontWeight:"500"}}>Bestsellers</span></h3>
         </div>
 
       </div>

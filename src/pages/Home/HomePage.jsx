@@ -292,8 +292,8 @@ const HomePage = () => {
     // Center card → goes up **and slightly right**
     gsap.to(centerRef.current, {
       y: -480,
-      x: 60,
-      rotate: 15,
+      // x: 60,
+      // rotate: 15,
       scale: 1.32,
       ease: "power3.out",
       scrollTrigger: {
@@ -307,8 +307,8 @@ const HomePage = () => {
     // Left card → goes up and **more left**, rotates opposite
     gsap.to(leftRef.current, {
       y: -420,
-      x: -130,
-      rotate: -28,
+      // x: -130,
+      // rotate: -28,
       scale: 1.25,
       ease: "power2.out",
       scrollTrigger: {
@@ -322,8 +322,8 @@ const HomePage = () => {
     // Right card → goes up and **more right**
     gsap.to(rightRef.current, {
       y: -380,
-      x: 140,
-      rotate: 32,
+      // x: 140,
+      // rotate: 32,
       scale: 1.27,
       ease: "power4.out",
       scrollTrigger: {
@@ -337,8 +337,8 @@ const HomePage = () => {
     // Top card → goes up **and slightly left**, most dramatic movement
     gsap.to(topRef.current, {
       y: -620,
-      x: -40,
-      rotate: -12,
+      // x: -40,
+      // rotate: -12,
       scale: 1.45,
       ease: "expo.out",
       scrollTrigger: {

@@ -41,9 +41,9 @@ body {
 }
 
 .category-list {
- top: 65%;
-    left: 40px;
-    z-index: 2;
+  top: 65%;
+  left: 40px;
+  z-index: 2;
 }
 
 .category-list li {
@@ -265,7 +265,7 @@ body {
 }
 
 .footer-note {
-  bottom: 60px;
+  bottom: 20px;
   transform: translateX(-50%);
   color: #333;
   z-index: 2;
@@ -326,11 +326,11 @@ body {
 
 /* ─── Set 0 ─── */
 .set-0 .img-center {
-  top: 36%;
-    left: 45%;
-    width: 9vw;
-    z-index: 25;
-    transform: rotate(-16deg);
+  top: 45%;
+  left: 45%;
+  width: 10vw;
+  z-index: 25;
+  transform: rotate(-16deg);
 }
 
 .set-0 .img-left {
@@ -341,18 +341,18 @@ body {
 }
 
 .set-0 .img-top {
-top: 6%;
-    left: 39%;
-    width: 2.3vw;
-    transform: rotate(12deg);
+  top: 6%;
+  left: 39%;
+  width: 2.3vw;
+  transform: rotate(12deg);
 }
 
 .set-0 .img-right {
-     top: 24%;
-    right: 21%;
-    width: 8vw;
-    z-index: 25;
-    transform: rotate(8deg);
+  top: 24%;
+  right: 21%;
+  width: 8vw;
+  z-index: 25;
+  transform: rotate(8deg);
 }
 
 /* ─── Set 1 ─── */
@@ -365,10 +365,10 @@ top: 6%;
 }
 
 .set-1 .img-left {
-    top: 39%;
-    left: 11%;
-    width: 8vw;
-    transform: rotate(-3deg);
+  top: 39%;
+  left: 11%;
+  width: 8vw;
+  transform: rotate(-3deg);
 }
 
 .set-1 .img-top {
@@ -403,10 +403,10 @@ top: 6%;
 }
 
 .set-2 .img-top {
-    top: 6%;
-    left: 40%;
-    width: 4vw;
-    transform: rotate(-9deg);
+  top: 6%;
+  left: 40%;
+  width: 4vw;
+  transform: rotate(-9deg);
 }
 
 .set-2 .img-right {
@@ -419,17 +419,17 @@ top: 6%;
 
 /* ─── Set 3 ─── */
 .set-3 .img-center {
-  top: 28%;
-    left: 37%;
-    width: 22vw;
-    z-index: 25;
-    transform: rotate(10deg);
+  top: 36%;
+  left: 37%;
+  width: 22vw;
+  z-index: 25;
+  transform: rotate(10deg);
 }
 
 .set-3 .img-left {
- top: 38%;
-    left: 9%;
-    width: 9vw;
+  top: 38%;
+  left: 9%;
+  width: 9vw;
 }
 
 .set-3 .img-top {
@@ -1361,7 +1361,7 @@ section.shopby {
   }
 
   .track_obsd {
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .obsession-title {
@@ -1655,10 +1655,10 @@ section.shopby {
   }
 
   section.shopby {
-        height: 105vh;
-        /* margin-top: 50px; */
-        padding-top: 35vh;
-        background-color: #F2F2F2;
+    height: 105vh;
+    /* margin-top: 50px; */
+    padding-top: 35vh;
+    background-color: #F2F2F2;
   }
 
   .spacer_track {

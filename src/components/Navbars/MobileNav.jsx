@@ -447,7 +447,7 @@ const MobileNav = () => {
                         <img
                           src={item.media}
                           alt={item.name}
-                          className="result-thumb"
+                          className="result-thumb-nores"
                         />
                         <div className="result-info">
                           <p>{item.name}</p>

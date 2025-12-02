@@ -9,7 +9,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 import { SlidersHorizontal, X } from "lucide-react";
 
-  const CollectionPage = () => {
+const CollectionPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -50,30 +50,22 @@ import { SlidersHorizontal, X } from "lucide-react";
   ];
   return (
     <>
-      <Breadcrumbs paths={breadcrumbPaths} />
-       <div>
-          {/* <div className="track_filter">
-            <button
-              className="mobile-filter-btn"
-              onClick={() => setIsFilterOpen(true)}
-            >
-              <span>
-                {" "}
-                <SlidersHorizontal size={20} />
-              </span>{" "}
-              Filters
-            </button>
-          </div> */}
-
-            <div className="track_filter_cll">
-                     <div
-                       className="mobile-filter-btn"
-                       onClick={() => setIsFilterOpen(true)}
-                     >
-                       FILTERS
-                     </div>
-                   </div>
+      <div className="breadweb">
+        <Breadcrumbs paths={breadcrumbPaths} />
+      </div>
+      <div>
+        <div className="track_filter_cll">
+          <div style={{ position: "relative", right: "4%" }}>
+            <Breadcrumbs paths={breadcrumbPaths} />
+          </div>
+          <div
+            className="mobile-filter-btn"
+            onClick={() => setIsFilterOpen(true)}
+          >
+            FILTERS
+          </div>
         </div>
+      </div>
       <div className="collection-container">
         {/* 🧱 Sidebar */}
         <aside className="sidebar">
@@ -145,7 +137,7 @@ import { SlidersHorizontal, X } from "lucide-react";
               );
             })}
         </aside>
-       
+
         {/* 🖼️ Main Products Grid */}
         <main className="products-grid">
           {loading

@@ -453,9 +453,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  overflow-y: auto;          /* scroll only this area */
+  overflow-y: auto;       
   padding-right: 4px;
-  max-height: calc(90vh - 110px);  
+  max-height: calc(90vh - 40px);  
   align-items: center;
 }
 

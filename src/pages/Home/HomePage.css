@@ -31,7 +31,7 @@ body {
   z-index: 0;
   font-size: 19vw;
   color: #000;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -10px;
   font-family: 'Helvetica Neue', sans-serif;
   right: 0;
@@ -616,8 +616,8 @@ section.shopby {
 
 /* Hover animation */
 .shopby-item:hover .thumb-bar img {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   padding: 1.2rem;
   /* transition: all 0.3s ease; */
   gap: 0px;

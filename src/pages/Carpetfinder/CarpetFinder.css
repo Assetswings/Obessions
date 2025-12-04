@@ -305,4 +305,7 @@
     width: 260px;
     /* if you wanna shrink big one, optional */
   }
+  .crpt-flt{
+    right: 17px;
+  }
 }

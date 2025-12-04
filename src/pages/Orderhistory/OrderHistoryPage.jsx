@@ -207,7 +207,7 @@ const OrderHistoryPage = () => {
                       <div className="order-header">
                         <div>
                           <div>Order Placed</div>
-                          <div>
+                          <div style={{ color: "#625e55" }}>
                             {/* Format date here if needed */}
                             {new Date(order.order_placed_at).toLocaleDateString(
                               "en-US",
@@ -224,7 +224,9 @@ const OrderHistoryPage = () => {
                         <div className="trac">
                           <div>
                             <div>Order ID</div>
-                            {order.order_no}
+                            <div style={{ color: "#625e55" }}>
+                              {order.order_no}
+                            </div>
                           </div>
                         </div>
 

@@ -25,6 +25,7 @@ import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 import emptyproduct from "../../assets/images/empty-product.png";
 import Pagination from "../../components/Pagination/Pagination";
 import { useCartWishlist } from "../../app/CartWishlistContext";
+import API from "../../app/api";
 
 const Searchlist = () => {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ const Searchlist = () => {
   const [expandedGroups, setExpandedGroups] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [selected, setSelected] = useState("Recommended");
+  const [customerfavourite, setCustomerfavourite] = useState();
 
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
@@ -61,11 +63,10 @@ const Searchlist = () => {
     dispatch(fetchTopPicks());
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
+    getPLPbotton();
   }, [dispatch]);
 
   useEffect(() => {
-    console.log('||||||||||', Array.isArray(results) ? results : []);
-
     setProducts(Array.isArray(results) ? results : []);
   }, [results]);
 
@@ -86,6 +87,17 @@ const Searchlist = () => {
     return () => clearTimeout(timeoutId);
   }, [dispatch, query, selectedFilters, currentPage]);
 
+  const getPLPbotton = async () => {
+    try {
+      const res = await API.get("banners/product-listing-bottom");
+      if (res.data.status === 200) {
+        // Simulate delay only if you really want it
+        setCustomerfavourite(res?.data?.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
@@ -725,6 +737,39 @@ const Searchlist = () => {
           product={quickViewProduct}
         />
       </div>
+
+      <section className="obsession-section-pd">
+        <div className="obsession-content-pd">
+          <div className="obsession-text-pd">
+            <h2>
+              What makes Obsessions <br /> a customer <em>favourite</em>.
+            </h2>
+            <div className="obsession-columns">
+              {customerfavourite?.content?.map((item, index) => {
+                const [title, description] = Object.entries(item)[0]; // extract key and value
+                return (
+                  <div className="obsession-col" key={index}>
+                    <h4>{title}</h4>
+                    <p>{description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="obsession-images">
+            <div className="obsession-img-wrapper">
+              <img className="on-image-one" src={customerfavourite?.media[0]?.large} alt="Laundry" />
+              <span className="obsession-tag top-left">{customerfavourite?.tags[0]?.top_left}</span>
+              <span className="obsession-tag top-right">{customerfavourite?.tags[1]?.top_right}</span>
+            </div>
+            <div className="obsession-img-wrapper">
+              <img className="on-image-two" src={customerfavourite?.media[1]?.small} alt="Cooking" />
+              <span className="obsession-tag bottom">{customerfavourite?.tags[2]?.bottom_right}</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* login modal */}
       {showLoginPrompt && (

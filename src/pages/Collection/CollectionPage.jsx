@@ -156,7 +156,7 @@ const CollectionPage = () => {
               >
                 <Link to={`/products/${product.action_url}`}>
                   <img src={product.uploaded_media} alt={product.name} />
-                  <p>{product.name}</p>
+                  <p style={{textTransform:"uppercase"}}>{product.name}</p>
                 </Link>
               </div>
             ))}

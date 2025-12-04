@@ -223,6 +223,7 @@ font-family: "Playfair Display", serif; */
 }
 
 .txt-Carpet-Finder {
+  padding-top: 20px;
   padding-bottom: 28px;
 
 }
@@ -1245,7 +1246,7 @@ font-family: "Playfair Display", serif; */
   .image_track_mobile {
     display: block;
     background-color: #f2f2f2;
-    
+
   }
 
   .thumbnail {
@@ -1421,8 +1422,13 @@ ul.custom-tick-list li::before {
     width: 206px !important;
     display: inline-block;
   }
+
   .in-mlb {
     display: flex;
     align-items: start;
-}
+  }
+
+  .rec_section {
+    margin-bottom: 40px;
+  }
 }

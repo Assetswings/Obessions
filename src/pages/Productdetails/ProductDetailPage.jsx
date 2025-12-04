@@ -468,7 +468,7 @@ const ProductDetailPage = () => {
       dispatch(checkPincode(pincode));
       localStorage.setItem('pincode', pincode);
     } else {
-      toast.error("Please Input a Pincode!");
+      toast.error("Please Enter a Valid Pincode");
     }
   };
 

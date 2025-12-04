@@ -129,7 +129,7 @@ const Carpetfinderserch = () => {
   };
 
   const toggleWishlist = async (e, product) => {
-      toast.dismiss();
+    toast.dismiss();
     e.stopPropagation();
     if (!isLoggedIn) {
       setShowLoginPrompt(true);
@@ -164,7 +164,7 @@ const Carpetfinderserch = () => {
       } else {
         await dispatch(addToWishlist({ product_id: product.id })).unwrap();
         toast.success("Added to wishlist", {
-          autoClose:1500,
+          autoClose: 1500,
           style: {
             border: "1px solid #713200",
             padding: "16px",
@@ -352,10 +352,13 @@ const Carpetfinderserch = () => {
   return (
     <>
       <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
-      <Breadcrumbs paths={breadcrumbPaths} />
+      <div className="breadweb">
+        <Breadcrumbs paths={breadcrumbPaths} />
+      </div>
       {products.length > 0 &&
         <div className="track_filter">
-          <div className="title_hader_filter">
+          <div className="title_hader_filter crpt-flt">
+            <Breadcrumbs paths={breadcrumbPaths} />
             {/* <h2 className="title_prd_roots">
               {loading ? (
                 <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />

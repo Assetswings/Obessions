@@ -150,9 +150,12 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   // Don't render if not shown
   if (!show || !product) return null;
   const handleCheck = () => {
+    toast.dismiss();
     if (pincode.trim()) {
       dispatch(checkPincode(pincode));
       localStorage.setItem('pincode', pincode);
+    } else {
+      toast.error("Please Enter a Valid Pincode");
     }
   };
 
@@ -223,7 +226,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   };
 
   const toggleWishlist = async (e, product) => {
-     toast.dismiss();
+    toast.dismiss();
     e.stopPropagation();
     const token = localStorage.getItem("token");
     if (!token) {
@@ -238,7 +241,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
           await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
             autoClose: 1500,
-             hideProgressBar: true,
+            hideProgressBar: true,
             style: {
               border: "1px solid #713200",
               padding: "16px",
@@ -274,7 +277,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
         ).unwrap();
         toast.success("Added to wishlist", {
           autoClose: 1500,
-           hideProgressBar: true, 
+          hideProgressBar: true,
           style: {
             border: "1px solid #713200",
             padding: "16px",

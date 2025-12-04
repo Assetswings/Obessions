@@ -31,7 +31,7 @@
 .post-sidebar {
   flex: 1;
   position: sticky;
-  top: 2rem;
+  margin-top: 15rem;
 }
 
 /* Recommended section */

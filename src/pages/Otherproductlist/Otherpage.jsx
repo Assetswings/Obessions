@@ -481,7 +481,7 @@ const Otherpage = () => {
           </div>
         </div>
       }
-      <div className="custom-products-page">
+      <div className={`custom-products-page ${products?.length < 15 ? "page-wrapper" : ""}`}>
         <aside className="custom-filters">
           <h2 className="title_prd_roots">{slug ? formatTitle(slug) : ""}</h2>
           <div className="root_devider_flt">

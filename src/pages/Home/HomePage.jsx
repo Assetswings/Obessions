@@ -12,6 +12,14 @@ import { fetchSearchResults, clearSearchResults } from "./searchSlice";
 import emtyimage from "../../assets/images/empty.jpg";
 import ProductQuickViewModal from "../Products/ProductQuickViewModal";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+
+
+// Dynamic image 
+import aniimage1 from "../../assets/icons/icon_box_ dynamic.png";
+import aniimage2 from "../../assets/icons/icon_home_dynamic.png";
+import aniimage3 from "../../assets/icons/icon_love_dynamic.png";
+
+
 /* ─── Hero + Collection assets ─── */
 import image1 from "../../assets/images/Maskgroup-1.png";
 import image2 from "../../assets/images/Maskgroup-2.png";
@@ -38,8 +46,25 @@ import useMeta from "../../app/useMeta";
 import { useHeader } from "../../app/CartWishlistContext";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-
 gsap.registerPlugin(ScrollTrigger);
+
+
+
+const items = [
+  {
+    icon: aniimage1,
+    text: "Good design doesn’t ask for attention; it earns it.",
+  },
+  {
+    icon: aniimage2,
+    text: "Every corner deserves a little love.",
+  },
+  {
+    icon: aniimage3,
+    text: "Home isn’t built; it’s curated.",
+  },
+];
+
 
 const HomePage = () => {
   const token = localStorage.getItem("token");
@@ -59,11 +84,13 @@ const HomePage = () => {
   const [currentSet, setCurrentSet] = useState(null);
   const [nextSet, setNextSet] = useState(null);
   const [setIndex, setSetIndex] = useState(null);
+ 
+   const [fade, setFade] = useState(false);
   // 🏠 Home Data Fetching
   const { data } = useSelector((state) => state.home);
   const searchState = useSelector((state) => state.search || {});
   const { results = [], loading, error } = searchState;
-
+  const [currentIndex, setCurrentIndex] = useState(0);
   const searchSectionRef = useRef(null);
   const { setShowSearchIcon } = useHeader();
   const centerRef = useRef(null);
@@ -90,6 +117,8 @@ const HomePage = () => {
       }
     };
   }, [setShowSearchIcon]);
+
+
 
   useEffect(() => {
     document.title = "Obsession - Home";
@@ -138,6 +167,21 @@ const HomePage = () => {
     }
   }, [data]);
 
+   useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(true);
+
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % items.length);
+      }, 300); // fade-out before content changes
+
+      setTimeout(() => {
+        setFade(false);
+      }, 600); // fade-in after content changes
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
   const setFavicon = (url) => {
     localStorage.setItem("favicon_url", url);
 
@@ -529,19 +573,35 @@ const HomePage = () => {
           />
         )}
 
-        {/* Footer */}
-        <div className="txt_dynamic_betlt">
+
+        {/* <div className="txt_dynamic_betlt">
           <p className="position-absolute footer-note text-center small">
             <span>
               <img
-                src="https://i.ibb.co/qL71DQj5/icon.png"
+                src={items[currentIndex].icon}
                 className="img_turner"
-              />{" "}
+              />
               &nbsp;
-            </span>{" "}
-            Good design doesn’t ask for attention; it earns it.
+            </span>
+            {items[currentIndex].text}
           </p>
-        </div>
+        </div> */}
+
+        
+  <div className="txt_dynamic_betlt">
+      <p
+        className={`position-absolute footer-note text-center small ${
+          fade ? "fade-out" : "fade-in"
+        }`}
+      >
+        <span>
+          <img src={items[currentIndex].icon} className="img_turner" />
+          &nbsp;
+        </span>
+        {items[currentIndex].text}
+      </p>
+    </div>
+
       </div>
 
       {/* ────────────────── 🐉 💎💎🥀 COLLECTION  🥀💎💎 🐉────────────────── */}

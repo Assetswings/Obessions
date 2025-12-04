@@ -119,7 +119,7 @@
   padding: 0.5rem 0.75rem;
 }
 
-.product-info .title,
+/* .product-info .title,
 .product-info-card .title {
   font-family: "Canela Trial", serif !important;
   font-weight: 400 !important;
@@ -136,7 +136,29 @@
   overflow: hidden;
   text-overflow: ellipsis;
   height: 2.6em;
+} */
+
+ .product-info .title,
+.product-info-card .title {
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: #111;
+  font-family: "Canela Trial", serif !important;
+  font-size: 15px;
+  font-weight: 400 !important;
+  line-height: 120%;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+
+  height: 2.4em;
+  width: 180px !important;
+  margin-bottom: 0.2rem;
 }
+
 
 .product-info .price,
 .product-info-card .price {

@@ -919,3 +919,18 @@
   margin-bottom: 10%;
   /* full screen minus header (example) */
 }
+
+/* Chrome, Edge, Safari */
+.custom-filters::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+.custom-filters {
+  scrollbar-width: none;
+}
+
+/* Internet Explorer / old Edge */
+.custom-filters {
+  -ms-overflow-style: none;
+}

@@ -483,7 +483,7 @@ const ProductsPage = () => {
           </div>
         </div>
       }
-      <div className={`custom-products-page ${products?.length < 15 ? "page-wrapper" : ""}`}>
+      <div className={`custom-products-page ${products?.length < 8 ? "page-wrapper" : ""}`}>
         <aside className="custom-filters">
           {products.length > 0 &&
             <>

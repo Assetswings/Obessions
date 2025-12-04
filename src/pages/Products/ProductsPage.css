@@ -7,6 +7,9 @@
   padding: 20px 20px 20px 40px;
   gap: 30px;
   font-family: Arial, sans-serif;
+
+  align-items: stretch; /* 🔥 make main & aside equal height */
+  height: 100%; /* important */
 }
 
 .title_prd_roots {
@@ -35,6 +38,11 @@
   width: 400px;
   flex-shrink: 0;
   font-size: 14px;
+
+  overflow-y: auto; /* 🔥 scroll only inside filters */
+  height: 100%;
+  min-height: 0; /* important - allows scroll instead of stretch */
+  padding-right: 8px; /* spacing for scrollbar */
 }
 
 .custom-filters h2 {
@@ -84,6 +92,10 @@
 
 .custom-product-list {
   flex: 1;
+
+  min-height: 0; /* 🔥 prevents flex overflow issues */
+  display: flex;
+  flex-direction: column;
 }
 
 .custom-product-list h2 {
@@ -469,14 +481,14 @@
 
 /* Sticky footer */
 .mobile-filter-footer {
- border-top: 1px solid #eee;
-    padding: 35px 20px;
-    background: #fff;
-    position: sticky;
-    bottom: 0;
-    margin-bottom: 100px;
-    display: flex;
-    gap: 10px;
+  border-top: 1px solid #eee;
+  padding: 35px 20px;
+  background: #fff;
+  position: sticky;
+  bottom: 0;
+  margin-bottom: 100px;
+  display: flex;
+  gap: 10px;
 }
 
 .apply-filter-btn {
@@ -487,9 +499,10 @@
   padding: 14px;
   font-size: 16px;
   font-weight: bold;
- 
+
   cursor: pointer;
 }
+
 .apply-filter-btn-clr {
   width: 100%;
   background: none !important;
@@ -559,9 +572,9 @@
   }
 
   .root_btn_filter_hader {
-        display: flex;
-        position: relative;
-        left: 10px;
+    display: flex;
+    position: relative;
+    left: 10px;
 
   }
 
@@ -615,9 +628,8 @@
   .mlb-top-picks {
     display: inline;
   }
-  .wishlist-btn_products
 
- {
+  .wishlist-btn_products {
     position: absolute;
     padding: 10px;
     padding-left: 10px;
@@ -631,7 +643,7 @@
     padding: -13px 6px;
     /* font-size: 20px; */
     cursor: pointer;
-}
+  }
 }
 
 .sortby-btn {
@@ -894,10 +906,16 @@
 
 
 
- @media screen and (max-width: 1280px) {
-   .custom-filters {
+@media screen and (max-width: 1280px) {
+  .custom-filters {
     width: 150px;
     flex-shrink: 0;
     font-size: 14px;
+  }
 }
+
+.page-wrapper {
+  height: calc(100vh - 80px);
+  margin-bottom: 10%;
+  /* full screen minus header (example) */
 }

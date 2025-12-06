@@ -213,9 +213,10 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
               padding: "12px",
               background: "#fff",
               color: "#000",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+              // boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
             },
             icon: false,
+            className: "cart-toast-wrapper",
           }
         );
         getCartWishlistCount(); // refresh count after add
@@ -243,7 +244,8 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
             autoClose: 1500,
             hideProgressBar: true,
             style: {
-              border: "1px solid #713200",
+              // borderRadius:"inherit",
+              borderRadius:"inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -279,7 +281,8 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
           autoClose: 1500,
           hideProgressBar: true,
           style: {
-            border: "1px solid #713200",
+            // borderRadius:"inherit",
+            borderRadius:"inherit",
             padding: "16px",
             color: "#713200",
           },

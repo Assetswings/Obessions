@@ -64,7 +64,7 @@
 }
 
 .product-item img {
-  width: 100px;
+  /* width: 100px; */
   height: 153px;
   object-fit: cover;
 }

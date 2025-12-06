@@ -131,8 +131,8 @@ const OtherTopnav = () => {
   };
 
   const handleWishlistClick = () => {
-    checkSession();
-    if (isLoggedIn) {
+    let logintoken = localStorage.getItem("token");
+    if (logintoken) {
       setShowWishlist(true);
     } else {
       setShowLoginPrompt(true);
@@ -146,7 +146,7 @@ const OtherTopnav = () => {
     setShowUserPopup(false);
     // toast.success("Logout Successfully.", {
     //   style: {
-    //     border: "1px solid #713200",
+    //     borderRadius:"inherit",
     //     padding: "16px",
     //     color: "#713200",
     //   },
@@ -162,12 +162,24 @@ const OtherTopnav = () => {
     navigate("/");
   };
 
-  const handleUserClick = () => {
-    checkSession();
-    if (!isLoggedIn) {
+  // const handleUserClick = () => {
+  //   checkSession();
+  //   if (!isLoggedIn) {
+  //     navigate("/login");
+  //   } else {
+  //     setShowUserPopup((prev) => !prev);
+  //   }
+  // };
+
+  const handleUserClick = (e) => {
+    e.stopPropagation();
+    let logintoken = localStorage.getItem("token");
+    if (!logintoken) {
+      console.log('not logedin');
       navigate("/login");
     } else {
-      setShowUserPopup((prev) => !prev);
+      console.log('logedin');
+      setShowUserPopup(true);
     }
   };
 
@@ -259,8 +271,7 @@ const OtherTopnav = () => {
           <div
             ref={userWrapperRef}
             className="user-click-wrapper"
-            onClick={handleUserClick}
-               style={{ position: "relative", left:'7px', top:'0px' }}
+            style={{ position: "relative", left: '7px', top: '0px' }}
             title="User Profile"
           >
             <span style={{ fontSize: "12px", paddingRight: "7px" }}>{localStorage.getItem('userName') ?? ''}</span>
@@ -269,9 +280,10 @@ const OtherTopnav = () => {
               color="#FFFFFF"
               size={25}
               style={{ cursor: "pointer" }}
+              onClick={handleUserClick}
             />
 
-            {isLoggedIn && showUserPopup && (
+            {showUserPopup && (
               <>
                 <div className="popup-triangle"></div>
                 <div className="user-popup">

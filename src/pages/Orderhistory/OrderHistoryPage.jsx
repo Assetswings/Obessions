@@ -202,192 +202,195 @@ const OrderHistoryPage = () => {
                   selectedItemsForThisOrder.every((item) => item.allow_cancellation);
 
                 return (
-                  <div className="order-card" key={idx}>
-                    <div className="root_new">
-                      <div className="order-header">
-                        <div>
-                          <div>Order Placed</div>
-                          <div style={{ color: "#625e55" }}>
-                            {/* Format date here if needed */}
-                            {new Date(order.order_placed_at).toLocaleDateString(
-                              "en-US",
-                              {
-                                weekday: "short",
-                                day: "2-digit",
-                                month: "short",
-                                timeZone: "Asia/Kolkata",
-                              }
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="trac">
+                  <>
+                    <div className="order-card" key={idx}>
+                      <div className="root_new">
+                        <div className="order-header">
                           <div>
-                            <div>Order ID</div>
+                            <div>Order Placed</div>
                             <div style={{ color: "#625e55" }}>
-                              {order.order_no}
+                              {/* Format date here if needed */}
+                              {new Date(order.order_placed_at).toLocaleDateString(
+                                "en-US",
+                                {
+                                  weekday: "short",
+                                  day: "2-digit",
+                                  month: "short",
+                                  timeZone: "Asia/Kolkata",
+                                }
+                              )}
                             </div>
                           </div>
-                        </div>
 
-                        <div className="order-actions">
-                          <Link to={`/OrderTrackingPage/${order.order_no}`}>
-                            <span
-                              className="txt_cation"
-                              style={{ color: "#1B170E" }}
-                            >
-                              Track Order
-                            </span>
-                          </Link>
-                          <div>
-                            <span
-                              className="txt_cation"
-                              style={{ color: "#1B170E" }}
-                            >
-                              View Invoice
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="order-header_2">
-                        {allExchangeable &&
-                          <div>
-                            <div
-                              className={`txt_cation ${!allExchangeable ? "disabled" : ""}`}
-                              onClick={() => {
-                                if (allExchangeable) setShowModal(true); setOption('exchange');
-                              }}
-                              style={{
-                                cursor: allExchangeable ? "pointer" : "not-allowed",
-                                opacity: allExchangeable ? 1 : 0.5,
-                              }}
-                            >
-                              <u>Exchange</u>
-                            </div>
-                          </div>
-                        }
-                        {allReturnable &&
                           <div className="trac">
-                            <div
-                              onClick={() => {
-                                if (allReturnable) setShowModal(true); setOption('return');
-                              }}
-                              style={{
-                                cursor: allReturnable ? "pointer" : "not-allowed",
-                                opacity: allReturnable ? 1 : 0.5,
-                              }}
-                            >
-                              <u>Return</u>
+                            <div>
+                              <div>Order ID</div>
+                              <div style={{ color: "#625e55" }}>
+                                {order.order_no}
+                              </div>
                             </div>
                           </div>
-                        }
-                        {allCancellable &&
+
                           <div className="order-actions">
-                            <p
-                              className="cancel-order"
-                              onClick={() => {
-                                if (allCancellable) setShowcnModal(true);
-                              }}
-                              style={{
-                                cursor: allCancellable ? "pointer" : "not-allowed",
-                                opacity: allCancellable ? 1 : 0.5,
-                              }}
-                            >
-                              <u>Cancel Order</u>
-                            </p>
-                          </div>
-                        }
-                      </div>
-                    </div>
-
-                    {/* Order Items */}
-                    {order?.order_items?.map((item, i) => (
-                      <div className="order-item" key={i}>
-                        <input
-                          type="checkbox"
-                          checked={selectedItem.some(
-                            (it) => it.itemId === item.id
-                          )}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              // If different order is selected, reset previous selection
-                              if (
-                                selectedOrder &&
-                                selectedOrder !== order.order_no
-                              ) {
-                                setSelectedItem([
-                                  {
-                                    itemId: item.id,
-                                    product_name: item.product_name,
-                                    product_media: item.product_media,
-                                    price: item.mrp,
-                                    qty: item.quantity,
-                                    order_no: order.order_no,
-                                    action_url: item.action_url,
-                                    size: item.size,
-                                    color: item.color,
-                                    allow_exchange: item.allow_exchange,
-                                    allow_return: item.allow_return,
-                                    allow_cancellation: item.allow_cancellation
-                                  },
-                                ]);
-                                setSelectedOrder(order.order_no);
-                              } else {
-                                // Same order, add item
-                                setSelectedItem((prev) => [
-                                  ...prev,
-                                  {
-                                    itemId: item.id,
-                                    product_name: item.product_name,
-                                    product_media: item.product_media,
-                                    price: item.mrp,
-                                    qty: item.quantity,
-                                    order_no: order.order_no,
-                                    action_url: item.action_url,
-                                    size: item.size,
-                                    color: item.color,
-                                    allow_exchange: item.allow_exchange,
-                                    allow_return: item.allow_return,
-                                    allow_cancellation: item.allow_cancellation
-                                  },
-                                ]);
-                                setSelectedOrder(order.order_no);
-                              }
-                            } else {
-                              // Remove item if unchecked
-                              setSelectedItem((prev) =>
-                                prev.filter((it) => it.itemId !== item.id)
-                              );
-                              if (selectedItem.length === 1)
-                                setSelectedOrder(null); // reset if last removed
-                            }
-                          }}
-                        />
-                        <img src={item.product_media} alt={item.product_name} />
-                        <div className="item-info">
-                          <p>{item.product_name}</p>
-                          <div className="link-btn">
-                            <p className="cancel-order">
-                              <Link
-                                to={`/productsdetails/${item.action_url}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <Link to={`/OrderTrackingPage/${order.order_no}`}>
+                              <span
+                                className="txt_cation"
+                                style={{ color: "#1B170E" }}
                               >
-                                Buy Again
-                              </Link>
-                            </p>
+                                Track Order
+                              </span>
+                            </Link>
+                            <div>
+                              <span
+                                className="txt_cation"
+                                style={{ color: "#1B170E" }}
+                              >
+                                View Invoice
+                              </span>
+                            </div>
                           </div>
                         </div>
 
-                        <div className="arrow">
-                          <Link to={`/OrderTrackingPage/${order.order_no}`}>
-                            <ChevronRight size={24} />
-                          </Link>
+                        <div className="order-header_2">
+                          {allExchangeable &&
+                            <div>
+                              <div
+                                className={`txt_cation ${!allExchangeable ? "disabled" : ""}`}
+                                onClick={() => {
+                                  if (allExchangeable) setShowModal(true); setOption('exchange');
+                                }}
+                                style={{
+                                  cursor: allExchangeable ? "pointer" : "not-allowed",
+                                  opacity: allExchangeable ? 1 : 0.5,
+                                }}
+                              >
+                                <u>Exchange</u>
+                              </div>
+                            </div>
+                          }
+                          {allReturnable &&
+                            <div className="trac">
+                              <div
+                                onClick={() => {
+                                  if (allReturnable) setShowModal(true); setOption('return');
+                                }}
+                                style={{
+                                  cursor: allReturnable ? "pointer" : "not-allowed",
+                                  opacity: allReturnable ? 1 : 0.5,
+                                }}
+                              >
+                                <u>Return</u>
+                              </div>
+                            </div>
+                          }
+                          {allCancellable &&
+                            <div className="order-actions">
+                              <p
+                                className="cancel-order"
+                                onClick={() => {
+                                  if (allCancellable) setShowcnModal(true);
+                                }}
+                                style={{
+                                  cursor: allCancellable ? "pointer" : "not-allowed",
+                                  opacity: allCancellable ? 1 : 0.5,
+                                }}
+                              >
+                                <u>Cancel Order</u>
+                              </p>
+                            </div>
+                          }
                         </div>
                       </div>
-                    ))}
-                  </div>
+
+                      {/* Order Items */}
+                      {order?.order_items?.map((item, i) => (
+                        <div className="order-item" key={i}>
+                          <input
+                            type="checkbox"
+                            checked={selectedItem.some(
+                              (it) => it.itemId === item.id
+                            )}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                // If different order is selected, reset previous selection
+                                if (
+                                  selectedOrder &&
+                                  selectedOrder !== order.order_no
+                                ) {
+                                  setSelectedItem([
+                                    {
+                                      itemId: item.id,
+                                      product_name: item.product_name,
+                                      product_media: item.product_media,
+                                      price: item.mrp,
+                                      qty: item.quantity,
+                                      order_no: order.order_no,
+                                      action_url: item.action_url,
+                                      size: item.size,
+                                      color: item.color,
+                                      allow_exchange: item.allow_exchange,
+                                      allow_return: item.allow_return,
+                                      allow_cancellation: item.allow_cancellation
+                                    },
+                                  ]);
+                                  setSelectedOrder(order.order_no);
+                                } else {
+                                  // Same order, add item
+                                  setSelectedItem((prev) => [
+                                    ...prev,
+                                    {
+                                      itemId: item.id,
+                                      product_name: item.product_name,
+                                      product_media: item.product_media,
+                                      price: item.mrp,
+                                      qty: item.quantity,
+                                      order_no: order.order_no,
+                                      action_url: item.action_url,
+                                      size: item.size,
+                                      color: item.color,
+                                      allow_exchange: item.allow_exchange,
+                                      allow_return: item.allow_return,
+                                      allow_cancellation: item.allow_cancellation
+                                    },
+                                  ]);
+                                  setSelectedOrder(order.order_no);
+                                }
+                              } else {
+                                // Remove item if unchecked
+                                setSelectedItem((prev) =>
+                                  prev.filter((it) => it.itemId !== item.id)
+                                );
+                                if (selectedItem.length === 1)
+                                  setSelectedOrder(null); // reset if last removed
+                              }
+                            }}
+                          />
+                          <img src={item.product_media} alt={item.product_name} />
+                          <div className="item-info">
+                            <p>{item.product_name}</p>
+                            <div className="link-btn">
+                              <p className="cancel-order">
+                                <Link
+                                  to={`/productsdetails/${item.action_url}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  Buy Again
+                                </Link>
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="arrow">
+                            <Link to={`/OrderTrackingPage/${order.order_no}`}>
+                              <ChevronRight size={24} />
+                            </Link>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <hr />
+                  </>
                 )
               })}
               <p style={{ fontWeight: "bold", textAlign: "center" }}>

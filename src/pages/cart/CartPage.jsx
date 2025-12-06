@@ -311,11 +311,11 @@ const CartPage = () => {
               <p className="terms-text">
                 Before proceed further you can review{" "}
                 <a href="/tc-of-sale" style={{ fontWeight: "500" }}>
-                  <u>Terms & Conditions of Sale</u>
+                  <u style={{color:"#1B170E"}}>Terms & Conditions of Sale</u>
                 </a>{" "}
                 and{" "}
                 <a href="/privacy-policy" style={{ fontWeight: "500" }}>
-                  <u>Privacy Policy</u>
+                  <u style={{color:"#1B170E"}}>Privacy Policy</u>
                 </a>
               </p>
               <button onClick={handleCheckout} className="checkout">

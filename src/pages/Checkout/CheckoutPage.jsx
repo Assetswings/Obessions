@@ -80,13 +80,13 @@ const CheckoutPage = () => {
     dispatch(getAddress());
   }, [dispatch]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (addressdata && addressdata.length > 0) {
       const defAddr = addressdata.find((addr) => addr.is_default === true);
       if (defAddr) {
-      setDefultAddr(defAddr);
+        setDefultAddr(defAddr);
       }
-      }
+    }
   }, [addressdata]);
   useEffect(() => {
     document.body.style.overflow = showAddAddressModal ? "hidden" : "auto";
@@ -525,8 +525,19 @@ const CheckoutPage = () => {
               </button>
             </div>
           </div>
-          <div className="root_track">
-            <p className="info-note">
+          <div className="root_track" style={{display:"flex", gap:"9px", marginTop:"30px"}}>
+            <div>
+              <span>
+                <Info size={18} />
+              </span>
+            </div>
+            <div>
+              <p style={{ fontSize: "12px", color:"#7C7C7C" }}>If a product doesn’t meet your expectations, we’re happy to
+                offer a refund for the product value. 
+                Please note, a 5% deduction will be made from the total invoice
+                value to cover partial freight and packaging costs.</p>
+            </div>
+            {/* <p className="info-note">
               <span>
                 <Info size={18} />
               </span>{" "}
@@ -534,7 +545,7 @@ const CheckoutPage = () => {
               offer a refund for the product value. <br />
               Please note, a 5% deduction will be made from the total invoice
               value to cover partial freight and packaging costs.
-            </p>
+            </p> */}
           </div>
         </div>
       </div>

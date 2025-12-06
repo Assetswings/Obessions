@@ -1,20 +1,21 @@
+.root_cart {
+    width: 360px;
+    border-radius: inherit !important;
+}
 
-
- .root_cart{
- width:360px ;
-border-radius: inherit !important;
- }
-.icon_color{
+.icon_color {
     color: green;
     position: relative;
-   align-items: center;
-   display: flex;
+    align-items: center;
+    display: flex;
 }
-.Toastify__toast {
+
+/* This affects ONLY your custom toast */
+.cart-toast-wrapper.Toastify__toast {
     --y: 0;
     position: relative;
     touch-action: none;
-    width: var(--toastify-toast-width);
+    width: 400px !important;
     min-height: 20px !important;
     box-sizing: border-box;
     margin-bottom: 1rem;
@@ -30,7 +31,9 @@ border-radius: inherit !important;
     word-break: break-word;
     border-radius: inherit !important;
     border: none !important;
+    top: 50px !important;
 }
+
 .Toastify__close-button>svg {
     fill: currentColor;
     height: 16px;
@@ -38,4 +41,28 @@ border-radius: inherit !important;
     position: relative;
     top: 8px;
     right: 15px;
+}
+
+@media (max-width: 768px) {
+    .cart-toast-wrapper.Toastify__toast {
+        --y: 0;
+        position: relative;
+        touch-action: none;
+        width: var(--toastify-toast-width) !important;
+        min-height: 20px !important;
+        box-sizing: border-box;
+        margin-bottom: 1rem;
+        padding: var(--toastify-toast-padding);
+        border-radius: var(--toastify-toast-bd-radius);
+        box-shadow: var(--toastify-toast-shadow);
+        max-height: var(--toastify-toast-max-height);
+        font-family: var(--toastify-font-family);
+        z-index: 0;
+        display: flex;
+        flex: 1 auto;
+        align-items: center;
+        word-break: break-word;
+        border-radius: inherit !important;
+        border: none !important;
+    }
 }

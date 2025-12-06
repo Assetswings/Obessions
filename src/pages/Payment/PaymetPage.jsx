@@ -56,7 +56,7 @@ const PaymentPage = () => {
       if (!orderData?.success) {
         toast.error(orderData?.message, {
           style: {
-            border: "1px solid #713200",
+            borderRadius: "inherit",
             padding: "16px",
             color: "#713200",
           },
@@ -75,7 +75,7 @@ const PaymentPage = () => {
         } else {
           toast.error("Payment initiation failed", {
             style: {
-              border: "1px solid #713200",
+              borderRadius: "inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -93,7 +93,7 @@ const PaymentPage = () => {
         } else {
           toast.error("Payment initiation failed", {
             style: {
-              border: "1px solid #713200",
+              borderRadius: "inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -108,7 +108,7 @@ const PaymentPage = () => {
       console.error("Payment error:", err);
     }
   };
-    const breadcrumbPaths = [
+  const breadcrumbPaths = [
     { label: "Cart", to: "/cart" },
     { label: "Checkout", to: "/checkout" }, // last one (no link)
     { label: "Payment", to: "" },
@@ -285,7 +285,7 @@ const PaymentPage = () => {
               CONTINUE TO PAYMENT
             </button>
           </div>
-          <div className="root_track">
+          {/* <div className="root_track">
             <p className="info-note">
               <span>
                 <Info size={18} />
@@ -294,7 +294,19 @@ const PaymentPage = () => {
               offer a refund for the product value. <br />
               Please note, a 5% deduction will be made from the total invoice
               value to cover partial freight and packaging costs.
-            </p>
+            </p> */}
+          <div className="root_track" style={{ display: "flex", gap: "9px", marginTop: "30px" }}>
+            <div>
+              <span>
+                <Info size={18} />
+              </span>
+            </div>
+            <div>
+              <p style={{ fontSize: "12px", color:"#7C7C7C" }}>If a product doesn’t meet your expectations, we’re happy to
+                offer a refund for the product value.
+                Please note, a 5% deduction will be made from the total invoice
+                value to cover partial freight and packaging costs.</p>
+            </div>
           </div>
         </div>
       </div>

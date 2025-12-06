@@ -145,21 +145,20 @@ const OrderTrackingPage = () => {
             </div>
           </div>
            <hr/>
-          <p className="delivered-msg">Order was delivered on --</p>
 
           <div className="order-info">
             <p>
               Order Placed :{" "}
-              <strong>
+              <span>
                 {new Date(order.order_placed_at).toLocaleDateString("en-GB", {
                   day: "2-digit",
                   month: "short",
                   year: "numeric",
                 })}
-              </strong>
+              </span>
             </p>
             <p>
-              Order ID : <strong>{order_no}</strong>
+              Order ID : <span>{order_no}</span>
             </p>
           </div>
 

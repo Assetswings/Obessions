@@ -56,7 +56,7 @@ const LoginPage = () => {
     if (!localMobile.trim()) {
       toast.error("Please Enter Phone Number.", {
         style: {
-          border: "1px solid #713200",
+          borderRadius:"inherit",
           padding: "16px",
           color: "#713200",
         },
@@ -73,7 +73,7 @@ const LoginPage = () => {
     if (!isValidMobile(localMobile)) {
       toast.error("Mobile number must be exactly 10 digits.", {
         style: {
-          border: "1px solid #713200",
+          borderRadius:"inherit",
           padding: "16px",
           color: "#713200",
         },
@@ -137,7 +137,7 @@ const LoginPage = () => {
     if (!otp.trim()) {
       toast.error("Please enter the OTP.", {
         style: {
-          border: "1px solid #713200",
+          borderRadius:"inherit",
           padding: "16px",
           color: "#713200",
         },
@@ -155,7 +155,7 @@ const LoginPage = () => {
     if (!/^\d{6}$/.test(otp)) {
       toast.error("Please enter a valid 6-digit OTP.", {
         style: {
-          border: "1px solid #713200",
+          borderRadius:"inherit",
           padding: "16px",
           color: "#713200",
         },
@@ -174,7 +174,7 @@ const LoginPage = () => {
     if (!otp_requested_id || !temp_id) {
       toast.error("Missing OTP session data. Try resending OTP.", {
         style: {
-          border: "1px solid #713200",
+          borderRadius:"inherit",
           padding: "16px",
           color: "#713200",
         },
@@ -203,7 +203,7 @@ const LoginPage = () => {
           // return false;
           // toast.success("Login successful!", {
           //   style: {
-          //     border: "1px solid #713200",
+          //     borderRadius:"inherit",
           //     padding: "16px",
           //     color: "#713200",
           //   },
@@ -230,7 +230,7 @@ const LoginPage = () => {
 
           toast.error(message, {
             style: {
-              border: "1px solid #713200",
+              borderRadius:"inherit",
               padding: "16px",
               color: "#713200",
             },

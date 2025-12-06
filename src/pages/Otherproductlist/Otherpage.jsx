@@ -191,7 +191,7 @@ const Otherpage = () => {
           toast.success("Removed from wishlist", {
             autoClose: 1000,
             style: {
-              border: "1px solid #713200",
+              borderRadius:"inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -220,7 +220,7 @@ const Otherpage = () => {
         toast.success("Added to wishlist", {
           autoClose: 1000,
           style: {
-            border: "1px solid #713200",
+            borderRadius:"inherit",
             padding: "16px",
             color: "#713200",
           },

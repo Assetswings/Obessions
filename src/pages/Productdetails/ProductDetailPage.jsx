@@ -227,7 +227,7 @@ const ProductDetailPage = () => {
           />,
           {
             position: "top-right",
-            autoClose: 2000,
+            autoClose: 200000,
             hideProgressBar: true,
             closeButton: false, // custom close already inside
             style: {
@@ -237,6 +237,7 @@ const ProductDetailPage = () => {
               boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
             },
             icon: false,
+            className: "cart-toast-wrapper",
           }
         );
         getCartWishlistCount(); // refresh count after add
@@ -268,7 +269,7 @@ const ProductDetailPage = () => {
          hideProgressBar: true,
             autoClose: 1500,
             style: {
-              border: "1px solid #713200",
+              borderRadius:"inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -305,7 +306,7 @@ const ProductDetailPage = () => {
           autoClose: 1500,
            hideProgressBar: true,
           style: {
-            border: "1px solid #713200",
+            borderRadius:"inherit",
             padding: "16px",
             color: "#713200",
           },
@@ -365,7 +366,7 @@ const ProductDetailPage = () => {
           toast.success("Removed from wishlist", {
             autoClose: 1500,
             style: {
-              border: "1px solid #713200",
+              borderRadius:"inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -404,7 +405,7 @@ const ProductDetailPage = () => {
         toast.success("Added to wishlist", {
           autoClose: 1500,
           style: {
-            border: "1px solid #713200",
+            borderRadius:"inherit",
             padding: "16px",
             color: "#713200",
           },

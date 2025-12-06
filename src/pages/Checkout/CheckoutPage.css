@@ -128,6 +128,7 @@ root_promo_sector {
   font-size: 16px;
   font-family: "Helvetica Neue", sans-serif !important;
   font-weight: 400 !important;
+  text-transform: uppercase;
 }
 
 .Aaddress-section {

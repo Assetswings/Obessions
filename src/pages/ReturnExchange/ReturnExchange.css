@@ -114,6 +114,14 @@
   
   .order-info {
     max-width: 60%;
+    display: flex;
+   gap: 20%;
+  }
+  
+   .order-info-2 {
+    max-width: 60%;
+    display: flex;
+   gap: 13.5%;
   }
   
   .order-title {
@@ -136,5 +144,17 @@
     .return-exchange-details {
       margin-top: 20px;
     }
+    .order-info {
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+   .order-info-2 {
+    max-width: 100%;
+    display: flex;
+    gap: 13%;
+  }
+  
   }
   

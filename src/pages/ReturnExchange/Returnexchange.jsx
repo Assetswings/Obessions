@@ -6,7 +6,7 @@ import API from "../../app/api";
 import Footer from "../../components/Footer/Footer";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
-const ReturnExchange = () => {
+  const ReturnExchange = () => {
   const [option, setOption] = useState("return");
   const [reason, setReason] = useState("");
   const [comments, setComments] = useState("");
@@ -17,13 +17,12 @@ const ReturnExchange = () => {
   const item = state?.item;
   const orderNo = state?.orderNo;
   const selectOption = state?.selectOption;
-
   useEffect(() => {
-    document.title = "Obsession - Return / Exchange";
-    getReason("return");
+  document.title = "Obsession - Return / Exchange";
+  getReason("return");
   }, []);
   useEffect(() => {
-    setOption(selectOption);
+  setOption(selectOption);
   }, [selectOption]);
   const getReason = async (option) => {
     if (option == "return") {
@@ -191,7 +190,6 @@ const ReturnExchange = () => {
               )}
             </div> */}
             <span style={{ textTransform: "capitalize" }}><b>{option} Order</b></span>
-
             <label>
               Reason for {option} <span className="required">*</span>
             </label>

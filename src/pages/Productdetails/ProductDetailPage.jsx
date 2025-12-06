@@ -1014,6 +1014,7 @@ const ProductDetailPage = () => {
                     type="text"
                     placeholder="Enter Delivery Pincode"
                     value={pincode}
+                    maxLength={6} 
                     onChange={(e) => {
                       const onlyNums = e.target.value.replace(/\D/g, '');
                       setPincode(onlyNums);

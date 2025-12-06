@@ -312,9 +312,16 @@ const ProfilePage = () => {
         id: profileData?.billingAddress?.id,
         data: updatedData,
       })
-    ).then(() => {
-      setShowEditModal(false);
-      setErrors({});
+    ).then((res) => {
+      // setShowEditModal(false);
+      // setErrors({});
+      if (res.meta.requestStatus === "fulfilled") {
+        toast.success("Profile updated successfully!");
+        setShowEditModal(false);
+        setErrors({});
+      } else {
+        toast.error(res?.error?.message || "Something went wrong!");
+      }
     });
 
     // dispatch(fetchUserProfile());

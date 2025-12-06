@@ -2,31 +2,28 @@ import React, { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./VideoSection.css";
-import Arrowleft from "../../assets/icons/ArrowLeft.png";
-import Arrowright from "../../assets/icons/ArrowRight.png";
+import Arrowleft from "../../assets/icons/left_arrow_black.svg";
+import Arrowright from "../../assets/icons/right_arrow_black.svg";
 
-const VideoSection = () => {
+  const VideoSection = () => {
   const sliderRef = useRef(null);
   const videoRefs = useRef([]);
   const reelVideoRefs = useRef([]);
   const [activeIndex, setActiveIndex] = useState(null);
   const [playingIndex, setPlayingIndex] = useState(null);
-
   const galleries = useSelector((state) => state.home?.data?.galleries || []);
 
-  /** 🔥 Infinite loop list */
-  const loopList = [...galleries, ...galleries];
-
-  /** 🔥 Maintain the loop scroll */
-  const handleInfiniteScroll = () => {
+    /** 🔥 Infinite loop list */
+    const loopList = [...galleries, ...galleries];
+    /** 🔥 Maintain the loop scroll */
+    const handleInfiniteScroll = () => {
     const slider = sliderRef.current;
     if (!slider) return;
 
     const halfWidth = slider.scrollWidth / 2;
-
     // If scrolled beyond the first clone → jump back
     if (slider.scrollLeft >= halfWidth) {
-      slider.scrollTo({ left: 1, behavior: "instant" });
+    slider.scrollTo({ left: 1, behavior: "instant" });
     }
 
     // If scrolled too back → jump to end clone
@@ -163,12 +160,16 @@ const VideoSection = () => {
         </div>
 
         <div className="slider-controls">
-          <div className="button_box" onClick={() => scroll("left")}>
-            <img className="btn_left_arrow" src={Arrowleft} alt="left" />
-          </div>
-          <div className="button_box" onClick={() => scroll("right")}>
-            <img className="btn_right_arrow" src={Arrowright} alt="right" />
-          </div>
+         
+
+            <div className="arrow-controls">
+                <button className="btn_arrow left" onClick={() => scroll("left")}>
+                  <img src={Arrowleft} alt="prev" className="arrow-img" />
+                </button>
+                <button className="btn_arrow right" onClick={() => scroll("right")}>
+                  <img src={Arrowright} alt="next" className="arrow-img" />
+                </button>
+              </div>
         </div>
       </div>
 

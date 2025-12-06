@@ -143,8 +143,10 @@ body {
 }
 
 .no-data-found {
-  text-align: center;
-  font-size: 13px;
+    text-align: center;
+    font-size: 17px;
+    margin: 25px;
+    color: #625E55;
 }
 
 .input_home {
@@ -326,7 +328,7 @@ body {
 
 /* ─── Set 0 ─── */
 .set-0 .img-center {
-  top: 45%;
+  top: 41%;
   left: 45%;
   width: 10vw;
   z-index: 25;
@@ -419,7 +421,7 @@ body {
 
 /* ─── Set 3 ─── */
 .set-3 .img-center {
-  top: 36%;
+  top: 30%;
   left: 37%;
   width: 22vw;
   z-index: 25;
@@ -723,7 +725,10 @@ section.shopby {
   background-color: #111;
   color: #fff;
 }
-
+.hero-button-table:hover{
+   background-color: #111;
+  color: #fff;
+}
 .hero-image {
   flex: 1;
   text-align: right;

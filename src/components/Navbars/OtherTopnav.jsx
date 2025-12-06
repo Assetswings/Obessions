@@ -260,7 +260,7 @@ const OtherTopnav = () => {
             ref={userWrapperRef}
             className="user-click-wrapper"
             onClick={handleUserClick}
-            style={{ position: "relative" }}
+               style={{ position: "relative", left:'7px', top:'0px' }}
             title="User Profile"
           >
             <span style={{ fontSize: "12px", paddingRight: "7px" }}>{localStorage.getItem('userName') ?? ''}</span>

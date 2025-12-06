@@ -115,8 +115,8 @@
 }
 
 .contact p {
-  font-size: 13px;
-  margin: 5px 0;
+    font-size: 13px;
+    margin: 5px 0;
 }
 
 .ctn_txt {
@@ -145,6 +145,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   font-size: 13px;
+  color: #BDBDBD;
 }
 
 .response-container {

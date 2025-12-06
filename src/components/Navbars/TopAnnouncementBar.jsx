@@ -236,7 +236,7 @@ const TopAnnouncementBar = () => {
           <div
             ref={userWrapperRef}
             className="user-click-wrapper"
-            style={{ position: "relative" }}
+            style={{ position: "relative", left:'7px', top:'0px' }}
             title="User Profile"
             onClick={handleUserClick}
           >

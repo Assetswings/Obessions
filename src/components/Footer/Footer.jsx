@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Footer.css";
-import marstrcards from "../../assets/images/Footer_image_track.png";
+import marstrcards from "../../assets/images/Mastercardimage.svg";
 import { RiFacebookCircleFill } from "react-icons/ri";
 import { BsYoutube } from "react-icons/bs";
 import { RiInstagramLine } from "react-icons/ri";

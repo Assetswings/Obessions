@@ -34,6 +34,7 @@
 .tabs button.active {
   color: black;
   border-color: red;
+  width: 204px;
 }
 
 .content-wrapper {
@@ -280,6 +281,12 @@
   /* .tabs button.active {
     width: 95px;
   } */
+    .tabs button.active {
+  color: black;
+  border-color: red;
+  width: 100px;
+}
+
 
   .button_group_tracker {
     gap: 40px;

@@ -282,8 +282,8 @@ const LoginPage = () => {
               </button>
               <p className="terms">
                 By continuing, you agree to Obsessions {" "}
-                <Link to={`/tc-of-sale`}><u>Terms of Service</u></Link> and{" "}
-                <Link to={`/privacy-policy`}><u>Privacy Policy</u></Link>
+                <Link to={`/tc-of-sale`}><u style={{color:'#1B170E'}}>Terms of Service</u></Link> <span style={{color:'#1B170E'}}>and{" "} </span>
+                <Link to={`/privacy-policy`}><u style={{color:'#1B170E'}}>Privacy Policy</u></Link>
                 {/* <a href="/tc-of-sale">Terms of Service</a> and{" "}
                 <a href="/privacy-policy">Privacy Policy</a> */}
               </p>

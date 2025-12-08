@@ -402,9 +402,7 @@
     object-fit: cover;
   }
 
-  .obsession-section-pd {
-    display: none !important;
-  }
+ 
 }
 
 /* Mobile filter button */
@@ -529,7 +527,7 @@
 .obsession-section-pd {
   display: flex;
   justify-content: center;
-  padding: 80px 40px;
+  padding: 30px 40px;
   background: #fff;
 }
 
@@ -585,9 +583,9 @@
     font-family: "Canela Trial", sans-serif;
   }
 
-  .obsession-section-pd {
+  /* .obsession-section-pd {
     display: none;
-  }
+  } */
 
   .sortby-container-mlb {
     display: none !important;
@@ -933,4 +931,64 @@
 /* Internet Explorer / old Edge */
 .custom-filters {
   -ms-overflow-style: none;
+}
+
+ /* ⭐ Mobile fix: stack columns vertically */
+@media (max-width: 768px) {
+  .obsession-content-pd {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .obsession-columns {
+    flex-direction: column;   /* stack items */
+    gap: 20px;                /* reduce spacing if needed */
+  }
+
+  .obsession-text-pd {
+    margin-top: 0;
+  }
+
+  .obsession-text-pd h2 {
+    font-size: 27px;
+    text-align: center;
+  }
+  .obsession-col h4
+ {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    font-family: "Canela Trial", sans-serif;
+    /* align-items: center; */
+    text-align: center;
+}
+ .on-image-one {
+    width: 150px;
+    height: 320px;
+    border-radius: 150px;
+}
+ .on-image-two {
+    width: 100px;
+    height: 215px;
+    border-radius: 150px;
+    margin-top: 65%;
+}
+ .obsession-tag
+ {
+    position: absolute;
+    border: 1px solid #000;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 4px;
+    font-weight: 500;
+   
+}
+ .obsession-images {
+    flex: 1 1;
+    display: flex;
+    gap: 20px;
+    position: relative;
+    left: 25px;
+}
 }

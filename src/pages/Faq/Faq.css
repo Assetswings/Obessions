@@ -95,18 +95,22 @@
   } */
 
   .faq-decor.left {
-    left: 0rem;
+    left: -8rem;
     width: 58px;
     height: 29px;
-    height: 40px;
+    height: 45px;
+    bottom: 10%;
+    position: relative;
+
   }
 
   .faq-decor.right {
     right: 1rem;
-    top: 11rem;
-    width: 50px;
-    height: 50px;
+    top: 14rem;
+    width: 67px;
+    height: 72px;
   }
+
 
   .faq-search-bar {
     /* flex-direction: column; */
@@ -117,6 +121,7 @@
     width: 40%;
     padding: 0.8rem;
   }
+
   .faq-item summary {
     gap: 20px;
   }
@@ -140,12 +145,15 @@
   z-index: 10;
   padding: 1rem 0;
   /* Hide scrollbar */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
 }
 
- .faq-tab-buttons::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+.faq-tab-buttons::-webkit-scrollbar {
+  display: none;
+  /* Chrome/Safari */
 }
 
 .faq-tab-buttons button {
@@ -171,7 +179,7 @@
   border-bottom: 2px solid #000;
   font-size: 16px;
 }
- 
+
 
 .faq-category {
   margin-bottom: 3rem;
@@ -223,10 +231,10 @@
 
 /* Help Section */
 .faq-help-section {
-     background-color: #f7f7f7;
-    padding: 4rem 5rem;
-    /* margin-bottom: 30px; */
-    padding-bottom: 134px;
+  background-color: #f7f7f7;
+  padding: 4rem 5rem;
+  /* margin-bottom: 30px; */
+  padding-bottom: 134px;
 }
 
 .faq-help-container {

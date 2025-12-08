@@ -292,10 +292,6 @@
     font-size: 11px;
   }
 
-  .edit_text {
-    text-decoration: underline;
-
-  }
 
   .edit-btn {
     width: 140px;
@@ -437,6 +433,15 @@
     margin-bottom: 20px;
     width: 100%;
   }
+
+   .profile-container {
+    font-family: sans-serif;
+    padding: 20px;
+    position: relative;
+    min-height: 0vh;
+    text-align: center;
+    margin-bottom: 40px;
+}
 }
 
 input[type="date"]::-webkit-inner-spin-button,

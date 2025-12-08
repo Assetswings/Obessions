@@ -5,12 +5,13 @@
   gap: 2rem;
   font-family: sans-serif;
   color: #222;
+  padding-bottom: 40px;
 }
 
 .order-left {
   flex: 2 1;
   min-width: 300px;
-  padding: 0px 20px 20px 20px;
+  padding: 0px 80px 20px 80px;
   border-right: 1px solid #ddd;
 }
 
@@ -250,6 +251,9 @@
   .continue_shoping_track {
     padding: 3px 6px 3px 6px;
     font-size: 12px;
+  }
+  .order-left {
+    padding: 0px 20px 20px 20px;
   }
 }
 .track_checkbox{

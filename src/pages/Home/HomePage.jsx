@@ -84,8 +84,8 @@ const HomePage = () => {
   const [currentSet, setCurrentSet] = useState(null);
   const [nextSet, setNextSet] = useState(null);
   const [setIndex, setSetIndex] = useState(null);
- 
-   const [fade, setFade] = useState(false);
+
+  const [fade, setFade] = useState(false);
   // 🏠 Home Data Fetching
   const { data } = useSelector((state) => state.home);
   const searchState = useSelector((state) => state.search || {});
@@ -167,7 +167,7 @@ const HomePage = () => {
     }
   }, [data]);
 
-   useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setFade(true);
 
@@ -556,7 +556,7 @@ const HomePage = () => {
               ) : (
                 // ✅ No Data Found message 
                 !loading && query?.trim() && (
-                  <div className="no-data-found">
+                  <div className="search-results-grid" style={{ display: "flex", justifyContent: "center", padding: "150px" }}>
                     <p>No Result found</p>
                   </div>
                 )
@@ -587,20 +587,19 @@ const HomePage = () => {
           </p>
         </div> */}
 
-        
-  <div className="txt_dynamic_betlt">
-      <p
-        className={`position-absolute footer-note text-center small ${
-          fade ? "fade-out" : "fade-in"
-        }`}
-      >
-        <span>
-          <img src={items[currentIndex].icon} className="img_turner" />
-          &nbsp;
-        </span>
-        {items[currentIndex].text}
-      </p>
-    </div>
+
+        <div className="txt_dynamic_betlt">
+          <p
+            className={`position-absolute footer-note text-center small ${fade ? "fade-out" : "fade-in"
+              }`}
+          >
+            <span>
+              <img src={items[currentIndex].icon} className="img_turner" />
+              &nbsp;
+            </span>
+            {items[currentIndex].text}
+          </p>
+        </div>
 
       </div>
 
@@ -613,9 +612,7 @@ const HomePage = () => {
             of&nbsp;Home
           </h2>
           <p className="lead-copy">
-            Every room tells a story, and the pieces you bring into it become
-            part of the narrative. At Obsessions, we design and curate products
-            that strike the perfect balance between charm and practicality.
+            Every room tells a story, and the pieces you bring into it become part of the narrative. At Obsessions, we believe home is more than just a place; it’s a feeling. That’s why we design and curate products that strike the perfect balance between charm and practicality.
           </p>
 
           <Link to={`/collections`}>

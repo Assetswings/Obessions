@@ -144,37 +144,35 @@ const OrderTrackingPage = () => {
 
             </div>
           </div>
-           <hr/>
+          <hr />
 
-             <div className="order-info-2">
-              <div>
-                <p>
-              Order Placed 
-            </p> 
+          <div className="order-info-2">
+            <div>
+              <p>
+                Order Placed
+              </p>
             </div>
             {" "}
-              <div>
-               : {new Date(order.order_placed_at).toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })}
-              </div>
+            <div style={{ fontSize: "12px" }}>
+              : {new Date(order.order_placed_at).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
+            </div>
           </div>
-          
 
-                 <div className="order-info">
-              <div>
-                <p>
-               Order ID 
-            </p> 
+          <div className="order-info">
+            <div>
+              <p>
+                Order ID
+              </p>
             </div>
             {" "}
-              <div>
-              : <span>{order_no}</span>
-              </div>
+            <div>
+              : <span style={{ fontSize: "12px" }}>{order_no}</span>
+            </div>
           </div>
-            
 
           <div className="mobileview order-right">
             <h3>Updates :</h3>
@@ -200,66 +198,66 @@ const OrderTrackingPage = () => {
               ))}
             </div>
           </div>
-    
+
           {order.order_items?.map((item, i) => (
             <div className="product-item" key={i}>
-               <div className="track_checkbox">  
-              <input
-                type="checkbox"
-                checked={selectedItem.some((it) => it.itemId === item.id)}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    // If different order is selected, reset previous selection
-                    if (selectedOrder && selectedOrder !== order.order_no) {
-                      setSelectedItem([
-                        {
-                          itemId: item.id,
-                          product_name: item.product_name,
-                          product_media: item.product_media,
-                          price: item.mrp,
-                          qty: item.quantity,
-                          order_no: order.order_no,
-                          action_url: item.action_url,
-                          size: item.size,
-                          color: item.color,
-                          allow_exchange: item.allow_exchange,
-                          allow_return: item.allow_return,
-                          allow_cancellation: item.allow_cancellation
-                        },
-                      ]);
-                      setSelectedOrder(order.order_no);
+              <div className="track_checkbox">
+                <input
+                  type="checkbox"
+                  checked={selectedItem.some((it) => it.itemId === item.id)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      // If different order is selected, reset previous selection
+                      if (selectedOrder && selectedOrder !== order.order_no) {
+                        setSelectedItem([
+                          {
+                            itemId: item.id,
+                            product_name: item.product_name,
+                            product_media: item.product_media,
+                            price: item.mrp,
+                            qty: item.quantity,
+                            order_no: order.order_no,
+                            action_url: item.action_url,
+                            size: item.size,
+                            color: item.color,
+                            allow_exchange: item.allow_exchange,
+                            allow_return: item.allow_return,
+                            allow_cancellation: item.allow_cancellation
+                          },
+                        ]);
+                        setSelectedOrder(order.order_no);
+                      } else {
+                        // Same order, add item
+                        setSelectedItem((prev) => [
+                          ...prev,
+                          {
+                            itemId: item.id,
+                            product_name: item.product_name,
+                            product_media: item.product_media,
+                            price: item.mrp,
+                            qty: item.quantity,
+                            order_no: order.order_no,
+                            action_url: item.action_url,
+                            size: item.size,
+                            color: item.color,
+                            allow_exchange: item.allow_exchange,
+                            allow_return: item.allow_return,
+                            allow_cancellation: item.allow_cancellation
+                          },
+                        ]);
+                        setSelectedOrder(order.order_no);
+                      }
                     } else {
-                      // Same order, add item
-                      setSelectedItem((prev) => [
-                        ...prev,
-                        {
-                          itemId: item.id,
-                          product_name: item.product_name,
-                          product_media: item.product_media,
-                          price: item.mrp,
-                          qty: item.quantity,
-                          order_no: order.order_no,
-                          action_url: item.action_url,
-                          size: item.size,
-                          color: item.color,
-                          allow_exchange: item.allow_exchange,
-                          allow_return: item.allow_return,
-                          allow_cancellation: item.allow_cancellation
-                        },
-                      ]);
-                      setSelectedOrder(order.order_no);
+                      // Remove item if unchecked
+                      setSelectedItem((prev) =>
+                        prev.filter((it) => it.itemId !== item.id)
+                      );
+                      if (selectedItem.length === 1) setSelectedOrder(null); // reset if last removed
                     }
-                  } else {
-                    // Remove item if unchecked
-                    setSelectedItem((prev) =>
-                      prev.filter((it) => it.itemId !== item.id)
-                    );
-                    if (selectedItem.length === 1) setSelectedOrder(null); // reset if last removed
-                  }
-                }}
-              />
-               </div>
-           
+                  }}
+                />
+              </div>
+
               <img src={item.product_media} alt={item.product_name} />
               <div className="product-details">
                 <p>{item.product_name}</p>

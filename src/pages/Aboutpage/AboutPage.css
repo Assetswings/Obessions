@@ -388,14 +388,14 @@
   }
 
   .promise-header h2 {
-    font-size: 28px;
+    font-size: 44px;
   }
 }
 
 
 @media (max-width: 480px) {
   .about-text-content p {
-    font-size: 20px;
+    font-size: 27px;
     line-height: 1.4;
     width: 305px;
     color: #333;
@@ -469,6 +469,9 @@
     display: none;
   }
 
+  .divider-line {
+    height: 150px;
+  }
 }
 
 .thirty-years-section-mlb {

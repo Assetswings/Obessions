@@ -68,14 +68,7 @@ import './Carttost.css';
           justifyContent: "space-between",
         }}
       >
-        <button
-          style={{
-            flex: 1,
-            padding: "8px 12px",
-            border: "1px solid #000",
-            background: "#fff",
-            cursor: "pointer",
-          }}
+        <button className="view-cart-toast-button"
           onClick={()=>navigate("/cart")}
         >
           View Cart

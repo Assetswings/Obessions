@@ -246,6 +246,7 @@
   margin-top: 5px;
   padding: 10px;
   border: 1px solid #BDBDBD;
+  color: #000 !important;
   /* border-radius: 4px; */
 }
 
@@ -268,6 +269,7 @@
   border: none;
   font-size: 30px;
   cursor: pointer;
+  color: #000 !important;
 }
 
 .error {

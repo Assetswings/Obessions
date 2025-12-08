@@ -66,3 +66,12 @@
         border: none !important;
     }
 }
+
+.view-cart-toast-button {
+    flex: 1;
+    padding: "8px 12px";
+    border: "1px solid #000";
+    background: "#fff";
+    cursor: "pointer";
+    color: black !important;
+}

@@ -37,7 +37,7 @@
   .root_tracker_dtl {
     flex-direction: column;   /* stack into two rows */
     align-items: flex-start;  /* left alignment */
-    gap: 12px;
+    gap: 0px;
   }
 
   .track-head-button-group {
@@ -83,7 +83,7 @@
 }
 
 .price-details {
-  margin-top: 1.5rem;
+  margin-top: 0px;
   border-top: 1px solid #ddd;
   padding-top: 1rem;
   font-size: 0.95rem;
@@ -253,7 +253,8 @@
     font-size: 12px;
   }
   .order-left {
-    padding: 0px 20px 20px 20px;
+    padding: 0px 20px 20px 0px;
+    border-right: none;
   }
 }
 .track_checkbox{

@@ -10,7 +10,8 @@
 }
 
 .success-icon {
-  color: #22c55e; /* green-500 */
+  color: #22c55e;
+  /* green-500 */
   width: 60px;
   height: 60px;
   margin-bottom: 20px;
@@ -56,11 +57,11 @@
   margin-bottom: 15px;
 }
 
-.arrival-id-order{
+.arrival-id-order {
   position: relative;
   bottom: 10px;
-   font-size: 16px;
-   font-weight: 400;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .arrival-id span {
@@ -89,9 +90,9 @@
 }
 
 .btn-outline-continue {
- padding: 10px 22px;
+  padding: 10px 22px;
   border: 1px solid #111827;
-  background:#111827;
+  background: #111827;
   color: white;
   font-size: 14px;
   font-weight: 600;
@@ -121,14 +122,17 @@
 .top-picks-grid {
   display: flex;
   gap: 24px;
-  overflow-x: auto;   /* ✅ horizontal scroll */
+  overflow-x: auto;
+  /* ✅ horizontal scroll */
   overflow-y: hidden;
   padding-bottom: 10px;
   scroll-behavior: smooth;
 
   /* Hide scrollbar but keep scroll working */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
 }
 
 .top-picks-grid::-webkit-scrollbar {
@@ -144,12 +148,13 @@
 .top-pick-card {
   /* flex: 0 0 auto;
   width: 180px; */
-    flex: 0 0 calc(25% - 18px); /* 4 items (100% / 4) minus gap adjustment */
+  flex: 0 0 calc(25% - 18px);
+  /* 4 items (100% / 4) minus gap adjustment */
   max-width: calc(25% - 18px);
   display: flex;
   flex-direction: column;
   position: relative;
-    left: 130px;
+  left: 130px;
 }
 
 .top-pick-image {
@@ -172,8 +177,19 @@
   .top-pick-title {
     font-size: 7px;
   }
+
   .top-picks-section {
     padding: 0px 0px 0px 5px;
     text-align: center;
+  }
+
+  .top-pick-card {
+    left: 20px;
+  }
+
+  .btn-outline-continue {
+    border: 1px solid #111827 !important;
+    background: #111827 !important;
+    color: white !important;
   }
 }

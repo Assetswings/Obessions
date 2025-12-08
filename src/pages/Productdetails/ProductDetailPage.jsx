@@ -227,7 +227,7 @@ const ProductDetailPage = () => {
           />,
           {
             position: "top-right",
-            autoClose: 200000,
+            autoClose: 1500,
             hideProgressBar: true,
             closeButton: false, // custom close already inside
             style: {
@@ -266,10 +266,10 @@ const ProductDetailPage = () => {
         if (wishlistItem) {
           await dispatch(removeFromWishlist(wishlistItem)).unwrap();
           toast.success("Removed from wishlist", {
-         hideProgressBar: true,
+            hideProgressBar: true,
             autoClose: 1500,
             style: {
-              borderRadius:"inherit",
+              borderRadius: "inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -304,9 +304,9 @@ const ProductDetailPage = () => {
         ).unwrap();
         toast.success("Added to wishlist", {
           autoClose: 1500,
-           hideProgressBar: true,
+          hideProgressBar: true,
           style: {
-            borderRadius:"inherit",
+            borderRadius: "inherit",
             padding: "16px",
             color: "#713200",
           },
@@ -366,7 +366,7 @@ const ProductDetailPage = () => {
           toast.success("Removed from wishlist", {
             autoClose: 1500,
             style: {
-              borderRadius:"inherit",
+              borderRadius: "inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -405,7 +405,7 @@ const ProductDetailPage = () => {
         toast.success("Added to wishlist", {
           autoClose: 1500,
           style: {
-            borderRadius:"inherit",
+            borderRadius: "inherit",
             padding: "16px",
             color: "#713200",
           },
@@ -645,7 +645,7 @@ const ProductDetailPage = () => {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                   referrerPolicy="strict-origin-when-cross-origin"
-                  style={{  width: "100%", height: "100%" }}
+                  style={{ width: "100%", height: "100%" }}
                 ></iframe>
               ) : (
                 <video
@@ -656,7 +656,7 @@ const ProductDetailPage = () => {
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
-                  
+
                   }}
                 >
                   <source src={selectedColor?.video_source} type="video/mp4" />
@@ -770,11 +770,11 @@ const ProductDetailPage = () => {
                 alt="Main Product"
                 className="main-image"
                 style={{
-  width: "100%",
-  height: "auto",
-  objectFit: "cover",
-  mixBlendMode: "darken",
-}}
+                  width: "100%",
+                  height: "auto",
+                  objectFit: "cover",
+                  mixBlendMode: "darken",
+                }}
               />
             )}
           </div>
@@ -1014,7 +1014,7 @@ const ProductDetailPage = () => {
                     type="text"
                     placeholder="Enter Delivery Pincode"
                     value={pincode}
-                    maxLength={6} 
+                    maxLength={6}
                     onChange={(e) => {
                       const onlyNums = e.target.value.replace(/\D/g, '');
                       setPincode(onlyNums);
@@ -1582,15 +1582,15 @@ const ProductDetailPage = () => {
           </div>
         </>
       ) : null
-                   }
+      }
       {/* Similar Products */}
       <div className="similar-styles-section">
         {localLoading ? (
           <Skeleton width={320} height={28} />
         ) : (
-           <div className="in-mlb">
+          <div className="in-mlb">
             <h2>Discover Similar Styles</h2>
-           </div> 
+          </div>
         )}
         {localLoading ? (
           <div className="product-grid">

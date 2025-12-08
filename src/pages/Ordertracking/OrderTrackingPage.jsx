@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./OrderTrackingPage.css";
-import { Check } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
 import { fetchOrderHistory } from "../Orderhistory/orderhistorySlice";
@@ -321,7 +321,16 @@ const OrderTrackingPage = () => {
               </div>
             </div>
           )}
-
+          <div style={{ padding: "10px", display:"flex", justifyContent:"space-between" }}>
+            <div>
+              <span>
+                View Invoice
+              </span>
+            </div>
+            <div>
+              <ChevronRight />
+            </div>
+          </div>
           <div className="price-details">
             <div>
               <span>Sub Total</span>

@@ -360,6 +360,7 @@ font-family: "Playfair Display", serif; */
   font-size: 18px;
   border: none;
   background-color: #f2f2f2f2;
+  color: black;
 }
 
 .pincode-check {

@@ -247,13 +247,35 @@ const Footer = () => {
         <div className="contact">
           <div className="ctn_txt">
             <h4>CONTACT US</h4>
-            <p>A. {CONTACT_US?.address}</p>
-            <p>
-              T. <a href={`tel:${CONTACT_US?.phone}`}>{CONTACT_US?.phone}</a>
-            </p>
-            <p>
-              E. <a href={`mailto:${CONTACT_US?.email}`}>{CONTACT_US?.email}</a>
-            </p>
+            {/* <p>A. {CONTACT_US?.address}</p> */}
+            <div style={{ display: "flex", gap: "10px" }}>
+              <div>
+                <p>A.</p>
+              </div>
+              <div>
+                <p> {CONTACT_US?.address}</p>
+              </div>
+            </div>
+            {/* <p>T. <a href={`tel:${CONTACT_US?.phone}`}>{CONTACT_US?.phone}</a></p> */}
+            <div style={{ display: "flex", gap: "10px" }}>
+              <div>
+                <p>T.</p>
+              </div>
+              <div>
+                <p> <a href={`tel:${CONTACT_US?.phone}`}>{CONTACT_US?.phone}</a></p>
+              </div>
+            </div>
+            {/* <p> E. <a href={`mailto:${CONTACT_US?.email}`}>{CONTACT_US?.email}</a></p> */}
+            <div style={{ display: "flex", gap: "10px" }}>
+              <div>
+                <p>E.</p>
+              </div>
+              <div>
+                <p><a href={`mailto:${CONTACT_US?.email}`}><u>{CONTACT_US?.email}</u></a></p>
+              </div>
+            </div>
+
+
           </div>
 
           <div className="social-icons">

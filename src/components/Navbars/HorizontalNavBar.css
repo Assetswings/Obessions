@@ -37,7 +37,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  z-index: 999;
+  z-index: 99999;
   transition: all 0.3s ease;
   text-decoration: none;
   cursor: pointer;

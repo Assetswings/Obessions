@@ -68,18 +68,21 @@
 }
 
 .faq-decor.left {
-  left: 12rem;
-  width: 25vh;
-  width: 182px;
-  height: 88px;
+ left: 15rem;
+    width: 25vh;
+    width: 164px;
+    height: 82px;
+    top: 12rem;
 }
 
+
 .faq-decor.right {
-  right: 7rem;
-  top: 14rem;
-  width: 182px;
-  height: 184px;
+ right: 7rem;
+    top: 12rem;
+    width: 182px;
+    height: 184px;
 }
+
 
 @media (max-width: 768px) {
   .faq-content h1 {

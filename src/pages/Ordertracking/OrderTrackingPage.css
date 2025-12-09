@@ -11,7 +11,7 @@
 .order-left {
   flex: 2 1;
   min-width: 300px;
-  padding: 0px 80px 20px 80px;
+  padding: 0px 80px 65px 80px;
   border-right: 1px solid #ddd;
 }
 
@@ -221,6 +221,13 @@
 .track-head-button-group {
   display: flex;
   gap: 12px;
+}
+
+.order-info-trck{
+  display: flex;
+   max-width: 60%;
+  /* display: flex; */
+  gap: 20%;
 }
 
 /* Responsive */

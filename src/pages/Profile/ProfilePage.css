@@ -35,6 +35,8 @@
   color: black;
   border-color: red;
   width: 204px;
+  position: relative;
+  top: 2px;
 }
 
 .content-wrapper {

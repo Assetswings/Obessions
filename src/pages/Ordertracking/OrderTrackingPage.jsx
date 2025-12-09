@@ -162,7 +162,7 @@ const OrderTrackingPage = () => {
             </div>
           </div>
 
-          <div className="order-info">
+          <div className="order-info-trck">
             <div>
               <p>
                 Order ID

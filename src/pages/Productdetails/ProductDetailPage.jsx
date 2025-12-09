@@ -1344,17 +1344,26 @@ const ProductDetailPage = () => {
                 // >
                 //   {tab.label}
                 // </button>
-                <button
-                  key={tab.id}
-                  className={`tab-btn-pdp ${activeTab === tab.id ? "active" : ""}`}
-                  onClick={() => {
-                    setActiveTab(tab.id);
-                    sectionsRef.current[tab.id]?.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }}
-                >
-                  {tab.label}
-                </button>
+               <button
+  key={tab.id}
+  className={`tab-btn-pdp ${activeTab === tab.id ? "active" : ""}`}
+  onClick={() => {
+    setActiveTab(tab.id);
 
+    const topOffset = 90; // tweak this as needed
+    const el = sectionsRef.current[tab.id];
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.pageYOffset - topOffset;
+
+      window.scrollTo({
+        top: y,
+        behavior: "smooth",
+      });
+    }
+  }}
+>
+  {tab.label}
+</button>
               ))}
             </div>
 

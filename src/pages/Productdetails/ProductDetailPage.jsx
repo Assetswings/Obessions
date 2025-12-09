@@ -1336,14 +1336,25 @@ const ProductDetailPage = () => {
           <div className="product-tabs-container">
             <div className="tabs-bar">
               {tabs.map((tab) => (
+                // <button
+                //   key={tab.id}
+                //   disabled={true}
+                //   onClick={() => scrollToSection(tab.id)}
+                //   className={`tab-btn-pdp ${activeTab === tab.id ? "active" : ""}`}
+                // >
+                //   {tab.label}
+                // </button>
                 <button
                   key={tab.id}
-                  disabled={true}
-                  // onClick={() => scrollToSection(tab.id)}
                   className={`tab-btn-pdp ${activeTab === tab.id ? "active" : ""}`}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    sectionsRef.current[tab.id]?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
                 >
                   {tab.label}
                 </button>
+
               ))}
             </div>
 

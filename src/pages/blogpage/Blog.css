@@ -119,6 +119,7 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+ 
   .featured-post img {
     height: 300px;
   }
@@ -147,6 +148,19 @@
   .latest-posts {
     padding: 0px 5px 0px 0px;
   }
+
+   .featured-post {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 50px;
+}
+
+.blog_image_trcak{
+  width: 98%;
+}
+
+
 }
 
 @media (max-width: 480px) {
@@ -161,4 +175,5 @@
   .latest-posts h3 {
     font-size: 20px;
   }
+
 }

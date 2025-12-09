@@ -40,7 +40,7 @@ const Blog = () => {
 
         {/* FEATURED POST */}
         <section className="featured-post pointer-crusser">
-          <div>
+          <div className="blog_image_trcak">
             <Link to={`/blog-details/${data?.top_first?.slug}`}>
             <img src={data?.top_first?.media} alt={data?.top_first?.slug} />
             </Link>

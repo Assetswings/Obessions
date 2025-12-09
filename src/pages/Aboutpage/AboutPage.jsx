@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./AboutPage.css";
 import { FaGem } from "react-icons/fa";
@@ -6,14 +6,63 @@ import { FaAward } from "react-icons/fa";
 import Footer from "../../components/Footer/Footer";
 import { fetchAboutUs } from "./aboutSlice";
 import { Lightbulb, Palette, Recycle } from "lucide-react";
+
+// Dynamic image 
+import aniimage1 from "../../assets/icons/icon_box_ dynamic.png";
+import aniimage2 from "../../assets/icons/icon_home_dynamic.png";
+import aniimage3 from "../../assets/icons/icon_love_dynamic.png";
+
+const items = [
+  {
+    icon: aniimage1,
+    text: "Good design doesn’t ask for attention; it earns it.",
+  },
+  {
+    icon: aniimage2,
+    text: "Every corner deserves a little love.",
+  },
+  {
+    icon: aniimage3,
+    text: "Home isn’t built; it’s curated.",
+  },
+];
+
+
+
 const AboutPage = () => {
+
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.about);
+  const [currentSet, setCurrentSet] = useState(null);
+  const [fade, setFade] = useState(false);
+     const [currentIndex, setCurrentIndex] = useState(0);
+
   console.log(data, 'about us data');
-  useEffect(() => {
+
+
+    useEffect(() => {
     document.title = "Obsession - About Us";
     dispatch(fetchAboutUs());
   }, [dispatch]);
+  
+
+     useEffect(() => {
+       const interval = setInterval(() => {
+         setFade(true);
+   
+         setTimeout(() => {
+           setCurrentIndex((prev) => (prev + 1) % items.length);
+         }, 300); // fade-out before content changes
+   
+         setTimeout(() => {
+           setFade(false);
+         }, 600); // fade-in after content changes
+       }, 5000);
+   
+       return () => clearInterval(interval);
+     }, []);
+   
+
   return (
     <>
       <div className="about-wrapper">
@@ -42,7 +91,15 @@ const AboutPage = () => {
 
         <section>
           <div className="slogan_part">
-            <span><img class="img_turner" src="https://i.ibb.co/qL71DQj5/icon.png" /> &nbsp;</span> Good design doesn’t ask for attention; it earns it. <span />
+             <p
+            className={`position-absolute text-center small ${fade ? "fade-out" : "fade-in"
+              }`}>
+            <span>
+              <img src={items[currentIndex].icon} className="img_turner" />
+              &nbsp;
+            </span>
+            {items[currentIndex].text}
+          </p>
           </div>
         </section>
 

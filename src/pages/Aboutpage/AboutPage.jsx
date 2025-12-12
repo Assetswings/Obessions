@@ -6,6 +6,10 @@ import { FaAward } from "react-icons/fa";
 import Footer from "../../components/Footer/Footer";
 import { fetchAboutUs } from "./aboutSlice";
 import { Lightbulb, Palette, Recycle } from "lucide-react";
+import SplitType from "split-type";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 
 // Dynamic image 
 import aniimage1 from "../../assets/icons/icon_box_ dynamic.png";
@@ -29,39 +33,74 @@ const items = [
 
 
 
+
 const AboutPage = () => {
 
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.about);
   const [currentSet, setCurrentSet] = useState(null);
   const [fade, setFade] = useState(false);
-     const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   console.log(data, 'about us data');
 
 
-    useEffect(() => {
+
+  useEffect(() => {
+    if (!data?.description) return;
+
+    // GSAP + Plugins
+      gsap.registerPlugin(ScrollTrigger);
+      const elements = document.querySelectorAll(".reveal-type");
+      elements.forEach((el) => {
+      const bg = el.dataset.bgColor;
+      const fg = el.dataset.fgColor;
+      const split = new SplitType(el, { types: "chars" });
+      gsap.fromTo(
+        split.chars,
+        { color: bg },
+        {
+          color: fg,
+          duration: 0.3,
+          stagger: 0.02,
+          scrollTrigger: {
+            trigger: el,
+            start: "top 80%",
+            end: "top 20%",
+            scrub: true,
+            markers: false,
+          },
+        }
+      );
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, [data]);
+
+  useEffect(() => {
     document.title = "Obsession - About Us";
     dispatch(fetchAboutUs());
   }, [dispatch]);
-  
 
-     useEffect(() => {
-       const interval = setInterval(() => {
-         setFade(true);
-   
-         setTimeout(() => {
-           setCurrentIndex((prev) => (prev + 1) % items.length);
-         }, 300); // fade-out before content changes
-   
-         setTimeout(() => {
-           setFade(false);
-         }, 600); // fade-in after content changes
-       }, 5000);
-   
-       return () => clearInterval(interval);
-     }, []);
-   
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(true);
+
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % items.length);
+      }, 300); // fade-out before content changes
+
+      setTimeout(() => {
+        setFade(false);
+      }, 600); // fade-in after content changes
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
 
   return (
     <>
@@ -91,15 +130,15 @@ const AboutPage = () => {
 
         <section>
           <div className="slogan_part">
-             <p
-            className={`position-absolute text-center small ${fade ? "fade-out" : "fade-in"
-              }`}>
-            <span>
-              <img src={items[currentIndex].icon} className="img_turner" />
-              &nbsp;
-            </span>
-            {items[currentIndex].text}
-          </p>
+            <p
+              className={`position-absolute text-center small ${fade ? "fade-out" : "fade-in"
+                }`}>
+              <span>
+                <img src={items[currentIndex].icon} className="img_turner" />
+                &nbsp;
+              </span>
+              {items[currentIndex].text}
+            </p>
           </div>
         </section>
 
@@ -112,7 +151,11 @@ const AboutPage = () => {
             className="top-left-icon"
           />
           <div className="about-text-content">
-            <p>
+            <p
+              className="reveal-type"
+              data-bg-color="#cccccc"
+              data-fg-color="black"
+            >
               {data?.description}
             </p>
           </div>

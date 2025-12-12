@@ -43,6 +43,7 @@ import './Carttost.css';
             height: "100px",
             objectFit: "cover",
             border: "1px solid #ddd",
+            padding:"5px"
           }}
         />
 

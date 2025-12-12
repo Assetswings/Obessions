@@ -126,12 +126,12 @@ const BestsellersSlider = ({ onQuickView }) => {
   // Desktop arrow handlers
   const handlePrev = () => {
     setTransitionEnabled(true);
-    setSlideIndex((prev) => prev - 2);
+    setSlideIndex((prev) => prev - 1);
   };
 
   const handleNext = () => {
     setTransitionEnabled(true);
-    setSlideIndex((prev) => prev + 2);
+    setSlideIndex((prev) => prev + 1);
   };
 
   // Infinite loop handling

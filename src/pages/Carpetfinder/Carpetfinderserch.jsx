@@ -508,12 +508,12 @@ const Carpetfinderserch = () => {
               </div>
             ) : products?.length > 0 ? (  // Product State
               <div className="product-grid">
-                {products.map((item) => {
+                {products.map((item,index) => {
                   const isWishlisted = item.is_wishlisted;
                   return (
 
                     <div
-                      key={item.id}
+                      key={index}
                       className="product-card-dtl pointer-crusser"
                       style={{ cursor: "pointer" }}
                     >

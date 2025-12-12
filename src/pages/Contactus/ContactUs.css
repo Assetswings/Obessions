@@ -22,8 +22,7 @@
 /* Left Contact Info */
 .contact-info {
   flex: 1;
-  min-width: 300px;
-  max-width: 500px;
+  min-width: 650px;
   padding: 1rem 2rem;
 }
 
@@ -214,6 +213,7 @@ button[type="submit"]:hover {
 
   .contact-info {
     padding: 0px;
+    min-width: 355px !important;
   }
 
   .contact-form {

@@ -7,7 +7,7 @@ import Footer from "../../components/Footer/Footer";
 import { fetchProductDetail, clearProductDetail } from "./productDetailSlice";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import { addToCart } from "../cart/cartSlice";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import {
@@ -546,7 +546,7 @@ const ProductDetailPage = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
+      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
 
       <div className="root_br_head">
         {/* Breadcrumbs or Skeleton */}
@@ -1336,34 +1336,26 @@ const ProductDetailPage = () => {
           <div className="product-tabs-container">
             <div className="tabs-bar">
               {tabs.map((tab) => (
-                // <button
-                //   key={tab.id}
-                //   disabled={true}
-                //   onClick={() => scrollToSection(tab.id)}
-                //   className={`tab-btn-pdp ${activeTab === tab.id ? "active" : ""}`}
-                // >
-                //   {tab.label}
-                // </button>
-               <button
-  key={tab.id}
-  className={`tab-btn-pdp ${activeTab === tab.id ? "active" : ""}`}
-  onClick={() => {
-    setActiveTab(tab.id);
+                <button
+                  key={tab.id}
+                  className={`tab-btn-pdp ${activeTab === tab.id ? "active" : ""}`}
+                  onClick={() => {
+                    setActiveTab(tab.id);
 
-    const topOffset = 90; // tweak this as needed
-    const el = sectionsRef.current[tab.id];
-    if (el) {
-      const y = el.getBoundingClientRect().top + window.pageYOffset - topOffset;
+                    const topOffset = 90; // tweak this as needed
+                    const el = sectionsRef.current[tab.id];
+                    if (el) {
+                      const y = el.getBoundingClientRect().top + window.pageYOffset - topOffset;
 
-      window.scrollTo({
-        top: y,
-        behavior: "smooth",
-      });
-    }
-  }}
->
-  {tab.label}
-</button>
+                      window.scrollTo({
+                        top: y,
+                        behavior: "smooth",
+                      });
+                    }
+                  }}
+                >
+                  {tab.label}
+                </button>
               ))}
             </div>
 

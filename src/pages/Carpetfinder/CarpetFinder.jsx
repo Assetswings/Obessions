@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCarpetFinder } from "./carpetFinderSlice";
 import { useNavigate } from "react-router-dom";
 import "./CarpetFinder.css";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import { ArrowDown, ArrowUp, SquareCheck } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import arrowleft from "../../assets/icons/Vector_left.svg";
@@ -191,7 +191,7 @@ const CarpetFinder = () => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <Breadcrumbs paths={breadcrumbPaths} />
       <div className="finder-wrapper">
         <div className="finder-main">

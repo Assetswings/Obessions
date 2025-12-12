@@ -4,7 +4,7 @@ import { sendOtp, verifyOtp, registerUser } from "../auth/authSlice";
 import Footer from "../../components/Footer/Footer";
 import "./LoginPage.css";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const LoginPage = () => {
@@ -257,7 +257,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <div className="login-container">
         <div className="login-box" onKeyDown={handleKeyDown}>
           {step === 1 && (

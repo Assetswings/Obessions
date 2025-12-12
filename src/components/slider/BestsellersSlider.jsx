@@ -8,7 +8,7 @@ import arrowhvrleft from "../../assets/icons/left_arrow_red.svg";
 import arrowhvrright from "../../assets/icons/right_arrow_red.svg";
 
 import { addToWishlist, removeFromWishlist } from "../Wishtlist/WishlistSlice";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
@@ -161,7 +161,7 @@ const BestsellersSlider = ({ onQuickView }) => {
       </div>
 
       <div className="bestseller-container">
-        <ToastContainer style={{ zIndex: 99999999999 }} position="top-right" autoClose={3000} />
+        <ToastContainer style={{ zIndex: 99999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
         {isMobile ? (
           <>
             {/* ⭐ MOBILE TITLE FIXED ABOVE */}

@@ -69,6 +69,7 @@ const AppRoutes = () => {
           <Route path="Return-Success" element={<ReturnExchangeSuccess />} />
           <Route path="Exchange-Success" element={<ReturnExchangeSuccess />} />
           <Route path="carpet-finder" element={<CarpetFinder />} />
+          <Route path="floor-matcher" element={<CarpetFinder />} />
           <Route path="searchlist" element={<Searchlist />} />
           <Route path="carpetfinderserch" element={<Carpetfinderserch />} />
           <Route path="about-us" element={<AboutPage />} />

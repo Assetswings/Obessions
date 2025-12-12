@@ -5,7 +5,7 @@ import { Info } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { initiatePayment, verifyPayment } from "./paymentService";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const PaymentPage = () => {
@@ -115,7 +115,7 @@ const PaymentPage = () => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <Breadcrumbs paths={breadcrumbPaths} />
       <div className="root-title-chk">
         <h2 className="title_chk">Payment</h2>

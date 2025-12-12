@@ -115,8 +115,8 @@
 }
 
 .contact p {
-    font-size: 13px;
-    margin: 5px 0;
+  font-size: 13px;
+  margin: 5px 0;
 }
 
 .ctn_txt {
@@ -155,11 +155,11 @@
 
 
 
- .response-container p{
-    margin-top: 12px;
-    margin-left: 75px;
-    font-size: 14px;
-    /* color: red; */
+.response-container p {
+  margin-top: 12px;
+  margin-left: 75px;
+  font-size: 14px;
+  /* color: red; */
 }
 
 .sub-track-res {
@@ -323,5 +323,9 @@
   .footer-links>div {
     flex: 0 0 0px;
     margin: 10px 10px;
+  }
+
+  .contact p {
+    width: 90%;
   }
 }

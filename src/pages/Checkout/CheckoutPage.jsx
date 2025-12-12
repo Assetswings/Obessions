@@ -13,7 +13,7 @@ import {
 import { fetchUserProfile } from "../Profile/profileSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { Info, X } from "lucide-react";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import { checkPincode } from "../Productdetails/pincodeSlice";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
@@ -273,7 +273,7 @@ const CheckoutPage = () => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <Breadcrumbs paths={breadcrumbPaths} />
       <div className="root-title-chk">
         <h2 className="title_chk">Checkout</h2>

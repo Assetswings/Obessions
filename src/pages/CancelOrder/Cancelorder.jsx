@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CancelOrder.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import API from "../../app/api";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import Footer from "../../components/Footer/Footer";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
@@ -101,7 +101,7 @@ const CancelOrder = () => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true}/>
       <Breadcrumbs paths={breadcrumbPaths} />
       <div className="cancel-order-container">
         {/* Left Section */}

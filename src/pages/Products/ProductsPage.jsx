@@ -12,7 +12,7 @@ import {
   fetchWishlist,
   removeFromWishlist,
 } from "../../components/Wishtlist/WishlistSlice";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
@@ -110,7 +110,6 @@ const ProductsPage = () => {
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
-
       // 👇 Scroll smoothly to the top after changing page
       setTimeout(() => {
         window.scrollTo({
@@ -178,7 +177,7 @@ const ProductsPage = () => {
           toast.success("Removed from wishlist", {
             autoClose: 1500,
             style: {
-              borderRadius:"inherit",
+              borderRadius: "inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -207,7 +206,7 @@ const ProductsPage = () => {
         toast.success("Added to wishlist", {
           autoClose: 1500,
           style: {
-            borderRadius:"inherit",
+            borderRadius: "inherit",
             padding: "16px",
             color: "#713200",
           },
@@ -365,6 +364,7 @@ const ProductsPage = () => {
 
   // Render discount filters
   const renderDiscountFilter = (discounts, isMobile = false) => {
+    if (!discounts || discounts.length === 0) return null; // ⬅️ prevents empty UI
     const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
     const onChangeHandler = isMobile
       ? handleMobileFilterChange
@@ -430,8 +430,8 @@ const ProductsPage = () => {
   ];
   return (
     <>
-      <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} />
-      <div style={{position:"relative",right:"6px"}}>
+      <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
+      <div style={{ position: "relative", right: "6px" }}>
         <Breadcrumbs paths={breadcrumbPaths} />
       </div>
       {/* MOBILE FILTER BUTTON */}
@@ -604,6 +604,23 @@ const ProductsPage = () => {
                   </div>
                 ))}
               </div>
+            ) : products?.length === 0 ? (  // Empty Product State
+              <div className="empty-product">
+                <img
+                  src={emptyproduct}
+                  alt="Empty cart"
+                  className="empty-cart-image"
+                />
+                <p className="empty-cart-subtitle">
+                  We couldn’t find a match, but there’s more waiting to be discovered.
+                </p>
+                <button
+                  className="empty-cart-btn"
+                  onClick={() => navigate("/")} // ✅ send user back to home/shop
+                >
+                  EXPLORE &nbsp;
+                </button>
+              </div>
             ) : products?.length > 0 ? (  // Product State
               <div className="product-grid">
                 {products.map((item) => {
@@ -722,23 +739,6 @@ const ProductsPage = () => {
                   );
                 })}
               </div>
-            ) : products?.length == 0 ? (  // Empty Product State
-              <div className="empty-product">
-                <img
-                  src={emptyproduct}
-                  alt="Empty cart"
-                  className="empty-cart-image"
-                />
-                <p className="empty-cart-subtitle">
-                  We couldn’t find a match, but there’s more waiting to be discovered.
-                </p>
-                <button
-                  className="empty-cart-btn"
-                  onClick={() => navigate("/")} // ✅ send user back to home/shop
-                >
-                  EXPLORE &nbsp;
-                </button>
-              </div>
             ) : (<></>)}
           </div>
           <div className="pagination_track">
@@ -765,7 +765,7 @@ const ProductsPage = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-      <section className="top-picks-section">
+      <section className="top-picks-section web">
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
         <div className="desk-top-picks">
           <div className="top-picks-grid">
@@ -847,6 +847,57 @@ const ProductsPage = () => {
             </div>
           </div>
         </div>
+      </section>
+      {/* Mobile Section top Picks*/}
+      <section className="top-picks-section mob">
+        <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
+        <div className="desk-top-picks">
+          <div className="top-picks-grid">
+            {items.map((item) => (
+              <div key={item.id} className="top-pick-card">
+                <Link to={`/products${item.action_url}`}>
+                  <img
+                    src={item.media}
+                    alt={item.name}
+                    className="top-pick-image pointer-crusser"
+                  />
+                  <p
+                    className="top-pick-title pointer-crusser"
+                  >
+                    {item.name}
+                  </p>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+
+
+        <div className="mlb-top-picks">
+          <section className="flat_overview">
+            <div className="promo-section">
+              {items.map((item) => (
+                <div
+                  className="promo-card"
+                  key={item.id}
+                >
+
+                  <Link to={`/products${item.action_url}`}>
+                    <img
+                      src={item.media}
+                      alt={item.name}
+                      className="promo-image pointer-crusser"
+                    />
+                    <p className="promo-title pointer-crusser">{item.name}</p>
+
+                  </Link>
+                </div >
+              ))}
+            </div >
+          </section >
+        </div>
+
+
       </section>
 
       {/* SLIDE FILTER MODAL (Mobile) */}

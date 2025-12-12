@@ -11,7 +11,7 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import WishlistModal from "../Wishtlist/WishlistModal";
 import LoginPromptModal from "../LoginModal/LoginPromptModal";
-import { toast, ToastContainer } from "react-toastify";
+import { Slide, toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import "./Mobileansbar.css";
 
@@ -137,7 +137,7 @@ const Mobileansbar = () => {
       <ToastContainer
         style={{ zIndex: 9999999999999 }}
         position="top-right"
-        autoClose={3000}
+        autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true}
       />
 
       <div className="top-announcement-bar-mlb">

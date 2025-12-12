@@ -21,7 +21,7 @@ import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "../Products/otherproductSlice";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
-import { toast, ToastContainer } from "react-toastify";
+import { Slide, toast, ToastContainer } from "react-toastify";
 import Pagination from "../../components/Pagination/Pagination";
 import emptyproduct from "../../assets/images/empty-product.png";
 
@@ -320,6 +320,7 @@ const Carpetfinderserch = () => {
 
   // Render discount filters
   const renderDiscountFilter = (discounts, isMobile = false) => {
+    if (!discounts || discounts.length === 0) return null; // ⬅️ prevents empty UI
     const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
     const onChangeHandler = isMobile
       ? handleMobileFilterChange
@@ -351,7 +352,7 @@ const Carpetfinderserch = () => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <div className="breadweb">
         <Breadcrumbs paths={breadcrumbPaths} />
       </div>

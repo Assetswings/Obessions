@@ -8,8 +8,10 @@
   gap: 30px;
   font-family: Arial, sans-serif;
 
-  align-items: stretch; /* 🔥 make main & aside equal height */
-  height: 100%; /* important */
+  align-items: stretch;
+  /* 🔥 make main & aside equal height */
+  height: 100%;
+  /* important */
 }
 
 .title_prd_roots {
@@ -38,10 +40,13 @@
   width: 300px;
   flex-shrink: 0;
   font-size: 14px;
-  overflow-y: auto; /* 🔥 scroll only inside filters */
+  overflow-y: auto;
+  /* 🔥 scroll only inside filters */
   height: 100%;
-  min-height: 0; /* important - allows scroll instead of stretch */
-  padding-right: 8px; /* spacing for scrollbar */
+  min-height: 0;
+  /* important - allows scroll instead of stretch */
+  padding-right: 8px;
+  /* spacing for scrollbar */
 }
 
 .custom-filters h2 {
@@ -92,7 +97,8 @@
 .custom-product-list {
   flex: 1;
 
-  min-height: 0; /* 🔥 prevents flex overflow issues */
+  min-height: 0;
+  /* 🔥 prevents flex overflow issues */
   display: flex;
   flex-direction: column;
 }
@@ -401,7 +407,7 @@
     object-fit: cover;
   }
 
- 
+
 }
 
 /* Mobile filter button */
@@ -925,7 +931,7 @@
   -ms-overflow-style: none;
 }
 
- /* ⭐ Mobile fix: stack columns vertically */
+/* ⭐ Mobile fix: stack columns vertically */
 @media (max-width: 768px) {
   .obsession-content-pd {
     flex-direction: column;
@@ -933,8 +939,10 @@
   }
 
   .obsession-columns {
-    flex-direction: column;   /* stack items */
-    gap: 20px;                /* reduce spacing if needed */
+    flex-direction: column;
+    /* stack items */
+    gap: 20px;
+    /* reduce spacing if needed */
   }
 
   .obsession-text-pd {
@@ -945,8 +953,8 @@
     font-size: 27px;
     text-align: center;
   }
-  .obsession-col h4
- {
+
+  .obsession-col h4 {
     font-size: 16px;
     font-weight: 400;
     margin-bottom: 12px;
@@ -954,34 +962,50 @@
     font-family: "Canela Trial", sans-serif;
     /* align-items: center; */
     text-align: center;
-}
- .on-image-one {
+  }
+
+  .on-image-one {
     width: 150px;
     height: 320px;
     border-radius: 150px;
-}
- .on-image-two {
+  }
+
+  .on-image-two {
     width: 100px;
     height: 215px;
     border-radius: 150px;
     margin-top: 65%;
-}
- .obsession-tag
- {
+  }
+
+  .obsession-tag {
     position: absolute;
     border: 1px solid #000;
     padding: 6px 14px;
     border-radius: 20px;
-    font-size: 4px;
+    font-size: 7px;
     font-weight: 500;
-   
-}
- .obsession-images {
+
+  }
+
+  .obsession-images {
     flex: 1 1;
     display: flex;
     gap: 20px;
     position: relative;
     left: 25px;
+  }
+
+  .obsession-col p {
+    text-align: center;
+  }
+
+  .page-wrapper {
+    height: calc(45vh - 80px);
+    margin-bottom: 10%;
+    /* full screen minus header (example) */
+  }
+
+  .flat_overview .promo-section {
+    padding: 1rem 1rem;
+  }
 }
-}
- 

@@ -20,7 +20,7 @@ import heartAnimation from "../../assets/icons/Heart.json";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "../Products/otherproductSlice";
-import { toast, ToastContainer } from "react-toastify";
+import { Slide, toast, ToastContainer } from "react-toastify";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 import emptyproduct from "../../assets/images/empty-product.png";
 import Pagination from "../../components/Pagination/Pagination";
@@ -355,6 +355,7 @@ const Searchlist = () => {
 
   // Render discount filters
   const renderDiscountFilter = (discounts, isMobile = false) => {
+    if (!discounts || discounts.length === 0) return null; // ⬅️ prevents empty UI
     const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
     const onChangeHandler = isMobile
       ? handleMobileFilterChange
@@ -415,7 +416,7 @@ const Searchlist = () => {
   ];
   return (
     <>
-      <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} />
+      <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <Breadcrumbs paths={breadcrumbPaths} />
       {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&

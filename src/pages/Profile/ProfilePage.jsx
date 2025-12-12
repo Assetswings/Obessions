@@ -23,7 +23,7 @@ import { useLocation } from "react-router-dom";
 import { checkPincode } from "../Productdetails/pincodeSlice";
 import logo from "../../assets/icons/Obslogo.png";
 import { X } from "lucide-react";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -385,7 +385,7 @@ const ProfilePage = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} />
+      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
 
       <div className="profile-container">
         <div className="root_tab">

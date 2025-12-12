@@ -268,7 +268,7 @@ const MobileNav = () => {
         <div className="menu-container">
           {/* ===== MAIN MENU ===== */}
           <div className={`menu ${activeMenu === "main" ? "active" : ""}`}>
-            <ul style={{marginLeft:"0px"}}>
+            <ul style={{ marginLeft: "0px" }}>
               <li onClick={() => navigateTo("shop")} className="border-buttom">
                 <div className="iteam_main">
                   <div>Shop</div>
@@ -344,7 +344,7 @@ const MobileNav = () => {
                   {openCategory === category.id && (
                     <ul className="submenu">
                       {category.subcategories.map((sub) => (
-                        <li key={sub.id} style={{textTransform:"capitalize"}}>
+                        <li key={sub.id} style={{ textTransform: "capitalize" }}>
                           <Link
                             to={`/products/${category.action_url}/${sub.action_url}`}
                             onClick={toggleDrawer}
@@ -423,7 +423,10 @@ const MobileNav = () => {
                           className="result-thumb"
                         />
                         <div className="result-info">
-                          <p>{item.name}</p>
+                          <p>
+                            {item.name?.split(" ").slice(0, 10).join(" ")}
+                            {item.name?.split(" ").length > 10 && " ..."}
+                          </p>
                         </div>
                       </Link>
                     ))}

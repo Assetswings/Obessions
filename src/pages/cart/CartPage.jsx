@@ -8,7 +8,7 @@ import Footer from "../../components/Footer/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import blankcart from "../../assets/images/blank-cart.png";
 import { fetchTopPicks } from "../Products/otherproductSlice";
-import { ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
 import { checkPincode } from "../Productdetails/pincodeSlice";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
@@ -129,7 +129,7 @@ const CartPage = () => {
       <ToastContainer
         style={{ zIndex: 9999999999999 }}
         position="top-right"
-        autoClose={3000}
+        autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true}
       />
 
       <Breadcrumbs paths={breadcrumbPaths} />

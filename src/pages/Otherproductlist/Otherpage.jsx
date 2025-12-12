@@ -16,7 +16,7 @@ import heartAnimation from "../../assets/icons/Heart.json";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import Footer from "../../components/Footer/Footer";
 import { fetchTopPicks } from "../Products/otherproductSlice";
-import { toast, ToastContainer } from "react-toastify";
+import { Slide, toast, ToastContainer } from "react-toastify";
 import { Expand, Heart, SlidersHorizontal, X } from "lucide-react";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 import Pagination from "../../components/Pagination/Pagination";
@@ -191,7 +191,7 @@ const Otherpage = () => {
           toast.success("Removed from wishlist", {
             autoClose: 1000,
             style: {
-              borderRadius:"inherit",
+              borderRadius: "inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -220,7 +220,7 @@ const Otherpage = () => {
         toast.success("Added to wishlist", {
           autoClose: 1000,
           style: {
-            borderRadius:"inherit",
+            borderRadius: "inherit",
             padding: "16px",
             color: "#713200",
           },
@@ -398,6 +398,7 @@ const Otherpage = () => {
 
   // Render discount filters
   const renderDiscountFilter = (discounts, isMobile = false) => {
+    if (!discounts || discounts.length === 0) return null; // ⬅️ prevents empty UI
     const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
     const onChangeHandler = isMobile
       ? handleMobileFilterChange
@@ -435,7 +436,7 @@ const Otherpage = () => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <Breadcrumbs paths={breadcrumbPaths} />
       {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&
@@ -742,7 +743,7 @@ const Otherpage = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-      <section className="top-picks-section">
+      <section className="top-picks-section web">
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
         <div className="desk-top-picks">
           <div className="top-picks-grid">
@@ -825,6 +826,58 @@ const Otherpage = () => {
           </div>
         </div>
       </section>
+      {/* Mobile Section top Picks*/}
+      <section className="top-picks-section mob">
+        <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
+        <div className="desk-top-picks">
+          <div className="top-picks-grid">
+            {items.map((item) => (
+              <div key={item.id} className="top-pick-card">
+                <Link to={`/products${item.action_url}`}>
+                  <img
+                    src={item.media}
+                    alt={item.name}
+                    className="top-pick-image pointer-crusser"
+                  />
+                  <p
+                    className="top-pick-title pointer-crusser"
+                  >
+                    {item.name}
+                  </p>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+
+
+        <div className="mlb-top-picks">
+          <section className="flat_overview">
+            <div className="promo-section">
+              {items.map((item) => (
+                <div
+                  className="promo-card"
+                  key={item.id}
+                >
+
+                  <Link to={`/products${item.action_url}`}>
+                    <img
+                      src={item.media}
+                      alt={item.name}
+                      className="promo-image pointer-crusser"
+                    />
+                    <p className="promo-title pointer-crusser">{item.name}</p>
+
+                  </Link>
+                </div >
+              ))}
+            </div >
+          </section >
+        </div>
+
+
+      </section>
+
       {/* SLIDE FILTER MODAL (Mobile) */}
       <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>
         <div className="mobile-filter-header">

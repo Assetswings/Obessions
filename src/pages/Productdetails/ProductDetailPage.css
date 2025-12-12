@@ -330,6 +330,13 @@ font-family: "Playfair Display", serif; */
 .color-options {
   display: flex;
   gap: 10px;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;      /* Firefox */
+}
+
+.color-options::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari */
 }
 
 .selected-color {
@@ -1200,7 +1207,7 @@ font-family: "Playfair Display", serif; */
     /* min-height: 400px; */
     border-bottom: 1px solid #f0f0f0;
     position: relative;
-    right: 40px;
+    right: 60px;
   }
 
   .recommend-good-know {

@@ -60,7 +60,7 @@ const CancelSuccess = () => {
                         Track Oder
                         </button>
                     </Link>&nbsp;
-                    <button onClick={() => navigate("/")} className="btn-primary">
+                    <button onClick={() => navigate("/")} className="btn-outline-continue">
                         Continue Shopping
                     </button>
                 </div>

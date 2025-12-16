@@ -8,6 +8,7 @@ import largeimg from "../../assets/icons/largee.png";
 import medimum from "../../assets/icons/medimum.png";
 import API from '../../app/api';
 import Skeleton from 'react-loading-skeleton';
+import { Link } from 'react-router-dom';
 
 
 
@@ -153,8 +154,34 @@ const StyleGuide = () => {
               <div className="guide-info">
                 <h3>{shapeData.name}</h3>
                 <p className="guide-desc">{shapeData.short_description}</p>
-                <div dangerouslySetInnerHTML={{ __html: shapeData?.description }} />
-                <button className="shop-btn">{shapeData.button_styles}</button>
+                {/* <div dangerouslySetInnerHTML={{ __html: shapeData?.description }} /> */}
+                <div>
+                  <table className="conversion-table">
+                    <thead>
+                      <tr>
+                        <th colSpan="3">Conversion Chart</th>
+                      </tr>
+                      <tr>
+                        <th>Size in Cm</th>
+                        <th>Size in Ft.</th>
+                        <th>Recommended For</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {shapeData?.size_guide_sizes.map((item) => (
+                        <tr key={item.id}>
+                          <td>{item.size_in_cm}</td>
+                          <td>{item.size_in_feet}</td>
+                          <td>{item.recommended || "-"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <Link to={`/products${shapeData?.action_url}`}>
+                  <button className="shop-btn">{shapeData.button_styles}</button>
+                </Link>
               </div>
             </div>
           </section>
@@ -182,20 +209,27 @@ const StyleGuide = () => {
               <div className="roomguide-text">
                 <h3 className="roomguide-heading">{roomData.name}</h3>
                 <p className="roomguide-description">{roomData.short_description}</p>
-                {/* <h4 className="roomguide-subtitle">Recommendation</h4> */}
+                <h4 className="roomguide-subtitle">Recommendation</h4>
                 <div className="roomguide-recommendations">
-                  {/* {roomData.recommendations.map((rec, i) => (
-                    <div className="roomguide-recommendation" key={i}>
-                      <img src={rec.img} alt={rec.size} />
-                      <div>
-                        <h5 className="roomguide-size">{rec.size}</h5>
-                        <p className="roomguide-text-desc">{rec.text}</p>
+                  {roomData.size_guide_images.map((rec, i) => (
+                    <>
+                      <div className="roomguide-recommendation" key={i}>
+                        <div style={{ display: "flex", gap: "72px" }}>
+                          {rec.media_1 && <img src={rec.media_1} alt={rec.size} />}
+                          {rec.media_2 && <img src={rec.media_2} alt={rec.size} />}
+                        </div>
                       </div>
-                    </div>
-                  ))} */}
+                      <div>
+                        <h5 className="roomguide-size">{rec.name}</h5>
+                        <p className="roomguide-text-desc">{rec.description}</p>
+                      </div>
+                    </>
+                  ))}
                   <div dangerouslySetInnerHTML={{ __html: roomData?.description }} />
                 </div>
-                <button className="roomguide-btn">{roomData?.button_styles}</button>
+                <Link to={`/products${roomData?.action_url}`}>
+                  <button className="roomguide-btn">{roomData?.button_styles}</button>
+                </Link>
               </div>
             </div>
           </section>

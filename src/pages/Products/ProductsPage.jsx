@@ -111,10 +111,21 @@ const ProductsPage = () => {
     setSelectedFilters(urlFilters);
     // localStorage.setItem("selectedFilters", JSON.stringify(urlFilters));
   }, []);
+  
+  const getFiltersFromURL = (search) => {
+    const params = new URLSearchParams(search);
+    const filters = {};
+    for (const [key, value] of params.entries()) {
+      const decoded = decodeURIComponent(value.replace(/\+/g, " "));
 
+      filters[key] = decoded.includes(",")
+        ? decoded.split(",").map(v => v.trim())
+        : [decoded];
+    }
+
+    return filters;
+  };
   useEffect(() => {
-    console.log(selectedFilters, '>>');
-
     if (category) {
       setProducts([]);
       dispatch(
@@ -129,19 +140,6 @@ const ProductsPage = () => {
     }
   }, [dispatch, category, subcategory, selectedFilters, currentPage]);
 
-  const getFiltersFromURL = (search) => {
-    const params = new URLSearchParams(search);
-    const filters = {};
-    for (const [key, value] of params.entries()) {
-      const decoded = decodeURIComponent(value.replace(/\+/g, " "));
-
-      filters[key] = decoded.includes(",")
-        ? decoded.split(",").map(v => v.trim())
-        : [decoded];
-    }
-
-    return filters;
-  };
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);

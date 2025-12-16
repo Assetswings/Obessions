@@ -460,7 +460,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     </div>
                   </>
                 ) : (
-                  productDetails?.product_sizes?.length > 0 && (
+                  productDetails?.product_sizes?.length > 0 && selectedSize.size !== "NA" && (
                     <>
                       {productDetails?.category_action_url === "dustbins" ? (
                         <p className="selected-size-label">

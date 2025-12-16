@@ -706,7 +706,7 @@ const HomePage = () => {
               key={item.id}
             >
 
-              <Link to={`/products/${item.action_url}`}>
+              <Link to={item.action_url}>
                 <img
                   src={item.media}
                   alt={item.name}

@@ -73,6 +73,7 @@ const searchSlice = createSlice({
           limit: action.payload.limit,
         };
         state.filters = action.payload.filters || {};
+        state.sorting = action.payload.sorting.sort_by || {};
       })
       .addCase(fetchSearchResults.rejected, (state, action) => {
         state.loading = false;

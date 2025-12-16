@@ -90,9 +90,17 @@ const ProductsPage = () => {
     document.title = "Obsession - Product List";
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
+
+    const urlFilters = getFiltersFromURL(location.search);
+    console.log(urlFilters);
+
+    setSelectedFilters(urlFilters);
+    // localStorage.setItem("selectedFilters", JSON.stringify(urlFilters));
   }, []);
 
   useEffect(() => {
+    console.log(selectedFilters, '>>');
+
     if (category) {
       setProducts([]);
       dispatch(
@@ -107,6 +115,19 @@ const ProductsPage = () => {
     }
   }, [dispatch, category, subcategory, selectedFilters, currentPage]);
 
+  const getFiltersFromURL = (search) => {
+    const params = new URLSearchParams(search);
+    const filters = {};
+    for (const [key, value] of params.entries()) {
+      const decoded = decodeURIComponent(value.replace(/\+/g, " "));
+
+      filters[key] = decoded.includes(",")
+        ? decoded.split(",").map(v => v.trim())
+        : [decoded];
+    }
+
+    return filters;
+  };
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
@@ -430,7 +451,7 @@ const ProductsPage = () => {
   ];
   return (
     <>
-      <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
+      <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <div style={{ position: "relative", right: "6px" }}>
         <Breadcrumbs paths={breadcrumbPaths} />
       </div>
@@ -623,7 +644,7 @@ const ProductsPage = () => {
               </div>
             ) : products?.length > 0 ? (  // Product State
               <div className="product-grid">
-                {products.map((item,index) => {
+                {products.map((item, index) => {
                   const isWishlisted = item.is_wishlisted;
                   return (
 

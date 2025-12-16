@@ -241,12 +241,14 @@ const OrderHistoryPage = () => {
                               </span>
                             </Link>
                             <div>
-                              <span
-                                className="txt_cation"
-                                style={{ color: "#1B170E" }}
-                              >
-                                View Invoice
-                              </span>
+                              <Link to={order?.invoice_url} target="_blank" rel="noopener noreferrer">
+                                <span
+                                  className="txt_cation"
+                                  style={{ color: "#1B170E" }}
+                                >
+                                  View Invoice
+                                </span>
+                              </Link>
                             </div>
                           </div>
                         </div>

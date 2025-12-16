@@ -931,6 +931,20 @@
   -ms-overflow-style: none;
 }
 
+
+  .product-poster-card {
+  grid-column: 3 / -1;
+  margin: 19px 0;
+}
+
+.poster-image {
+     width: 97%;
+    display: block;
+    height: 83%;
+    position: relative;
+    bottom: 4px;
+}
+
 /* ⭐ Mobile fix: stack columns vertically */
 @media (max-width: 768px) {
   .obsession-content-pd {
@@ -1008,4 +1022,21 @@
   .flat_overview .promo-section {
     padding: 1rem 1rem;
   }
+
+  
+  .product-poster-card {
+  grid-column: 1 / -1;
+  margin: 19px 0;
 }
+
+ .poster-image {
+  width: 95%;
+  display: block;
+  margin: 5px;
+  position: relative;
+  left: 3px ;
+}
+
+}
+
+

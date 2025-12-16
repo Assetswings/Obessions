@@ -56,6 +56,7 @@ const ProductsPage = () => {
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
   const [customerfavourite, setCustomerfavourite] = useState();
+  const [bestsellerfav, setBestsellerFav] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const { data, filters, sorting, pagination, loading } = useSelector((state) => state.products);
 
@@ -73,6 +74,7 @@ const ProductsPage = () => {
   useEffect(() => {
     dispatch(fetchTopPicks());
     getPLPbotton();
+    getbestsellerBanner();
   }, [dispatch]);
 
   const getPLPbotton = async () => {
@@ -81,6 +83,18 @@ const ProductsPage = () => {
       if (res.data.status === 200) {
         // Simulate delay only if you really want it
         setCustomerfavourite(res?.data?.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getbestsellerBanner = async () => {
+    try {
+      const res = await API.get("bestsellers/banner");
+      if (res.data.status === 200) {
+        // Simulate delay only if you really want it
+        setBestsellerFav(res?.data?.data);
       }
     } catch (err) {
       console.log(err);
@@ -572,60 +586,32 @@ const ProductsPage = () => {
           ) : (  // ❌ No filters found            
             <p className="no-filters">No filters available.</p>
           )}
-
         </aside>
 
         <main className="custom-product-list">
-          {products.length > 0 &&
-            <>
-              <div className="sortby-container-mlb">
-                <div>
-                  <span style={{ fontWeight: "bold" }} className="track_contuing">
-                    {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
-                  </span>
 
-                </div>
-                <div className="dropdown" style={{ display: "flex", gap: "10px" }}>
-                  <div
-                    className="dropdown-toggle sortby-btn"
-                    id="dropdownMenuButton"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    SORT BY
-                  </div>
-                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {Object.entries(sorting).map(([key, label]) => (
-                      <li key={key}>
-                        <button
-                          className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                          onClick={() => handleSelect(key, label)}
-                        >
-                          {label}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="sort-name">
-                    {showShort}
-                  </div>
-                </div>
-              </div>
+          {/* SORT BAR */}
+          {products.length > 0 && (
+            <div className="sortby-container-mlb">
+              <span className="track_contuing" style={{ fontWeight: "bold" }}>
+                {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
+              </span>
+            </div>
+          )}
 
-            </>
-          }
           <div className="mb-6">
-            {loading ? (  // Loading State
+            {loading ? (
+              /* LOADING */
               <div className="product-grid">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <div key={i} className="product-card-dtl">
                     <Skeleton height={200} />
-                    <Skeleton height={20} width={150} />
-                    <Skeleton height={20} width={100} />
+                    <Skeleton height={20} />
                   </div>
                 ))}
               </div>
-            ) : products?.length === 0 ? (  // Empty Product State
+            ) : products.length === 0 ? (
+              /* EMPTY */
               <div className="empty-product">
                 <img
                   src={emptyproduct}
@@ -633,7 +619,7 @@ const ProductsPage = () => {
                   className="empty-cart-image"
                 />
                 <p className="empty-cart-subtitle">
-                  We couldn’t find a match, but there’s more waiting to be discovered.
+                  We couldn't find a match, but there's more waiting to be discovered.
                 </p>
                 <button
                   className="empty-cart-btn"
@@ -642,9 +628,11 @@ const ProductsPage = () => {
                   EXPLORE &nbsp;
                 </button>
               </div>
-            ) : products?.length > 0 ? (  // Product State
+            ) : (
+              /* PRODUCTS */
               <div className="product-grid">
-                {products.map((item, index) => {
+                {/* 🔹 FIRST 10 PRODUCTS */}
+                {products.slice(0, 10).map((item, index) => {
                   const isWishlisted = item.is_wishlisted;
                   return (
 
@@ -759,12 +747,192 @@ const ProductsPage = () => {
                     </div>
                   );
                 })}
+                {/* {products.slice(0, 10).map((item, index) => (
+                  <div key={item.id || index} className="product-card-dtl pointer-crusser">
+                    <div className="product-img-box">
+                      <Link to={`/productsdetails/${item.action_url}`} target="_blank">
+                        <img
+                          src={item.media_list?.main?.file}
+                          className="main_image"
+                          alt={item.name}
+                        />
+                        <img
+                          src={item.media_list?.hover?.file}
+                          className="hover_image"
+                          alt={item.name}
+                        />
+                      </Link>
+                    </div>
+
+                    <p className="product-title truncate">{item.name}</p>
+
+                    <div className="product-price">
+                      <span>₹{item.selling_price}</span>
+                    </div>
+                  </div>
+                ))} */}
+
+                {/* 🔥 POSTER (ONLY ONCE AFTER 10) */}
+                {products.length > 10 && (
+                  <div className="product-poster-card">
+                    <Link to={bestsellerfav?.action_url}>
+                      <img
+                        src={bestsellerfav?.media}
+                        alt="Promo Poster"
+                        className="poster-image"
+                      />
+                    </Link>
+                  </div>
+                )}
+
+                {/* 🔹 REMAINING PRODUCTS */}
+                {products.slice(10).map((item, index) => {
+                  const isWishlisted = item.is_wishlisted;
+                  return (
+
+                    <div
+                      key={index}
+                      className="product-card-dtl pointer-crusser"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="product-img-box">
+                        <Link
+                          to={`/productsdetails/${item.action_url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            src={item.media_list?.main?.file}
+                            alt={item.name}
+                            title={item.name}
+                            className="main_image"
+                          />
+                          <img
+                            src={item.media_list?.hover?.file}
+                            alt={item.name}
+                            title={item.name}
+                            className="hover_image"
+                          />
+                        </Link>
+
+                        {/* Wishlist Button */}
+                        <button
+                          className="wishlist-btn_products pointer-crusser"
+                          onClick={(e) => toggleWishlist(e, item)}
+                        >
+                          {animatedWish === item.id ? (
+                            <div
+                              style={{
+                                width: 20,
+                                height: 24,
+                                overflow: "hidden",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Player
+                                autoplay
+                                keepLastFrame
+                                src={heartAnimation}
+                                style={{
+                                  width: 139,
+                                  height: 139,
+                                  transform: "scale(0.5)",
+                                  transformOrigin: "center",
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <Heart
+                              color={isWishlisted ? "#FF0000" : "#000"}
+                              fill={isWishlisted ? "#FF0000" : "none"}
+                              size={20}
+                              strokeWidth={2}
+                            />
+                          )}
+                        </button>
+
+                        {/* Quick View */}
+                        <div className="qucick_dv">
+                          <span
+                            className="quick-view_pd"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setQuickViewProduct(item);
+                              setShowModal(true);
+                            }}
+                          >
+                            Quick View &nbsp;
+                            <Expand color="#000000" size={15} strokeWidth={1.25} />
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Product Title */}
+                      <p className="product-title truncate pointer-crusser">
+                        <Link
+                          to={`/productsdetails/${item.action_url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {item.name}
+                        </Link>
+                      </p>
+
+                      {/* Product Price */}
+                      <Link
+                        to={`/productsdetails/${item.action_url}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <div className="product-price">
+                          <span>₹{item.selling_price}</span>
+                          {item.mrp && item.mrp !== item.selling_price && (
+                            <>
+                              <span className="original">₹{item.mrp}</span>
+                              <span className="discount">
+                                ({item.discount_percent}% OFF)
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })}
+                {/* {products.slice(10).map((item, index) => (
+                  <div
+                    key={`rest-${item.id || index}`}
+                    className="product-card-dtl pointer-crusser"
+                  >
+                    <div className="product-img-box">
+                      <Link to={`/productsdetails/${item.action_url}`} target="_blank">
+                        <img
+                          src={item.media_list?.main?.file}
+                          className="main_image"
+                          alt={item.name}
+                        />
+                        <img
+                          src={item.media_list?.hover?.file}
+                          className="hover_image"
+                          alt={item.name}
+                        />
+                      </Link>
+                    </div>
+
+                    <p className="product-title truncate">{item.name}</p>
+                    <div className="product-price">₹{item.selling_price}</div>
+                  </div>
+                ))} */}
+
               </div>
-            ) : (<></>)}
+            )}
           </div>
+
+          {/* PAGINATION */}
           <div className="pagination_track">
             <Pagination
-              className="mt-6"
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
@@ -773,6 +941,7 @@ const ProductsPage = () => {
           </div>
 
         </main>
+
 
         <ProductQuickViewModal
           show={showModal}
@@ -818,7 +987,6 @@ const ProductsPage = () => {
                   className="promo-card"
                   key={item.id}
                 >
-
                   <Link to={`/products${item.action_url}`}>
                     <img
                       src={item.media}
@@ -836,7 +1004,6 @@ const ProductsPage = () => {
 
 
       </section>
-
       <section className="obsession-section-pd">
         <div className="obsession-content-pd">
           <div className="obsession-text-pd">
@@ -882,9 +1049,7 @@ const ProductsPage = () => {
                     alt={item.name}
                     className="top-pick-image pointer-crusser"
                   />
-                  <p
-                    className="top-pick-title pointer-crusser"
-                  >
+                  <p className="top-pick-title pointer-crusser">
                     {item.name}
                   </p>
                 </Link>

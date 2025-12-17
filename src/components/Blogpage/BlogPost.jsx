@@ -109,13 +109,15 @@ const BlogPost = () => {
             <img
               src={data?.blog?.media_2}
               alt="Chair and Plants"
-              className="main-img_2"
+              className="main-img_2_blog"
+               style={{marginBottom:'25px', width:'100%'}}
             />
             <ol className="how-to-list">
               {data.blog?.content.map((data, i) => (
                 <li>
                   <p className="item-to-list">{data?.heading}</p>
-                  {data?.description}
+                   <p className="item_track_des_blog">{data?.description} </p>
+            
                 </li>
               ))}
             </ol>
@@ -136,8 +138,7 @@ const BlogPost = () => {
             </p>
 
             <div className="connect-footer">
-              <p>Connect With Us :</p>
-              <div className="social-icons">
+              <div className="social-icons-blog">
                 <i className="fa-brands fa-facebook"></i>
                 <i className="fa-brands fa-instagram"></i>
                 <i className="fa-brands fa-youtube"></i>

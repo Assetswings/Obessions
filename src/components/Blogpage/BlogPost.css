@@ -19,7 +19,7 @@
   display: flex;
   gap: 3rem;
   padding: 2rem 1rem;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: auto;
   align-items: flex-start;
 }
@@ -36,7 +36,7 @@
 
 /* Recommended section */
 .recommended-posts {
-  max-width: 1165px;
+  max-width: 1400px;
   margin: 4rem auto;
   padding: 0 1rem;
 }
@@ -113,7 +113,7 @@
 }
 
 .track_social {
-  margin-left: 13%;
+  margin-left: 5%;
   font-family: 'Canela Trial', sans-serif;
 }
 
@@ -137,6 +137,16 @@
   display: none;
 }
 
+
+  .item-to-list{
+     font-family: 'Canela Trial', sans-serif;
+    
+  }
+
+  .item_track_des_blog{
+    padding-top: 5px;
+    padding-bottom: 5px;
+   } 
 /* Responsive Design */
 
 /* Tablets */
@@ -189,9 +199,9 @@
     flex-direction: row;
   }
 
-  .main-img_2 {
+  .main-img_2_blog {
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 35px !important;
   }
 
   .related-list p {
@@ -203,6 +213,7 @@
     padding-bottom: 10px;
   }
 
+ 
   .txt_btn_recomend {
     display: flex;
     /* gap: 25%; */
@@ -292,6 +303,7 @@ p {
   font-size: 32px;
   line-height: 48px;
   letter-spacing: 3%;
+  margin-bottom: 40px;
 }
 .sector_image {
   text-align: center;
@@ -328,4 +340,11 @@ p {
   letter-spacing: 3%;
   padding: 10px 0px 10px 0px;
   color: #000000;
+}
+.social-icons-blog{
+
+  margin-top: 30px;
+  font-size: 20px;
+
+
 }

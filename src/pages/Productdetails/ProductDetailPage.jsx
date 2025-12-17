@@ -546,7 +546,7 @@ const ProductDetailPage = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
+      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
 
       <div className="root_br_head">
         {/* Breadcrumbs or Skeleton */}
@@ -871,6 +871,20 @@ const ProductDetailPage = () => {
                   <p className="selected-size-label">
                     CHOOSE A CAPACITY:&nbsp;
                     {selectedSize && <strong>{selectedSize.capacity}</strong>}
+                  </p>
+                ) : productDetails?.category_action_url === "floor-covering" ? (
+                  <p className="selected-size-label">
+                    CHOOSE A SIZE :&nbsp;
+                    {selectedSize && (
+                      <strong>
+                        {unit === "cm"
+                          ? selectedSize.size
+                          : unit === "ft"
+                            ? selectedSize.size_in_feet
+                            : ""}
+                      </strong>
+                    )}
+
                   </p>
                 ) : (
                   <p className="selected-size-label">

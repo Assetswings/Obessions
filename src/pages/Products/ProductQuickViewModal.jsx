@@ -245,7 +245,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
             hideProgressBar: true,
             style: {
               // borderRadius:"inherit",
-              borderRadius:"inherit",
+              borderRadius: "inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -282,7 +282,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
           hideProgressBar: true,
           style: {
             // borderRadius:"inherit",
-            borderRadius:"inherit",
+            borderRadius: "inherit",
             padding: "16px",
             color: "#713200",
           },
@@ -464,12 +464,26 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     <>
                       {productDetails?.category_action_url === "dustbins" ? (
                         <p className="selected-size-label">
-                          CHOOSE A Capacity:&nbsp;
+                          CHOOSE A CAPACITY:&nbsp;
                           {selectedSize && <strong>{selectedSize.capacity}</strong>}
+                        </p>
+                      ) : productDetails?.category_action_url === "floor-covering" ? (
+                        <p className="selected-size-label">
+                          CHOOSE A SIZE :&nbsp;
+                          {selectedSize && (
+                            <strong>
+                              {unit === "cm"
+                                ? selectedSize.size
+                                : unit === "ft"
+                                  ? selectedSize.size_in_feet
+                                  : ""}
+                            </strong>
+                          )}
+
                         </p>
                       ) : (
                         <p className="selected-size-label">
-                          CHOOSE A SIZE:
+                          CHOOSE A SIZE :&nbsp;
                           {selectedSize && <strong>{selectedSize.size}</strong>}
                         </p>
                       )}
@@ -605,7 +619,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                         type="text"
                         placeholder="Enter Delivery Pincode"
                         value={pincode}
-                        maxLength={6} 
+                        maxLength={6}
                         onChange={(e) => {
                           const onlyNums = e.target.value.replace(/\D/g, '');
                           setPincode(onlyNums);

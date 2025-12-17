@@ -59,6 +59,8 @@ const ProductsPage = () => {
   const [bestsellerfav, setBestsellerFav] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const { data, filters, sorting, pagination, loading } = useSelector((state) => state.products);
+  const [dataReady, setDataReady] = useState(true);
+
 
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
@@ -68,8 +70,17 @@ const ProductsPage = () => {
   const rangeEnd = Math.min(currentPage * limit, total);
 
   useEffect(() => {
-    setProducts(Array.isArray(data) ? data : []);
-  }, [data]);
+    if (loading) {
+      setDataReady(true);   // still fetching
+      return;
+    }
+    if (Array.isArray(data)) {
+      setProducts(data);
+      setDataReady(false);    // API DONE + state set
+    }
+  }, [data, loading]);
+
+
   useEffect(() => {
     document.title = "Obsession - Product List";
     const token = localStorage.getItem("token");
@@ -479,7 +490,7 @@ const ProductsPage = () => {
       {products.length > 0 &&
         <div className="track_filter">
           <div className="title_hader_filter"> <h2 className="title_prd_roots">
-            {loading ? (
+            {dataReady ? (
               <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
             ) : subcategory ? (
               formatTitle(subcategory)
@@ -529,7 +540,7 @@ const ProductsPage = () => {
           {products.length > 0 &&
             <>
               <h2 className="title_prd_roots">
-                {loading ? (
+                {dataReady ? (
                   <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
                 ) : subcategory ? (
                   formatTitle(subcategory)
@@ -539,7 +550,7 @@ const ProductsPage = () => {
               </h2>
 
               <div className="root_devider_flt">
-                {loading ? (
+                {dataReady ? (
                   <>
                     <Skeleton height={22} width={80} style={{ marginBottom: 5 }} />
 
@@ -557,7 +568,7 @@ const ProductsPage = () => {
               </div>
             </>
           }
-          {loading ? (
+          {dataReady ? (
             // 🔄 Skeleton loader while fetching data
             <>
               <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
@@ -637,7 +648,7 @@ const ProductsPage = () => {
           }
 
           <div className="mb-6">
-            {loading ? (
+            {dataReady ? (
               /* LOADING */
               <div className="product-grid">
                 {Array.from({ length: 8 }).map((_, i) => (
@@ -647,25 +658,7 @@ const ProductsPage = () => {
                   </div>
                 ))}
               </div>
-            ) : products.length === 0 ? (
-              /* EMPTY */
-              <div className="empty-product">
-                <img
-                  src={emptyproduct}
-                  alt="Empty cart"
-                  className="empty-cart-image"
-                />
-                <p className="empty-cart-subtitle">
-                  We couldn't find a match, but there's more waiting to be discovered.
-                </p>
-                <button
-                  className="empty-cart-btn"
-                  onClick={() => navigate("/")} // ✅ send user back to home/shop
-                >
-                  EXPLORE &nbsp;
-                </button>
-              </div>
-            ) : (
+            ) : products?.length > 0 ? (
               /* PRODUCTS */
               <div className="product-grid">
                 {/* 🔹 FIRST 10 PRODUCTS */}
@@ -938,31 +931,24 @@ const ProductsPage = () => {
                     </div>
                   );
                 })}
-                {/* {products.slice(10).map((item, index) => (
-                  <div
-                    key={`rest-${item.id || index}`}
-                    className="product-card-dtl pointer-crusser"
-                  >
-                    <div className="product-img-box">
-                      <Link to={`/productsdetails/${item.action_url}`} target="_blank">
-                        <img
-                          src={item.media_list?.main?.file}
-                          className="main_image"
-                          alt={item.name}
-                        />
-                        <img
-                          src={item.media_list?.hover?.file}
-                          className="hover_image"
-                          alt={item.name}
-                        />
-                      </Link>
-                    </div>
-
-                    <p className="product-title truncate">{item.name}</p>
-                    <div className="product-price">₹{item.selling_price}</div>
-                  </div>
-                ))} */}
-
+              </div>
+            ) : (
+              /* EMPTY */
+              <div className="empty-product">
+                <img
+                  src={emptyproduct}
+                  alt="Empty cart"
+                  className="empty-cart-image"
+                />
+                <p className="empty-cart-subtitle">
+                  We couldn't find a match, but there's more waiting to be discovered.
+                </p>
+                <button
+                  className="empty-cart-btn"
+                  onClick={() => navigate("/")} // ✅ send user back to home/shop
+                >
+                  EXPLORE &nbsp;
+                </button>
               </div>
             )}
           </div>

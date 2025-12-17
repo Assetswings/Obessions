@@ -34,8 +34,8 @@ const Searchlist = () => {
   const { getCartWishlistCount } = useCartWishlist();
   const query = location.state?.query;
 
-  const searchState = useSelector((state) => state.search || {});
-  const { results = [], pagination, sorting, filters, loading } = searchState;
+  const { results, pagination, sorting, filters, loading } = useSelector((state) => state.search || {});
+  //  = searchState;
   const [products, setProducts] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -50,6 +50,7 @@ const Searchlist = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selected, setSelected] = useState("Recommended");
   const [customerfavourite, setCustomerfavourite] = useState();
+  const [dataReady, setDataReady] = useState(true);
 
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
@@ -67,8 +68,15 @@ const Searchlist = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setProducts(Array.isArray(results) ? results : []);
-  }, [results]);
+    if (loading) {
+      setDataReady(true);   // still fetching
+      return;
+    }
+    if (Array.isArray(results)) {
+      setProducts(results);
+      setDataReady(false);    // API DONE + state set
+    }
+  }, [results, loading]);
 
   useEffect(() => {
     if (!query.trim()) {
@@ -168,7 +176,7 @@ const Searchlist = () => {
           toast.success("Removed from wishlist", {
             autoClose: 3000,
             style: {
-              borderRadius:"inherit",
+              borderRadius: "inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -197,7 +205,7 @@ const Searchlist = () => {
         toast.success("Added to wishlist", {
           autoClose: 3000,
           style: {
-            borderRadius:"inherit",
+            borderRadius: "inherit",
             padding: "16px",
             color: "#713200",
           },
@@ -416,14 +424,14 @@ const Searchlist = () => {
   ];
   return (
     <>
-      <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
+      <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <Breadcrumbs paths={breadcrumbPaths} />
       {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&
         <div className="track_filter">
           <div className="title_hader_filter">
             {/* <h2 className="title_prd_roots">
-              {loading ? (
+              {dataReady ? (
                 <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
               ) : subcategory ? (
                 formatTitle(subcategory)
@@ -473,7 +481,7 @@ const Searchlist = () => {
           {products.length > 0 &&
             <>
               {/* <h2 className="title_prd_roots">
-                {loading ? (
+                {dataReady ? (
                   <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
                 ) : subcategory ? (
                   formatTitle(subcategory)
@@ -483,7 +491,7 @@ const Searchlist = () => {
               </h2> */}
 
               <div className="root_devider_flt">
-                {loading ? (
+                {dataReady ? (
                   <>
                     <Skeleton height={22} width={80} style={{ marginBottom: 5 }} />
                   </>
@@ -500,7 +508,7 @@ const Searchlist = () => {
               </div>
             </>
           }
-          {loading ? (
+          {dataReady ? (
             // 🔄 Skeleton loader while fetching data
             <>
               <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
@@ -575,7 +583,7 @@ const Searchlist = () => {
             </>
           }
           <div className="mb-6">
-            {loading ? (  // Loading State
+            {dataReady ? (  // Loading State
               <div className="product-grid">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <div key={i} className="product-card-dtl">
@@ -587,7 +595,7 @@ const Searchlist = () => {
               </div>
             ) : products?.length > 0 ? (  // Product State
               <div className="product-grid">
-                {products.map((item,index) => {
+                {products.map((item, index) => {
                   const isWishlisted = item.is_wishlisted;
                   return (
 
@@ -703,7 +711,7 @@ const Searchlist = () => {
                   );
                 })}
               </div>
-            ) : products?.length == 0 ? (  // Empty Product State
+            ) : (
               <div className="empty-product">
                 <img
                   src={emptyproduct}
@@ -720,7 +728,7 @@ const Searchlist = () => {
                   EXPLORE &nbsp;
                 </button>
               </div>
-            ) : (<></>)}
+            )}
           </div>
 
           <Pagination

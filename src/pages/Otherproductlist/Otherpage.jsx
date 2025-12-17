@@ -67,6 +67,7 @@ const Otherpage = () => {
   const [selected, setSelected] = useState("");
   const [showShort, setShowShort] = useState("");
   const [customerfavourite, setCustomerfavourite] = useState();
+  const [dataReady, setDataReady] = useState(true);
 
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
@@ -77,8 +78,13 @@ const Otherpage = () => {
 
   useEffect(() => {
     document.title = `Obsession - ${Titelslug}`;
-    if (!loading) {
-      setProducts(Array.isArray(otherproduct) ? otherproduct : []);
+    if (loading) {
+      setDataReady(true);   // still fetching
+      return;
+    }
+    if (Array.isArray(otherproduct)) {
+      setProducts(otherproduct);
+      setDataReady(false);    // API DONE + state set
     }
   }, [otherproduct, loading]);
 
@@ -436,7 +442,7 @@ const Otherpage = () => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <Breadcrumbs paths={breadcrumbPaths} />
       {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&
@@ -494,7 +500,7 @@ const Otherpage = () => {
             ) : null}
           </div>
 
-          {loading ? (
+          {dataReady ? (
             // 🔄 Skeleton loader while fetching data
             <>
               <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
@@ -572,7 +578,7 @@ const Otherpage = () => {
             </>
           }
           <div className="mb-6">
-            {loading ? (  // Loading State
+            {dataReady ? (  // Loading State
               <div className="product-grid">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <div key={i} className="product-card-dtl">
@@ -584,7 +590,7 @@ const Otherpage = () => {
               </div>
             ) : products?.length > 0 ? (  // Product State
               <div className="product-grid">
-                {products.map((item,index) => {
+                {products.map((item, index) => {
                   const isWishlisted = item.is_wishlisted;
                   return (
 
@@ -700,7 +706,7 @@ const Otherpage = () => {
                   );
                 })}
               </div>
-            ) : products?.length == 0 ? (  // Empty Product State
+            ) : (
               <div className="empty-product">
                 <img
                   src={emptyproduct}
@@ -717,7 +723,7 @@ const Otherpage = () => {
                   EXPLORE &nbsp;
                 </button>
               </div>
-            ) : (<></>)}
+            )}
           </div>
           <div className="pagination_track">
             <Pagination

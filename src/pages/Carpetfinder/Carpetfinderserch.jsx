@@ -47,6 +47,7 @@ const Carpetfinderserch = () => {
   );
   const { items } = useSelector((state) => state.toppick);
   const [currentPage, setCurrentPage] = useState(1);
+  const [dataReady, setDataReady] = useState(true);
 
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
@@ -66,13 +67,17 @@ const Carpetfinderserch = () => {
       );
     }
     dispatch(fetchTopPicks());
-  }, [dispatch, selectedFilters,currentPage]);
+  }, [dispatch, selectedFilters, currentPage]);
 
-  useEffect(() => {
-    if (!loading) {
-      setProducts(Array.isArray(filteredData) ? filteredData : []);
-    }
-  }, [filteredData, loading]);
+useEffect(() => {
+  if (loading) return;
+
+  if (Array.isArray(filteredData)) {
+    setProducts(filteredData);
+    setDataReady(false);
+  }
+}, [filteredData, loading]);
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -362,7 +367,7 @@ const Carpetfinderserch = () => {
     );
   };
   const breadcrumbPaths = [
-    { label: "Floor Matcher Result", to: "" }, // last one (no link)
+    { label: "Floor Matcher", to: "" }, // last one (no link)
   ];
   return (
     <>
@@ -432,7 +437,7 @@ const Carpetfinderserch = () => {
             ) : null}
           </div>
 
-          {loading ? (
+          {dataReady ? (
             // 🔄 Skeleton loader while fetching data
             <>
               <Skeleton height={24} width={140} style={{ marginBottom: 10 }} />
@@ -510,7 +515,7 @@ const Carpetfinderserch = () => {
             </>
           }
           <div className="mb-6">
-            {loading ? (  // Loading State
+            {dataReady ? (  // dataReady State
               <div className="product-grid">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <div key={i} className="product-card-dtl">
@@ -638,7 +643,7 @@ const Carpetfinderserch = () => {
                   );
                 })}
               </div>
-            ) : products?.length == 0 ? (  // Empty Product State
+            ) : !dataReady && products.length === 0 ? (  // Empty Product State
               <div className="empty-product">
                 <img
                   src={emptyproduct}
@@ -681,7 +686,10 @@ const Carpetfinderserch = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-      <section className="top-picks-section">
+      <section
+        className={`top-picks-section ${products.length === 0 ? "carpet-top" : ""
+          }`}
+      >
         <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
         <div className="desk-top-picks">
           <div className="top-picks-grid">

@@ -97,22 +97,20 @@
     display: none;
   } */
 
-  .faq-decor.left {
-    left: -8rem;
-    width: 58px;
-    height: 29px;
-    height: 45px;
-    bottom: 10%;
-    position: relative;
-
-  }
-
+  
   .faq-decor.right {
     right: 1rem;
-    top: 14rem;
+    top: 12rem;
     width: 67px;
     height: 72px;
   }
+
+.faq-decor.left {
+ left: 1rem;
+    width: 9vh;
+    height: 40px;
+    top: 2rem;
+}
 
 
   .faq-search-bar {
@@ -364,5 +362,3 @@ details[open] .faq-icon.plus {
 details[open] .faq-icon.minus {
   opacity: 1;
 }
-
-@media (max-width: 480px) {}

@@ -277,7 +277,7 @@
     line-height: 100%;
     letter-spacing: 3%;
     position: relative;
-    left: 5%;
+   padding-bottom: 20px;
   }
 
   .relet-blog-sec {
@@ -315,6 +315,7 @@ p {
   line-height: 100%;
   letter-spacing: 3%;
   color: #625E55;
+  margin: 10px;
 }
 .post-subtitle {
   font-family: Helvetica Neue;

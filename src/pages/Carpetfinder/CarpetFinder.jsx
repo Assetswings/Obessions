@@ -16,12 +16,13 @@ const CarpetFinder = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [selections, setSelections] = useState({});
   const [steps, setSteps] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState([]);
   const navigate = useNavigate();
 
   // Fetch data when mounted
   useEffect(() => {
     document.title = "Obsession - Floor Matcher";
-    dispatch(fetchCarpetFinder());
+    dispatch(fetchCarpetFinder([]));
   }, [dispatch]);
 
   // Build steps when data changes
@@ -71,6 +72,46 @@ const CarpetFinder = () => {
       ]);
     }
   }, [data]);
+  // useEffect(() => {
+  //   console.log("Updated selectedFilter:", selectedFilter);
+  //   dispatch(fetchCarpetFinder(selectedFilter));
+  // }, [selectedFilter, dispatch]);
+  useEffect(() => {
+    console.log("Updated selectedFilter:", selectedFilter, currentStep);
+    if (currentStep === 4) {
+      handelseeresult(selectedFilter);
+    }else{
+      dispatch(fetchCarpetFinder(selectedFilter));
+    }
+  }, [selectedFilter, currentStep]);
+
+  const filterMap = {
+    0: "room_filter",
+    1: "size_filter",
+    2: "color_filter",
+    3: "pattern_filter",
+  };
+
+  const getNextSterData = (step) => {
+    const keyName = filterMap[step];
+    const values = selections?.[step]?.map((item) => item.key);
+
+    if (!keyName || !values?.length) return;
+
+    setSelectedFilter((prev) => {
+      // remove existing filter for this step
+      const filteredPrev = prev.filter(
+        (item) => !item.hasOwnProperty(keyName)
+      );
+
+      // add updated filter
+      return [
+        ...filteredPrev,
+        { [keyName]: values },
+      ];
+    });
+  };
+
 
   const toggleOption = (stepIndex, label, key) => {
     const current = selections[stepIndex] || [];
@@ -101,11 +142,11 @@ const CarpetFinder = () => {
     };
 
     console.log("====================================");
-    console.log(filterReq);
+    console.log(selectedFilter);
     console.log("====================================");
 
     navigate("/carpetfinderserch", {
-      state: filterReq,
+      state: selectedFilter,
     });
   };
 
@@ -124,18 +165,18 @@ const CarpetFinder = () => {
 
           {/* Simulated grid */}
           <div className="track-desk">
-             <div className="main_file_tracker"> 
-                <div className="finder-grid">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="finder-card">
-                  <Skeleton height={180} />
-                  <div className="card-label">
-                    <Skeleton width={100} height={15} />
+            <div className="main_file_tracker">
+              <div className="finder-grid">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="finder-card">
+                    <Skeleton height={180} />
+                    <div className="card-label">
+                      <Skeleton width={100} height={15} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-             </div>
           </div>
 
           {/* Buttons */}
@@ -161,13 +202,6 @@ const CarpetFinder = () => {
       </div>
     );
   }
-  // if (loading) {
-  //   return (
-  //     <div className="finder-wrapper">
-  //       <p>Loading Carpet Finder...</p>
-  //     </div>
-  //   );
-  // }
 
   // Error state
   if (error) {
@@ -191,7 +225,7 @@ const CarpetFinder = () => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <Breadcrumbs paths={breadcrumbPaths} />
       <div className="finder-wrapper">
         <div className="finder-main">
@@ -205,26 +239,25 @@ const CarpetFinder = () => {
                 }`}
             >
               {steps[currentStep]?.options.map(({ label, image, key }) => (
-               <div
-  key={label}
-  className={`finder-card ${isSelected(currentStep, label) ? "selected" : ""} ${
-    steps[currentStep]?.title === "Which Size or Shape fits your Space?"
-      ? "big-card"
-      : "small-card"
-  }`}
-  onClick={() => toggleOption(currentStep, label, key)}
->
+                <div
+                  key={label}
+                  className={`finder-card ${isSelected(currentStep, label) ? "selected" : ""} ${steps[currentStep]?.title === "Which Size or Shape fits your Space?"
+                    ? "big-card"
+                    : "small-card"
+                    }`}
+                  onClick={() => toggleOption(currentStep, label, key)}
+                >
                   {image ? (
                     <img src={image} alt={label} />
                   ) : (
                     <></>
                   )}
                   <span className="card-label">{label}</span>
-                {isSelected(currentStep, label) && (
-  <div className="checkmark">
-    <SquareCheck size={22} color="#657567" />
-  </div>
-)}
+                  {isSelected(currentStep, label) && (
+                    <div className="checkmark">
+                      <SquareCheck size={22} color="#657567" />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -256,6 +289,7 @@ const CarpetFinder = () => {
                     return;
                   }
                   setCurrentStep((prev) => prev + 1);
+                  getNextSterData(currentStep);
                 }}>
                 <div style={{ display: "flex" }}>
                   <div>
@@ -267,7 +301,7 @@ const CarpetFinder = () => {
                 </div>
               </div>
             ) : (
-              <button className="submit-btn" onClick={handelseeresult}>
+              <button className="submit-btn" onClick={() => { setCurrentStep((prev) => prev + 1); getNextSterData(currentStep); }}>
                 See Results
               </button>
             )}

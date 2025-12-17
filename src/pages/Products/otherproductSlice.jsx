@@ -7,7 +7,6 @@ export const fetchTopPicks = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await API.get("/product-others/top-picks");
-      console.log("---------> response of top picks", response);
       return response.data?.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || err.message);
@@ -21,7 +20,6 @@ export const fetchAddOns = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await API.get("/product-others/add-ons");
-      console.log("---------> response of add-ons", response);
       return response.data?.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || err.message);
@@ -35,7 +33,6 @@ export const fetchMoreLike = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await API.get("/product-others/more-like");
-      console.log("---------> response of more like", response);
       return response?.data;
     } catch (err) {
       return rejectWithValue(err.response?.data.message || err.message);

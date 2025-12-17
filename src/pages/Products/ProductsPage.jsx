@@ -597,13 +597,44 @@ const ProductsPage = () => {
         <main className="custom-product-list">
 
           {/* SORT BAR */}
-          {products.length > 0 && (
-            <div className="sortby-container-mlb">
-              <span className="track_contuing" style={{ fontWeight: "bold" }}>
-                {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
-              </span>
-            </div>
-          )}
+          {products.length > 0 &&
+            <>
+              <div className="sortby-container-mlb">
+                <div>
+                  <span style={{ fontWeight: "bold" }} className="track_contuing">
+                    {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
+                  </span>
+
+                </div>
+                <div className="dropdown" style={{ display: "flex", gap: "10px" }}>
+                  <div
+                    className="dropdown-toggle sortby-btn"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    SORT BY
+                  </div>
+                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {Object.entries(sorting).map(([key, label]) => (
+                      <li key={key}>
+                        <button
+                          className={`dropdown-item ${selected === key ? "active-option" : ""}`}
+                          onClick={() => handleSelect(key, label)}
+                        >
+                          {label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="sort-name">
+                    {showShort}
+                  </div>
+                </div>
+              </div>
+
+            </>
+          }
 
           <div className="mb-6">
             {loading ? (

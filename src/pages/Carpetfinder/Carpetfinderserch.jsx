@@ -39,8 +39,10 @@ const Carpetfinderserch = () => {
   const [expandedGroups, setExpandedGroups] = useState({});
   const [isFilterOpen, setIsFilterOpen] = useState(false); // NEW: mobile filter modal state
   const [tempMobileFilters, setTempMobileFilters] = useState({});
+  const [selected, setSelected] = useState("");
+  const [showShort, setShowShort] = useState("");
   const filtercarpetdata = location.state;
-  const { filteredData, filters, pagination, loading, error } = useSelector(
+  const { filteredData, filters, sorting, pagination, loading, error } = useSelector(
     (state) => state.carpetFinder
   );
   const { items } = useSelector((state) => state.toppick);
@@ -54,10 +56,17 @@ const Carpetfinderserch = () => {
   const rangeEnd = Math.min(currentPage * limit, total);
   useEffect(() => {
     if (filtercarpetdata) {
-      dispatch(filterCarpet(filtercarpetdata));
+      dispatch(
+        filterCarpet({
+          selectedFilter: filtercarpetdata,
+          filters: selectedFilters,
+          page: currentPage,
+          limit: 40,
+        })
+      );
     }
     dispatch(fetchTopPicks());
-  }, [dispatch]);
+  }, [dispatch, selectedFilters,currentPage]);
 
   useEffect(() => {
     if (!loading) {
@@ -117,6 +126,11 @@ const Carpetfinderserch = () => {
       // }
     };
   }, [location.pathname]);
+  const handleSelect = (option, key) => {
+    setSelected(option);
+    setShowShort(key);
+    handleFilterChange('sort_by', option);
+  };
 
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
@@ -144,7 +158,7 @@ const Carpetfinderserch = () => {
           toast.success("Removed from wishlist", {
             autoClose: 1500,
             style: {
-              borderRadius:"inherit",
+              borderRadius: "inherit",
               padding: "16px",
               color: "#713200",
             },
@@ -166,7 +180,7 @@ const Carpetfinderserch = () => {
         toast.success("Added to wishlist", {
           autoClose: 1500,
           style: {
-            borderRadius:"inherit",
+            borderRadius: "inherit",
             padding: "16px",
             color: "#713200",
           },
@@ -352,7 +366,7 @@ const Carpetfinderserch = () => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <div className="breadweb">
         <Breadcrumbs paths={breadcrumbPaths} />
       </div>
@@ -379,7 +393,7 @@ const Carpetfinderserch = () => {
               FILTERS
             </div>
             {/* shop by */}
-            {/* <div className="sortby-container">
+            <div className="sortby-container">
               <div className="dropdown">
                 <div
                   className="dropdown-toggle sortby-btn"
@@ -402,7 +416,7 @@ const Carpetfinderserch = () => {
                   ))}
                 </ul>
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
       }
@@ -466,7 +480,7 @@ const Carpetfinderserch = () => {
                   </span>
 
                 </div>
-                {/* <div className="dropdown" style={{ display: "flex", gap: "10px" }}>
+                <div className="dropdown" style={{ display: "flex", gap: "10px" }}>
                   <div
                     className="dropdown-toggle sortby-btn"
                     id="dropdownMenuButton"
@@ -490,7 +504,7 @@ const Carpetfinderserch = () => {
                   <div className="sort-name">
                     {showShort}
                   </div>
-                </div> */}
+                </div>
               </div>
 
             </>
@@ -508,7 +522,7 @@ const Carpetfinderserch = () => {
               </div>
             ) : products?.length > 0 ? (  // Product State
               <div className="product-grid">
-                {products.map((item,index) => {
+                {products.map((item, index) => {
                   const isWishlisted = item.is_wishlisted;
                   return (
 

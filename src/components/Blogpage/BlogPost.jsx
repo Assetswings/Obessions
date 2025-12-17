@@ -39,6 +39,22 @@ const BlogPost = () => {
   const handleBlogClick = (slug) => {
     navigate("/blog-details", { state: { blog: slug } });
   };
+
+  const getYoutubeEmbedUrl = (url) => {
+    if (!url) return "";
+    const cleanUrl = url.trim();
+
+    if (cleanUrl.includes("/embed/")) return cleanUrl;
+
+    const match = cleanUrl.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/
+    );
+
+    return match
+      ? `https://www.youtube.com/embed/${match[1]}`
+      : "";
+  };
+
   const breadcrumbPaths = [
     { label: "Blog", to: "/blog" },
     { label: "Blog Details", to: "" }, // last one (no link)
@@ -110,28 +126,39 @@ const BlogPost = () => {
               src={data?.blog?.media_2}
               alt="Chair and Plants"
               className="main-img_2_blog"
-               style={{marginBottom:'25px', width:'100%'}}
+              style={{ marginBottom: '25px', width: '100%' }}
             />
             <ol className="how-to-list">
               {data.blog?.content.map((data, i) => (
                 <li>
                   <p className="item-to-list">{data?.heading}</p>
-                   <p className="item_track_des_blog">{data?.description} </p>
-            
+                  <p className="item_track_des_blog">{data?.description} </p>
+
                 </li>
               ))}
             </ol>
 
             <div className="youtube-video">
-              <iframe
+              {/* <iframe
                 width="100%"
                 height="400"
-                src={data?.blog?.video}
+                src={getYoutubeEmbedUrl(data.blog?.video)}
                 title="YouTube video"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-              ></iframe>
+              /> */}
+              <iframe
+                  width="100%"
+                  height="400"
+                  src={`${data.blog?.video}?autoplay=1&mute=1&playsinline=1`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  style={{ width: "100%", height: "400" }}
+                ></iframe>
             </div>
             <p className="post-text">
               {data.blog?.description}

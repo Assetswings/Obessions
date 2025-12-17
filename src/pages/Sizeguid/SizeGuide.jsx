@@ -5,6 +5,7 @@ import setone from "../../assets/images/image_set1.png";
 
 import API from "../../app/api";
 import Skeleton from "react-loading-skeleton";
+import { Link } from "react-router-dom";
 
 
 const SizeGuide = () => {
@@ -149,8 +150,9 @@ const SizeGuide = () => {
                       </div>
                     ))}
                   </div>
-
-                  <button className="explore-btn">{style.button_styles}</button>
+                  <Link to={`/products${style?.action_url}`}>
+                    <button className="explore-btn">{style.button_styles}</button>
+                  </Link>
                 </div>
               </div>
             ))}

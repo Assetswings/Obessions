@@ -719,7 +719,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                       <p className="txt-Carpet-Finder">
                         Not sure which carpet fits your space? Try our{" "}
                         <span className="txt_crp">
-                          <Link to='/carpet-finder' target="_blank" rel="noopener noreferrer">Floor Matcher</Link>
+                          <Link to='/floor-matcher' target="_blank" rel="noopener noreferrer">Floor Matcher</Link>
                         </span>
                       </p>
                     ) : null}

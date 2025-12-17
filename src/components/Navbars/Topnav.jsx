@@ -115,7 +115,7 @@ const handleItemClick = () => {
           <Link to='/offer-spot'>OFFERS SPOT</Link>
         </div>
         <div className="nav-item">
-          <Link to='/carpet-finder'>FLOOR MATCHER</Link>
+          <Link to='/floor-matcher'>FLOOR MATCHER</Link>
         </div>
       </nav>
       {/* {showMegaMenu && <MegaMenu closeMenu={() => setShowMegaMenu(false)} />} */}

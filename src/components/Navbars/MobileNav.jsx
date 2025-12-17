@@ -293,7 +293,7 @@ const MobileNav = () => {
                 </Link>
               </li>
               <li className="border-buttom">
-                <Link to="/carpet-finder" onClick={toggleDrawer}>
+                <Link to="/floor-matcher" onClick={toggleDrawer}>
                   FLOOR MATCHER
                 </Link>
               </li>

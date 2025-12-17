@@ -70,48 +70,16 @@ const ProductsPage = () => {
   useEffect(() => {
     setProducts(Array.isArray(data) ? data : []);
   }, [data]);
-
-  useEffect(() => {
-    dispatch(fetchTopPicks());
-    getPLPbotton();
-    getbestsellerBanner();
-  }, [dispatch]);
-
-  const getPLPbotton = async () => {
-    try {
-      const res = await API.get("banners/product-listing-bottom");
-      if (res.data.status === 200) {
-        // Simulate delay only if you really want it
-        setCustomerfavourite(res?.data?.data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const getbestsellerBanner = async () => {
-    try {
-      const res = await API.get("bestsellers/banner");
-      if (res.data.status === 200) {
-        // Simulate delay only if you really want it
-        setBestsellerFav(res?.data?.data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
   useEffect(() => {
     document.title = "Obsession - Product List";
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
 
     const urlFilters = getFiltersFromURL(location.search);
-    console.log(urlFilters);
-
     setSelectedFilters(urlFilters);
-    // localStorage.setItem("selectedFilters", JSON.stringify(urlFilters));
+    localStorage.setItem("selectedFilters", JSON.stringify(urlFilters));
   }, []);
-  
+
   const getFiltersFromURL = (search) => {
     const params = new URLSearchParams(search);
     const filters = {};
@@ -137,8 +105,41 @@ const ProductsPage = () => {
           filters: selectedFilters,
         })
       );
+      dispatch(fetchTopPicks());
+      getPLPbotton();
+      getbestsellerBanner();
     }
   }, [dispatch, category, subcategory, selectedFilters, currentPage]);
+  // useEffect(() => {
+  //   dispatch(fetchTopPicks());
+  //   getPLPbotton();
+  //   getbestsellerBanner();
+  // }, [dispatch]);
+
+  const getPLPbotton = async () => {
+    try {
+      const res = await API.get("banners/product-listing-bottom");
+      if (res.data.status === 200) {
+        // Simulate delay only if you really want it
+        setCustomerfavourite(res?.data?.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getbestsellerBanner = async () => {
+    try {
+      const res = await API.get("bestsellers/banner");
+      if (res.data.status === 200) {
+        // Simulate delay only if you really want it
+        setBestsellerFav(res?.data?.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
@@ -451,6 +452,13 @@ const ProductsPage = () => {
     setShowShort(key);
     handleFilterChange('sort_by', option);
   };
+  const limitWords = (text, limit = 15) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > limit
+      ? words.slice(0, limit).join(" ") + "..."
+      : text;
+  };
   const breadcrumbPaths = [
     {
       label: products.length > 0
@@ -714,13 +722,13 @@ const ProductsPage = () => {
                       </div>
 
                       {/* Product Title */}
-                      <p className="product-title truncate pointer-crusser">
+                      <p className="product-title pointer-crusser">
                         <Link
                           to={`/productsdetails/${item.action_url}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {item.name}
+                          {limitWords(item.name, 10)}
                         </Link>
                       </p>
 

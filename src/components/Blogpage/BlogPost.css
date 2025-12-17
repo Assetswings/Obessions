@@ -31,7 +31,7 @@
 .post-sidebar {
   flex: 1;
   position: sticky;
-  margin-top: 15rem;
+  margin-top: 8rem;
 }
 
 /* Recommended section */
@@ -284,4 +284,48 @@
 
 p {
   margin-bottom: 0px;
+}
+
+.post-title {
+  font-family: Canela Trial;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 48px;
+  letter-spacing: 3%;
+}
+.sector_image {
+  text-align: center;
+}
+.img-credit {
+  font-family: Helvetica Neue;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 3%;
+  color: #625E55;
+}
+.post-subtitle {
+  font-family: Helvetica Neue;
+  font-weight: 400;
+  font-style: Italic;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 3%;
+  padding: 10px 0px 10px 0px;
+}
+.post-subheading {
+  font-family: Canela Trial;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 3%;
+  padding: 10px 0px 10px 0px;
+}
+.post-text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 3%;
+  padding: 10px 0px 10px 0px;
+  color: #000000;
 }

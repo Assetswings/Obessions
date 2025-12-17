@@ -59,142 +59,118 @@ const BlogPost = () => {
         {/* Main Section */}
         <section className="post-wrapper">
           {/* Left Blog Content */}
-          <div className="post-main">
-            {/* <p className="post-date">
-              Posted on{" "}
-              {new Date(data?.blog?.created_at).toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-              })}
-            </p> */}
-
-            <div className="terms-container">
-              <div dangerouslySetInnerHTML={{ __html: data.blog?.description }} />
+          <div>
+            <div className="post-main">
+              <p className="post-date">
+                Posted on{" "}
+                {new Date(data?.blog?.created_at).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </p>
+              <h1 className="post-title">{data?.blog?.name}</h1>
+              {/* <div className="post-subtitle">
+                <div dangerouslySetInnerHTML={{ __html: data.blog?.description }} />
+              </div>
+              <div className="track_social-mlb">
+                <div className="track-flex-social"> Connect With Us : <div> <img src={insta} /></div> <div> <img src={facebookimg} /></div>  <div> <img src={youtube} /></div></div>
+              </div>
+              <h1 className="post-title">{data?.blog?.name}</h1> */}
+              <div className="sector_image">
+                <div>
+                  <img
+                    src={data.blog?.media_1}
+                    alt="Chair and Plants"
+                    className="main-img"
+                  />
+                  <p className="img-credit">Credits : {data?.blog?.admin?.name}</p>
+                </div>
+              </div>
             </div>
-            <div className="track_social-mlb">
-              <div className="track-flex-social"> Connect With Us : <div> <img src={insta} /></div> <div> <img src={facebookimg} /></div>  <div> <img src={youtube} /></div></div>
-            </div>
-            {/* <h1 className="post-title">{data?.blog?.name}</h1> */}
-            {/* <div className="sector_image">
-            <div>
-              <img
-                src="https://i.ibb.co/cV6M9j4/image-396.png"
-                alt="Chair and Plants"
-                className="main-img"
-              />
-              <p className="img-credit">Credits : {data?.blog?.admin?.name}</p>
-            </div>
-          </div>
 
-          <p className="post-subtitle">
-            A cozy blend of boho and vintage natural cane chair, tropical
-            greens, and woven textures come together to create a warm, grounded
-            corner full of character.
-          </p>
+            <p className="post-subtitle">
+              {/* A cozy blend of boho and vintage natural cane chair, tropical
+              greens, and woven textures come together to create a warm, grounded
+              corner full of character. */}
+              {data?.blog?.other_desc_1}
+            </p>
 
-          <h3 className="post-subheading">
-            Looking to refresh your space without overwhelming it? Start with a
-            corner.
-          </h3>
-          <p className="post-text">
-            This cozy setup celebrates natural textures, earthy tones, and
-            organic shapes, making it the perfect retreat inside your home. The
-            deep green of the Monstera plant brings life and freshness, while
-            woven baskets double as elegant storage and grounding decor.
-          </p>
-          <p className="post-text">Here’s how you can recreate the look:</p>
+            <h3 className="post-subheading">
+              {/* Looking to refresh your space without overwhelming it? Start with a
+              corner. */}
+              {data?.blog?.other_head_1}
+            </h3>
+            <p className="post-text">
+              {data.blog?.other_desc_2}
+            </p>
+            <p className="post-text">{data.blog?.other_head_2}</p>
 
-          <img
-            src="https://i.ibb.co/svWqjWTy/image-397.png"
-            alt="Chair and Plants"
-            className="main-img_2"
-          />
-          <ol className="how-to-list">
-            <li>
-              <p className="item-to-list"> Go Green with Purpose</p>
-              Indoor plants like the Monstera deliciosa or bonsai trees add
-              structure and tranquility. Their lush, sculptural leaves become a
-              visual focal point, instantly energizing neutral interiors.
-            </li>
-            <li>
-              <p className="item-to-list">Embrace Natural Storage</p>
-              Replace synthetic containers with woven rattan or wicker baskets.
-              They not only keep clutter out of sight but introduce warmth and
-              handmade charm to the room.
-            </li>
-            <li>
-              <p className="item-to-list">Add a Timeless Seat</p>A simple velvet
-              or fabric armchair in muted green tones pairs beautifully with
-              plants, blending seamlessly into the natural theme while providing
-              a cozy reading spot or relaxation area.
-            </li>
-            <li>
-              <p className="item-to-list">Keep It Minimal</p>
-              Leave negative space around your setup. A clean, plaster-textured
-              wall allows the greens and browns to shine. The result? A
-              balanced, calming atmosphere that feels effortlessly chic.
-            </li>
-          </ol>
-
-          <div className="youtube-video">
-            <iframe
-              width="100%"
-              height="400"
-              src="https://www.youtube.com/embed/whu0Ls8inVI?si=56p-ciN6fDmkF3D9"
-              title="YouTube video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-          <p className="post-text">
-            Incorporating natural accents like lush green plants, woven baskets,
-            and timeless wooden furniture is a simple yet powerful way to infuse
-            your home with depth, warmth, and character. These elements not only
-            enhance visual appeal but also promote a calming, grounded
-            atmosphere. Start by styling just one corner — a quiet reading nook,
-            an entryway, or a forgotten hallway — and let that space inspire the
-            flow and energy of your entire home. With thoughtful touches and a
-            connection to nature, your space can truly become a sanctuary of
-            comfort and style.
-          </p> */}
-
-            {/* <div className="connect-footer">
-            <p>Connect With Us :</p>
-            <div className="social-icons">
-              <i className="fa-brands fa-facebook"></i>
-              <i className="fa-brands fa-instagram"></i>
-              <i className="fa-brands fa-youtube"></i>
-            </div> */}
-          </div>
-
-          {/* Right Sidebar */}
-
-          <aside className="post-sidebar web">
-            <h4 className="sidebar-title">Related Posts</h4>
-            <ul className="related-list">
-              {data?.related?.map((post, index) => (
-                <li key={index}>
-                  <Link to={`/blog-details/${post?.action_url}`}>
-                    <div className="finder_track">
-                      <div>
-                        <img src={post?.media} alt="Related 1" className="pointer-crusser" />
-                      </div>
-
-                      <div className="pointer-crusser">
-                        <p>{post?.name}</p>
-                        <span>
-                          {post?.description?.split(" ").slice(0, 15).join(" ")}
-                          {post?.description?.split(" ").length > 15 ? "..." : ""}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
+            <img
+              src={data?.blog?.media_2}
+              alt="Chair and Plants"
+              className="main-img_2"
+            />
+            <ol className="how-to-list">
+              {data.blog?.content.map((data, i) => (
+                <li>
+                  <p className="item-to-list">{data?.heading}</p>
+                  {data?.description}
                 </li>
               ))}
-            </ul>
-          </aside>
+            </ol>
+
+            <div className="youtube-video">
+              <iframe
+                width="100%"
+                height="400"
+                src={data?.blog?.video}
+                title="YouTube video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <p className="post-text">
+              {data.blog?.description}
+            </p>
+
+            <div className="connect-footer">
+              <p>Connect With Us :</p>
+              <div className="social-icons">
+                <i className="fa-brands fa-facebook"></i>
+                <i className="fa-brands fa-instagram"></i>
+                <i className="fa-brands fa-youtube"></i>
+              </div>
+            </div>
+          </div>
+          {/* Right Sidebar */}
+          <div style={{ position: "sticky", top: "1px" }}>
+            <aside className="post-sidebar web">
+              <h4 className="sidebar-title">Related Posts</h4>
+              <ul className="related-list">
+                {data?.related?.map((post, index) => (
+                  <li key={index}>
+                    <Link to={`/blog-details/${post?.action_url}`}>
+                      <div className="finder_track">
+                        <div>
+                          <img src={post?.media} alt="Related 1" className="pointer-crusser" />
+                        </div>
+
+                        <div className="pointer-crusser">
+                          <p>{post?.name}</p>
+                          <span>
+                            {post?.description?.split(" ").slice(0, 15).join(" ")}
+                            {post?.description?.split(" ").length > 15 ? "..." : ""}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          </div>
         </section>
 
         <div className="track_social">

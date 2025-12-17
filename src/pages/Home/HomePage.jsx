@@ -763,7 +763,7 @@ const HomePage = () => {
             Your style, your space, your vibe. We’ll help you match it with the
             right floor covering.
           </p>
-          <Link to={`/carpet-finder`}>
+          <Link to={`/floor-matcher`}>
             <button className="hero-button" >
               TRY FLOOR MATCHER
             </button>

@@ -257,7 +257,7 @@ const OtherTopnav = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to='/carpet-finder' className={({ isActive }) => (isActive ? "active-tab" : "")}>
+            <NavLink to='/floor-matcher' className={({ isActive }) => (isActive ? "active-tab" : "")}>
               <div className="track_poster">
                 FLOOR MATCHER
               </div>

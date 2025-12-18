@@ -214,7 +214,7 @@ const StyleGuide = () => {
                   {roomData.size_guide_images.map((rec, i) => (
                     <>
                       <div className="roomguide-recommendation" key={i}>
-                        <div style={{ display: "flex", gap: "72px" }}>
+                        <div style={{ display: "flex", gap: "72px", paddingBottom:"10px" }}>
                           {rec.media_1 && <img src={rec.media_1} alt={rec.size} />}
                           {rec.media_2 && <img src={rec.media_2} alt={rec.size} />}
                         </div>

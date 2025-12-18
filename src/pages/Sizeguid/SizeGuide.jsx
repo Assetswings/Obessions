@@ -111,7 +111,7 @@ const SizeGuide = () => {
 
                       <div>
                         <h3>{item?.name}</h3>
-                        <p>{item?.description}</p>
+                        <p dangerouslySetInnerHTML={{ __html: item?.description }}></p>
                       </div>
                     </div>
                   </div>

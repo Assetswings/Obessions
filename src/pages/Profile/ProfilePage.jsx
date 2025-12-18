@@ -24,6 +24,7 @@ import { checkPincode } from "../Productdetails/pincodeSlice";
 import logo from "../../assets/icons/Obslogo.png";
 import { X } from "lucide-react";
 import { Slide, ToastContainer, toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -371,11 +372,38 @@ const ProfilePage = () => {
     }
   };
 
+  // const deteteAddress = (id) => {
+  //   const confirmed = window.confirm("Are you sure you want to Remove this Address?");
+  //   if (confirmed) {
+  //     dispatch(deleteAddress(id));
+  //   }
+  // };
   const deteteAddress = (id) => {
-    const confirmed = window.confirm("Are you sure you want to Remove this Address?");
-    if (confirmed) {
-      dispatch(deleteAddress(id));
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to remove this address!",
+      // icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
+      buttonsStyling: false, // IMPORTANT
+      customClass: {
+        confirmButton: "swal-confirm-btn",
+        cancelButton: "swal-cancel-btn",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteAddress(id));
+
+        Swal.fire({
+          title: "Deleted!",
+          text: "Address has been removed.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
+    });
   };
 
   const mkdaddress = (id) => {
@@ -385,7 +413,7 @@ const ProfilePage = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
+      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 9999999999999 }} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
 
       <div className="profile-container">
         <div className="root_tab">
@@ -964,7 +992,7 @@ const ProfilePage = () => {
         )}
       </div>
       {showOtpModal && (
-        <div className="login-prompt-backdrop">
+        <div className="login-prompt-backdrop profile-zindex">
           <div className="login-prompt-modal">
             <button className="close-btn-md" onClick={() => setShowOtpModal(false)}><X /></button>
             {/* <img src={logo} alt="Logo" className="modal-logo" /> */}

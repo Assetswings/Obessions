@@ -398,6 +398,7 @@
   overflow-wrap: break-word;
   color: #625E55;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .verify-close {
@@ -452,3 +453,32 @@ input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-clear-button {
   display: none;
 }
+.profile-zindex{
+  z-index: 9999 !important;
+}
+
+
+/* Confirm Button */
+.swal-confirm-btn {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  padding: 8px 16px;
+  font-weight: 500;
+}
+
+/* Cancel Button */
+.swal-cancel-btn {
+  background-color: transparent;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 0;
+  padding: 8px 16px;
+  font-weight: 500;
+}
+
+.swal2-actions {
+  gap: 20px;
+}
+

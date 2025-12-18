@@ -119,12 +119,12 @@
 }
 
 .about-text-content p {
+  /* font-family: Helvetica Neue; */
   font-size: 1.7rem;
   line-height: 1.8;
-  width: 700px;
+  width: 715px;
   color: #333;
-  font-weight: 400;
-  font-family: 'Segoe UI', sans-serif;
+  /* font-weight: 400; */
 }
 
 .about-text-content .fade {

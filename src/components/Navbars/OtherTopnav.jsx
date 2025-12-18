@@ -266,15 +266,15 @@ const OtherTopnav = () => {
         </ul>
 
         <div className="nav-actions">
-          {location.pathname !== "/login" && (
+          {/* {location.pathname !== "/login" && (
             <img
               src={searchicon}
               alt="search"
               onClick={() => setShowSearch(true)}
               className="pointer-crusser"
             />
-          )}
-          {/* <img src={searchicon} alt="search" onClick={() => setShowSearch(true)} className="pointer-crusser" /> */}
+          )} */}
+          <img src={searchicon} alt="search" onClick={() => setShowSearch(true)} className="pointer-crusser" />
           {/* User Icon */}
           <div
             ref={userWrapperRef}

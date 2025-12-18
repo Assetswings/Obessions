@@ -13,6 +13,7 @@ import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
 import { checkPincode } from "../Productdetails/pincodeSlice";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 import { useCartWishlist } from "../../app/CartWishlistContext";
+import Swal from "sweetalert2";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -45,11 +46,11 @@ const CartPage = () => {
     if (token) {
       dispatch(fetchCartDetails());
     }
-  }, [dispatch, token, ]);
+  }, [dispatch, token,]);
 
   useEffect(() => {
     dispatch(fetchCartDetails());
-  }, [countData,dispatch]);
+  }, [countData, dispatch]);
 
   // 🔹 Show toast on error only once
   useEffect(() => {
@@ -77,14 +78,39 @@ const CartPage = () => {
   }, [error]);
 
   // const handleRemoveItem = async (cartId) => {
-  //   await dispatch(removeCartItem(cartId));
+  //   try {
+  //     const response = await dispatch(removeCartItem(cartId)).unwrap();
+  //     if (response?.success) {
+  //       getCartWishlistCount(); // refresh count after add
+  //       toast.success(response.message || "Item removed from cart!");
+  //     }
+  //   } catch (err) {
+  //     toast.error("Failed to remove item");
+  //   }
   // };
 
   const handleRemoveItem = async (cartId) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You want to remove this item from Cart!",
+      // icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Delete it",
+      cancelButtonText: "Cancel",
+      buttonsStyling: false, // IMPORTANT
+      customClass: {
+        confirmButton: "swal-confirm-btn",
+        cancelButton: "swal-cancel-btn",
+      },
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       const response = await dispatch(removeCartItem(cartId)).unwrap();
+
       if (response?.success) {
-        getCartWishlistCount(); // refresh count after add
+        getCartWishlistCount();
         toast.success(response.message || "Item removed from cart!");
       }
     } catch (err) {
@@ -95,14 +121,29 @@ const CartPage = () => {
   const handleUpdateQty = async (product_id, newQty) => {
     if (newQty < 1) return;
     setUpdatingId(product_id);
-    await dispatch(updateCartItem({ product_id, quantity: newQty }));
-    setUpdatingId(null);
+    try {
+      const response = await dispatch(
+        updateCartItem({ product_id, quantity: newQty })
+      ).unwrap();
+      console.log("API Response:", response);
+      // Example success toast
+      toast.success('Cart item updated Successfully.');
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error(error?.error);
+      // toast.error(error.message || "Failed to update quantity");
+    } finally {
+      setUpdatingId(null);
+    }
   };
 
   const handleMoveToWishlist = async (item) => {
     await dispatch(addToWishlist({ product_id: item.product.id }));
     await dispatch(removeCartItem(item.id));
-    getCartWishlistCount();
+    toast.success('Product added to Wishlist.');
+    setTimeout(() => {
+      getCartWishlistCount();
+    }, 1000); // time in milliseconds
   };
 
   const handleCheckout = () => {
@@ -129,7 +170,7 @@ const CartPage = () => {
       <ToastContainer
         style={{ zIndex: 9999999999999 }}
         position="top-right"
-        autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true}
+        autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true}
       />
 
       <Breadcrumbs paths={breadcrumbPaths} />
@@ -311,11 +352,11 @@ const CartPage = () => {
               <p className="terms-text">
                 Before proceed further you can review{" "}
                 <a href="/tc-of-sale" style={{ fontWeight: "500" }}>
-                  <u style={{color:"#1B170E"}}>Terms & Conditions of Sale</u>
+                  <u style={{ color: "#1B170E" }}>Terms & Conditions of Sale</u>
                 </a>{" "}
                 and{" "}
                 <a href="/privacy-policy" style={{ fontWeight: "500" }}>
-                  <u style={{color:"#1B170E"}}>Privacy Policy</u>
+                  <u style={{ color: "#1B170E" }}>Privacy Policy</u>
                 </a>
               </p>
               <button onClick={handleCheckout} className="checkout">

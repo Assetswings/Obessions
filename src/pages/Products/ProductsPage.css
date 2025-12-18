@@ -912,7 +912,7 @@
 
 .page-wrapper {
   height: calc(100vh - 80px);
-  margin-bottom: 10%;
+  margin-bottom: 20%;
   /* full screen minus header (example) */
 }
 

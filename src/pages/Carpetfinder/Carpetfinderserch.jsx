@@ -69,14 +69,14 @@ const Carpetfinderserch = () => {
     dispatch(fetchTopPicks());
   }, [dispatch, selectedFilters, currentPage]);
 
-useEffect(() => {
-  if (loading) return;
+  useEffect(() => {
+    if (loading) return;
 
-  if (Array.isArray(filteredData)) {
-    setProducts(filteredData);
-    setDataReady(false);
-  }
-}, [filteredData, loading]);
+    if (Array.isArray(filteredData)) {
+      setProducts(filteredData);
+      setDataReady(false);
+    }
+  }, [filteredData, loading]);
 
 
   useEffect(() => {
@@ -372,22 +372,16 @@ useEffect(() => {
   return (
     <>
       <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
-      <div className="breadweb">
+      <div style={{ position: "relative", right: "6px" }}>
         <Breadcrumbs paths={breadcrumbPaths} />
       </div>
+      {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&
         <div className="track_filter">
-          <div className="title_hader_filter crpt-flt">
-            <Breadcrumbs paths={breadcrumbPaths} />
-            {/* <h2 className="title_prd_roots">
-              {loading ? (
-                <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
-              ) : subcategory ? (
-                formatTitle(subcategory)
-              ) : (
-                formatTitle(category)
-              )}
-            </h2> */}
+          <div className="title_hader_filter">
+            <h2 className="title_prd_roots">
+              Floor Matcher
+            </h2>
           </div>
 
           <div className="root_btn_filter_hader">
@@ -427,7 +421,7 @@ useEffect(() => {
       }
       <div className={`custom-products-page ${products?.length < 8 ? "page-wrapper" : ""}`}>
         <aside className="custom-filters">
-          <h2 className="title_prd_roots">Carpet finder Result</h2>
+          <h2 className="title_prd_roots">Floor Matcher</h2>
           <div className="root_devider_flt">
             <h2>Filters</h2>
             {selectedFilters && Object.keys(selectedFilters).length > 0 ? (

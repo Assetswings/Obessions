@@ -747,7 +747,8 @@ const Searchlist = () => {
         />
       </div>
 
-      <section className="obsession-section-pd">
+      {/* <section className="obsession-section-pd"> */}
+      <section className={`obsession-section-pd ${products.length === 0 ? "product-list-top" : ""}`}>
         <div className="obsession-content-pd">
           <div className="obsession-text-pd">
             <h2>

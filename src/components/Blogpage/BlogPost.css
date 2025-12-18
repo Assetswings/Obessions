@@ -138,15 +138,75 @@
 }
 
 
-  .item-to-list{
-     font-family: 'Canela Trial', sans-serif;
-    
-  }
+.item-to-list {
+  font-family: 'Canela Trial', sans-serif;
 
-  .item_track_des_blog{
-    padding-top: 5px;
-    padding-bottom: 5px;
-   } 
+}
+
+.item_track_des_blog {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+p {
+  margin-bottom: 0px;
+}
+
+.post-title {
+  font-family: Canela Trial;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 48px;
+  letter-spacing: 3%;
+  margin-bottom: 40px;
+}
+
+.sector_image {
+  text-align: center;
+}
+
+.img-credit {
+  font-family: Helvetica Neue;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 3%;
+  color: #625E55;
+  margin: 10px;
+}
+
+.post-subtitle {
+  font-family: Helvetica Neue;
+  font-weight: 400;
+  font-style: Italic;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 3%;
+  padding: 10px 0px 10px 0px;
+}
+
+.post-subheading {
+  font-family: Canela Trial;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 3%;
+  padding: 10px 0px 10px 0px;
+}
+
+.post-text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 3%;
+  padding: 10px 0px 10px 0px;
+  color: #000000;
+}
+
+.social-icons-blog {
+  margin-top: 30px;
+  font-size: 20px;
+}
+
 /* Responsive Design */
 
 /* Tablets */
@@ -213,7 +273,7 @@
     padding-bottom: 10px;
   }
 
- 
+
   .txt_btn_recomend {
     display: flex;
     /* gap: 25%; */
@@ -250,7 +310,7 @@
     font-weight: 400;
     font-size: 20px;
     letter-spacing: 3%;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
   }
 
   .reletepost-mob-poston {
@@ -277,7 +337,8 @@
     line-height: 100%;
     letter-spacing: 3%;
     position: relative;
-   padding-bottom: 20px;
+    padding-bottom: 20px;
+    padding-left: 16px;
   }
 
   .relet-blog-sec {
@@ -291,61 +352,11 @@
   .track-flex-social {
     margin-bottom: 40px;
   }
-}
 
-p {
-  margin-bottom: 0px;
-}
-
-.post-title {
-  font-family: Canela Trial;
-  font-weight: 400;
-  font-size: 32px;
-  line-height: 48px;
-  letter-spacing: 3%;
-  margin-bottom: 40px;
-}
-.sector_image {
-  text-align: center;
-}
-.img-credit {
-  font-family: Helvetica Neue;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 100%;
-  letter-spacing: 3%;
-  color: #625E55;
-  margin: 10px;
-}
-.post-subtitle {
-  font-family: Helvetica Neue;
-  font-weight: 400;
-  font-style: Italic;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 3%;
-  padding: 10px 0px 10px 0px;
-}
-.post-subheading {
-  font-family: Canela Trial;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 100%;
-  letter-spacing: 3%;
-  padding: 10px 0px 10px 0px;
-}
-.post-text {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 3%;
-  padding: 10px 0px 10px 0px;
-  color: #000000;
-}
-.social-icons-blog{
-
-  margin-top: 30px;
-  font-size: 20px;
-
-
+  .sector_image {
+    text-align: left !important;
+  }
+  .post-subheading {
+    line-height: 25px;
+  }
 }

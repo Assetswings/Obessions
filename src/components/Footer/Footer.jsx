@@ -262,7 +262,7 @@ const Footer = () => {
                 <p>T.</p>
               </div>
               <div>
-                <p> <a href={`tel:${CONTACT_US?.phone}`}>{CONTACT_US?.phone}</a></p>
+                <p style={{width:"100%"}}> <a href={`tel:${CONTACT_US?.phone}`}>{CONTACT_US?.phone}</a></p>
               </div>
             </div>
             {/* <p> E. <a href={`mailto:${CONTACT_US?.email}`}>{CONTACT_US?.email}</a></p> */}

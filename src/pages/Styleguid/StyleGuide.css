@@ -295,8 +295,8 @@
 }
 
 .roomguide-recommendation img {
-  width: 130px;
-  height: 80px;
+  width: 100%;
+  height: 70px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }

@@ -978,186 +978,190 @@ const ProductsPage = () => {
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 
-      <section className="top-picks-section web">
-        <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
-        <div className="desk-top-picks">
-          <div className="top-picks-grid">
-            {items.map((item) => (
-              <div key={item.id} className="top-pick-card">
-                <Link to={`/products${item.action_url}`}>
-                  <img
-                    src={item.media}
-                    alt={item.name}
-                    className="top-pick-image pointer-crusser"
-                  />
-                  <p
-                    className="top-pick-title pointer-crusser"
-                  >
-                    {item.name}
-                  </p>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
 
-
-        <div className="mlb-top-picks">
-          <section className="flat_overview">
-            <div className="promo-section">
-              {items.map((item) => (
-                <div
-                  className="promo-card"
-                  key={item.id}
-                >
-                  <Link to={`/products${item.action_url}`}>
-                    <img
-                      src={item.media}
-                      alt={item.name}
-                      className="promo-image pointer-crusser"
-                    />
-                    <p className="promo-title pointer-crusser">{item.name}</p>
-
-                  </Link>
-                </div >
-              ))}
-            </div >
-          </section >
-        </div>
-
-
-      </section>
-      <section className="obsession-section-pd">
-        <div className="obsession-content-pd">
-          <div className="obsession-text-pd">
-            <h2>
-              What makes Obsessions <br /> a customer <em>favourite</em>.
-            </h2>
-            <div className="obsession-columns">
-              {customerfavourite?.content?.map((item, index) => {
-                const [title, description] = Object.entries(item)[0]; // extract key and value
-                return (
-                  <div className="obsession-col" key={index}>
-                    <h4>{title}</h4>
-                    <p>{description}</p>
+      {!dataReady && (
+        <>
+          <section className="top-picks-section web">
+            <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
+            <div className="desk-top-picks">
+              <div className="top-picks-grid">
+                {items.map((item) => (
+                  <div key={item.id} className="top-pick-card">
+                    <Link to={`/products${item.action_url}`}>
+                      <img
+                        src={item.media}
+                        alt={item.name}
+                        className="top-pick-image pointer-crusser"
+                      />
+                      <p
+                        className="top-pick-title pointer-crusser"
+                      >
+                        {item.name}
+                      </p>
+                    </Link>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="obsession-images">
-            <div className="obsession-img-wrapper">
-              <img className="on-image-one" src={customerfavourite?.media[0]?.large} alt="Laundry" />
-              <span className="obsession-tag top-left">{customerfavourite?.tags[0]?.top_left}</span>
-              <span className="obsession-tag top-right">{customerfavourite?.tags[1]?.top_right}</span>
-            </div>
-            <div className="obsession-img-wrapper">
-              <img className="on-image-two" src={customerfavourite?.media[1]?.small} alt="Cooking" />
-              <span className="obsession-tag bottom">{customerfavourite?.tags[2]?.bottom_right}</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* Mobile Section top Picks*/}
-      <section className="top-picks-section mob">
-        <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
-        <div className="desk-top-picks">
-          <div className="top-picks-grid">
-            {items.map((item) => (
-              <div key={item.id} className="top-pick-card">
-                <Link to={`/products${item.action_url}`}>
-                  <img
-                    src={item.media}
-                    alt={item.name}
-                    className="top-pick-image pointer-crusser"
-                  />
-                  <p className="top-pick-title pointer-crusser">
-                    {item.name}
-                  </p>
-                </Link>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
 
 
-        <div className="mlb-top-picks">
-          <section className="flat_overview">
-            <div className="promo-section">
-              {items.map((item) => (
-                <div
-                  className="promo-card"
-                  key={item.id}
-                >
+            <div className="mlb-top-picks">
+              <section className="flat_overview">
+                <div className="promo-section">
+                  {items.map((item) => (
+                    <div
+                      className="promo-card"
+                      key={item.id}
+                    >
+                      <Link to={`/products${item.action_url}`}>
+                        <img
+                          src={item.media}
+                          alt={item.name}
+                          className="promo-image pointer-crusser"
+                        />
+                        <p className="promo-title pointer-crusser">{item.name}</p>
 
-                  <Link to={`/products${item.action_url}`}>
-                    <img
-                      src={item.media}
-                      alt={item.name}
-                      className="promo-image pointer-crusser"
-                    />
-                    <p className="promo-title pointer-crusser">{item.name}</p>
-
-                  </Link>
+                      </Link>
+                    </div >
+                  ))}
                 </div >
-              ))}
-            </div >
-          </section >
-        </div>
+              </section >
+            </div>
 
 
-      </section>
+          </section>
+          <section className={`obsession-section-pd ${products.length === 0 ? "product-list-top" : ""}`}>
+            <div className="obsession-content-pd">
+              <div className="obsession-text-pd">
+                <h2>
+                  What makes Obsessions <br /> a customer <em>favourite</em>.
+                </h2>
+                <div className="obsession-columns">
+                  {customerfavourite?.content?.map((item, index) => {
+                    const [title, description] = Object.entries(item)[0]; // extract key and value
+                    return (
+                      <div className="obsession-col" key={index}>
+                        <h4>{title}</h4>
+                        <p>{description}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
 
-      {/* SLIDE FILTER MODAL (Mobile) */}
-      <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>
-        <div className="mobile-filter-header">
-          <h3>Filters</h3>
-          <X size={20} onClick={() => setIsFilterOpen(false)} />
-        </div>
+              <div className="obsession-images">
+                <div className="obsession-img-wrapper">
+                  <img className="on-image-one" src={customerfavourite?.media[0]?.large} alt="Laundry" />
+                  <span className="obsession-tag top-left">{customerfavourite?.tags[0]?.top_left}</span>
+                  <span className="obsession-tag top-right">{customerfavourite?.tags[1]?.top_right}</span>
+                </div>
+                <div className="obsession-img-wrapper">
+                  <img className="on-image-two" src={customerfavourite?.media[1]?.small} alt="Cooking" />
+                  <span className="obsession-tag bottom">{customerfavourite?.tags[2]?.bottom_right}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+          {/* Mobile Section top Picks*/}
+          <section className="top-picks-section mob">
+            <h2 className="top-picks-heading">Don’t miss these top picks.</h2>
+            <div className="desk-top-picks">
+              <div className="top-picks-grid">
+                {items.map((item) => (
+                  <div key={item.id} className="top-pick-card">
+                    <Link to={`/products${item.action_url}`}>
+                      <img
+                        src={item.media}
+                        alt={item.name}
+                        className="top-pick-image pointer-crusser"
+                      />
+                      <p className="top-pick-title pointer-crusser">
+                        {item.name}
+                      </p>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-        <div className="mobile-filter-body">
-          {filters && (
-            <>
-              {filters.categories &&
-                renderCategoryFilter(filters.categories, true)}
 
-              {filters.price_filter &&
-                renderPriceFilter(filters.price_filter, true)}
+            <div className="mlb-top-picks">
+              <section className="flat_overview">
+                <div className="promo-section">
+                  {items.map((item) => (
+                    <div
+                      className="promo-card"
+                      key={item.id}
+                    >
 
-              {filters.discount_filter &&
-                renderDiscountFilter(filters.discount_filter, true)}
+                      <Link to={`/products${item.action_url}`}>
+                        <img
+                          src={item.media}
+                          alt={item.name}
+                          className="promo-image pointer-crusser"
+                        />
+                        <p className="promo-title pointer-crusser">{item.name}</p>
 
-              {filters.product_filter &&
-                Object.entries(filters.product_filter)
-                  .filter(([key, values]) => Array.isArray(values) && values.length > 0)
-                  .map(([key, values]) =>
-                    renderFilterGroup(key.replace(/_/g, " "), values, key, true)
-                  )}
-            </>
-          )}
-        </div>
-        {/* ✅ Sticky Footer Apply Button */}
-        <div className="mobile-filter-footer">
-          <button
-            className="apply-filter-btn-clr"
-            onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}
-          >
-            CLEAR ALL
-          </button>
-          <button
-            className="apply-filter-btn"
-            onClick={() => {
-              setSelectedFilters(tempMobileFilters);
-              setIsFilterOpen(false);
-            }}
-          >
-            APPLY
-          </button>
-        </div>
-      </div>
-      {/* Fotter section  */}
-      <Footer />
+                      </Link>
+                    </div >
+                  ))}
+                </div >
+              </section >
+            </div>
+
+
+          </section>
+          {/* SLIDE FILTER MODAL (Mobile) */}
+          <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>
+            <div className="mobile-filter-header">
+              <h3>Filters</h3>
+              <X size={20} onClick={() => setIsFilterOpen(false)} />
+            </div>
+
+            <div className="mobile-filter-body">
+              {filters && (
+                <>
+                  {filters.categories &&
+                    renderCategoryFilter(filters.categories, true)}
+
+                  {filters.price_filter &&
+                    renderPriceFilter(filters.price_filter, true)}
+
+                  {filters.discount_filter &&
+                    renderDiscountFilter(filters.discount_filter, true)}
+
+                  {filters.product_filter &&
+                    Object.entries(filters.product_filter)
+                      .filter(([key, values]) => Array.isArray(values) && values.length > 0)
+                      .map(([key, values]) =>
+                        renderFilterGroup(key.replace(/_/g, " "), values, key, true)
+                      )}
+                </>
+              )}
+            </div>
+            {/* ✅ Sticky Footer Apply Button */}
+            <div className="mobile-filter-footer">
+              <button
+                className="apply-filter-btn-clr"
+                onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}
+              >
+                CLEAR ALL
+              </button>
+              <button
+                className="apply-filter-btn"
+                onClick={() => {
+                  setSelectedFilters(tempMobileFilters);
+                  setIsFilterOpen(false);
+                }}
+              >
+                APPLY
+              </button>
+            </div>
+          </div>
+          {/* Fotter section  */}
+          <Footer />
+        </>
+      )}
     </>
   );
 };

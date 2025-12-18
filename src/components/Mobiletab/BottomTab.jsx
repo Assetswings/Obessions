@@ -109,15 +109,15 @@ const BottomTab = () => {
 
         <div className="category-list_mlb">
           {mergedCategories.map((cat, index) => (
-            <div
-              key={index}
-              className="category-item"
-            >
-              <Link to={`/products/${cat.action_url}`}>
+            <Link to={`/products/${cat.action_url}`}>
+              <div
+                key={index}
+                className="category-item"
+              >
                 <img src={cat.media} alt={cat.name} />
                 <span>{cat.name}</span>
-              </Link>
-            </div>
+              </div>
+            </Link>
           ))}
         </div>
       </div>

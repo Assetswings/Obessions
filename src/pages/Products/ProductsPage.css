@@ -1013,8 +1013,8 @@
   }
 
   .page-wrapper {
-    height: 0;
-    margin-bottom: 0;
+    height: auto !important;
+    margin-bottom: 0 !important;
     /* full screen minus header (example) */
   }
 

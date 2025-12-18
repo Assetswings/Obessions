@@ -616,7 +616,7 @@
   }
 
   .pagination_track {
-    margin-top: 35px;
+    margin-top: 15px;
   }
 
   .pagination_track_btm {
@@ -934,13 +934,12 @@
 
 .product-poster-card {
   grid-column: 3 / -1;
-  margin: 19px 0;
+  padding: 19px;
 }
 
 .poster-image {
-  width: 97%;
+  width: 100%;
   display: block;
-  height: 79%;
   position: relative;
   bottom: 4px;
 }
@@ -1014,8 +1013,8 @@
   }
 
   .page-wrapper {
-    height: calc(45vh - 80px);
-    margin-bottom: 10%;
+    height: 0;
+    margin-bottom: 0;
     /* full screen minus header (example) */
   }
 
@@ -1026,7 +1025,7 @@
 
   .product-poster-card {
     grid-column: 1 / -1;
-    margin: 19px 0;
+    padding: 5px;
   }
 
   .poster-image {
@@ -1037,5 +1036,8 @@
     left: 3px;
     height: 100%;
   }
-
 }
+
+ .product-list-top{
+    margin-top: 65%;
+  }

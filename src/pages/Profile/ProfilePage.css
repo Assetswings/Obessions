@@ -34,7 +34,7 @@
 .tabs button.active {
   color: black;
   border-color: red;
-  width: 204px;
+  /* width: 204px; */
   position: relative;
   top: 2px;
 }
@@ -132,7 +132,7 @@
 
 .address-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   font-weight: bold;
   padding-bottom: 15px;
@@ -141,6 +141,8 @@
 .green-tick {
   color: green;
   font-size: 20px;
+  position: relative;
+    left: 25%;
 }
 
 .card-actions {
@@ -155,6 +157,7 @@
   bottom: 10px;
   left: 15px;
   right: 15px;
+  justify-content: center;
 }
 
 .modal-overlay {

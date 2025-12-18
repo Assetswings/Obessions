@@ -86,6 +86,7 @@ const AppRoutes = () => {
           <Route path="new-arrivals" element={<Otherpage />} />
           <Route path="bestseller" element={<Otherpage />} />
           <Route path="offer-spot" element={<Otherpage />} />
+          <Route path="end-of-seasonal-sale" element={<Otherpage />} />
           <Route path="videogallery" element={<VideoGallery />} />
           <Route path="style-guide" element={<SizeGuide/>} />
           <Route path="size-guide" element={<StyleGuide/>} />

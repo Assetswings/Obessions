@@ -34,19 +34,21 @@ const Otherpage = () => {
     path == "new-arrivals"
       ? "new-arrivals"
       : path == "bestseller"
-        ? "bestsellers"
-        : path == "offer-spot"
-          ? "offer-spots"
-          : "";
+      ? "bestsellers"
+      : path == "offer-spot"
+      ? "offer-spots"
+      : path == "end-of-seasonal-sale"
+      ? "seasonal-sale" : "";
 
   const Titelslug =
     path == "new-arrivals"
       ? "New Arrivals"
       : path == "bestseller"
-        ? "Bestsellers"
-        : path == "offer-spot"
-          ? "Offer Spots"
-          : "";
+      ? "Bestsellers"
+      : path == "offer-spot"
+      ? "Offer Spots"
+      : path == "end-of-seasonal-sale"
+      ? "End of Seasonal Sale" : "";
 
   const { data: otherproduct, filters, pagination, sorting, loading, } = useSelector((state) => state.otherproduct);
   // const wishlist = useSelector((state) => state.wishlist);

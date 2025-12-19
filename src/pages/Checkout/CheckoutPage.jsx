@@ -494,7 +494,7 @@ const CheckoutPage = () => {
                   onClick={() => setDefultAddr(addr)}
                 />
                 <div className="address-details">
-                  <div className="address-header">
+                  <div className="address-header_chk">
                     {addr.first_name} {addr.last_name}
                     <span className="address-type">{addr.address_type}</span>
                   </div>

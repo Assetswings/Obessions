@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Faq.css";
-import { FiSearch, FiPlus, FiMinus } from "react-icons/fi";
+import { FiPlus, FiMinus } from "react-icons/fi";
 import Footer from "../../components/Footer/Footer";
 import { fetchFaqs } from "./faqSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,41 +8,92 @@ import API from "../../app/api";
 import helprightimg from "../../assets/images/need-help-right.jpg";
 import helpleftimg from "../../assets/images/need-help-left.jpg";
 
+const SCROLL_OFFSET = 120;
+
 const Faq = () => {
-  const [activeSection, setActiveSection] = useState();
-  const [searchText, setSearchText] = useState();
-  const [bannerimg, setBannerimg] = useState();
+  const [activeSection, setActiveSection] = useState("");
+  const [bannerimg, setBannerimg] = useState(null);
+
   const dispatch = useDispatch();
   const { faqs, loading, error } = useSelector((state) => state.faq);
+
+  const sectionRefs = useRef({});
+  const isManualScroll = useRef(false);
 
   useEffect(() => {
     document.title = "Obsession - FAQ";
     dispatch(fetchFaqs());
-    getBaner();
+    getBanner();
   }, [dispatch]);
 
   useEffect(() => {
-    if (faqs && faqs.length > 0) {
+    if (faqs?.length) {
       setActiveSection(faqs[0].title);
     }
   }, [faqs]);
 
-  const handleTabClick = (key) => {
-    setActiveSection(key);
+  // 👉 TAB CLICK SCROLL
+  const handleTabClick = (title) => {
+    setActiveSection(title);
+    isManualScroll.current = true;
+
+    const target = sectionRefs.current[title];
+    if (!target) return;
+
+    const top =
+      target.getBoundingClientRect().top +
+      window.pageYOffset -
+      SCROLL_OFFSET;
+
+    window.scrollTo({ top, behavior: "smooth" });
+
+    // unlock scroll spy after animation
+    setTimeout(() => {
+      isManualScroll.current = false;
+    }, 500);
   };
 
-  const faqSearch = () => {
-    dispatch(fetchFaqs(searchText));
-  };
+  // 👉 SCROLL SPY LOGIC
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isManualScroll.current) return;
 
-  const getBaner = async () => {
+      const scrollPosition = window.scrollY + SCROLL_OFFSET + 10;
+
+      let current = activeSection;
+
+      faqs.forEach((item) => {
+        const el = sectionRefs.current[item.title];
+        if (!el) return;
+
+        const offsetTop = el.offsetTop;
+        const offsetHeight = el.offsetHeight;
+
+        if (
+          scrollPosition >= offsetTop &&
+          scrollPosition < offsetTop + offsetHeight
+        ) {
+          current = item.title;
+        }
+      });
+
+      if (current !== activeSection) {
+        setActiveSection(current);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [faqs, activeSection]);
+
+  const getBanner = async () => {
     try {
-      const res = await API.get("/pages/faq-banners", {});
+      const res = await API.get("/pages/faq-banners");
       if (res.data.success) {
         setBannerimg(res.data.data);
       }
-    } catch (err) {
-      console.log("banner not comming.");
+    } catch {
+      console.log("banner not coming");
     }
   };
 
@@ -51,17 +102,17 @@ const Faq = () => {
 
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="faq-hero">
-        <img src={bannerimg?.left} alt="Soap Decor" className="faq-decor left" />
+        <img src={bannerimg?.left} alt="" className="faq-decor left" />
         <div className="faq-content">
-          <h1>How can we help you today ?</h1>
+          <h1>How can we help you today?</h1>
           <p>Browse our most frequently asked questions.</p>
         </div>
-        <img src={bannerimg?.right} alt="Tissue Decor" className="faq-decor right" />
+        <img src={bannerimg?.right} alt="" className="faq-decor right" />
       </section>
 
-      {/* Tab Navigation */}
+      {/* Tabs */}
       <section className="faq-scroll-page">
         <div className="faq-tab-buttons">
           {faqs.map((item, index) => (
@@ -75,26 +126,25 @@ const Faq = () => {
           ))}
         </div>
 
-        {/* Selected FAQ Section */}
+        {/* Sections */}
         <div className="faq-sections">
           {faqs.map((item, index) => (
             <div
               key={index}
               className="faq-category"
-              style={{ display: activeSection === item.title ? "block" : "none" }}
+              ref={(el) => (sectionRefs.current[item.title] = el)}
             >
+              <h2 className="faq-category-title">{item.title}</h2>
+
               {item.faqs.map((data, i) => (
                 <details key={i} className="faq-item">
                   <summary>
                     <span>{data.question}</span>
-
-                    {/* 🔥 Icon logic: + when closed, - when open */}
                     <span className="faq-icon-wrapper">
                       <FiPlus className="faq-icon plus" />
                       <FiMinus className="faq-icon minus" />
                     </span>
                   </summary>
-
                   <p className="ans_">{data.answer}</p>
                 </details>
               ))}
@@ -103,25 +153,27 @@ const Faq = () => {
         </div>
       </section>
 
-      {/* Help Section */}
+      {/* Help */}
       <section className="faq-help-section">
         <div className="faq-help-container">
           <div className="faq-help-img-1">
-            <img src={helpleftimg} alt="Help Left" />
+            <img src={helpleftimg} alt="" />
           </div>
 
           <div className="faq-help-content">
-            <h3>Still need help ?</h3>
+            <h3>Still need help?</h3>
             <p>
-              Check out our above FAQs for quick answers to common questions.
+              Check out the FAQs above.
               <br />
-              Still need assistance? Feel free to email us at:
+              Or mail us at:
             </p>
-            <a href="mailto:care@obsessions.co.in">care@obsessions.co.in</a>
+            <a href="mailto:care@obsessions.co.in">
+              care@obsessions.co.in
+            </a>
           </div>
 
           <div className="faq-help-img-2">
-            <img src={helprightimg} alt="Help Right" />
+            <img src={helprightimg} alt="" />
           </div>
         </div>
       </section>

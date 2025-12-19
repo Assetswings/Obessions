@@ -291,18 +291,10 @@ root_promo_sector {
   flex: 1;
 }
 
-.address-header {
+.address-header_chk{
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.address-type {
-  background: #eee;
-  padding: 2px 6px;
-  font-size: 12px;
-  border-radius: 4px;
-  text-transform: uppercase;
 }
 
 .address-body {

@@ -145,10 +145,13 @@
   top: 0;
   z-index: 10;
   padding: 1rem 0;
+  position: sticky;
+    top: 54px;
   /* Hide scrollbar */
   scrollbar-width: none;
   /* Firefox */
   -ms-overflow-style: none;
+  margin-bottom: 20px;
   /* IE/Edge */
 }
 
@@ -201,7 +204,6 @@
 }
 
 .faq-item summary {
-  font-weight: 500;
   font-size: 0.95rem;
   cursor: pointer;
   display: flex;
@@ -226,6 +228,7 @@
   .faq-tab-buttons {
     /* flex-wrap: wrap; */
     gap: 1rem;
+    top: 50px;
   }
 }
 
@@ -362,3 +365,11 @@ details[open] .faq-icon.plus {
 details[open] .faq-icon.minus {
   opacity: 1;
 }
+
+.faq-category-title{
+  font-size: 17px;
+  color: #000;
+   font-family: "Helvetica Neue", sans-serif !important;
+}
+
+

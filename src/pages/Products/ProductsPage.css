@@ -273,13 +273,14 @@
 }
 
 .quick-view_pd {
-  /* position: absolute; */
-  background: white;
-  padding: 6px 8px;
-  text-align: center;
-  font-family: "Helvetica Neue", sans-serif;
-  font-weight: 400;
-  font-size: 13px;
+ background: white;
+    padding: 6px 8px;
+    text-align: center;
+    font-family: "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    right: 10px;
+    position: relative;
 }
 
 .product-card-dtl:hover .qucick_dv {

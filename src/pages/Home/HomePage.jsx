@@ -587,7 +587,7 @@ const HomePage = () => {
           </p>
         </div> */}
 
-
+  {/* 
         <div className="txt_dynamic_betlt">
           <p
             className={`position-absolute footer-note text-center small ${fade ? "fade-out" : "fade-in"
@@ -599,7 +599,22 @@ const HomePage = () => {
             </span>
             {items[currentIndex].text}
           </p>
-        </div>
+        </div> */}
+
+
+          <section>
+          <div className="slogan_part">
+            <p
+              className={`position-absolute footer-note small ${fade ? "fade-out" : "fade-in"
+                }`}>
+              <span>
+                <img src={items[currentIndex].icon} className="img_turner" />
+                &nbsp;
+              </span>
+              {items[currentIndex].text}
+            </p>
+          </div>
+        </section>
 
       </div>
 

@@ -268,7 +268,7 @@ body {
 
 .footer-note {
   bottom: 20px;
-  transform: translateX(-50%);
+  /* transform: translateX(-50%); */
   color: #333;
   z-index: 2;
 }
@@ -1427,12 +1427,15 @@ section.shopby {
   }
 
   .footer-note {
-    bottom: 5px;
-    transform: translateX(-50%);
+    /* bottom: -5px; */
+    /* transform: translateX(-50%); */
     color: #333;
     z-index: 2;
     font-size: 10px;
     width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   }
 
   /* .collection-img.img-left {

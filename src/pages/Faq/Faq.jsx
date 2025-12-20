@@ -163,9 +163,7 @@ const Faq = () => {
           <div className="faq-help-content">
             <h3>Still need help?</h3>
             <p>
-              Check out the FAQs above.
-              <br />
-              Or mail us at:
+              Check out our above FAQs for quick answers to common questions.  <br />Still need assistance? Feel free to email us at:
             </p>
             <a href="mailto:care@obsessions.co.in">
               care@obsessions.co.in

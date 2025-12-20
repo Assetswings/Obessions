@@ -936,6 +936,16 @@ const ProductDetailPage = () => {
                       </div>
                       {productDetails?.category_action_url === "dustbins" ? (
                         <div className="lbl-track">{size.capacity}</div>
+                      ) : productDetails?.category_action_url === "floor-covering" ? (
+                        selectedSize && (
+                          <div className="lbl-track">
+                            {unit === "cm"
+                              ? selectedSize.size
+                              : unit === "ft"
+                                ? selectedSize.size_in_feet
+                                : ""}
+                          </div>
+                        )
                       ) : (
                         <div className="lbl-track">{size.size}</div>
                       )}
@@ -976,7 +986,7 @@ const ProductDetailPage = () => {
                         setQuantity(1);
                       }}
                     >
-                      <div className="color-circle">
+                      <div className="color-circle pointer-crusser">
                         <img
                           src={color.color_media}
                           alt={color.color}

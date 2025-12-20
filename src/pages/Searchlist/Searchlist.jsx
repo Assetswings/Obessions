@@ -51,6 +51,7 @@ const Searchlist = () => {
   const [selected, setSelected] = useState("Recommended");
   const [customerfavourite, setCustomerfavourite] = useState();
   const [dataReady, setDataReady] = useState(true);
+  const [showShort, setShowShort] = useState("");
 
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
@@ -412,9 +413,19 @@ const Searchlist = () => {
     }
   }, [isFilterOpen]);
 
-  const handleSelect = (option) => {
+  const handleSelect = (option, key) => {
     setSelected(option);
-    handleFilterChange('sort_by', option);
+    setShowShort(key);
+    setSelectedFilters((prev) => {
+      const newFilters = {
+        ...prev,
+        sort_by: [option],
+      };
+
+      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
+      return newFilters;
+    });
+    setCurrentPage(1);
   };
 
   const breadcrumbPaths = [
@@ -563,14 +574,17 @@ const Searchlist = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    SORT BY
+                    SORT BY &nbsp;
+                    <div className="sort-name">
+                      {showShort}
+                    </div>
                   </div>
                   <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {Object.entries(sorting).map(([key, label]) => (
                       <li key={key}>
                         <button
                           className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                          onClick={() => handleSelect(key)}
+                          onClick={() => handleSelect(key, label)}
                         >
                           {label}
                         </button>

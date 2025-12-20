@@ -34,21 +34,21 @@ const Otherpage = () => {
     path == "new-arrivals"
       ? "new-arrivals"
       : path == "bestseller"
-      ? "bestsellers"
-      : path == "offer-spot"
-      ? "offer-spots"
-      : path == "end-of-seasonal-sale"
-      ? "seasonal-sale" : "";
+        ? "bestsellers"
+        : path == "offer-spot"
+          ? "offer-spots"
+          : path == "end-of-seasonal-sale"
+            ? "seasonal-sale" : "";
 
   const Titelslug =
     path == "new-arrivals"
       ? "New Arrivals"
       : path == "bestseller"
-      ? "Bestsellers"
-      : path == "offer-spot"
-      ? "Offer Spots"
-      : path == "end-of-seasonal-sale"
-      ? "End of Seasonal Sale" : "";
+        ? "Bestsellers"
+        : path == "offer-spot"
+          ? "Offer Spots"
+          : path == "end-of-seasonal-sale"
+            ? "End of Seasonal Sale" : "";
 
   const { data: otherproduct, filters, pagination, sorting, loading, } = useSelector((state) => state.otherproduct);
   // const wishlist = useSelector((state) => state.wishlist);
@@ -89,6 +89,10 @@ const Otherpage = () => {
       setDataReady(false);    // API DONE + state set
     }
   }, [otherproduct, loading]);
+  useEffect(() => {
+    setCurrentPage(1);
+    localStorage.removeItem("selectedFilters");
+  }, [location.pathname]); // runs on route change
 
   useEffect(() => {
     dispatch(fetchTopPicks());
@@ -437,7 +441,16 @@ const Otherpage = () => {
   const handleSelect = (option, key) => {
     setSelected(option);
     setShowShort(key);
-    handleFilterChange('sort_by', option);
+    setSelectedFilters((prev) => {
+      const newFilters = {
+        ...prev,
+        sort_by: [option],
+      };
+
+      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
+      return newFilters;
+    });
+    setCurrentPage(1);
   };
   const breadcrumbPaths = [
     { label: Titelslug, to: "" }, // last one (no link)
@@ -557,7 +570,10 @@ const Otherpage = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    SORT BY
+                    SORT BY &nbsp;
+                    <div className="sort-name">
+                      {showShort}
+                    </div>
                   </div>
                   <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {Object.entries(sorting).map(([key, label]) => (
@@ -571,9 +587,6 @@ const Otherpage = () => {
                       </li>
                     ))}
                   </ul>
-                  <div className="sort-name">
-                    {showShort}
-                  </div>
                 </div>
               </div>
 
@@ -802,7 +815,7 @@ const Otherpage = () => {
 
       </section>
 
-      <section className={`obsession-section-pd ${products.length === 0 ? "product-list-top" : ""}`}>
+      <section className={`obsession-section-pd ${products.length === 0 ? "other-list-top" : ""}`}>
         <div className="obsession-content-pd">
           <div className="obsession-text-pd">
             <h2>

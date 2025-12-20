@@ -80,6 +80,10 @@ const ProductsPage = () => {
     }
   }, [data, loading]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+    localStorage.removeItem("selectedFilters");
+  }, [location.pathname]); // runs on route change
 
   useEffect(() => {
     document.title = "Obsession - Product List";
@@ -461,8 +465,18 @@ const ProductsPage = () => {
   const handleSelect = (option, key) => {
     setSelected(option);
     setShowShort(key);
-    handleFilterChange('sort_by', option);
+    setSelectedFilters((prev) => {
+      const newFilters = {
+        ...prev,
+        sort_by: [option],
+      };
+
+      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
+      return newFilters;
+    });
+    setCurrentPage(1);
   };
+
   const limitWords = (text, limit = 15) => {
     if (!text) return "";
     const words = text.split(" ");
@@ -624,7 +638,10 @@ const ProductsPage = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    SORT BY
+                    SORT BY &nbsp;
+                    <div className="sort-name">
+                      {showShort}
+                    </div>
                   </div>
                   <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {Object.entries(sorting).map(([key, label]) => (
@@ -638,9 +655,7 @@ const ProductsPage = () => {
                       </li>
                     ))}
                   </ul>
-                  <div className="sort-name">
-                    {showShort}
-                  </div>
+
                 </div>
               </div>
 

@@ -134,7 +134,16 @@ const Carpetfinderserch = () => {
   const handleSelect = (option, key) => {
     setSelected(option);
     setShowShort(key);
-    handleFilterChange('sort_by', option);
+    setSelectedFilters((prev) => {
+      const newFilters = {
+        ...prev,
+        sort_by: [option],
+      };
+
+      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
+      return newFilters;
+    });
+    setCurrentPage(1);
   };
 
   const handleFilterChange = (filterKey, value) => {
@@ -486,7 +495,10 @@ const Carpetfinderserch = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    SORT BY
+                    SORT BY &nbsp;
+                    <div className="sort-name">
+                      {showShort}
+                    </div>
                   </div>
                   <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     {Object.entries(sorting).map(([key, label]) => (
@@ -500,9 +512,6 @@ const Carpetfinderserch = () => {
                       </li>
                     ))}
                   </ul>
-                  <div className="sort-name">
-                    {showShort}
-                  </div>
                 </div>
               </div>
 

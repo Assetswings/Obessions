@@ -1,0 +1,20 @@
+.terms-clause {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.clause-number {
+  min-width: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  flex-shrink: 0;
+}
+
+.clause-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #374151;
+}

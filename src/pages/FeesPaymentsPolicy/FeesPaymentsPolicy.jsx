@@ -74,7 +74,7 @@ export default function FeesPaymentsPolicy() {
                     return (
                       <div className="terms-clause" key={i}>
                         <span className="clause-number">{clauseKey}</span>
-                        <p className="clause-text">{clauseValue}</p>
+                        <p className="clause-text"><div dangerouslySetInnerHTML={{ __html: clauseValue }} /></p>
                       </div>
                     );
                   })}

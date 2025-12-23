@@ -49,27 +49,27 @@ export default function TermsAndConditions() {
           {/* SECTIONS */}
           {loading
             ? Array(5)
-                .fill("")
-                .map((_, i) => <Skeleton key={i} height={120} />)
+              .fill("")
+              .map((_, i) => <Skeleton key={i} height={120} />)
             : terms?.sections?.map((section, sectionIndex) => (
-                <div key={sectionIndex} className="terms-section">
-                  <h3>
-                    {section.section}. {section.title}
-                  </h3>
+              <div key={sectionIndex} className="terms-section">
+                <h3>
+                  {section.section}. {section.title}
+                </h3>
 
-                  {section.clauses?.map((clauseObj, clauseIndex) => {
-                    const clauseKey = Object.keys(clauseObj)[0];
-                    const clauseValue = clauseObj[clauseKey];
+                {section.clauses?.map((clauseObj, clauseIndex) => {
+                  const clauseKey = Object.keys(clauseObj)[0];
+                  const clauseValue = clauseObj[clauseKey];
 
-                    return (
-                      <div key={clauseIndex} className="terms-clause">
-                        <span className="clause-number">{clauseKey}.</span>
-                        <span className="clause-text">{clauseValue}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              ))}
+                  return (
+                    <div key={clauseIndex} className="terms-clause">
+                      <span className="clause-number">{clauseKey}.</span>
+                      <span className="clause-text"><div dangerouslySetInnerHTML={{ __html: clauseValue }} /></span>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
         </div>
       </div>
 

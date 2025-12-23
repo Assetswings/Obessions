@@ -81,7 +81,7 @@ export default function Privacypolicy() {
                           {clauseKey}
                         </span>
                         <p className="clause-text">
-                          {clauseValue}
+                          <div dangerouslySetInnerHTML={{ __html: clauseValue }} />
                         </p>
                       </div>
                     );

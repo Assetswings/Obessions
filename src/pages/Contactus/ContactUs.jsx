@@ -209,7 +209,7 @@ const ContactUs = () => {
               </span>
               <div>
                 <strong>Call Us</strong>
-                <p>
+                <p style={{width:"100%"}}>
                   <a href={`tel:${details.data?.mobile}`} className="phone-link">
                     {details.data?.mobile}
                   </a>
@@ -223,7 +223,7 @@ const ContactUs = () => {
               </span>
               <div>
                 <strong>Send Us a Mail</strong>
-                <p>
+                <p style={{width:"100%"}}>
                   <a href={`mailto:${details.data?.support_email}`} className="mail-link">
                     {details.data?.support_email}
                   </a>
@@ -237,7 +237,7 @@ const ContactUs = () => {
               </span>
               <div>
                 <strong>Opening Time</strong>
-                <p>{details.data?.timing}</p>
+                <p style={{width:"100%"}}>{details.data?.timing}</p>
               </div>
             </div>
 

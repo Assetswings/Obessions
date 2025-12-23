@@ -56,11 +56,11 @@
 }
 
 .clause-number {
-min-width: 46px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #535353;
-    flex-shrink: 0;
+  min-width: 46px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #535353;
+  flex-shrink: 0;
 }
 
 .clause-text {
@@ -80,12 +80,20 @@ min-width: 46px;
 /* Mobile responsive */
 @media (max-width: 768px) {
   .terms-title {
-    font-size: 24px;
-    margin-bottom: 24px;
+    font-family: Canela Trial;
+    font-size: 36px;
+    margin-bottom: 64px;
+    text-align: center;
+    margin-top: 24px;
   }
 
   .terms-subtitle {
-    font-size: 18px;
+    font-size: 22px;
+    margin-bottom: 0px;
+    font-weight: 400;
+  }
+  .terms-text {
+    margin: 0px
   }
 
   .terms-section h3 {

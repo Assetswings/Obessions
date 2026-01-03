@@ -3,6 +3,8 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 6px;
+  top: 20px;
+  position: relative;
 }
 
 .custom-pagination .page-link {
@@ -13,6 +15,7 @@
   color: #333;
   background: #fff;
   transition: all 0.3s ease;
+
 }
 
 .custom-pagination .page-item.active .page-link {

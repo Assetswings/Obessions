@@ -38,15 +38,30 @@ const CheckoutPage = () => {
   });
 
   // ✅ When pincode API gives data, auto-fill state & city
-  useEffect(() => {
-    if (pinset) {
-      setNewAddress((prev) => ({
-        ...prev,
-        city: pinset.city,
-        state: pinset.state,
-      }));
-    }
-  }, [pinset, setNewAddress]);
+  // useEffect(() => {
+  //   if (pinset) {
+  //     setNewAddress((prev) => ({
+  //       ...prev,
+  //       city: pinset.city,
+  //       state: pinset.state,
+  //     }));
+  //   }
+  // }, [pinset, setNewAddress]);
+
+useEffect(() => {
+  if (
+    pinset?.city &&
+    pinset?.state &&
+    newAddress.pincode.length === 6
+  ) {
+    setNewAddress((prev) => ({
+      ...prev,
+      city: pinset.city,
+      state: pinset.state,
+    }));
+  }
+}, [pinset]);
+
   // GSTIN State
   const [gstinEnabled, setGstinEnabled] = useState(false);
   const [gstinData, setGstinData] = useState({
@@ -88,6 +103,8 @@ const CheckoutPage = () => {
       }
     }
   }, [addressdata]);
+
+
   useEffect(() => {
     document.body.style.overflow = showAddAddressModal ? "hidden" : "auto";
     return () => {
@@ -101,13 +118,29 @@ const CheckoutPage = () => {
     }
   };
 
-  const handleNewAddressChange = (e) => {
-    const { name, value } = e.target;
-    setNewAddress((prev) => ({ ...prev, [name]: value }));
-    if (name === "pincode" && value.length === 6) {
-      dispatch(checkPincode(value));
-    }
-  };
+  // const handleNewAddressChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setNewAddress((prev) => ({ ...prev, [name]: value }));
+  //   if (name === "pincode" && value.length === 6) {
+  //     dispatch(checkPincode(value));
+  //   }
+  // };
+
+   const handleNewAddressChange = (e) => {
+  const { name, value } = e.target;
+
+  setNewAddress((prev) => ({
+    ...prev,
+    [name]: value,
+    ...(name === "pincode" && value.length < 6
+      ? { city: "", state: "" } // 👈 auto reset
+      : {}),
+  }));
+
+  if (name === "pincode" && value.length === 6) {
+    dispatch(checkPincode(value));
+  }
+};
 
   const handleGstinChange = (e) => {
     const { name, value } = e.target;
@@ -300,12 +333,14 @@ const CheckoutPage = () => {
                 </h4>
                 <p className="price_details">
                   ₹{item.product.selling_price}{" "}
-                  {item.mrp && item.mrp !== item.selling_price && (
-                    <>
-                      <span className="original">₹{item.mrp}</span>
-                      <span className="discount">({item.discount}% OFF)</span>
-                    </>
-                  )}
+                     <>
+                          <span className="sub-1">
+                            <del>₹{item.product?.mrp}</del> &nbsp;
+                            <span className="dis-sub">
+                              (-{item.product?.discount}%)
+                            </span>
+                          </span>
+                        </>
                   {/* <span className="sub-1">
                     {" "}
                     <del>₹{item.product.mrp}</del> &nbsp;
@@ -670,7 +705,7 @@ const CheckoutPage = () => {
                 <input
                   name="state"
                   value={newAddress.state}
-                  onChange={handleNewAddressChange}
+                
                 />
                 {errors.state && <p className="error">{errors.state}</p>}
               </label>
@@ -681,7 +716,7 @@ const CheckoutPage = () => {
                 <input
                   name="city"
                   value={newAddress.city}
-                  onChange={handleNewAddressChange}
+               
                 />
                 {errors.city && <p className="error">{errors.city}</p>}
               </label>

@@ -280,9 +280,9 @@ const LoginPage = () => {
               <button className="btn-dark button_track" onClick={handleSendOtp}>
                 {loading ? "Sending..." : "CONTINUE"}
               </button>
-              <p className="terms">
-                By continuing, you agree to Obsessions {" "}
-                <Link to={`/tc-of-sale`}><u style={{color:'#1B170E'}}>Terms of Service</u></Link> <span style={{color:'#1B170E'}}>and{" "} </span>
+              <p className="terms-track">
+                <span style={{color:'#625E55'}}> By continuing, you agree to Obsessions </span>  {" "}
+                <Link to={`/tc-of-sale`}><u style={{color:'#1B170E'}}>Terms of Service</u></Link> <span style={{color:'#625E55'}}>and{" "} </span>
                 <Link to={`/privacy-policy`}><u style={{color:'#1B170E'}}>Privacy Policy</u></Link>
                 {/* <a href="/tc-of-sale">Terms of Service</a> and{" "}
                 <a href="/privacy-policy">Privacy Policy</a> */}
@@ -349,7 +349,7 @@ const LoginPage = () => {
                 onChange={(e) => setFirstName(e.target.value)}
               />
               {errors.firstName && (
-                <p className="error-text">{errors.firstName}</p>
+                <p className="txt-ssg">{errors.firstName}</p>
               )}
 
               <input
@@ -359,7 +359,7 @@ const LoginPage = () => {
                 onChange={(e) => setLastName(e.target.value)}
               />
               {errors.lastName && (
-                <p className="error-text">{errors.lastName}</p>
+                <p className="txt-ssg">{errors.lastName}</p>
               )}
 
               <input
@@ -368,12 +368,22 @@ const LoginPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {errors.email && <p className="error-text">{errors.email}</p>}
+              {errors.email && <p className="txt-ssg">{errors.email}</p>}
 
               <input type="text" disabled value={mobile || localMobile} />
               <button className="btn-dark" onClick={handleRegister}>
                 CONTINUE
               </button>
+                
+  <div
+    className="tracker_port2 pointer-crusser"
+    onClick={() => {
+      setStep(1);
+      localStorage.setItem("loginstep", 1);
+    }}
+  >
+    <p>Change Phone Number</p>
+  </div>
             </>
           )}
         </div>

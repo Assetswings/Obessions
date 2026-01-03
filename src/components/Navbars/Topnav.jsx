@@ -44,6 +44,18 @@ const handleItemClick = () => {
   setShowMegaMenu(false);           // close the menu
 };
 
+
+//  useEffect(() => {
+//   if (showMegaMenu) {
+//     document.body.style.overflow = "hidden";
+//   } else {
+//     document.body.style.overflow = "auto";
+//   }
+
+//   return () => {
+//     document.body.style.overflow = "auto";
+//   };
+// }, [showMegaMenu]);
   return (
     <>
       <nav className="horizontal-nav-bar">

@@ -169,8 +169,8 @@ const ProductsPage = () => {
     }
   };
 
-  // ✅ Load filters from localStorage on page load
-  useEffect(() => {
+   // ✅ Load filters from localStorage on page load
+   useEffect(() => {
     const savedFilters = localStorage.getItem("selectedFilters");
     if (savedFilters) {
       try {
@@ -494,6 +494,10 @@ const ProductsPage = () => {
       to: ""
     }
   ];
+
+   const hasActiveFilters = Object.values(selectedFilters).some(
+  (value) => Array.isArray(value) && value.length > 0
+);
   return (
     <>
       <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
@@ -549,7 +553,7 @@ const ProductsPage = () => {
           </div>
         </div>
       }
-      <div className={`custom-products-page ${products?.length < 8 ? "page-wrapper" : ""}`}>
+      <div className="custom-products-page">
         <aside className="custom-filters">
           {products.length > 0 &&
             <>
@@ -572,11 +576,19 @@ const ProductsPage = () => {
                 ) : (
                   <>
                     <h2>Filters</h2>
-                    {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
-                      <p className="clr-all" onClick={() => { setSelectedFilters({}); localStorage.removeItem("selectedFilters"); }}>
-                        Clear all
-                      </p>
-                    ) : null}
+                      {hasActiveFilters && (
+  <p
+    className="clr-all"
+    onClick={() => {
+      setSelectedFilters({});
+      setTempMobileFilters({});
+      localStorage.removeItem("selectedFilters");
+    }}
+  >
+    Clear all
+  </p>
+)}
+
                   </>
                 )}
               </div>

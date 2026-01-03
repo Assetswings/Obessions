@@ -37,7 +37,7 @@
 
 .login-box p {
   font-size: 13px;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
   font-family: "Helvetica Neue";
   font-weight: 400;
   /* margin-right: 28px; */
@@ -46,13 +46,21 @@
 
 }
 
+.tracker_port {
+  padding: 10px;
+
+}
+.terms-track{
+  margin-top: 20px;
+}
+
 .login-box input[type="text"],
 .login-box input[type="email"] {
   width: 100%;
   padding: 14px;
   font-size: 14px;
   border: 1px solid #ccc;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-radius: 2px;
   font-weight: 400;
   font-family: "Helvetica Neue", sans-serif;
@@ -130,7 +138,7 @@
 .tracker_port {
   text-decoration: underline;
   color: #1d1a14;
-  padding-left: 10%;
+  /* padding-left: 10%; */
 }
 
 p.timer {
@@ -174,4 +182,15 @@ p.timer {
 .terms a {
   color: #444 !important;
   text-decoration: none !important;
+}
+
+.txt-ssg{
+  color: red !important;
+}
+.tracker_port2{
+  position: relative;
+  top: 10px;
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
 }

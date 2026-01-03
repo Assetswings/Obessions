@@ -14,6 +14,9 @@ const Faq = () => {
   const [activeSection, setActiveSection] = useState("");
   const [bannerimg, setBannerimg] = useState(null);
 
+  // 👉 TRACK OPEN FAQ PER CATEGORY
+  const [openFaqs, setOpenFaqs] = useState({});
+
   const dispatch = useDispatch();
   const { faqs, loading, error } = useSelector((state) => state.faq);
 
@@ -26,9 +29,16 @@ const Faq = () => {
     getBanner();
   }, [dispatch]);
 
+  // 👉 SET DEFAULT OPEN FAQ (FIRST ONE)
   useEffect(() => {
     if (faqs?.length) {
       setActiveSection(faqs[0].title);
+
+      const defaults = {};
+      faqs.forEach((item) => {
+        defaults[item.title] = 0;
+      });
+      setOpenFaqs(defaults);
     }
   }, [faqs]);
 
@@ -47,31 +57,26 @@ const Faq = () => {
 
     window.scrollTo({ top, behavior: "smooth" });
 
-    // unlock scroll spy after animation
     setTimeout(() => {
       isManualScroll.current = false;
     }, 500);
   };
 
-  // 👉 SCROLL SPY LOGIC
+  // 👉 SCROLL SPY
   useEffect(() => {
     const handleScroll = () => {
       if (isManualScroll.current) return;
 
       const scrollPosition = window.scrollY + SCROLL_OFFSET + 10;
-
       let current = activeSection;
 
       faqs.forEach((item) => {
         const el = sectionRefs.current[item.title];
         if (!el) return;
 
-        const offsetTop = el.offsetTop;
-        const offsetHeight = el.offsetHeight;
-
         if (
-          scrollPosition >= offsetTop &&
-          scrollPosition < offsetTop + offsetHeight
+          scrollPosition >= el.offsetTop &&
+          scrollPosition < el.offsetTop + el.offsetHeight
         ) {
           current = item.title;
         }
@@ -95,6 +100,15 @@ const Faq = () => {
     } catch {
       console.log("banner not coming");
     }
+  };
+
+  // 👉 FAQ TOGGLE (ACCORDION)
+  const handleFaqToggle = (sectionTitle, index) => {
+    setOpenFaqs((prev) => ({
+      ...prev,
+      [sectionTitle]:
+        prev[sectionTitle] === index ? null : index,
+    }));
   };
 
   if (loading) return <p>Loading FAQs...</p>;
@@ -137,7 +151,15 @@ const Faq = () => {
               <h2 className="faq-category-title">{item.title}</h2>
 
               {item.faqs.map((data, i) => (
-                <details key={i} className="faq-item">
+                <details
+                  key={i}
+                  className="faq-item"
+                  open={openFaqs[item.title] === i}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleFaqToggle(item.title, i);
+                  }}
+                >
                   <summary>
                     <span>{data.question}</span>
                     <span className="faq-icon-wrapper">
@@ -163,7 +185,9 @@ const Faq = () => {
           <div className="faq-help-content">
             <h3>Still need help?</h3>
             <p>
-              Check out our above FAQs for quick answers to common questions.  <br />Still need assistance? Feel free to email us at:
+              Check out our above FAQs for quick answers to common questions.
+              <br />
+              Still need assistance? Feel free to email us at:
             </p>
             <a href="mailto:care@obsessions.co.in">
               care@obsessions.co.in

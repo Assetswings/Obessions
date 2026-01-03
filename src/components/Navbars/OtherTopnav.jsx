@@ -212,6 +212,21 @@ const OtherTopnav = () => {
     // re-enable hover after a short delay
     setTimeout(() => setDisableHover(false), 200);
   };
+
+   
+  //   useEffect(() => {
+  //    if (showMegaMenu) {
+  //      document.body.style.overflow = "hidden";
+  //    } else {
+  //      document.body.style.overflow = "auto";
+  //    }
+   
+  //    return () => {
+  //      document.body.style.overflow = "auto";
+  //    };
+  //  }, [showMegaMenu]);
+
+
   return (
     <>
       {/* <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} /> */}

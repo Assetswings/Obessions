@@ -100,6 +100,11 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
     }
   }, [pinset]);
 
+
+  useEffect(() => {
+  setQuantity(1);
+}, [actionurl]); // or product?.id
+
   // Scroll tracking (for highlights/description tabs)
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -445,104 +450,113 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                   `SKU: ${selectedSize?.sku}`
                 )}
               </p>
-              <div className="size-selector">
-                {loading ? (
-                  <>
-                    <p>
-                      <Skeleton width={150} />
-                    </p>
-                    <div style={{ display: "flex", gap: 10 }}>
-                      {Array(3)
-                        .fill(0)
-                        .map((_, i) => (
-                          <Skeleton key={i} width={60} height={60} />
-                        ))}
-                    </div>
-                  </>
-                ) : (
-                  productDetails?.product_sizes?.length > 0 && selectedSize.size !== "NA" && (
-                    <>
-                      {productDetails?.category_action_url === "dustbins" ? (
-                        <p className="selected-size-label">
-                          CHOOSE A CAPACITY:&nbsp;
-                          {selectedSize && <strong>{selectedSize.capacity}</strong>}
-                        </p>
-                      ) : productDetails?.category_action_url === "floor-covering" ? (
-                        <p className="selected-size-label">
-                          CHOOSE A SIZE :&nbsp;
-                          {selectedSize && (
-                            <strong>
-                              {unit === "cm"
-                                ? selectedSize.size
-                                : unit === "ft"
-                                  ? selectedSize.size_in_feet
-                                  : ""}
-                            </strong>
-                          )}
-
-                        </p>
-                      ) : (
-                        <p className="selected-size-label">
-                          CHOOSE A SIZE :&nbsp;
-                          {selectedSize && <strong>{selectedSize.size}</strong>}
-                        </p>
-                      )}
-                      {productDetails?.sub_category_action_url === "carpet" ? (
-                        <div className="unit-toggle mt-2">
-                          <button
-                            className={unit === "cm" ? "active" : ""}
-                            onClick={() => setUnit("cm")}
-                          >
-                            Cm
-                          </button>
-
-                          <button
-                            className={unit === "ft" ? "active" : ""}
-                            onClick={() => setUnit("ft")}
-                          >
-                            Feet
-                          </button>
-                        </div>
-                      ) : (
-                        <></>
-                      )}
-
-                      <div className="size-options">
-                        {productDetails.product_sizes.map((size) => (
-                          <div
-                            key={size.id}
-                            className={`size-btn ${selectedSize?.id === size.id ? "active-size" : ""
-                              }`}
-                            onClick={() => {
-                              setSelectedSize(size);
-                              sizeSelection(size);
-                              setQuantity(1);
-                            }}
-                          >
-                            <div className="set_btn_trcak">
-                              {size?.size_vector_media ? (
-                                <img
-                                  src={size?.size_vector_media}
-                                  className="size-image"
-                                  alt={size.size}
-                                />
-                              ) : (
-                                <></>
-                              )}
-                            </div>
-                            {productDetails?.category_action_url === "dustbins" ? (
-                              <div className="lbl-track">{size.capacity}</div>
-                            ) : (
-                              <div className="lbl-track">{size.size}</div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </>
-                  )
-                )}
-              </div>
-
+                <div className="size-selector">
+                         {localLoading ? (
+                           <>
+                             <p>
+                               <Skeleton width={150} />
+                             </p>
+                             <div style={{ display: "flex", gap: 10 }}>
+                               {Array(3)
+                                 .fill(0)
+                                 .map((_, i) => (
+                                   <Skeleton key={i} width={60} height={60} />
+                                 ))}
+                             </div>
+                           </>
+                         ) : productDetails?.product_sizes?.length > 0 && selectedSize.size !== "NA" ? (
+                           <>
+                             {productDetails?.category_action_url === "dustbins" ? (
+                               <p className="selected-size-label">
+                                 CHOOSE A CAPACITY:&nbsp;
+                                 {selectedSize && <strong>{selectedSize.capacity}</strong>}
+                               </p>
+                             ) : productDetails?.category_action_url === "floor-covering" ? (
+                               <p className="selected-size-label">
+                                 CHOOSE A SIZE :&nbsp;
+                                 {selectedSize && (
+                                   <strong>
+                                     {unit === "cm"
+                                       ? selectedSize.size
+                                       : unit === "ft"
+                                         ? selectedSize.size_in_feet
+                                         : ""}
+                                   </strong>
+                                 )}
+             
+                               </p>
+                             ) : (
+                               <p className="selected-size-label">
+                                 CHOOSE A SIZE :&nbsp;
+                                 {selectedSize && <strong>{selectedSize.size}</strong>}
+                               </p>
+                             )}
+                             {productDetails?.sub_category_action_url === "carpet" ? (
+                               <div className="unit-toggle">
+                                 <button
+                                   className={unit === "cm" ? "active" : ""}
+                                   onClick={() => setUnit("cm")}
+                                 >
+                                   Cm
+                                 </button>
+             
+                                 <button
+                                   className={unit === "ft" ? "active" : ""}
+                                   onClick={() => setUnit("ft")}
+                                 >
+                                   Feet
+                                 </button>
+                               </div>
+                             ) : (
+                               <></>
+                             )}
+                             <div className="size-options">
+                               {productDetails.product_sizes.map((size) => (
+                                 <div
+                                   key={size.id}
+                                   className={`size-btn ${selectedSize?.id === size.id ? "active-size" : ""
+                                     }`}
+                                   onClick={() => {
+                                     setSelectedSize(size);
+                                     sizeSelection(size);
+                                     setQuantity(1);
+                                   }}
+                                 >
+                                   <div className="set_btn_trcak">
+                                     {size?.size_vector_media ? (
+                                       <img
+                                         src={size?.size_vector_media}
+                                         className="size-image"
+                                         alt={size.size}
+                                       />
+                                     ) : (
+                                       <></>
+                                     )}
+                                   </div>
+                                   {productDetails?.category_action_url === "dustbins" ? (
+                                     <div className="lbl-track">{size.capacity}</div>
+                                   ) : productDetails?.category_action_url === "floor-covering" ? (
+                                     selectedSize && (
+                                       <div className="lbl-track">
+                                         {unit === "cm"
+                                           ? selectedSize.size
+                                           : unit === "ft"
+                                             ? selectedSize.size_in_feet
+                                             : ""}
+                                       </div>
+                                     )
+                                   ) : (
+                                     <div className="lbl-track">{size.size}</div>
+                                   )}
+                                 </div>
+                               ))}
+                             </div>
+                           </>
+                         ) : (
+                           // <Skeleton count={2} />
+                           <></>
+                         )}
+                       </div>
               <div className="color-selector">
                 {loading ? (
                   <div style={{ display: "flex", gap: "10px" }}>
@@ -555,7 +569,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 ) : (
                   <>
                     <div>
-                      <p>CHOOSE A COLOR:</p>
+                     <p>CHOOSE A COLOR :&nbsp;<span style={{ textTransform: "uppercase", fontWeight: "bold" }}>{selectedColor?.color}</span></p>
                     </div>
                     <div className="color-options">
                       {selectedSize?.product_colors?.map((color, idx) => (

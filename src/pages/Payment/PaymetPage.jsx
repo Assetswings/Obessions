@@ -13,6 +13,7 @@ const PaymentPage = () => {
   const location = useLocation();
   const { orderResponse, orderPayload, checkoutData } = location.state || {};
   const [selectedPayment, setSelectedPayment] = useState(null);
+   const [isProcessing, setIsProcessing] = useState(false); // 🔥 NEW
   console.log(orderResponse?.data?.business_details?.gst_number);
 
   // Default selection logic
@@ -44,6 +45,7 @@ const PaymentPage = () => {
         return;
       }
 
+           setIsProcessing(true); // 🔥 START LOADING
       // Step 1: Call initiate API
       let payload = {
         ref_id: orderResponse?.data?.ref_id,
@@ -54,6 +56,7 @@ const PaymentPage = () => {
       // return false;
       const orderData = await initiatePayment(payload);
       if (!orderData?.success) {
+          setIsProcessing(false);
         toast.error(orderData?.message, {
           style: {
             borderRadius: "inherit",
@@ -138,23 +141,26 @@ const PaymentPage = () => {
                 <h4 className="item-title">{item.product.name}</h4>
                 <p className="price_details">
                   ₹{item.product.selling_price}{" "}
-                  <span className="sub-1">
-                    {" "}
-                    <del>₹{item.product.mrp}</del> &nbsp;
-                    <span className="dis-sub">{`(-${item.product.discount}%)`}</span>{" "}
-                  </span>
+                  <>
+                          <span className="sub-1">
+                            <de>₹{item.product?.mrp}</de> &nbsp;
+                            <span className="dis-sub">
+                              (-{item.product?.discount}%)
+                            </span>
+                          </span>
+                        </>
                 </p>
                 <p className="item-size">
-                  Size: <u>{item.product.size}</u>
+                  Size: <span>{item.product.size}</span>
                 </p>
                 <p>
                   Color:{" "}
                   <span className={`color-${item.product.color.toLowerCase()}`}>
-                    <u>{item.product.color}</u>
+                    <span>{item.product.color}</span>
                   </span>
                 </p>
                 <p className="item-qtn">
-                  Quantity: <u>{item.cart_qty}</u>
+                  Quantity: <span>{item.cart_qty}</span>
                 </p>
               </div>
             </div>
@@ -275,15 +281,41 @@ const PaymentPage = () => {
               ))}
             </div>
           </div>
-          <p className="terms">
-            Before proceed further you can review{" "}
-            <a href="/tc-of-sale"><u>Terms & Conditions of Sale</u></a> and{" "}
-            <a href="/privacy-policy"><u>Privacy Policy</u></a>
-          </p>
+        <p className="terms">
+  Before proceed further you can review{" "}
+  <a href="/tc-of-sale" target="_blank" rel="noopener noreferrer">
+    <span style={{color:'black', fontWeight:'bold'}}> <u>Terms & Conditions of Sale</u> </span> 
+  </a>{" "}
+  and{" "}
+  <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
+      <span style={{color:'black', fontWeight:'bold'}}> <u>Privacy Policy</u> </span>  
+  </a>
+</p>
           <div className="root_track">
-            <button onClick={startPayment} className="payment-btn">
+            {/* <button onClick={startPayment} className="payment-btn">
               CONTINUE TO PAYMENT
-            </button>
+            </button> */}
+
+      <button
+    className="payment-btn"
+  onClick={startPayment}
+  disabled={isProcessing}
+  type="button"
+>
+  {isProcessing ? (
+    <>
+      <span
+        className="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      Processing...
+    </>
+  ) : (
+    "CONTINUE TO PAYMENT"
+  )}
+</button>
+
           </div>
           {/* <div className="root_track">
             <p className="info-note">

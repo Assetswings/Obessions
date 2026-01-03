@@ -8,7 +8,8 @@ import {
   resetContactState,
   fetchContactDetails,
 } from "./contactUsSlice";
-import { Toaster, toast } from "react-hot-toast";
+
+ import { Slide, ToastContainer, toast } from "react-toastify";
 import helpchat from "../../assets/icons/helpchat.png";
 import sizeguide from "../../assets/icons/sizeguide.png";
 import styleguild from "../../assets/icons/styleguild.png";
@@ -75,17 +76,18 @@ const ContactUs = () => {
           category: "",
           message: "",
         });
-        toast.success("message send successfully", {
-          style: {
-            border: "1px solid black",
-            padding: "16px",
-            color: "black",
-          },
-          iconTheme: {
-            primary: "black",
-            secondary: "white",
-          },
-        });
+        toast.success("Message sent successfully", {
+                 autoClose: 3000,
+                 style: {
+                   borderRadius:"inherit",
+                   padding: "16px",
+                   color: "#713200",
+                 },
+                 iconTheme: {
+                   primary: "#713200",
+                   secondary: "#FFFAEE",
+                 },
+               });
       })
       .catch((err) => {
         toast.error("Message must be at least 30 characters long.", {
@@ -104,7 +106,7 @@ const ContactUs = () => {
 
   return (
     <>
-      <Toaster position="top-right" reverseOrder={false} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <div className="contact-page">
         <section
           className="contact-hero"

@@ -113,19 +113,42 @@ const CarpetFinder = () => {
   };
 
 
-  const toggleOption = (stepIndex, label, key) => {
-    const current = selections[stepIndex] || [];
-    const exists = current.some((item) => item.label === label);
+  // const toggleOption = (stepIndex, label, key) => {
+  //   const current = selections[stepIndex] || [];
+  //   const exists = current.some((item) => item.label === label);
 
-    const updated = exists
-      ? current.filter((item) => item.label !== label)
-      : [...current, { label, key }];
+  //   const updated = exists
+  //     ? current.filter((item) => item.label !== label)
+  //     : [...current, { label, key }];
 
-    const newSelections = { ...selections, [stepIndex]: updated };
-    setSelections(newSelections);
+  //   const newSelections = { ...selections, [stepIndex]: updated };
+  //   setSelections(newSelections);
 
-    console.log("Updated selections:", newSelections);
-  };
+  //   console.log("Updated selections:", newSelections);
+  // };
+
+   const toggleOption = (stepIndex, label, key) => {
+
+  // 👇 THIS PART IS THE CHANGE
+  if (stepIndex === 0) {
+    setSelections({
+      ...selections,
+      [stepIndex]: [{ label, key }], // only one item allowed
+    });
+    return;
+  }
+
+  // 👇 REST IS SAME AS BEFORE
+  const current = selections[stepIndex] || [];
+  const exists = current.some((item) => item.label === label);
+
+  const updated = exists
+    ? current.filter((item) => item.label !== label)
+    : [...current, { label, key }];
+
+  setSelections({ ...selections, [stepIndex]: updated });
+};
+
 
   const handelseeresult = () => {
     // Validate all steps before proceeding
@@ -253,11 +276,11 @@ const CarpetFinder = () => {
                     <></>
                   )}
                   <span className="card-label">{label}</span>
-                  {isSelected(currentStep, label) && (
-                    <div className="checkmark">
-                      <SquareCheck size={22} color="#657567" />
-                    </div>
-                  )}
+                {isSelected(currentStep, label) && currentStep !== 0 && (
+  <div className="checkmark">
+    <SquareCheck size={22} color="#657567" />
+  </div>
+)}
                 </div>
               ))}
             </div>

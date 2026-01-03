@@ -312,3 +312,10 @@
     margin-top: 45%;
   }
 }
+ .finder-card.single-select.selected {
+  border: 2px solid #000;
+}
+
+.finder-card.selected {
+  border: 2px solid #657567;
+}

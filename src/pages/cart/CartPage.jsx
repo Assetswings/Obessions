@@ -127,7 +127,7 @@ const CartPage = () => {
       ).unwrap();
       console.log("API Response:", response);
       // Example success toast
-      toast.success('Cart item updated Successfully.');
+      // toast.success('Cart item updated Successfully.');
     } catch (error) {
       console.error("Error:", error);
       toast.error(error?.error);
@@ -236,8 +236,6 @@ const CartPage = () => {
                   </h4>
                   <span className="price_details_cart">
                     ₹{item.product?.selling_price}
-                    {item.product?.mrp &&
-                      item.product?.mrp !== item.product?.selling_price && (
                         <>
                           <span className="sub-1">
                             <del>₹{item.product?.mrp}</del> &nbsp;
@@ -246,7 +244,7 @@ const CartPage = () => {
                             </span>
                           </span>
                         </>
-                      )}
+                    
                   </span>
                   <p className="item-size">Size : {item.product?.size}</p>
                   <p>

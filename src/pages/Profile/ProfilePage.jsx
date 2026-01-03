@@ -41,6 +41,8 @@ const ProfilePage = () => {
   const [dob, setDob] = useState("");
   const [localLoading, setLocalLoading] = useState(true);
   const [errors, setErrors] = useState({});
+  const [otpTimer, setOtpTimer] = useState(20);
+  const [canResendOtp, setCanResendOtp] = useState(false);
   const { pinset, pinloading, pinerror } = useSelector(
     (state) => state.pincode
   );
@@ -116,22 +118,44 @@ const ProfilePage = () => {
     }
   }, [profileData]);
 
+   useEffect(() => {
+  let timer;
+
+  if (showOtpModal && otpTimer > 0) {
+    timer = setTimeout(() => {
+      setOtpTimer((prev) => prev - 1);
+    }, 1000);
+  }
+
+  if (otpTimer === 0) {
+    setCanResendOtp(true);
+  }
+
+  return () => clearTimeout(timer);
+}, [showOtpModal, otpTimer]);
+
+
   // Send OTP API
   const handleSendOtp = async () => {
-    try {
-      const res = await API.post("/email/send-otp", {
-        email: profileData?.email,
-      });
+  try {
+    const res = await API.post("/email/send-otp", {
+      email: profileData?.email,
+    });
 
-      if (res.data.status === "success") {
-        setOtpSession(res.data.data); // save otp_requested_id + temp_id
-        toast.success("OTP sent successfully!");
-        setShowOtpModal(true); // open modal
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to send OTP");
+    if (res.data.status === "success") {
+      setOtpSession(res.data.data);
+      toast.success("OTP sent successfully!");
+      setShowOtpModal(true);
+
+      // 🔥 reset timer
+      setOtpTimer(20);
+      setCanResendOtp(false);
     }
-  };
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Failed to send OTP");
+  }
+};
+
 
   // Verify OTP API
   const handleVerifyOtp = async (e) => {
@@ -340,28 +364,54 @@ const ProfilePage = () => {
   };
 
   // ✅ When pincode API gives data, auto-fill state & city
-  useEffect(() => {
-    if (pinset) {
-      setNewAddress((prev) => ({
-        ...prev,
-        city: pinset.city,
-        state: pinset.state,
-      }));
-      setEditAddressData((prev) => ({
-        ...prev,
-        city: pinset.city,
-        state: pinset.state,
-      }));
-    }
-  }, [pinset, setNewAddress, setEditAddressData]);
+  // useEffect(() => {
+  //   if (pinset) {
+  //     setNewAddress((prev) => ({
+  //       ...prev,
+  //       city: pinset.city,
+  //       state: pinset.state,
+  //     }));
+  //     setEditAddressData((prev) => ({
+  //       ...prev,
+  //       city: pinset.city,
+  //       state: pinset.state,
+  //     }));
+  //   }
+  // }, [pinset, setNewAddress, setEditAddressData]);
 
-  const handleNewAddressChange = (e) => {
-    const { name, value } = e.target;
-    setNewAddress((prev) => ({ ...prev, [name]: value }));
-    if (name === "pincode" && value.length === 6) {
-      dispatch(checkPincode(value));
-    }
-  };
+  useEffect(() => {
+  if (pinset?.city && pinset?.state && newAddress.pincode.length === 6) {
+    setNewAddress((prev) => ({
+      ...prev,
+      city: pinset.city,
+      state: pinset.state,
+    }));
+  }
+}, [pinset]);
+
+  // const handleNewAddressChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setNewAddress((prev) => ({ ...prev, [name]: value }));
+  //   if (name === "pincode" && value.length === 6) {
+  //     dispatch(checkPincode(value));
+  //   }
+  // };
+
+   const handleNewAddressChange = (e) => {
+  const { name, value } = e.target;
+
+  setNewAddress((prev) => ({
+    ...prev,
+    [name]: value,
+    ...(name === "pincode" && value.length < 6
+      ? { city: "", state: "" } // 👈 auto clear
+      : {}),
+  }));
+
+  if (name === "pincode" && value.length === 6) {
+    dispatch(checkPincode(value));
+  }
+};
 
   // Address chnage
   const handleEditAddressChange = (e) => {
@@ -786,7 +836,7 @@ const ProfilePage = () => {
                   <input
                     name="state"
                     value={newAddress.state}
-                    onChange={handleNewAddressChange}
+                 
                   />
                   {errors.state && <p className="error">{errors.state}</p>}
                 </label>
@@ -797,7 +847,7 @@ const ProfilePage = () => {
                   <input
                     name="city"
                     value={newAddress.city}
-                    onChange={handleNewAddressChange}
+                  
                   />
                   {errors.city && <p className="error">{errors.city}</p>}
                 </label>
@@ -1010,11 +1060,18 @@ const ProfilePage = () => {
               />
             </div>
             <button className="login-btn" onClick={handleVerifyOtp}>VERIFY</button>
-
-            <p className="verify-resend">
-              Didn’t receive code?{" "}
-              <button onClick={handleSendOtp}>Resend Code</button>
-            </p>
+<p className="verify-resend">
+  {canResendOtp ? (
+    <>
+      Didn’t receive code?{" "}
+      <button onClick={handleSendOtp}>Resend Code</button>
+    </>
+  ) : (
+    <span>
+      Resend available in <b>{otpTimer}s</b>
+    </span>
+  )}
+</p>
           </div>
         </div>
       )}

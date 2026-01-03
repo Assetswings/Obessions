@@ -934,6 +934,8 @@ const ProductDetailPage = () => {
                           <></>
                         )}
                       </div>
+
+                      
                       {productDetails?.category_action_url === "dustbins" ? (
                         <div className="lbl-track">{size.capacity}</div>
                       ) : productDetails?.category_action_url === "floor-covering" ? (

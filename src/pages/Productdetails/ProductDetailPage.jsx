@@ -942,9 +942,9 @@ const ProductDetailPage = () => {
                         selectedSize && (
                           <div className="lbl-track">
                             {unit === "cm"
-                              ? selectedSize.size
+                              ? size.size
                               : unit === "ft"
-                                ? selectedSize.size_in_feet
+                                ? size.size_in_feet
                                 : ""}
                           </div>
                         )

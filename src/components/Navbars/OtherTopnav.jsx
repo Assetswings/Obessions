@@ -37,6 +37,8 @@ const OtherTopnav = () => {
   const inputRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState("");
+  const isLoginPage = location.pathname === "/login";
+
 
   useEffect(() => {
     chatsupport();
@@ -213,14 +215,14 @@ const OtherTopnav = () => {
     setTimeout(() => setDisableHover(false), 200);
   };
 
-   
+
   //   useEffect(() => {
   //    if (showMegaMenu) {
   //      document.body.style.overflow = "hidden";
   //    } else {
   //      document.body.style.overflow = "auto";
   //    }
-   
+
   //    return () => {
   //      document.body.style.overflow = "auto";
   //    };
@@ -295,17 +297,18 @@ const OtherTopnav = () => {
             ref={userWrapperRef}
             className="user-click-wrapper"
             style={{ position: "relative", left: '7px', top: '0px' }}
-            title="User Profile"
+
           >
             <span style={{ fontSize: "12px", paddingRight: "7px" }}>{localStorage.getItem('userName') ?? ''}</span>
-            <CircleUser
-              strokeWidth={1}
-              color="#FFFFFF"
-              size={25}
-              style={{ cursor: "pointer" }}
-              onClick={handleUserClick}
-            />
-
+            <span title="User Profile">
+              <CircleUser
+                strokeWidth={1}
+                color="#FFFFFF"
+                size={25}
+                style={{ cursor: "pointer" }}
+                onClick={handleUserClick}
+              />
+            </span>
             {showUserPopup && (
               <>
                 <div className="popup-triangle"></div>
@@ -313,7 +316,7 @@ const OtherTopnav = () => {
                   <div className="popup-item">
                     <Link to='/ProfilePage'>
                       <User size={22} style={{ marginRight: 8 }} />
-                      <span>Profile</span>
+                      <span title="Profile" >Profile</span>
                     </Link>
                   </div>
                   <div className="popup-item" onClick={handleLogout}>
@@ -326,7 +329,7 @@ const OtherTopnav = () => {
                     >
                       <LogOut size={22} />
                     </span>
-                    <span>Logout</span>
+                    <span title="Logout">Logout</span>
                   </div>
                 </div>
               </>
@@ -340,7 +343,7 @@ const OtherTopnav = () => {
               onClick={handleWishlistClick}
               style={{ cursor: "pointer" }}
             />
-            <span className="wishlist-badge" style={{ right: "68px", top: "10px", color:"black" }}>
+            <span className="wishlist-badge" style={{ right: "68px", top: "10px", color: "black" }}>
               <span style={{ position: 'relative', top: '1px' }}> {countData?.wishlist_count ?? ''}</span>
             </span>
           </div>
@@ -353,7 +356,7 @@ const OtherTopnav = () => {
                 size={25}
                 style={{ cursor: "pointer" }}
               />
-              <span className="wishlist-badge" style={{ right: "27px", top: "10px", color:"black" }}>
+              <span className="wishlist-badge" style={{ right: "27px", top: "10px", color: "black" }}>
                 <span style={{ position: 'relative', top: '1px' }}>{countData?.cart_count ?? ''} </span>
               </span>
             </Link>
@@ -363,7 +366,8 @@ const OtherTopnav = () => {
       <div style={{ height: "50px" }}></div>
 
       {showWishlist && <WishlistModal onClose={() => setShowWishlist(false)} />}
-      {showLoginPrompt && (
+
+      {showLoginPrompt && location.pathname !== "/login" && (
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}
 

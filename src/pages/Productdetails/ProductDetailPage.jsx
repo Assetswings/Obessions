@@ -11,8 +11,8 @@ import { Slide, ToastContainer, toast } from "react-toastify";
 import { addToCart } from "../cart/cartSlice";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import {
-  addToWishlist,
-  removeFromWishlist,
+addToWishlist,
+removeFromWishlist,
 } from "../../components/Wishtlist/WishlistSlice";
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
@@ -20,7 +20,8 @@ import { checkPincode, resetPincodeState } from "./pincodeSlice";
 import CartToast from "../../components/AddtoCartToster/CartToast";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 import { useCartWishlist } from "../../app/CartWishlistContext";
-import { LocationTick } from "iconsax-react";
+import { LocationTick, Whatsapp } from "iconsax-react";
+import { BsWhatsapp } from "react-icons/bs";
 
 const tabs = [
   { id: "highlights", label: "HIGHLIGHTS" },
@@ -598,9 +599,8 @@ const ProductDetailPage = () => {
                   href={shareLinks.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-full hover:bg-gray-100 transition"
-                >
-                  <MessageCircle size={16} className="text-green-600" />
+                  className="p-2 rounded-full hover:bg-gray-100 transition">
+                  <BsWhatsapp size={16} className="text-green-600" />
                 </a>
 
                 {/* Facebook */}
@@ -920,7 +920,7 @@ const ProductDetailPage = () => {
                       onClick={() => {
                         setSelectedSize(size);
                         sizeSelection(size);
-                        setQuantity(1);
+                        // setQuantity(1);
                       }}
                     >
                       <div className="set_btn_trcak">
@@ -985,7 +985,7 @@ const ProductDetailPage = () => {
                       onClick={() => {
                         setSelectedColor(color);
                         selectionColor(color);
-                        setQuantity(1);
+                        // setQuantity(1);
                       }}
                     >
                       <div className="color-circle pointer-crusser">

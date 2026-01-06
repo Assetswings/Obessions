@@ -774,15 +774,14 @@ const ProductsPage = () => {
 
                       {/* Product Title */}
                       <p className="product-title pointer-crusser">
-                        <Link
-                          to={`/productsdetails/${item.action_url}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {limitWords(item.name, 10)}
-                        </Link>
-                      </p>
-
+  <Link
+    to={`/productsdetails/${item.action_url}`}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+       {limitWords(item.name, 4)}
+  </Link>
+</p>
                       {/* Product Price */}
                       <Link
                         to={`/productsdetails/${item.action_url}`}
@@ -991,8 +990,6 @@ const ProductsPage = () => {
           </div>
 
         </main>
-
-
         <ProductQuickViewModal
           show={showModal}
           onHide={() => setShowModal(false)}

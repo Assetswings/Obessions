@@ -111,7 +111,7 @@ const CartPage = () => {
 
       if (response?.success) {
         getCartWishlistCount();
-        toast.success(response.message || "Item removed from cart!");
+        // toast.success(response.message || "Item removed from cart!");
       }
     } catch (err) {
       toast.error("Failed to remove item");

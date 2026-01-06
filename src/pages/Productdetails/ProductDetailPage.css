@@ -897,6 +897,8 @@ font-family: "Playfair Display", serif; */
   font-weight: 400;
   color: #000;
   min-height: 16px;
+  width: 100%;
+   text-transform: capitalize;
 }
 
 .product-price {
@@ -1181,16 +1183,7 @@ font-family: "Playfair Display", serif; */
     flex: 0 0 auto;
   }
 
-  .color-options {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    max-width: 330px;
-    box-sizing: border-box;
-    padding-bottom: 6px;
-  }
-
+ 
   .color-options::-webkit-scrollbar {
     display: none;
   }

@@ -20,24 +20,6 @@ import aniimage2 from "../../assets/icons/icon_home_dynamic.png";
 import aniimage3 from "../../assets/icons/icon_love_dynamic.png";
 
 
-/* ─── Hero + Collection assets ─── */
-import image1 from "../../assets/images/Maskgroup-1.png";
-import image2 from "../../assets/images/Maskgroup-2.png";
-import image3 from "../../assets/images/Maskgroup-3.png";
-import image4 from "../../assets/images/Maskgroup.png";
-
-import logo from "../../assets/icons/Obslogo.png";
-import livingroomLeft from "../../assets/images/livingroomLeft.png";
-import livingroomRight from "../../assets/images/livingroomRight.png";
-
-/* ─── Shop-By thumbnails (replace with your own) ─── */
-import shopThumb1 from "../../assets/images/shopthump.png";
-import shopThumb2 from "../../assets/images/shopthump.png";
-import shopThumb3 from "../../assets/images/shopthump.png";
-import shopThumb4 from "../../assets/images/shopthump.png";
-import shopThumb5 from "../../assets/images/shopthump.png";
-import shopThumb6 from "../../assets/images/shopthump.png";
-import Tableimage from "../../assets/images/Kitchen1.png";
 
 // video section
 import videoimage from "../../assets/images/videoimage.png";
@@ -341,7 +323,7 @@ const HomePage = () => {
       scale: 1.32,
       ease: "power3.out",
       scrollTrigger: {
-        trigger: ".hero-banner",
+      
         start: "top top",
         end: "bottom top",
         scrub: 1.2,
@@ -356,7 +338,7 @@ const HomePage = () => {
       scale: 1.25,
       ease: "power2.out",
       scrollTrigger: {
-        trigger: ".hero-banner",
+     
         start: "top 30%",
         end: "bottom top",
         scrub: 2.4,
@@ -371,7 +353,7 @@ const HomePage = () => {
       scale: 1.27,
       ease: "power4.out",
       scrollTrigger: {
-        trigger: ".hero-banner",
+     
         start: "top 15%",
         end: "bottom top",
         scrub: 1.8,
@@ -386,7 +368,7 @@ const HomePage = () => {
       scale: 1.45,
       ease: "expo.out",
       scrollTrigger: {
-        trigger: ".hero-banner",
+    
         start: "top -5%",
         end: "bottom top",
         scrub: 3.1,

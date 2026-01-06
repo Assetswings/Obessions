@@ -5,8 +5,9 @@ import "./TrackOrder.css";
 import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
 import tickicon from "../../assets/icons/tick-Icons.svg";
+import { Slide, ToastContainer, toast } from "react-toastify";
 
-const TrackOrder = () => {
+    const TrackOrder = () => {
     const [orderId, setOrderId] = useState("");
     const [orderData, setOrderData] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -23,6 +24,7 @@ const TrackOrder = () => {
                 // Simulate delay only if you really want it
                 const parsed = JSON.parse(res.data.data?.remarks);
                 setOrderData(parsed.data);
+                 setOrderId("")
             }
             // simulate API call
             // const response = {
@@ -33,19 +35,21 @@ const TrackOrder = () => {
             // };
 
         } catch (err) {
-            alert("Failed to fetch tracking info");
+             toast.error("Failed to fetch tracking info");
+                  setOrderId("")
         } finally {
             setLoading(false);
         }
-    };
+      };
 
-    const handleReset = () => {
+        const handleReset = () => {
         setOrderData(null);
         setOrderId("");
     };
 
     return (
         <>
+          <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
             <div className="track-container">
                 {!orderData ? (
                     <div className="track-box">

@@ -171,34 +171,45 @@ const PaymentPage = () => {
           <div className="section">
             {/* calculation */}
             <div className="price-summary">
+
+                 <div className="trackvel">
+                <div className="txt_title_cal">TOTAL MRP</div>
+                <div>₹{checkoutData?.data?.subtotal}</div>
+              </div>
+
+
+      
               <div className="trackvel">
                 <div className="txt_title_cal">
-                  COUPON [{" "}
-                  <span className="coupon">
-                    {checkoutData?.data?.applied_coupon[0]?.coupon_code}
-                  </span>{" "}
-                  ]
+                  Discount On MRP 
                 </div>
                 <div>-₹{checkoutData?.data?.applied_coupon[0]?.discount}</div>
               </div>
+
+        <div className="trackvel">
+                <div className="txt_title_cal">
+                 Coupon
+                </div>
+                <div>  <span className="coupon">
+                    {checkoutData?.data?.applied_coupon[0]?.coupon_code}
+                  </span>{" "}</div>
+              </div>
+
               <div className="trackvel">
                 <div className="txt_title_cal">SHIPPING CHARGES</div>
                 <div>₹{checkoutData?.data?.shipping_charges}</div>
               </div>
-              <div className="trackvel">
+              {/* <div className="trackvel">
                 <div className="txt_title_cal">ROUND OFF</div>
                 <div>₹{checkoutData?.data?.order_total_roundoff}</div>
-              </div>
-              <div className="trackvel">
-                <div className="txt_title_cal">TOTAL MRP</div>
-                <div>₹{checkoutData?.data?.subtotal}</div>
-              </div>
+              </div> */}
+            
               <div className="breaker_global">
                 <hr />
               </div>
               <div className="trackvel">
                 <div className="txt_title_cal">
-                  ORDER TOTAL
+                   Total Amount 
                 </div>
                 <div>
                   ₹{checkoutData?.data?.order_total}

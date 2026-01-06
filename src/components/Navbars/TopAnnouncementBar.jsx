@@ -237,16 +237,18 @@ const TopAnnouncementBar = () => {
             ref={userWrapperRef}
             className="user-click-wrapper"
             style={{ position: "relative", left:'7px', top:'0px' }}
-            title="User Profile"
             onClick={handleUserClick}
           >
             <span style={{ fontSize: "12px", paddingRight: "7px" }}>{localStorage.getItem('userName') ?? ''}</span>
-            <CircleUser
+              <span title="User Profile"> 
+             <CircleUser
               color="#FFFFFF"
               size={26}
               strokeWidth={1}
               style={{ cursor: "pointer" }}
             />
+              </span>
+           
 
             {/* ✅ Fixed Popup */}
             {isLoggedIn && showUserPopup && (
@@ -258,12 +260,12 @@ const TopAnnouncementBar = () => {
                 <div className="popup-item">
                   <Link to='/ProfilePage'>
                     <User size={26} style={{ marginRight: 8 }} />
-                    <span>Profile</span>
+                    <span title="profile">Profile</span>
                   </Link>
                 </div>
                 <div className="popup-item" onClick={handleLogout}>
                   <LogOut size={26} style={{ marginRight: 8 }} />
-                  <span>Logout</span>
+                  <span  title="logout" >Logout</span>
                 </div>
               </div>
             )}

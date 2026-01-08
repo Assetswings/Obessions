@@ -42,7 +42,10 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const [similarStyle, setSimilarStyle] = useState([]);
   const [matchingFound, setMatchingFound] = useState([]);
   const [pincodeDetails, setPincodeDetails] = useState({});
+  const [zoomStyle, setZoomStyle] = useState({});  
+  const [selectedMedia, setSelectedMedia] = useState(null);
   const [unit, setUnit] = useState("cm");
+   const imageRef = useRef(null);
 
   const modalRef = useRef();
   const sectionsRef = useRef({});
@@ -61,6 +64,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       setSelectedImage(null);
       setSelectedSize(null);
       setSelectedColor([]);
+      setSelectedMedia(null); // 🔥 THIS WAS MISSING
       setProductsDetails([]);
       setSimilarStyle([]);
       setMatchingFound([]);
@@ -101,6 +105,21 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   }, [pinset]);
 
 
+
+  useEffect(() => {
+  if (data?.product_sizes?.length > 0) {
+    const firstColor = data.product_sizes[0].product_colors[0];
+    const firstMedia = firstColor?.product_media?.[0]?.media;
+
+    setSelectedSize(data.product_sizes[0]);
+    setSelectedColor(firstColor);
+    setSelectedImage(firstMedia);
+    setSelectedMedia(firstMedia); // 🔥 IMPORTANT
+
+    setLocalLoading(false);
+  }
+}, [data]);
+
   useEffect(() => {
   setQuantity(1);
 }, [actionurl]); // or product?.id
@@ -122,6 +141,24 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
     );
     return () => observer.disconnect();
   }, []);
+
+  const handleMouseMove = (e) => {
+  if (!imageRef.current) return;
+
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+  imageRef.current.style.transformOrigin = `${x}% ${y}%`;
+  imageRef.current.style.transform = "scale(1.8)";
+};
+
+const handleMouseLeave = () => {
+  if (!imageRef.current) return;
+
+  imageRef.current.style.transform = "scale(1)";
+  imageRef.current.style.transformOrigin = "center center";
+};
 
   // Price dynamics solution
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
@@ -147,6 +184,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       onHide();
     }
   };
+
   const closediloug = () => {
     setPincodeDetails({});
     setPincode("");
@@ -344,104 +382,132 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
         style={{ zIndex: 9999999999999 }}
         autoClose={3000}
       /> */}
-      <div className="quickview-modal-overlay" onClick={handleOutsideClick}>
-        <div className="quickview-modal" ref={modalRef}>
-          <div className="quickview-header">
-            <div></div>
-            <div
-              className="close-icon"
-              onClick={() => {
-                onHide();
-                closediloug();
-              }}
-            >
-              ×
+   <div className="quickview-modal-overlay" onClick={handleOutsideClick}>
+      <div className="quickview-modal" ref={modalRef}>
+        <div className="quickview-header">
+          <div />
+          <div
+            className="close-icon"
+            onClick={() => {
+              onHide();
+              closediloug();
+            }}
+          >
+            ×
+          </div>
+        </div>
+
+        <div className="product-page">
+          {/* ================== GALLERY ================== */}
+          <div className="product-gallery">
+            <div className="sector_quick">
+              <div
+                className="image_track_quick zoom-container"
+                style={{ width: "100%", minHeight: "536px" }}
+                onMouseMove={selectedMedia !== "video" ? handleMouseMove : null}
+                onMouseLeave={handleMouseLeave}
+              >
+                {loading || !selectedMedia ? (
+                  <Skeleton height={630} width="100%" />
+                ) : selectedMedia === "video" ? (
+                  selectedColor?.video_source?.includes("youtube") ? (
+                    <iframe
+                      src={`${selectedColor.video_source}?autoplay=1&mute=1`}
+                      width="100%"
+                      height="100%"
+                      frameBorder="0"
+                      allow="autoplay; encrypted-media"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <video
+                      controls
+                      autoPlay
+                      muted
+                      style={{ width: "100%", height: "100%" }}
+                    >
+                      <source
+                        src={selectedColor?.video_source}
+                        type="video/mp4"
+                      />
+                    </video>
+                  )
+                ) : (
+                  <img
+                    src={selectedMedia}
+                      ref={imageRef}
+                    alt="Product"
+                    className="main-image zoom-image"
+                    style={{
+                      ...zoomStyle,
+                      mixBlendMode: "darken",
+                      objectFit: "cover",
+                    }}
+                  />
+                )}
+              </div>
+
+              {/* ================== THUMBNAILS ================== */}
+              <div className="thumbnail-row">
+                {localLoading
+                  ? Array(4)
+                      .fill(0)
+                      .map((_, i) => (
+                        <Skeleton key={i} height={70} width={70} />
+                      ))
+                  : selectedColor?.product_media?.map((img, i) => (
+                      <img
+                        key={i}
+                        src={img.media}
+                        className={`thumbnail ${
+                          selectedMedia === img.media ? "selected-thumb" : ""
+                        }`}
+                        onClick={() => setSelectedMedia(img.media)}
+                      />
+                    ))}
+
+                {selectedColor?.video_source && (
+                  <div
+                    className={`thumbnail video-thumb ${
+                      selectedMedia === "video" ? "selected-thumb" : ""
+                    }`}
+                    onClick={() => setSelectedMedia("video")}
+                  >
+                    <img
+                      src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
+                      alt="video"
+                    />
+                    <span className="thumb-overlay">▶</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="product-page">
-            {/* Main Product Image */}
-            <div className="product-gallery">
-              <div className="sector_quick">
-                <div
-                  className="image_track_quick"
-                  style={{ width: "100%", minHeight: "536px" }}
-                >
-                  {loading || !selectedImage ? (
-                    <div style={{ width: "100%", height: "100%" }}>
-                      <Skeleton
-                        height={630}
-                        width="100%"
-                        baseColor="#e0e0e0"
-                        highlightColor="#f5f5f5"
-                      />
-                    </div>
-                  ) : (
-                    <img
-                      src={selectedImage}
-                      alt="Main Product"
-                      className="main-image"
-                      style={{
-                        height: "auto",
-                        mixBlendMode: "darken",
-                        objectFit: "cover",
-                        // transition: "opacity 0.3s ease-in-out",
-                      }}
-                    />
-                  )}
-                </div>
-
-                {/* Thumbnails */}
-                <div className="thumbnail-row">
-                  {localLoading
-                    ? Array(4)
-                      .fill(0)
-                      .map((_, index) => (
-                        <Skeleton
-                          key={index}
-                          height={70}
-                          width={70}
-                          style={{ marginRight: 10 }}
-                        />
-                      ))
-                    : selectedColor?.product_media?.map((img, index) => (
-                      <img
-                        key={index}
-                        src={img.media}
-                        alt={`Thumbnail ${index + 1}`}
-                        className={`thumbnail ${selectedImage === img.media ? "selected-thumb" : ""
-                          }`}
-                        onClick={() => setSelectedImage(img.media)}
-                      />
-                    ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Product Info */}
+          {/* Product Info */}
             <div className="product-info">
               <h1 className="title_details">
                 {loading ? <Skeleton width={200} /> : selectedSize?.name}
               </h1>
 
-              <p className="price_details">
-                {loading ? (
-                  <Skeleton width={120} />
-                ) : (
-                  <>
-                    ₹{currentPrice}{" "}
-                    {selectedSize?.mrp && (
-                      <span className="sub-1">
-                        <del>₹{selectedSize?.mrp}</del> &nbsp;
-                        <span className="dis-sub">
-                          {selectedSize?.discount}% OFF
-                        </span>{" "}
-                        (Inclusive of all taxes)
-                      </span>
-                    )}
-                  </>
-                )}
-              </p>
+             <p className="price_details">
+  {loading ? (
+    <Skeleton width={120} />
+  ) : (
+    <>
+      ₹{currentPrice}{" "}
+      {selectedSize?.mrp && selectedSize?.discount > 0 && (
+        <span className="sub-1">
+          <del>₹{selectedSize.mrp}</del> &nbsp;
+          <span className="dis-sub">
+            {selectedSize.discount}% OFF
+          </span>{" "}
+          (Inclusive of all taxes)
+        </span>
+      )}
+    </>
+  )}
+</p>
 
               <p className="id_tracker">
                 {loading ? (
@@ -450,113 +516,118 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                   `SKU: ${selectedSize?.sku}`
                 )}
               </p>
-                <div className="size-selector">
-                         {localLoading ? (
-                           <>
-                             <p>
-                               <Skeleton width={150} />
-                             </p>
-                             <div style={{ display: "flex", gap: 10 }}>
-                               {Array(3)
-                                 .fill(0)
-                                 .map((_, i) => (
-                                   <Skeleton key={i} width={60} height={60} />
-                                 ))}
-                             </div>
-                           </>
-                         ) : productDetails?.product_sizes?.length > 0 && selectedSize.size !== "NA" ? (
-                           <>
-                             {productDetails?.category_action_url === "dustbins" ? (
-                               <p className="selected-size-label">
-                                 CHOOSE A CAPACITY:&nbsp;
-                                 {selectedSize && <strong>{selectedSize.capacity}</strong>}
-                               </p>
-                             ) : productDetails?.category_action_url === "floor-covering" ? (
-                               <p className="selected-size-label">
-                                 CHOOSE A SIZE :&nbsp;
-                                 {selectedSize && (
-                                   <strong>
-                                     {unit === "cm"
-                                       ? selectedSize.size
-                                       : unit === "ft"
-                                         ? selectedSize.size_in_feet
-                                         : ""}
-                                   </strong>
-                                 )}
              
-                               </p>
-                             ) : (
-                               <p className="selected-size-label">
-                                 CHOOSE A SIZE :&nbsp;
-                                 {selectedSize && <strong>{selectedSize.size}</strong>}
-                               </p>
-                             )}
-                             {productDetails?.sub_category_action_url === "carpet" ? (
-                               <div className="unit-toggle">
-                                 <button
-                                   className={unit === "cm" ? "active" : ""}
-                                   onClick={() => setUnit("cm")}
-                                 >
-                                   Cm
-                                 </button>
-             
-                                 <button
-                                   className={unit === "ft" ? "active" : ""}
-                                   onClick={() => setUnit("ft")}
-                                 >
-                                   Feet
-                                 </button>
-                               </div>
-                             ) : (
-                               <></>
-                             )}
-                             <div className="size-options">
-                               {productDetails.product_sizes.map((size) => (
-                                 <div
-                                   key={size.id}
-                                   className={`size-btn ${selectedSize?.id === size.id ? "active-size" : ""
-                                     }`}
-                                   onClick={() => {
-                                     setSelectedSize(size);
-                                     sizeSelection(size);
-                                     setQuantity(1);
-                                   }}
-                                 >
-                                   <div className="set_btn_trcak">
-                                     {size?.size_vector_media ? (
-                                       <img
-                                         src={size?.size_vector_media}
-                                         className="size-image"
-                                         alt={size.size}
-                                       />
-                                     ) : (
-                                       <></>
-                                     )}
-                                   </div>
-                                   {productDetails?.category_action_url === "dustbins" ? (
-                                     <div className="lbl-track">{size.capacity}</div>
-                                   ) : productDetails?.category_action_url === "floor-covering" ? (
-                                     selectedSize && (
-                                       <div className="lbl-track">
-                                         {unit === "cm"
-                                           ? selectedSize.size
-                                           : unit === "ft"
-                                             ? selectedSize.size_in_feet
-                                             : ""}
-                                       </div>
-                                     )
-                                   ) : (
-                                     <div className="lbl-track">{size.size}</div>
-                                   )}
-                                 </div>
-                               ))}
-                             </div>
-                           </>
-                         ) : (
-                           // <Skeleton count={2} />
-                           <></>
-                         )}
-                       </div>
+
+                 <div className="size-selector">
+                          {localLoading ? (
+                            <>
+                              <p>
+                                <Skeleton width={150} />
+                              </p>
+                              <div style={{ display: "flex", gap: 10 }}>
+                                {Array(3)
+                                  .fill(0)
+                                  .map((_, i) => (
+                                    <Skeleton key={i} width={60} height={60} />
+                                  ))}
+                              </div>
+                            </>
+                          ) : productDetails?.product_sizes?.length > 0 && selectedSize.size !== "NA" ? (
+                            <>
+                              {productDetails?.category_action_url === "dustbins" ? (
+                                <p className="selected-size-label">
+                                  CHOOSE A CAPACITY:&nbsp;
+                                  {selectedSize && <strong>{selectedSize.capacity}</strong>}
+                                </p>
+                              ) : productDetails?.category_action_url === "floor-covering" ? (
+                                <p className="selected-size-label">
+                                  CHOOSE A SIZE :&nbsp;
+                                  {selectedSize && (
+                                    <strong>
+                                      {unit === "cm"
+                                        ? selectedSize.size
+                                        : unit === "ft"
+                                          ? selectedSize.size_in_feet
+                                          : ""}
+                                    </strong>
+                                  )}
+              
+                                </p>
+                              ) : (
+                                <p className="selected-size-label">
+                                  CHOOSE A SIZE :&nbsp;
+                                  {selectedSize && <strong>{selectedSize.size}</strong>}
+                                </p>
+                              )}
+                              {productDetails?.sub_category_action_url === "carpet" ? (
+                                <div className="unit-toggle">
+                                  <button
+                                    className={unit === "cm" ? "active" : ""}
+                                    onClick={() => setUnit("cm")}
+                                  >
+                                    Cm
+                                  </button>
+              
+                                  <button
+                                    className={unit === "ft" ? "active" : ""}
+                                    onClick={() => setUnit("ft")}
+                                  >
+                                    Feet
+                                  </button>
+                                </div>
+                              ) : (
+                                <></>
+                              )}
+                              <div className="size-options">
+                                {productDetails.product_sizes.map((size) => (
+                                  <div
+                                    key={size.id}
+                                    className={`size-btn ${selectedSize?.id === size.id ? "active-size" : ""
+                                      }`}
+                                    onClick={() => {
+                                      setSelectedSize(size);
+                                      sizeSelection(size);
+                                      // setQuantity(1);
+                                    }}
+                                  >
+                                    <div className="set_btn_trcak">
+                                      {size?.size_vector_media ? (
+                                        <img
+                                          src={size?.size_vector_media}
+                                          className="size-image"
+                                          alt={size.size}
+                                        />
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </div>
+              
+                                    
+                                    {productDetails?.category_action_url === "dustbins" ? (
+                                      <div className="lbl-track">{size.capacity}</div>
+                                    ) : productDetails?.category_action_url === "floor-covering" ? (
+                                      selectedSize && (
+                                        <div className="lbl-track">
+                                          {unit === "cm"
+                                            ? size.size
+                                            : unit === "ft"
+                                              ? size.size_in_feet
+                                              : ""}
+                                        </div>
+                                      )
+                                    ) : (
+                                      <div className="lbl-track">{size.size}</div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </>
+                          ) : (
+                            // <Skeleton count={2} />
+                            <></>
+                          )}
+                        </div>
+              
               <div className="color-selector">
                 {loading ? (
                   <div style={{ display: "flex", gap: "10px" }}>
@@ -770,9 +841,9 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                 )}
               </div> */}
             </div>
-          </div>
         </div>
       </div>
+    </div>
       {showLoginPrompt && (
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}

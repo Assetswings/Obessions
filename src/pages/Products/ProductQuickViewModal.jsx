@@ -414,7 +414,7 @@ const handleMouseLeave = () => {
                     <iframe
                       src={`${selectedColor.video_source}?autoplay=1&mute=1`}
                       width="100%"
-                      height="100%"
+                      style={{height:"550px"}}
                       frameBorder="0"
                       allow="autoplay; encrypted-media"
                       allowFullScreen
@@ -424,7 +424,7 @@ const handleMouseLeave = () => {
                       controls
                       autoPlay
                       muted
-                      style={{ width: "100%", height: "100%" }}
+                   
                     >
                       <source
                         src={selectedColor?.video_source}

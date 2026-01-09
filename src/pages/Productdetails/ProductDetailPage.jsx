@@ -146,33 +146,29 @@ const ProductDetailPage = () => {
   }, [data]);
 
   // Scroll tracking (for highlights/description tabs)
-  useEffect(() => {
-    // setPincodeDetails({});
-    // setPincode("");
-    // setPincodeChecked(false);
+ useEffect(() => {
+  const subCat = productDetails?.sub_category_action_url;
 
-    const data = productDetails;
+  if (["carpet", "runner"].includes(subCat)) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveTab(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
 
+    Object.values(sectionsRef.current).forEach((section) => {
+      if (section) observer.observe(section);
+    });
 
-    if (productDetails?.sub_category_action_url === "carpet") {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActiveTab(entry.target.id);
-            }
-          });
-        },
-        { threshold: 0.4 }
-      );
+    return () => observer.disconnect();
+  }
+}, [productDetails?.sub_category_action_url]);
 
-      Object.values(sectionsRef.current).forEach((section) => {
-        if (section) observer.observe(section);
-      });
-
-      return () => observer.disconnect();
-    }
-  }, [productDetails?.sub_category_action_url]);
 
   useEffect(() => {
     if (pinset) {
@@ -920,7 +916,7 @@ const ProductDetailPage = () => {
                       onClick={() => {
                         setSelectedSize(size);
                         sizeSelection(size);
-                        // setQuantity(1);
+                        //  setQuantity(1);
                       }}
                     >
                       <div className="set_btn_trcak">
@@ -1358,8 +1354,11 @@ const ProductDetailPage = () => {
 
 
 
-      {productDetails?.sub_category_action_url === "carpet" ? (
-        <>
+
+
+      {["carpet", "runner"].includes(productDetails?.sub_category_action_url) ? (
+  <>
+     <>
           <div className="product-tabs-container">
             <div className="tabs-bar">
               {tabs.map((tab) => (
@@ -1620,8 +1619,8 @@ const ProductDetailPage = () => {
             </div>
           </div>
         </>
-      ) : null
-      }
+  </>
+) : null}
       {/* Similar Products */}
       <div className="similar-styles-section">
         {localLoading ? (

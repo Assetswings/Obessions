@@ -45,7 +45,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const [zoomStyle, setZoomStyle] = useState({});  
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [unit, setUnit] = useState("cm");
-   const imageRef = useRef(null);
+  const imageRef = useRef(null);
 
   const modalRef = useRef();
   const sectionsRef = useRef({});
@@ -163,6 +163,7 @@ const handleMouseLeave = () => {
   // Price dynamics solution
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
   const productId = data?.id;
+  const isPincodeLocked = pincodeChecked && pincodeDetails?.is_active;
 
   useEffect(() => {
     if (show) {
@@ -202,11 +203,19 @@ const handleMouseLeave = () => {
     }
   };
 
-  const handleReset = () => {
-    dispatch(resetPincodeState());
-    setPincode("");
-    setPincodeChecked(false);
-  };
+  // const handleReset = () => {
+  //   dispatch(resetPincodeState());
+  //   setPincode("");
+  //   setPincodeChecked(false);
+  // };
+
+   const handleReset = () => {
+  dispatch(resetPincodeState());
+  setPincode("");
+  setPincodeChecked(false);
+  setPincodeDetails({});
+  localStorage.removeItem("pincode");
+};
 
   // ADD TO CART FUNCTION (restricted until pincode check success)
   const handleAddToCart = () => {
@@ -700,36 +709,45 @@ const handleMouseLeave = () => {
                     <p className="check-heading">CHECK AVAILABILITY</p>
                     <div className="input-wrapper-quick-2">
                       <input
-                        className="checkup_track_txt"
-                        type="text"
-                        placeholder="Enter Delivery Pincode"
-                        value={pincode}
-                        maxLength={6}
-                        onChange={(e) => {
-                          const onlyNums = e.target.value.replace(/\D/g, '');
-                          setPincode(onlyNums);
-                        }}
-                        onKeyDown={(e) => {
-                          const onlyNums = e.target.value.replace(/\D/g, '');
-                          if (e.key === "Enter" && onlyNums.trim()) {
-                            handleCheck();
-                          }
-                        }}
-                      />
+    className="checkup_track_txt"
+    type="text"
+    placeholder="Enter Delivery Pincode"
+    value={pincode}
+    maxLength={6}
+    disabled={isPincodeLocked}
+    onChange={(e) => {
+      if (isPincodeLocked) return;
+      const onlyNums = e.target.value.replace(/\D/g, "");
+      setPincode(onlyNums);
+    }}
+    onKeyDown={(e) => {
+      if (isPincodeLocked) return;
+      if (e.key === "Enter" && pincode.length === 6) {
+        handleCheck();
+      }
+    }}
+  />
 
-                      <div className="btn-group">
-                        {pincode && (
-                          <button onClick={handleReset} className="rest-btn">
-                            Reset
-                          </button>
-                        )}
+  <div className="btn-group">
+    {/* Show CHECK only if not verified */}
+    {!isPincodeLocked && (
+      <button
+        onClick={handleCheck}
+        className="check-btn-2"
+        disabled={pinloading || pincode.length !== 6}
+      >
+        {pinloading ? "Checking..." : "Check"}
+      </button>
+    )}
 
-                        {!pincodeDetails?.is_active && (
-                          <button onClick={handleCheck} className="check-btn-2">
-                            Check
-                          </button>
-                        )}
-                      </div>
+    {/* Show RESET only if verified */}
+    {isPincodeLocked && (
+      <button onClick={handleReset} className="rest-btn">
+        Reset
+      </button>
+    )}
+  </div>
+
                     </div>
                     {pinloading && <p>Checking...</p>}
                     {pinerror && (

@@ -14,9 +14,23 @@ const BlogPost = () => {
   const { blog } = useParams();
   const blugSlug = location.state?.blog || blog || null;
   const [data, setData] = useState("");
+  const currentUrl = window.location.href;
+  const shareText = encodeURIComponent(data?.blog?.name || "Check this out");
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+  currentUrl
+  )}`;
+  const instagramShareUrl = `https://www.instagram.com/?url=${encodeURIComponent(
+  currentUrl
+)}`;
+
+
+
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [blugSlug]);
+
+
+
 
   useEffect(() => {
     if (blugSlug) {
@@ -202,7 +216,28 @@ const BlogPost = () => {
         </section>
 
         <div className="track_social">
-          <div className="track-flex-social"> Connect With Us : <div> <img src={insta} /></div> <div> <img src={facebookimg} /></div>  <div> <img src={youtube} /></div></div>
+          <div className="track-flex-social">
+  Connect With Us :
+
+  <a
+    href={instagramShareUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img src={insta} />
+  </a>
+
+  <a
+    href={facebookShareUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img src={facebookimg} />
+  </a>
+
+
+</div>
+
         </div>
         {/* Recommended Posts Mobile */}
         <section on className="flat_overview mob">

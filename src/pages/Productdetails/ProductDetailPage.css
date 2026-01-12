@@ -877,6 +877,7 @@ font-family: "Playfair Display", serif; */
 .product-img-box img {
   width: 100%;
   mix-blend-mode: darken;
+  max-height: 240px;
 }
 
 .wishlist-btn {

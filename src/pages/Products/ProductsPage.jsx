@@ -125,6 +125,7 @@ const ProductsPage = () => {
       getbestsellerBanner();
     }
   }, [dispatch, category, subcategory, selectedFilters, currentPage]);
+  
   // useEffect(() => {
   //   dispatch(fetchTopPicks());
   //   getPLPbotton();

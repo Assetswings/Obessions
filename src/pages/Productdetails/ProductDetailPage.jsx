@@ -62,10 +62,11 @@ const ProductDetailPage = () => {
   const { itemSlug } = useParams();
   const productSlug = location.state?.product || itemSlug || null;
   const { data, loading, error } = useSelector((state) => state.productDetail);
-
+    const imageRef = useRef(null);
   const { pinset, pinloading, pinerror } = useSelector(
     (state) => state.pincode
   );
+  
 
   console.log("selectedColor---->", selectedColor);
 
@@ -101,21 +102,39 @@ const ProductDetailPage = () => {
   }, [dispatch, productSlug]);
 
 
-  const handleMouseMove = (e) => {
-    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    const x = ((e.pageX - left) / width) * 100;
-    const y = ((e.pageY - top) / height) * 100;
-    setZoomStyle({
-      transformOrigin: `${x}% ${y}%`,
-      transform: "scale(1.85)",
-    });
-  };
-  const handleMouseLeave = () => {
-    setZoomStyle({
-      transform: "scale(1)",
-      transformOrigin: "center center",
-    });
-  };
+  // const handleMouseMove = (e) => {
+  //   const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+  //   const x = ((e.pageX - left) / width) * 100;
+  //   const y = ((e.pageY - top) / height) * 100;
+  //   setZoomStyle({
+  //     transformOrigin: `${x}% ${y}%`,
+  //     transform: "scale(1.85)",
+  //   });
+  // };
+  // const handleMouseLeave = () => {
+  //   setZoomStyle({
+  //     transform: "scale(1)",
+  //     transformOrigin: "center center",
+  //   });
+  // };
+
+     const handleMouseMove = (e) => {
+  if (!imageRef.current) return;
+
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+  imageRef.current.style.transformOrigin = `${x}% ${y}%`;
+  imageRef.current.style.transform = "scale(1.8)";
+};
+
+const handleMouseLeave = () => {
+  if (!imageRef.current) return;
+
+  imageRef.current.style.transform = "scale(1)";
+  imageRef.current.style.transformOrigin = "center center";
+};
 
   useEffect(() => {
     if (!data?.id) return;
@@ -247,7 +266,7 @@ const ProductDetailPage = () => {
   // Price dynamics solution
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
   const productId = data?.id || productSlug;
-
+  const isPincodeLocked = pincodeChecked && pincodeDetails?.is_active;
   const toggleWishlist = async (e, product) => {
     toast.dismiss();
     e.stopPropagation();
@@ -470,11 +489,20 @@ const ProductDetailPage = () => {
     }
   };
 
-  const handleReset = () => {
-    dispatch(resetPincodeState());
-    setPincode("");
-    setPincodeChecked(false);
-  };
+  // const handleReset = () => {
+  //   dispatch(resetPincodeState());
+  //   setPincode("");
+  //   setPincodeChecked(false);
+  // };
+
+   const handleReset = () => {
+  dispatch(resetPincodeState());
+  setPincode("");
+  setPincodeChecked(false);
+  setPincodeDetails({});
+  localStorage.removeItem("pincode");
+};
+
   const selectionColor = (color) => {
     // setSelectedColor(color);
     setSelectedImage(color?.product_media[0]?.media);
@@ -666,9 +694,11 @@ const ProductDetailPage = () => {
               >
                 <img
                   src={selectedImage}
+                  ref={imageRef}
                   alt="Main Product"
                   className="main-image zoom-image"
                   style={zoomStyle}
+                   
                 />
               </div>
             )}
@@ -1031,7 +1061,7 @@ const ProductDetailPage = () => {
               </>
             ) : (
               <>
-                <div className="input-wrapper">
+                {/* <div className="input-wrapper">
                   <input
                     className="checkup_track_txt"
                     type="text"
@@ -1063,7 +1093,49 @@ const ProductDetailPage = () => {
                       </button>
                     )}
                   </div>
-                </div>
+                </div> */}
+
+  <div className="input-wrapper">
+  <input
+    className="checkup_track_txt"
+    type="text"
+    placeholder="Enter Delivery Pincode"
+    value={pincode}
+    maxLength={6}
+    disabled={isPincodeLocked}
+    onChange={(e) => {
+      if (isPincodeLocked) return;
+      const onlyNums = e.target.value.replace(/\D/g, "");
+      setPincode(onlyNums);
+    }}
+    onKeyDown={(e) => {
+      if (isPincodeLocked) return;
+      if (e.key === "Enter" && pincode.length === 6) {
+        handleCheck();
+      }
+    }}
+  />
+
+  <div className="btn-group">
+    {/* Show CHECK only if not verified */}
+    {!isPincodeLocked && (
+      <button
+        onClick={handleCheck}
+        className="check-btn-2"
+        disabled={pinloading || pincode.length !== 6}
+      >
+        {pinloading ? "Checking..." : "Check"}
+      </button>
+    )}
+
+    {/* Show RESET only if verified */}
+    {isPincodeLocked && (
+      <button onClick={handleReset} className="rest-btn">
+        Reset
+      </button>
+    )}
+  </div>
+</div>
 
                 <div className="root_avl">
                   <div>

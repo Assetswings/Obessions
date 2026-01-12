@@ -66,6 +66,8 @@ const Searchlist = () => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
     getPLPbotton();
+    const urlFilters = getFiltersFromURL(location.search);
+    setSelectedFilters(urlFilters);
   }, [dispatch]);
 
   useEffect(() => {
@@ -96,6 +98,19 @@ const Searchlist = () => {
     return () => clearTimeout(timeoutId);
   }, [dispatch, query, selectedFilters, currentPage]);
 
+  const getFiltersFromURL = (search) => {
+    const params = new URLSearchParams(search);
+    const filters = {};
+    for (const [key, value] of params.entries()) {
+      const decoded = decodeURIComponent(value.replace(/\+/g, " "));
+
+      filters[key] = decoded.includes(",")
+        ? decoded.split(",").map(v => v.trim())
+        : [decoded];
+    }
+    return filters;
+  };
+
   const getPLPbotton = async () => {
     try {
       const res = await API.get("banners/product-listing-bottom");
@@ -121,32 +136,6 @@ const Searchlist = () => {
     }
   };
 
-  // ✅ Load filters from localStorage on page load
-  useEffect(() => {
-    const savedFilters = localStorage.getItem("selectedFilters");
-    if (savedFilters) {
-      try {
-        setSelectedFilters(JSON.parse(savedFilters));
-        setTempMobileFilters(JSON.parse(savedFilters));
-      } catch (e) {
-        console.error("Error parsing filters:", e);
-        localStorage.removeItem("selectedFilters");
-      }
-    }
-  }, []);
-
-  // ✅ Clear filters when leaving page or navigating away
-  const prevPathRef = useRef(location.pathname);
-  useEffect(() => {
-    const prevPath = prevPathRef.current;
-    return () => {
-      // Only clear if navigating away from this page
-      // if (prevPath === "/products" && location.pathname !== "/products") {
-      localStorage.removeItem("selectedFilters");
-      // }
-    };
-  }, [location.pathname]);
-
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
       const current = prev[filterKey] || [];
@@ -155,11 +144,28 @@ const Searchlist = () => {
         : [...current, value];
       // return { ...prev, [filterKey]: updated };
       const newFilters = { ...prev, [filterKey]: updated };
-      // Save to localStorage
-      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
       return newFilters;
     });
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    Object.entries(selectedFilters).forEach(([key, values]) => {
+      if (Array.isArray(values) && values.length > 0) {
+        params.set(key, values.join(","));
+      }
+    });
+    navigate(
+      {
+        pathname: location.pathname,
+        search: params.toString()
+      },
+      {
+        replace: true,
+        state: location.state   // 👈 IMPORTANT
+      }
+    );
+  }, [selectedFilters]);
 
   const toggleWishlist = async (e, product) => {
     e.stopPropagation();
@@ -400,8 +406,6 @@ const Searchlist = () => {
         : [...current, value];
       // return { ...prev, [filterKey]: updated };
       const newFilters = { ...prev, [filterKey]: updated };
-      // Save to localStorage
-      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
       return newFilters;
     });
   };
@@ -421,8 +425,6 @@ const Searchlist = () => {
         ...prev,
         sort_by: [option],
       };
-
-      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
       return newFilters;
     });
     setCurrentPage(1);
@@ -510,7 +512,7 @@ const Searchlist = () => {
                   <>
                     <h2>Filters</h2>
                     {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
-                      <p className="clr-all" onClick={() => { setSelectedFilters({}); localStorage.removeItem("selectedFilters"); }}>
+                      <p className="clr-all" onClick={() => { setSelectedFilters({}); }}>
                         Clear all
                       </p>
                     ) : null}
@@ -832,7 +834,7 @@ const Searchlist = () => {
         <div className="mobile-filter-footer">
           <button
             className="apply-filter-btn-clr"
-            onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}
+            onClick={() => { setTempMobileFilters({}); }}
           >
             CLEAR ALL
           </button>

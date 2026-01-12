@@ -82,17 +82,14 @@ const ProductsPage = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-    localStorage.removeItem("selectedFilters");
   }, [location.pathname]); // runs on route change
 
   useEffect(() => {
     document.title = "Obsession - Product List";
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
-
     const urlFilters = getFiltersFromURL(location.search);
     setSelectedFilters(urlFilters);
-    localStorage.setItem("selectedFilters", JSON.stringify(urlFilters));
   }, []);
 
   const getFiltersFromURL = (search) => {
@@ -105,9 +102,9 @@ const ProductsPage = () => {
         ? decoded.split(",").map(v => v.trim())
         : [decoded];
     }
-
     return filters;
   };
+  
   useEffect(() => {
     if (category) {
       setProducts([]);
@@ -125,7 +122,7 @@ const ProductsPage = () => {
       getbestsellerBanner();
     }
   }, [dispatch, category, subcategory, selectedFilters, currentPage]);
-  
+
   // useEffect(() => {
   //   dispatch(fetchTopPicks());
   //   getPLPbotton();
@@ -170,32 +167,6 @@ const ProductsPage = () => {
     }
   };
 
-   // ✅ Load filters from localStorage on page load
-   useEffect(() => {
-    const savedFilters = localStorage.getItem("selectedFilters");
-    if (savedFilters) {
-      try {
-        setSelectedFilters(JSON.parse(savedFilters));
-        setTempMobileFilters(JSON.parse(savedFilters));
-      } catch (e) {
-        console.error("Error parsing filters:", e);
-        localStorage.removeItem("selectedFilters");
-      }
-    }
-  }, []);
-
-  // ✅ Clear filters when leaving page or navigating away
-  const prevPathRef = useRef(location.pathname);
-  useEffect(() => {
-    const prevPath = prevPathRef.current;
-    return () => {
-      // Only clear if navigating away from this page
-      // if (prevPath === "/products" && location.pathname !== "/products") {
-      localStorage.removeItem("selectedFilters");
-      // }
-    };
-  }, [location.pathname]);
-
   const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
       const current = prev[filterKey] || [];
@@ -204,11 +175,24 @@ const ProductsPage = () => {
         : [...current, value];
       // return { ...prev, [filterKey]: updated };
       const newFilters = { ...prev, [filterKey]: updated };
-      // Save to localStorage
-      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
       return newFilters;
     });
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    Object.entries(selectedFilters).forEach(([key, values]) => {
+      if (Array.isArray(values) && values.length > 0) {
+        params.set(key, values.join(","));
+      }
+    });
+    navigate({
+      pathname: location.pathname,
+      search: params.toString()
+    }, { replace: true }
+    );
+  }, [selectedFilters]);
+
 
   const toggleWishlist = async (e, product) => {
     toast.dismiss();
@@ -451,7 +435,6 @@ const ProductsPage = () => {
       // return { ...prev, [filterKey]: updated };
       const newFilters = { ...prev, [filterKey]: updated };
       // Save to localStorage
-      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
       return newFilters;
     });
   };
@@ -471,8 +454,6 @@ const ProductsPage = () => {
         ...prev,
         sort_by: [option],
       };
-
-      localStorage.setItem("selectedFilters", JSON.stringify(newFilters));
       return newFilters;
     });
     setCurrentPage(1);
@@ -496,9 +477,9 @@ const ProductsPage = () => {
     }
   ];
 
-   const hasActiveFilters = Object.values(selectedFilters).some(
-  (value) => Array.isArray(value) && value.length > 0
-);
+  const hasActiveFilters = Object.values(selectedFilters).some(
+    (value) => Array.isArray(value) && value.length > 0
+  );
   return (
     <>
       <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
@@ -577,18 +558,17 @@ const ProductsPage = () => {
                 ) : (
                   <>
                     <h2>Filters</h2>
-                      {hasActiveFilters && (
-  <p
-    className="clr-all"
-    onClick={() => {
-      setSelectedFilters({});
-      setTempMobileFilters({});
-      localStorage.removeItem("selectedFilters");
-    }}
-  >
-    Clear all
-  </p>
-)}
+                    {hasActiveFilters && (
+                      <p
+                        className="clr-all"
+                        onClick={() => {
+                          setSelectedFilters({});
+                          setTempMobileFilters({});
+                        }}
+                      >
+                        Clear all
+                      </p>
+                    )}
 
                   </>
                 )}
@@ -775,14 +755,14 @@ const ProductsPage = () => {
 
                       {/* Product Title */}
                       <p className="product-title pointer-crusser">
-  <Link
-    to={`/productsdetails/${item.action_url}`}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-       {limitWords(item.name, 4)}
-  </Link>
-</p>
+                        <Link
+                          to={`/productsdetails/${item.action_url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {limitWords(item.name, 4)}
+                        </Link>
+                      </p>
                       {/* Product Price */}
                       <Link
                         to={`/productsdetails/${item.action_url}`}
@@ -1168,7 +1148,7 @@ const ProductsPage = () => {
             <div className="mobile-filter-footer">
               <button
                 className="apply-filter-btn-clr"
-                onClick={() => { setTempMobileFilters({}); localStorage.removeItem("selectedFilters"); }}
+                onClick={() => { setTempMobileFilters({}); }}
               >
                 CLEAR ALL
               </button>

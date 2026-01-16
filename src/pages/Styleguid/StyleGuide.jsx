@@ -9,10 +9,9 @@ import medimum from "../../assets/icons/medimum.png";
 import API from '../../app/api';
 import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
+import Breadcrumbs from '../../components/Breadcum/Breadcrumbs';
 
-
-
-const StyleGuide = () => {
+  const StyleGuide = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeShape, setActiveShape] = useState();
@@ -64,8 +63,13 @@ const StyleGuide = () => {
 
   // const current = data?.content[0]?.size_guides.find((s) => s.id === activeShape);
   const room = roomData[activeRoom];
+   const breadcrumbPaths = [
+    { label: "size-guide", to: "" }, // last one (no link)
+  ];
+
   return (
     <>
+      <Breadcrumbs paths={breadcrumbPaths} />
       {loading ? (
         <div className="styleguide-skeleton" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
 

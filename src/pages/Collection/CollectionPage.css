@@ -7,6 +7,8 @@ font-family: 'Canela Trial', sans-serif;
 font-family: 'Helvetica Neue', sans-serif;
 font-family: "Playfair Display", serif; */
 
+
+ 
 .collection-container {
   display: flex;
   padding: 20px;
@@ -50,6 +52,11 @@ font-family: "Playfair Display", serif; */
   padding: 5px;
 }
 
+.product-card:nth-child(1) img,
+.product-card:nth-child(2) img {
+  height: 450px; /* tweak this */
+  /* object-fit: cover; */
+}
 .category-group li:hover {
   color: RED;
 }

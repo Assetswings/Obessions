@@ -6,6 +6,7 @@ import setone from "../../assets/images/image_set1.png";
 import API from "../../app/api";
 import Skeleton from "react-loading-skeleton";
 import { Link } from "react-router-dom";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 
 const SizeGuide = () => {
@@ -31,8 +32,14 @@ const SizeGuide = () => {
     document.title = "Obsession - Style Guide";
     handleTerms();
   }, []);
+
+     const breadcrumbPaths = [
+    { label: "Style guide", to: "" }, // last one (no link)
+  ];
+
   return (
     <>
+        <Breadcrumbs paths={breadcrumbPaths} />
       {loading ? (
         <div className="sizeguide-skeleton">
           {/* ---------- HERO SKELETON ---------- */}

@@ -14,12 +14,13 @@
 }
 
 .nav-logo img {
-    height: 32px;
-    width: 116px;
+  height: 32px;
+  width: 116px;
 }
+
 span.track_poster {
-    padding: 10px;
-    height: 57px;
+  padding: 10px;
+  height: 57px;
 }
 
 .nav-links {
@@ -213,7 +214,8 @@ span.track_poster {
 }
 
 .active-tab {
-  color: #e63946; /* Highlight color */
+  color: #e63946;
+  /* Highlight color */
   font-weight: bold;
 }
 
@@ -221,12 +223,12 @@ span.track_poster {
 .wishlist-badge {
   position: absolute;
   /* top: 10px; */
-  color: #D52326 ;
+  color: #D52326;
   font-size: 11px;
   font-weight: bold;
   border-radius: 50%;
-   padding: 3px;
-   width: 18px;
+  padding: 3px;
+  width: 18px;
   height: 18px;
   text-align: center;
   line-height: 1;
@@ -237,7 +239,7 @@ span.track_poster {
 
 
 
- .shop-wrapper {
+.shop-wrapper {
   position: relative;
 }
 
@@ -254,7 +256,8 @@ span.track_poster {
   opacity: 1;
   visibility: visible;
 }
- .megamenu-wrapper {
+
+.megamenu-wrapper {
   display: none;
 }
 

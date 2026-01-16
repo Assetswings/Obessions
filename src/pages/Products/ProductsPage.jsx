@@ -60,19 +60,16 @@ const ProductsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data, filters, sorting, pagination, loading } = useSelector((state) => state.products);
   const [dataReady, setDataReady] = useState(true);
-
-
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
   const totalPages = Math.ceil(total / limit);
-
   const rangeStart = total === 0 ? 0 : (currentPage - 1) * limit + 1;
   const rangeEnd = Math.min(currentPage * limit, total);
 
-  useEffect(() => {
-    if (loading) {
-      setDataReady(true);   // still fetching
-      return;
+      useEffect(() => {
+       if (loading) {
+       setDataReady(true);   // still fetching
+       return;
     }
     if (Array.isArray(data)) {
       setProducts(data);
@@ -104,7 +101,7 @@ const ProductsPage = () => {
     }
     return filters;
   };
-  
+
   useEffect(() => {
     if (category) {
       setProducts([]);
@@ -129,7 +126,7 @@ const ProductsPage = () => {
   //   getbestsellerBanner();
   // }, [dispatch]);
 
-  const getPLPbotton = async () => {
+   const getPLPbotton = async () => {
     try {
       const res = await API.get("banners/product-listing-bottom");
       if (res.data.status === 200) {
@@ -141,7 +138,7 @@ const ProductsPage = () => {
     }
   };
 
-  const getbestsellerBanner = async () => {
+    const getbestsellerBanner = async () => {
     try {
       const res = await API.get("bestsellers/banner");
       if (res.data.status === 200) {
@@ -154,7 +151,7 @@ const ProductsPage = () => {
   };
 
 
-  const handlePageChange = (page) => {
+    const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
       // 👇 Scroll smoothly to the top after changing page
@@ -167,7 +164,7 @@ const ProductsPage = () => {
     }
   };
 
-  const handleFilterChange = (filterKey, value) => {
+    const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
       const current = prev[filterKey] || [];
       const updated = current.includes(value)
@@ -177,9 +174,9 @@ const ProductsPage = () => {
       const newFilters = { ...prev, [filterKey]: updated };
       return newFilters;
     });
-  };
+    };
 
-  useEffect(() => {
+    useEffect(() => {
     const params = new URLSearchParams();
     Object.entries(selectedFilters).forEach(([key, values]) => {
       if (Array.isArray(values) && values.length > 0) {
@@ -194,12 +191,12 @@ const ProductsPage = () => {
   }, [selectedFilters]);
 
 
-  const toggleWishlist = async (e, product) => {
+    const toggleWishlist = async (e, product) => {
     toast.dismiss();
     e.stopPropagation();
     if (!isLoggedIn) {
-      setShowLoginPrompt(true);
-      return;
+    setShowLoginPrompt(true);
+    return;
     }
 
     const isInWishlist = product.is_wishlisted;
@@ -548,12 +545,10 @@ const ProductsPage = () => {
                   formatTitle(category)
                 )}
               </h2>
-
               <div className="root_devider_flt">
                 {dataReady ? (
                   <>
                     <Skeleton height={22} width={80} style={{ marginBottom: 5 }} />
-
                   </>
                 ) : (
                   <>
@@ -784,44 +779,8 @@ const ProductsPage = () => {
                     </div>
                   );
                 })}
-                {/* {products.slice(0, 10).map((item, index) => (
-                  <div key={item.id || index} className="product-card-dtl pointer-crusser">
-                    <div className="product-img-box">
-                      <Link to={`/productsdetails/${item.action_url}`} target="_blank">
-                        <img
-                          src={item.media_list?.main?.file}
-                          className="main_image"
-                          alt={item.name}
-                        />
-                        <img
-                          src={item.media_list?.hover?.file}
-                          className="hover_image"
-                          alt={item.name}
-                        />
-                      </Link>
-                    </div>
 
-                    <p className="product-title truncate">{item.name}</p>
-
-                    <div className="product-price">
-                      <span>₹{item.selling_price}</span>
-                    </div>
-                  </div>
-                ))} */}
-
-                {/* 🔥 POSTER (ONLY ONCE AFTER 10) */}
-                {products.length > 10 && (
-                  <div className="product-poster-card">
-                    <Link to={bestsellerfav?.action_url}>
-                      <img
-                        src={bestsellerfav?.media}
-                        alt="Promo Poster"
-                        className="poster-image"
-                      />
-                    </Link>
-                  </div>
-                )}
-
+              
                 {/* 🔹 REMAINING PRODUCTS */}
                 {products.slice(10).map((item, index) => {
                   const isWishlisted = item.is_wishlisted;

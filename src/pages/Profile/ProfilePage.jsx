@@ -284,8 +284,8 @@ const ProfilePage = () => {
 
     if (!form.mobile.trim()) {
       formErrors.mobile = "Mobile number is required";
-    } else if (!/^\d{10}$/.test(form.mobile)) {
-      formErrors.mobile = "Enter a valid 10-digit number";
+    } else if (!/^[6-9]\d{9}$/.test(form.mobile)) {
+      formErrors.mobile = "Enter a valid 10-digit Indian number";
     }
 
     if (!form.address.trim()) {

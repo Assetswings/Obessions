@@ -16,8 +16,12 @@ import { Info, X } from "lucide-react";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import { checkPincode } from "../Productdetails/pincodeSlice";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
+import blankcart from "../../assets/images/blank-cart.png";
+import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
+import { useCartWishlist } from "../../app/CartWishlistContext";
 
 const CheckoutPage = () => {
+  const { countData } = useCartWishlist();
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,19 +52,19 @@ const CheckoutPage = () => {
   //   }
   // }, [pinset, setNewAddress]);
 
-useEffect(() => {
-  if (
-    pinset?.city &&
-    pinset?.state &&
-    newAddress.pincode.length === 6
-  ) {
-    setNewAddress((prev) => ({
-      ...prev,
-      city: pinset.city,
-      state: pinset.state,
-    }));
-  }
-}, [pinset]);
+  useEffect(() => {
+    if (
+      pinset?.city &&
+      pinset?.state &&
+      newAddress.pincode.length === 6
+    ) {
+      setNewAddress((prev) => ({
+        ...prev,
+        city: pinset.city,
+        state: pinset.state,
+      }));
+    }
+  }, [pinset]);
 
   // GSTIN State
   const [gstinEnabled, setGstinEnabled] = useState(false);
@@ -81,7 +85,9 @@ useEffect(() => {
     if (storagePin) {
       dispatch(checkPincode(storagePin));
     }
-  }, [dispatch]);
+    console.log('>>>>>>', countData);
+    
+  }, [countData, dispatch]);
 
   const { data: profileData } = useSelector((state) => state.profile);
   // Run when profileData changes
@@ -126,21 +132,21 @@ useEffect(() => {
   //   }
   // };
 
-   const handleNewAddressChange = (e) => {
-  const { name, value } = e.target;
+  const handleNewAddressChange = (e) => {
+    const { name, value } = e.target;
 
-  setNewAddress((prev) => ({
-    ...prev,
-    [name]: value,
-    ...(name === "pincode" && value.length < 6
-      ? { city: "", state: "" } // 👈 auto reset
-      : {}),
-  }));
+    setNewAddress((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === "pincode" && value.length < 6
+        ? { city: "", state: "" } // 👈 auto reset
+        : {}),
+    }));
 
-  if (name === "pincode" && value.length === 6) {
-    dispatch(checkPincode(value));
-  }
-};
+    if (name === "pincode" && value.length === 6) {
+      dispatch(checkPincode(value));
+    }
+  };
 
   const handleGstinChange = (e) => {
     const { name, value } = e.target;
@@ -224,8 +230,8 @@ useEffect(() => {
               },
             });
           } else {
-            alert(res.message);
-            toast.success(res.message || "Item removed from cart!");
+            toast.error(res.message || "Item removed from cart!");
+            dispatch(fetchCheckout());
           }
         })
         .catch((err) => {
@@ -306,7 +312,7 @@ useEffect(() => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <Breadcrumbs paths={breadcrumbPaths} />
       <div className="root-title-chk">
         <h2 className="title_chk">Checkout</h2>
@@ -316,273 +322,297 @@ useEffect(() => {
       </div>
       <div className="checkout-container_chk">
         <div className="checkout-right_ck">
-          {checkoutData?.data?.items.map((item) => (
-            <div className="cart-item" key={item.id}>
-              <div className="item-image">
-                <Link to={`/productsdetails/${item.product?.action_url}`} target="_blank" rel="noopener noreferrer">
-                  <img
-                    className="img-cart-page pointer-crusser"
-                    src={item.product.media}
-                    alt="product"
-                  />
-                </Link>
-              </div>
-              <div className="item-details">
-                <h4 className="item-title pointer-crusser">
-                  <Link to={`/productsdetails/${item.product?.action_url}`} target="_blank" rel="noopener noreferrer">{item.product?.name}</Link>
-                </h4>
-                <p className="price_details">
-                  ₹{item.product.selling_price}{" "}
-                     <>
-                          <span className="sub-1">
-                            <del>₹{item.product?.mrp}</del> &nbsp;
-                            <span className="dis-sub">
-                              (-{item.product?.discount}%)
-                            </span>
-                          </span>
-                        </>
-                  {/* <span className="sub-1">
+          {checkoutData?.data?.items.length === 0 ? (
+            <div className="empty-cart">
+              <img
+                src={blankcart}
+                alt="Empty cart"
+                className="empty-cart-image"
+              />
+              <h3 className="empty-cart-title">
+                Your cart is feeling a little empty
+              </h3>
+              <p className="empty-cart-subtitle">
+                Discover our curated collection of premium rugs that transform
+                any space into a sanctuary of elegance and comfort.
+              </p>
+              <button
+                className="empty-cart-btn"
+                onClick={() => navigate("/")} // ✅ send user back to home/shop
+              >
+                EXPLORE &nbsp;{" "}
+                <img src={rightarrawwhite} height={25} width={25} />
+              </button>
+            </div>
+          ) : (
+            checkoutData?.data?.items.map((item) => (
+              <div className="cart-item" key={item.id}>
+                <div className="item-image">
+                  <Link to={`/productsdetails/${item.product?.action_url}`} target="_blank" rel="noopener noreferrer">
+                    <img
+                      className="img-cart-page pointer-crusser"
+                      src={item.product.media}
+                      alt="product"
+                    />
+                  </Link>
+                </div>
+                <div className="item-details">
+                  <h4 className="item-title pointer-crusser">
+                    <Link to={`/productsdetails/${item.product?.action_url}`} target="_blank" rel="noopener noreferrer">{item.product?.name}</Link>
+                  </h4>
+                  <p className="price_details">
+                    ₹{item.product.selling_price}{" "}
+                    <>
+                      <span className="sub-1">
+                        <del>₹{item.product?.mrp}</del> &nbsp;
+                        <span className="dis-sub">
+                          (-{item.product?.discount}%)
+                        </span>
+                      </span>
+                    </>
+                    {/* <span className="sub-1">
                     {" "}
                     <del>₹{item.product.mrp}</del> &nbsp;
                     <span className="dis-sub">{`(-${item.product.discount}%)`}</span>{" "}
                   </span> */}
-                </p>
-                <p className="item-size">
-                  Size: {item.product.size}
-                </p>
-                <p>
-                  Color:{" "}
-                  <span className={`color-${item.product.color.toLowerCase()}`}>
-                    {item.product.color}
-                  </span>
-                </p>
-                <p className="item-qtn">
-                  Quantity: {item.cart_qty}
-                </p>
-                <p>
-                  {" "}
-                  Return & Exchange day : <span>{item.product?.return_non_return_days_label}</span>{" "}
-                </p>
-                <p>
-                  {" "}
-                  TAT Delivery : <span>{pinset?.delivery_tat}</span>{" "}
-                </p>
+                  </p>
+                  <p className="item-size">
+                    Size: {item.product.size}
+                  </p>
+                  <p>
+                    Color:{" "}
+                    <span className={`color-${item.product.color.toLowerCase()}`}>
+                      {item.product.color}
+                    </span>
+                  </p>
+                  <p className="item-qtn">
+                    Quantity: {item.cart_qty}
+                  </p>
+                  <p>
+                    {" "}
+                    Return & Exchange day : <span>{item.product?.return_non_return_days_label}</span>{" "}
+                  </p>
+                  <p>
+                    {" "}
+                    TAT Delivery : <span>{pinset?.delivery_tat}</span>{" "}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
-
-        <div className="checkout-left_ck">
-          <div className="section">
-            <div className="price-summary">
-              <div className="trackvel">
-                <div className="txt_title_cal">TOTAL MRP</div>
-                <div>₹{checkoutData?.data?.subtotal}</div>
-              </div>
-
-
-             
-
-              <div className="trackvel">
-                <div className="txt_title_cal">
-                  Discount On MRP 
+        {checkoutData?.data?.items.length > 0 && (
+          <div className="checkout-left_ck">
+            <div className="section">
+              <div className="price-summary">
+                <div className="trackvel">
+                  <div className="txt_title_cal">TOTAL MRP</div>
+                  <div>₹{checkoutData?.data?.subtotal}</div>
                 </div>
-                <div>-₹{checkoutData?.data?.applied_coupon[0]?.discount}</div>
-              </div>
- 
-              <div className="trackvel">
-                <div className="txt_title_cal">
-                 Coupon
+
+
+
+
+                <div className="trackvel">
+                  <div className="txt_title_cal">
+                    Discount On MRP
+                  </div>
+                  <div>-₹{checkoutData?.data?.applied_coupon[0]?.discount}</div>
                 </div>
-                <div>  <span className="coupon">
+
+                <div className="trackvel">
+                  <div className="txt_title_cal">
+                    Coupon
+                  </div>
+                  <div>  <span className="coupon">
                     {checkoutData?.data?.applied_coupon[0]?.coupon_code}
                   </span>{" "}</div>
-              </div>
+                </div>
 
-              <div className="trackvel">
-                <div className="txt_title_cal">SHIPPING CHARGES</div>
-                <div>₹{checkoutData?.data?.shipping_charges}</div>
-              </div>
-              {/* <div className="trackvel">
+                <div className="trackvel">
+                  <div className="txt_title_cal">SHIPPING CHARGES</div>
+                  <div>₹{checkoutData?.data?.shipping_charges}</div>
+                </div>
+                {/* <div className="trackvel">
                 <div className="txt_title_cal">ROUND OFF</div>
                 <div>₹{checkoutData?.data?.order_total_roundoff}</div>
               </div> */}
-              {/* <br /> */}
-              <div className="breaker_global">
-                <hr />
-              </div>
-              <div className="trackvel">
-                <div className="txt_title_cal">
-                  Total Amount
+                {/* <br /> */}
+                <div className="breaker_global">
+                  <hr />
                 </div>
-                <div>
-                  ₹{checkoutData?.data?.order_total}
+                <div className="trackvel">
+                  <div className="txt_title_cal">
+                    Total Amount
+                  </div>
+                  <div>
+                    ₹{checkoutData?.data?.order_total}
+                  </div>
+                </div>
+              </div>
+
+              <br />
+              <h4 className="title_roolt_checkout">Personal Information</h4>
+              <div className="root_track">
+                <div className="row trackrow">
+                  <div className="per-row-input">
+                    <input
+                      type="text"
+                      value={profileData?.first_name || ""}
+                      placeholder="First Name"
+                      className="input_checkout"
+                      readOnly
+                    />
+                    <input
+                      type="text"
+                      value={profileData?.last_name || ""}
+                      placeholder="Last Name"
+                      className="input_checkout"
+                      readOnly
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="per-row-input">
+                    <input
+                      type="email"
+                      value={profileData?.email || ""}
+                      placeholder="Email"
+                      className="input_checkout"
+                      readOnly
+                    />
+                    <input
+                      type="tel"
+                      value={
+                        profileData?.mobile ? `+91 ${profileData.mobile}` : ""
+                      }
+                      placeholder="Mobile"
+                      className="input_checkout"
+                      readOnly
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
-            <br />
-            <h4 className="title_roolt_checkout">Personal Information</h4>
-            <div className="root_track">
-              <div className="row trackrow">
-                <div className="per-row-input">
-                  <input
-                    type="text"
-                    value={profileData?.first_name || ""}
-                    placeholder="First Name"
-                    className="input_checkout"
-                    readOnly
-                  />
-                  <input
-                    type="text"
-                    value={profileData?.last_name || ""}
-                    placeholder="Last Name"
-                    className="input_checkout"
-                    readOnly
-                  />
+            {/* GSTIN Section */}
+            <div className="section">
+              <div className="root_promo_sector">
+                <div className="check_box_gstin">
+                  <div>
+                    <input
+                      type="checkbox"
+                      checked={gstinEnabled}
+                      onChange={handleGstinToggle}
+                    />
+                  </div>
+                  <div>
+                    <h6 className="gstin_title pointer-crusser" onClick={handleGstinToggle}>GSTIN for Business</h6>
+                  </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="per-row-input">
-                  <input
-                    type="email"
-                    value={profileData?.email || ""}
-                    placeholder="Email"
-                    className="input_checkout"
-                    readOnly
-                  />
-                  <input
-                    type="tel"
-                    value={
-                      profileData?.mobile ? `+91 ${profileData.mobile}` : ""
-                    }
-                    placeholder="Mobile"
-                    className="input_checkout"
-                    readOnly
-                  />
-                </div>
+
+                {gstinEnabled && (
+                  <div className="root_track">
+                    <div className="coupon-input-container_2">
+                      <input
+                        type="text"
+                        name="registrationNumber"
+                        value={gstinData.registrationNumber}
+                        onChange={handleGstinChange}
+                        className="coupon-input"
+                        placeholder="GSTIN Registration Number"
+                      />
+                      {errors.registrationNumber && (
+                        <p className="error">{errors.registrationNumber}</p>
+                      )}
+                    </div>
+
+                    <div className="coupon-input-container">
+                      <input
+                        type="text"
+                        name="companyAddress"
+                        value={gstinData.companyAddress}
+                        onChange={handleGstinChange}
+                        className="coupon-input"
+                        placeholder="Registered Company with Address"
+                      />
+                      {errors.companyAddress && (
+                        <p className="error">{errors.companyAddress}</p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
 
-          {/* GSTIN Section */}
-          <div className="section">
-            <div className="root_promo_sector">
-              <div className="check_box_gstin">
-                <div>
-                  <input
-                    type="checkbox"
-                    checked={gstinEnabled}
-                    onChange={handleGstinToggle}
-                  />
+            <div className="shipping-info-section">
+              <div className="shipping-track">
+                <div className="ship_info">
+                  <h4>SHIPPING INFORMATION</h4>
                 </div>
                 <div>
-                  <h6 className="gstin_title pointer-crusser" onClick={handleGstinToggle}>GSTIN for Business</h6>
+                  <button
+                    onClick={() => setShowAddAddressModal(true)}
+                    className="add_ads"
+                  >
+                    ADD NEW ADDRESS
+                  </button>
                 </div>
               </div>
-
-              {gstinEnabled && (
-                <div className="root_track">
-                  <div className="coupon-input-container_2">
-                    <input
-                      type="text"
-                      name="registrationNumber"
-                      value={gstinData.registrationNumber}
-                      onChange={handleGstinChange}
-                      className="coupon-input"
-                      placeholder="GSTIN Registration Number"
-                    />
-                    {errors.registrationNumber && (
-                      <p className="error">{errors.registrationNumber}</p>
-                    )}
+              {displayedAddresses.map((addr, idx) => (
+                <label key={addr.id} className="address-option">
+                  <input
+                    type="radio"
+                    name="selectedAddress"
+                    value={addr.id}
+                    defaultChecked={addr.is_default}
+                    onClick={() => setDefultAddr(addr)}
+                  />
+                  <div className="address-details">
+                    <div className="address-header_chk">
+                      {addr.first_name} {addr.last_name}
+                      <span className="address-type">{addr.address_type}</span>
+                    </div>
+                    <div className="address-body">
+                      {addr.address}
+                      {addr.address2 && `, ${addr.address2}`} <br />
+                      {addr.city}, {addr.state}, {addr.pincode} <br />
+                      {addr.country}
+                    </div>
                   </div>
+                </label>
+              ))}
 
-                  <div className="coupon-input-container">
-                    <input
-                      type="text"
-                      name="companyAddress"
-                      value={gstinData.companyAddress}
-                      onChange={handleGstinChange}
-                      className="coupon-input"
-                      placeholder="Registered Company with Address"
-                    />
-                    {errors.companyAddress && (
-                      <p className="error">{errors.companyAddress}</p>
-                    )}
-                  </div>
-                </div>
+              {addressdata.length > 2 && (
+                <button
+                  className="show-toggle-btn"
+                  onClick={() => setExpanded((prev) => !prev)}
+                >
+                  {expanded ? "Show Less" : "Show More"}
+                </button>
               )}
             </div>
-          </div>
 
-          <div className="shipping-info-section">
-            <div className="shipping-track">
-              <div className="ship_info">
-                <h4>SHIPPING INFORMATION</h4>
-              </div>
+            <div className="root_track">
               <div>
-                <button
-                  onClick={() => setShowAddAddressModal(true)}
-                  className="add_ads"
-                >
-                  ADD NEW ADDRESS
+                <button onClick={handlePlaceOrder} className="payment-btn">
+                  CONTINUE TO PAYMENT
                 </button>
               </div>
             </div>
-            {displayedAddresses.map((addr, idx) => (
-              <label key={addr.id} className="address-option">
-                <input
-                  type="radio"
-                  name="selectedAddress"
-                  value={addr.id}
-                  defaultChecked={addr.is_default}
-                  onClick={() => setDefultAddr(addr)}
-                />
-                <div className="address-details">
-                  <div className="address-header_chk">
-                    {addr.first_name} {addr.last_name}
-                    <span className="address-type">{addr.address_type}</span>
-                  </div>
-                  <div className="address-body">
-                    {addr.address}
-                    {addr.address2 && `, ${addr.address2}`} <br />
-                    {addr.city}, {addr.state}, {addr.pincode} <br />
-                    {addr.country}
-                  </div>
-                </div>
-              </label>
-            ))}
-
-            {addressdata.length > 2 && (
-              <button
-                className="show-toggle-btn"
-                onClick={() => setExpanded((prev) => !prev)}
-              >
-                {expanded ? "Show Less" : "Show More"}
-              </button>
-            )}
-          </div>
-
-          <div className="root_track">
-            <div>
-              <button onClick={handlePlaceOrder} className="payment-btn">
-                CONTINUE TO PAYMENT
-              </button>
-            </div>
-          </div>
-          <div className="root_track" style={{display:"flex", gap:"9px", marginTop:"30px"}}>
-            <div>
-              <span>
-                <Info size={18} />
-              </span>
-            </div>
-            <div>
-              <p style={{ fontSize: "12px", color:"#7C7C7C" }}>If a product doesn’t meet your expectations, we’re happy to
-                offer a refund for the product value. 
-                Please note, a 5% deduction will be made from the total invoice
-                value to cover partial freight and packaging costs.</p>
-            </div>
-            {/* <p className="info-note">
+            <div className="root_track" style={{ display: "flex", gap: "9px", marginTop: "30px" }}>
+              <div>
+                <span>
+                  <Info size={18} />
+                </span>
+              </div>
+              <div>
+                <p style={{ fontSize: "12px", color: "#7C7C7C" }}>If a product doesn’t meet your expectations, we’re happy to
+                  offer a refund for the product value.
+                  Please note, a 5% deduction will be made from the total invoice
+                  value to cover partial freight and packaging costs.</p>
+              </div>
+              {/* <p className="info-note">
               <span>
                 <Info size={18} />
               </span>{" "}
@@ -591,8 +621,9 @@ useEffect(() => {
               Please note, a 5% deduction will be made from the total invoice
               value to cover partial freight and packaging costs.
             </p> */}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Address Modal */}
@@ -715,7 +746,7 @@ useEffect(() => {
                 <input
                   name="state"
                   value={newAddress.state}
-                
+
                 />
                 {errors.state && <p className="error">{errors.state}</p>}
               </label>
@@ -726,7 +757,7 @@ useEffect(() => {
                 <input
                   name="city"
                   value={newAddress.city}
-               
+
                 />
                 {errors.city && <p className="error">{errors.city}</p>}
               </label>

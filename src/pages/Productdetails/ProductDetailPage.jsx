@@ -11,8 +11,8 @@ import { Slide, ToastContainer, toast } from "react-toastify";
 import { addToCart } from "../cart/cartSlice";
 import LoginPromptModal from "../../components/LoginModal/LoginPromptModal";
 import {
-addToWishlist,
-removeFromWishlist,
+  addToWishlist,
+  removeFromWishlist,
 } from "../../components/Wishtlist/WishlistSlice";
 import { Player } from "@lottiefiles/react-lottie-player";
 import heartAnimation from "../../assets/icons/Heart.json";
@@ -62,11 +62,11 @@ const ProductDetailPage = () => {
   const { itemSlug } = useParams();
   const productSlug = location.state?.product || itemSlug || null;
   const { data, loading, error } = useSelector((state) => state.productDetail);
-    const imageRef = useRef(null);
+  const imageRef = useRef(null);
   const { pinset, pinloading, pinerror } = useSelector(
     (state) => state.pincode
   );
-  
+
 
   console.log("selectedColor---->", selectedColor);
 
@@ -118,23 +118,23 @@ const ProductDetailPage = () => {
   //   });
   // };
 
-     const handleMouseMove = (e) => {
-  if (!imageRef.current) return;
+  const handleMouseMove = (e) => {
+    if (!imageRef.current) return;
 
-  const rect = e.currentTarget.getBoundingClientRect();
-  const x = ((e.clientX - rect.left) / rect.width) * 100;
-  const y = ((e.clientY - rect.top) / rect.height) * 100;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-  imageRef.current.style.transformOrigin = `${x}% ${y}%`;
-  imageRef.current.style.transform = "scale(1.8)";
-};
+    imageRef.current.style.transformOrigin = `${x}% ${y}%`;
+    imageRef.current.style.transform = "scale(1.8)";
+  };
 
-const handleMouseLeave = () => {
-  if (!imageRef.current) return;
+  const handleMouseLeave = () => {
+    if (!imageRef.current) return;
 
-  imageRef.current.style.transform = "scale(1)";
-  imageRef.current.style.transformOrigin = "center center";
-};
+    imageRef.current.style.transform = "scale(1)";
+    imageRef.current.style.transformOrigin = "center center";
+  };
 
   useEffect(() => {
     if (!data?.id) return;
@@ -165,28 +165,28 @@ const handleMouseLeave = () => {
   }, [data]);
 
   // Scroll tracking (for highlights/description tabs)
- useEffect(() => {
-  const subCat = productDetails?.sub_category_action_url;
+  useEffect(() => {
+    const subCat = productDetails?.sub_category_action_url;
 
-  if (["carpet", "runner"].includes(subCat)) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveTab(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.4 }
-    );
+    if (["carpet", "runner"].includes(subCat)) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActiveTab(entry.target.id);
+            }
+          });
+        },
+        { threshold: 0.4 }
+      );
 
-    Object.values(sectionsRef.current).forEach((section) => {
-      if (section) observer.observe(section);
-    });
+      Object.values(sectionsRef.current).forEach((section) => {
+        if (section) observer.observe(section);
+      });
 
-    return () => observer.disconnect();
-  }
-}, [productDetails?.sub_category_action_url]);
+      return () => observer.disconnect();
+    }
+  }, [productDetails?.sub_category_action_url]);
 
 
   useEffect(() => {
@@ -495,13 +495,13 @@ const handleMouseLeave = () => {
   //   setPincodeChecked(false);
   // };
 
-   const handleReset = () => {
-  dispatch(resetPincodeState());
-  setPincode("");
-  setPincodeChecked(false);
-  setPincodeDetails({});
-  localStorage.removeItem("pincode");
-};
+  const handleReset = () => {
+    dispatch(resetPincodeState());
+    setPincode("");
+    setPincodeChecked(false);
+    setPincodeDetails({});
+    localStorage.removeItem("pincode");
+  };
 
   const selectionColor = (color) => {
     // setSelectedColor(color);
@@ -698,7 +698,7 @@ const handleMouseLeave = () => {
                   alt="Main Product"
                   className="main-image zoom-image"
                   style={zoomStyle}
-                   
+
                 />
               </div>
             )}
@@ -961,7 +961,7 @@ const handleMouseLeave = () => {
                         )}
                       </div>
 
-                      
+
                       {productDetails?.category_action_url === "dustbins" ? (
                         <div className="lbl-track">{size.capacity}</div>
                       ) : productDetails?.category_action_url === "floor-covering" ? (
@@ -1095,47 +1095,47 @@ const handleMouseLeave = () => {
                   </div>
                 </div> */}
 
-  <div className="input-wrapper">
-  <input
-    className="checkup_track_txt"
-    type="text"
-    placeholder="Enter Delivery Pincode"
-    value={pincode}
-    maxLength={6}
-    disabled={isPincodeLocked}
-    onChange={(e) => {
-      if (isPincodeLocked) return;
-      const onlyNums = e.target.value.replace(/\D/g, "");
-      setPincode(onlyNums);
-    }}
-    onKeyDown={(e) => {
-      if (isPincodeLocked) return;
-      if (e.key === "Enter" && pincode.length === 6) {
-        handleCheck();
-      }
-    }}
-  />
+                <div className="input-wrapper">
+                  <input
+                    className="checkup_track_txt"
+                    type="text"
+                    placeholder="Enter Delivery Pincode"
+                    value={pincode}
+                    maxLength={6}
+                    disabled={isPincodeLocked}
+                    onChange={(e) => {
+                      if (isPincodeLocked) return;
+                      const onlyNums = e.target.value.replace(/\D/g, "");
+                      setPincode(onlyNums);
+                    }}
+                    onKeyDown={(e) => {
+                      if (isPincodeLocked) return;
+                      if (e.key === "Enter" && pincode.length === 6) {
+                        handleCheck();
+                      }
+                    }}
+                  />
 
-  <div className="btn-group">
-    {/* Show CHECK only if not verified */}
-    {!isPincodeLocked && (
-      <button
-        onClick={handleCheck}
-        className="check-btn-2"
-        disabled={pinloading || pincode.length !== 6}
-      >
-        {pinloading ? "Checking..." : "Check"}
-      </button>
-    )}
+                  <div className="btn-group">
+                    {/* Show CHECK only if not verified */}
+                    {!isPincodeLocked && (
+                      <button
+                        onClick={handleCheck}
+                        className="check-btn-2"
+                        disabled={pinloading || pincode.length !== 6}
+                      >
+                        {pinloading ? "Checking..." : "Check"}
+                      </button>
+                    )}
 
-    {/* Show RESET only if verified */}
-    {isPincodeLocked && (
-      <button onClick={handleReset} className="rest-btn">
-        Reset
-      </button>
-    )}
-  </div>
-</div>
+                    {/* Show RESET only if verified */}
+                    {isPincodeLocked && (
+                      <button onClick={handleReset} className="rest-btn">
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                </div>
 
                 <div className="root_avl">
                   <div>
@@ -1368,55 +1368,60 @@ const handleMouseLeave = () => {
                   </div>
                 )}
               </div>
+              {!["carpet", "runner"].includes(
+                productDetails?.sub_category_action_url
+              ) && (
+                  <>
+                    {/* SPECIFICATIONS */}
+                    <div div className="pdp-accordion">
+                      <div
+                        className="pdp-accordion-header"
+                        onClick={() => handleToggle("specs")}
+                      >
+                        <h3>SPECIFICATIONS</h3>
+                        <span>{activeSection === "specs" ? "−" : "+"}</span>
+                      </div>
 
-              {/* SPECIFICATIONS */}
-              <div className="pdp-accordion">
-                <div
-                  className="pdp-accordion-header"
-                  onClick={() => handleToggle("specs")}
-                >
-                  <h3>SPECIFICATIONS</h3>
-                  <span>{activeSection === "specs" ? "−" : "+"}</span>
-                </div>
+                      {activeSection === "specs" && (
+                        <div className="pdp-accordion-content">
+                          <table className="pdp-specs-table">
+                            <tbody>
+                              {Object.entries(productDetails.product_info)
+                                .filter(([key]) => key !== "description")
+                                .map(([key, value]) => (
+                                  <tr key={key}>
+                                    <td style={{ textTransform: "capitalize" }}>
+                                      {key.replace(/_/g, " ")}
+                                    </td>
+                                    <td>{value}</td>
+                                  </tr>
+                                ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </div>
 
-                {activeSection === "specs" && (
-                  <div className="pdp-accordion-content">
-                    <table className="pdp-specs-table">
-                      <tbody>
-                        {Object.entries(productDetails.product_info)
-                          .filter(([key]) => key !== "description")
-                          .map(([key, value]) => (
-                            <tr key={key}>
-                              <td style={{ textTransform: "capitalize" }}>
-                                {key.replace(/_/g, " ")}
-                              </td>
-                              <td>{value}</td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </div>
+                    {/* CARE INSTRUCTIONS */}
+                    <div className="pdp-accordion">
+                      <div
+                        className="pdp-accordion-header"
+                        onClick={() => handleToggle("care")}
+                      >
+                        <h3>CARE INSTRUCTIONS</h3>
+                        <span>{activeSection === "care" ? "−" : "+"}</span>
+                      </div>
+
+                      {activeSection === "care" && (
+                        <div className="pdp-accordion-content">
+                          <p className="pdp-care-text">
+                            Transform your space with our luxurious Chamois Carpet...
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </>
                 )}
-              </div>
-
-              {/* CARE INSTRUCTIONS */}
-              <div className="pdp-accordion">
-                <div
-                  className="pdp-accordion-header"
-                  onClick={() => handleToggle("care")}
-                >
-                  <h3>CARE INSTRUCTIONS</h3>
-                  <span>{activeSection === "care" ? "−" : "+"}</span>
-                </div>
-
-                {activeSection === "care" && (
-                  <div className="pdp-accordion-content">
-                    <p className="pdp-care-text">
-                      Transform your space with our luxurious Chamois Carpet...
-                    </p>
-                  </div>
-                )}
-              </div>
             </>
           ) : null}
 
@@ -1424,275 +1429,271 @@ const handleMouseLeave = () => {
         </div>
       </div >
 
+      {
+        ["carpet", "runner"].includes(productDetails?.sub_category_action_url) ? (
+          <>
+            <div className="product-tabs-container">
+              <div className="tabs-bar">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    className={`tab-btn-pdp ${activeTab === tab.id ? "active" : ""}`}
+                    onClick={() => {
+                      setActiveTab(tab.id);
 
+                      const topOffset = 90; // tweak this as needed
+                      const el = sectionsRef.current[tab.id];
+                      if (el) {
+                        const y = el.getBoundingClientRect().top + window.pageYOffset - topOffset;
 
-
-
-      {["carpet", "runner"].includes(productDetails?.sub_category_action_url) ? (
-  <>
-     <>
-          <div className="product-tabs-container">
-            <div className="tabs-bar">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  className={`tab-btn-pdp ${activeTab === tab.id ? "active" : ""}`}
-                  onClick={() => {
-                    setActiveTab(tab.id);
-
-                    const topOffset = 90; // tweak this as needed
-                    const el = sectionsRef.current[tab.id];
-                    if (el) {
-                      const y = el.getBoundingClientRect().top + window.pageYOffset - topOffset;
-
-                      window.scrollTo({
-                        top: y,
-                        behavior: "smooth",
-                      });
-                    }
-                  }}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="track_box_pr">
-              <div className="img_section">
-                <img
-                  src={selectedColor?.product_media[1].media}
-                  alt="Product"
-                  className="highlight-image"
-                />
+                        window.scrollTo({
+                          top: y,
+                          behavior: "smooth",
+                        });
+                      }
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
               </div>
 
-              <div>
-                <div
-                  className="tab-section"
-                  id="highlights"
-                  ref={(el) => (sectionsRef.current["highlights"] = el)}
-                >
-                  <h2 className="tab-section-txt">SPECIFICATIONS:</h2>
-                  <div className="section-txt-pdb">
-                    <strong>Material:</strong>{" "}
-                    <span className="sub-section-pdp">
-                      100% Heat-set Polypropylene
-                    </span>
-                  </div>
-                  <div className="section-txt-pdb">
-                    <strong>Weave:</strong>{" "}
-                    <span className="sub-section-pdp">Power-loomed</span>
-                  </div>
-                  <div className="section-txt-pdb">
-                    <strong>Color:</strong>{" "}
-                    <span className="sub-section-pdp">Soft Blue </span>
-                  </div>
-                  <div className="section-txt-pdb">
-                    <strong>Pile Height:</strong>{" "}
-                    <span className="sub-section-pdp">
-                      {" "}
-                      {`Medium (Approx. 0.5")`}
-                    </span>
-                  </div>
-                  <div className="section-txt-pdb">
-                    <strong>Backing:</strong>{" "}
-                    <span className="sub-section-pdp"> Latex</span>
-                  </div>
-                  <div className="section-txt-pdb">
-                    <strong>Made in:</strong>{" "}
-                    <span className="sub-section-pdp">India </span>
-                  </div>
-                  <div className="section-txt-pdb">
-                    <strong>Available Sizes:</strong>{" "}
-                    <span className="sub-section-pdp">
-                      {" "}
-                      2'3"x3', 3'x5', 5'x7'6", 8'x10', and 9'x12'
-                    </span>
-                  </div>
-                  <div className="feature-grid-section">
-                    <h3 className="tab-section-txt">FEATURES: </h3>
-                    <div className="feature-grid">
-                      <div classname="card-non">
-                        <img
-                          src="https://i.ibb.co/sJWhs530/image-535.png"
-                          alt="Easy"
-                        />
-                        <p className="semi-txt">
-                          EASY TO MAINTAIN
-                          <br />
-                          <span className="sub-text-semi">
-                            Resists stains and everyday wear
-                          </span>
-                        </p>
+              <div className="track_box_pr">
+                <div className="img_section">
+                  <img
+                    src={selectedColor?.product_media[1].media}
+                    alt="Product"
+                    className="highlight-image"
+                  />
+                </div>
+
+                <div>
+                  <div
+                    className="tab-section"
+                    id="highlights"
+                    ref={(el) => (sectionsRef.current["highlights"] = el)}
+                  >
+                    <h2 className="tab-section-txt">SPECIFICATIONS:</h2>
+                    <div className="section-txt-pdb">
+                      <strong>Material:</strong>{" "}
+                      <span className="sub-section-pdp">
+                        100% Heat-set Polypropylene
+                      </span>
+                    </div>
+                    <div className="section-txt-pdb">
+                      <strong>Weave:</strong>{" "}
+                      <span className="sub-section-pdp">Power-loomed</span>
+                    </div>
+                    <div className="section-txt-pdb">
+                      <strong>Color:</strong>{" "}
+                      <span className="sub-section-pdp">Soft Blue </span>
+                    </div>
+                    <div className="section-txt-pdb">
+                      <strong>Pile Height:</strong>{" "}
+                      <span className="sub-section-pdp">
+                        {" "}
+                        {`Medium (Approx. 0.5")`}
+                      </span>
+                    </div>
+                    <div className="section-txt-pdb">
+                      <strong>Backing:</strong>{" "}
+                      <span className="sub-section-pdp"> Latex</span>
+                    </div>
+                    <div className="section-txt-pdb">
+                      <strong>Made in:</strong>{" "}
+                      <span className="sub-section-pdp">India </span>
+                    </div>
+                    <div className="section-txt-pdb">
+                      <strong>Available Sizes:</strong>{" "}
+                      <span className="sub-section-pdp">
+                        {" "}
+                        2'3"x3', 3'x5', 5'x7'6", 8'x10', and 9'x12'
+                      </span>
+                    </div>
+                    <div className="feature-grid-section">
+                      <h3 className="tab-section-txt">FEATURES: </h3>
+                      <div className="feature-grid">
+                        <div classname="card-non">
+                          <img
+                            src="https://i.ibb.co/sJWhs530/image-535.png"
+                            alt="Easy"
+                          />
+                          <p className="semi-txt">
+                            EASY TO MAINTAIN
+                            <br />
+                            <span className="sub-text-semi">
+                              Resists stains and everyday wear
+                            </span>
+                          </p>
+                        </div>
+                        <div className="card-non">
+                          <img
+                            src="https://i.ibb.co/4w7V4QqL/Snowflake-Streamline-Solar-Linear.png"
+                            alt="Soft"
+                          />
+                          <p className="semi-txt">
+                            SOFT UNDERFOOT
+                            <br />
+                            <span className="sub-text-semi">
+                              Comfortable, medium-pile texture{" "}
+                            </span>
+                          </p>
+                        </div>
+                        <div classname="card-non">
+                          <img
+                            src="https://i.ibb.co/6R3CR6DS/Water-Streamline-Solar-Linear.png"
+                            alt="Design"
+                          />
+                          <p className="semi-txt">
+                            VERSATILE DESIGN
+                            <br />
+                            <span className="sub-text-semi">
+                              Blends with modern, classic, or coastal interiors
+                            </span>
+                          </p>
+                        </div>
+                        <div classname="card-non">
+                          <img
+                            src="https://i.ibb.co/6JDjbYsZ/solar-crown-star-linear.png"
+                            alt="Allergy"
+                          />
+                          <p className="semi-txt">
+                            ALLERGY FRIENDLY
+                            <br />
+                            <span className="sub-text-semi">
+                              Synthetic fibers resist dust and allergens{" "}
+                            </span>
+                          </p>
+                        </div>
                       </div>
-                      <div className="card-non">
-                        <img
-                          src="https://i.ibb.co/4w7V4QqL/Snowflake-Streamline-Solar-Linear.png"
-                          alt="Soft"
-                        />
-                        <p className="semi-txt">
-                          SOFT UNDERFOOT
-                          <br />
-                          <span className="sub-text-semi">
-                            Comfortable, medium-pile texture{" "}
-                          </span>
-                        </p>
-                      </div>
-                      <div classname="card-non">
-                        <img
-                          src="https://i.ibb.co/6R3CR6DS/Water-Streamline-Solar-Linear.png"
-                          alt="Design"
-                        />
-                        <p className="semi-txt">
-                          VERSATILE DESIGN
-                          <br />
-                          <span className="sub-text-semi">
-                            Blends with modern, classic, or coastal interiors
-                          </span>
-                        </p>
-                      </div>
-                      <div classname="card-non">
-                        <img
-                          src="https://i.ibb.co/6JDjbYsZ/solar-crown-star-linear.png"
-                          alt="Allergy"
-                        />
-                        <p className="semi-txt">
-                          ALLERGY FRIENDLY
-                          <br />
-                          <span className="sub-text-semi">
-                            Synthetic fibers resist dust and allergens{" "}
-                          </span>
-                        </p>
+                    </div>
+                  </div>
+                  <div
+                    className="tab-section"
+                    id="care"
+                    ref={(el) => (sectionsRef.current["care"] = el)}
+                  >
+                    <h2 className="tab-section-txt">CARE INSTRUCTIONS:</h2>
+                    <ul className="section_care">
+                      <li>Vacuum regularly (avoid beater bar)</li>
+                      <li>Spot clean with mild detergent and water</li>
+                      <li>Avoid soaking for excessive moisture</li>
+                      <li>Rotate every few months for even wear</li>
+                      <li>Safe for homes with children and pets</li>
+                    </ul>
+                  </div>
+
+                  <div
+                    className="tab-section"
+                    id="size-guide"
+                    ref={(el) => (sectionsRef.current["size-guide"] = el)}
+                  >
+                    <h2 className="tab-section-txt">SIZE GUIDE:</h2>
+
+                    <div className="size-guide-block">
+                      {/* Living Room */}
+                      {productDetails?.product_other_info[0]?.size_guide.map((det, idx) => (
+                        <div className="size_sction_root">
+                          <div className="img_track_runner">
+                            <img
+                              className="img-guild-section"
+                              src={det?.media}
+                              alt={det?.title}
+                            />
+                          </div>
+                          <div className="sector_group_txt">
+                            <h4 className="title-size-gid">{det?.title}</h4>
+                            {det?.content?.map((con, idx) => (
+                              <div>
+                                <span className="txt-ft">{con?.size}:</span>{" "}
+                                <span className="txt-ft2">
+                                  {" "}
+                                  {con?.description}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                      <div>
+                        <span className="pp-mc-txt">
+                          Not sure which size fits best? Explore our{" "}
+                          <span className="sub-pp-mc"><Link to="/size-guide" target="_blank" rel="noopener noreferrer">Size Guide</Link></span> to find
+                          your perfect match.
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  className="tab-section"
-                  id="care"
-                  ref={(el) => (sectionsRef.current["care"] = el)}
-                >
-                  <h2 className="tab-section-txt">CARE INSTRUCTIONS:</h2>
-                  <ul className="section_care">
-                    <li>Vacuum regularly (avoid beater bar)</li>
-                    <li>Spot clean with mild detergent and water</li>
-                    <li>Avoid soaking for excessive moisture</li>
-                    <li>Rotate every few months for even wear</li>
-                    <li>Safe for homes with children and pets</li>
+              </div>
+            </div>
+
+            <div className="rec_section">
+              <div className="recommend-good-know">
+                <div className="recommend-section">
+                  <h4>RECOMMENDED FOR</h4>
+                  <ul>
+                    <li>Calm, cozy bedrooms or serene living spaces</li>
+                    <li>Soft underfoot comfort in nurseries or reading nooks</li>
+                    <li>
+                      Homes with a neutral, pastel, or coastal-inspired palette
+                    </li>
+                    <li>Anyone looking to add quiet elegance to their space</li>
                   </ul>
                 </div>
 
-                <div
-                  className="tab-section"
-                  id="size-guide"
-                  ref={(el) => (sectionsRef.current["size-guide"] = el)}
-                >
-                  <h2 className="tab-section-txt">SIZE GUIDE:</h2>
+                <div className="center-image">
+                  <img
+                    src={selectedColor?.product_media[2].media}
+                    alt="Room setting"
+                  />
+                </div>
 
-                  <div className="size-guide-block">
-                    {/* Living Room */}
-                    {productDetails?.product_other_info[0]?.size_guide.map((det, idx) => (
-                      <div className="size_sction_root">
-                        <div className="img_track_runner">
-                          <img
-                            className="img-guild-section"
-                            src={det?.media}
-                            alt={det?.title}
-                          />
-                        </div>
-                        <div className="sector_group_txt">
-                          <h4 className="title-size-gid">{det?.title}</h4>
-                          {det?.content?.map((con, idx) => (
-                            <div>
-                              <span className="txt-ft">{con?.size}:</span>{" "}
-                              <span className="txt-ft2">
-                                {" "}
-                                {con?.description}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+                <div className="good-to-know-section">
+                  <h4>GOOD TO KNOW</h4>
+                  <ul className="custom-tick-list">
+                    <li>
+                      Edges may curl initially; lay flat or reverse-roll to settle
+                    </li>
+                    <li>Color may look different under various lighting</li>
+                    <li>Not recommended for damp areas like bathrooms</li>
+                  </ul>
+                </div>
+
+                <div className="msg_track">
+                  <p className="carpet-note">
+                    <span>
+                      <img
+                        className="image_good"
+                        src="https://i.ibb.co/s9gxd00H/Untitled-Artwork-4-2.png"
+                      />
+                    </span>{" "}
+                    MADE FOR LOW-FUSS LIVING: BECAUSE YOUR CARPET SHOULD WORK WITH
+                    YOUR LIFESTYLE, NOT AGAINST IT.
+                  </p>
+                </div>
+
+                <div className="msg_track-mlb-main" >
+                  <div className="msg_track-mlb">
+
                     <div>
-                      <span className="pp-mc-txt">
-                        Not sure which size fits best? Explore our{" "}
-                        <span className="sub-pp-mc"><Link to="/size-guide" target="_blank" rel="noopener noreferrer">Size Guide</Link></span> to find
-                        your perfect match.
-                      </span>
+                      <img
+                        className="image_good"
+                        src="https://i.ibb.co/s9gxd00H/Untitled-Artwork-4-2.png"
+                      />
+                    </div>{" "}
+                    <div>
+
+                      MADE FOR LOW-FUSS LIVING: BECAUSE YOUR CARPET SHOULD WORK WITH
+                      YOUR LIFESTYLE, NOT AGAINST IT.
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="rec_section">
-            <div className="recommend-good-know">
-              <div className="recommend-section">
-                <h4>RECOMMENDED FOR</h4>
-                <ul>
-                  <li>Calm, cozy bedrooms or serene living spaces</li>
-                  <li>Soft underfoot comfort in nurseries or reading nooks</li>
-                  <li>
-                    Homes with a neutral, pastel, or coastal-inspired palette
-                  </li>
-                  <li>Anyone looking to add quiet elegance to their space</li>
-                </ul>
-              </div>
-
-              <div className="center-image">
-                <img
-                  src={selectedColor?.product_media[2].media}
-                  alt="Room setting"
-                />
-              </div>
-
-              <div className="good-to-know-section">
-                <h4>GOOD TO KNOW</h4>
-                <ul className="custom-tick-list">
-                  <li>
-                    Edges may curl initially; lay flat or reverse-roll to settle
-                  </li>
-                  <li>Color may look different under various lighting</li>
-                  <li>Not recommended for damp areas like bathrooms</li>
-                </ul>
-              </div>
-
-              <div className="msg_track">
-                <p className="carpet-note">
-                  <span>
-                    <img
-                      className="image_good"
-                      src="https://i.ibb.co/s9gxd00H/Untitled-Artwork-4-2.png"
-                    />
-                  </span>{" "}
-                  MADE FOR LOW-FUSS LIVING: BECAUSE YOUR CARPET SHOULD WORK WITH
-                  YOUR LIFESTYLE, NOT AGAINST IT.
-                </p>
-              </div>
-
-              <div className="msg_track-mlb-main" >
-                <div className="msg_track-mlb">
-
-                  <div>
-                    <img
-                      className="image_good"
-                      src="https://i.ibb.co/s9gxd00H/Untitled-Artwork-4-2.png"
-                    />
-                  </div>{" "}
-                  <div>
-
-                    MADE FOR LOW-FUSS LIVING: BECAUSE YOUR CARPET SHOULD WORK WITH
-                    YOUR LIFESTYLE, NOT AGAINST IT.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-  </>
-) : null}
+          </>
+        ) : null
+      }
       {/* Similar Products */}
       <div className="similar-styles-section">
         {localLoading ? (

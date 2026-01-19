@@ -19,7 +19,7 @@ const Breadcrumbs = ({ paths = [] }) => {
             <span className="breadcrumb-separator">
               <ChevronRight size={20} />
             </span>
-            {isLast ? (
+            {!item.to ? (
               <span className="breadcrumb-item active">{item.label}</span>
             ) : (
               <Link to={item.to} className="breadcrumb-item">

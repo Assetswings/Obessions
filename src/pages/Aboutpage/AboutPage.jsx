@@ -9,7 +9,7 @@ import { Lightbulb, Palette, Recycle } from "lucide-react";
 import SplitType from "split-type";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 // Dynamic image 
 import aniimage1 from "../../assets/icons/icon_box_ dynamic.png";
@@ -32,21 +32,17 @@ const items = [
 ];
 
 
-
-
-const AboutPage = () => {
-
+  const AboutPage = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.about);
   const [currentSet, setCurrentSet] = useState(null);
   const [fade, setFade] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-
   console.log(data, 'about us data');
 
 
 
-  useEffect(() => {
+    useEffect(() => {
     if (!data?.description) return;
 
     // GSAP + Plugins
@@ -75,11 +71,11 @@ const AboutPage = () => {
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+    ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, [data]);
 
-  useEffect(() => {
+    useEffect(() => {
     document.title = "Obsession - About Us";
     dispatch(fetchAboutUs());
   }, [dispatch]);
@@ -101,9 +97,13 @@ const AboutPage = () => {
     return () => clearInterval(interval);
   }, []);
 
+      const breadcrumbPaths = [
+    { label: "Blog", to: "" }, // last one (no link)
+  ];
 
   return (
     <>
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="about-wrapper">
         {/* Hero Section */}
         <section

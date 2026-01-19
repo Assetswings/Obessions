@@ -412,7 +412,7 @@ const handleMouseLeave = () => {
             <div className="sector_quick">
               <div
                 className="image_track_quick zoom-container"
-                style={{ width: "100%", minHeight: "536px" }}
+                style={{ width: "100%", minHeight: "400px" }}
                 onMouseMove={selectedMedia !== "video" ? handleMouseMove : null}
                 onMouseLeave={handleMouseLeave}
               >
@@ -423,7 +423,7 @@ const handleMouseLeave = () => {
                     <iframe
                       src={`${selectedColor.video_source}?autoplay=1&mute=1`}
                       width="100%"
-                      style={{height:"550px"}}
+                      style={{height:"400px"}}
                       frameBorder="0"
                       allow="autoplay; encrypted-media"
                       allowFullScreen

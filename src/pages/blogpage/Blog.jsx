@@ -21,16 +21,17 @@ const Blog = () => {
   };
 
   useEffect(() => {
-    document.title = "Obsession - Blog List";
-    BlogList();
+  document.title = "Obsession - Blog List";
+  BlogList();
   }, []);
 
-    const breadcrumbPaths = [
+     const breadcrumbPaths = [
     { label: "Blog", to: "" }, // last one (no link)
-  ];
+    ];
+
   return (
     <>
-    <Breadcrumbs paths={breadcrumbPaths} />
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="blog-container">
         {/* BLOG HEADER */}
         <header className="blog-header">

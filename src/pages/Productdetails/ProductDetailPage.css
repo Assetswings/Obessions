@@ -296,7 +296,7 @@ font-family: "Playfair Display", serif; */
 }
 
 .zoom-image {
-  width: 100%;
+  width: 90%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1),

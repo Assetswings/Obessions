@@ -13,6 +13,8 @@ import emtyimage from "../../assets/images/empty.jpg";
 import ProductQuickViewModal from "../Products/ProductQuickViewModal";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 
+
+
 // Dynamic image
 import aniimage1 from "../../assets/icons/icon_box_ dynamic.png";
 import aniimage2 from "../../assets/icons/icon_home_dynamic.png";
@@ -26,7 +28,6 @@ import { useHeader } from "../../app/CartWishlistContext";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
-
 
 
 const items = [

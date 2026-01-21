@@ -648,8 +648,8 @@ const handleMouseLeave = () => {
                   </div>
                 ) : (
                   <>
-                    <div>
-                     <p>CHOOSE A COLOR :&nbsp;<span style={{ textTransform: "uppercase", fontWeight: "bold" }}>{selectedColor?.color}</span></p>
+                    <div className="color-label-st">
+                     <p>CHOOSE A COLOR :&nbsp;<span style={{ textTransform: "uppercase", fontWeight: "bold" , }}>{selectedColor?.color}</span></p>
                     </div>
                     <div className="color-options">
                       {selectedSize?.product_colors?.map((color, idx) => (

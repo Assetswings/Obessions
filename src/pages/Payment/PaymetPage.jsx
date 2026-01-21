@@ -13,7 +13,7 @@ const PaymentPage = () => {
   const location = useLocation();
   const { orderResponse, orderPayload, checkoutData } = location.state || {};
   const [selectedPayment, setSelectedPayment] = useState(null);
-   const [isProcessing, setIsProcessing] = useState(false); // 🔥 NEW
+  const [isProcessing, setIsProcessing] = useState(false); // 🔥 NEW
   console.log(orderResponse?.data?.business_details?.gst_number);
 
   // Default selection logic
@@ -45,7 +45,7 @@ const PaymentPage = () => {
         return;
       }
 
-           setIsProcessing(true); // 🔥 START LOADING
+      setIsProcessing(true); // 🔥 START LOADING
       // Step 1: Call initiate API
       let payload = {
         ref_id: orderResponse?.data?.ref_id,
@@ -56,7 +56,7 @@ const PaymentPage = () => {
       // return false;
       const orderData = await initiatePayment(payload);
       if (!orderData?.success) {
-          setIsProcessing(false);
+        setIsProcessing(false);
         toast.error(orderData?.message, {
           style: {
             borderRadius: "inherit",
@@ -118,7 +118,7 @@ const PaymentPage = () => {
   ];
   return (
     <>
-      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
+      <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <Breadcrumbs paths={breadcrumbPaths} />
       <div className="root-title-chk">
         <h2 className="title_chk">Payment</h2>
@@ -142,17 +142,18 @@ const PaymentPage = () => {
                 <p className="price_details">
                   ₹{item.product.selling_price}{" "}
                   <>
-                          <span className="sub-1">
-                            <de>₹{item.product?.mrp}</de> &nbsp;
-                            <span className="dis-sub">
-                              (-{item.product?.discount}%)
-                            </span>
-                          </span>
-                        </>
+                    <span className="sub-1">
+                      <de>₹{item.product?.mrp}</de> &nbsp;
+                      <span className="dis-sub">
+                        (-{item.product?.discount}%)
+                      </span>
+                    </span>
+                  </>
                 </p>
-                <p className="item-size">
-                  Size: <span>{item.product.size}</span>
-                </p>
+                {
+                  item.product?.size === "0 cm" ? null : <p className="item-size">Size : {item.product?.size}</p>
+                }
+
                 <p>
                   Color:{" "}
                   <span className={`color-${item.product.color.toLowerCase()}`}>
@@ -172,27 +173,27 @@ const PaymentPage = () => {
             {/* calculation */}
             <div className="price-summary">
 
-                 <div className="trackvel">
+              <div className="trackvel">
                 <div className="txt_title_cal">TOTAL MRP</div>
                 <div>₹{checkoutData?.data?.subtotal}</div>
               </div>
 
 
-      
+
               <div className="trackvel">
                 <div className="txt_title_cal">
-                  Discount On MRP 
+                  Discount On MRP
                 </div>
                 <div>-₹{checkoutData?.data?.applied_coupon[0]?.discount}</div>
               </div>
 
-        <div className="trackvel">
+              <div className="trackvel">
                 <div className="txt_title_cal">
-                 Coupon
+                  Coupon
                 </div>
                 <div>  <span className="coupon">
-                    {checkoutData?.data?.applied_coupon[0]?.coupon_code}
-                  </span>{" "}</div>
+                  {checkoutData?.data?.applied_coupon[0]?.coupon_code}
+                </span>{" "}</div>
               </div>
 
               <div className="trackvel">
@@ -203,13 +204,13 @@ const PaymentPage = () => {
                 <div className="txt_title_cal">ROUND OFF</div>
                 <div>₹{checkoutData?.data?.order_total_roundoff}</div>
               </div> */}
-            
+
               <div className="breaker_global">
                 <hr />
               </div>
               <div className="trackvel">
                 <div className="txt_title_cal">
-                   Total Amount 
+                  Total Amount
                 </div>
                 <div>
                   ₹{checkoutData?.data?.order_total}
@@ -292,40 +293,40 @@ const PaymentPage = () => {
               ))}
             </div>
           </div>
-        <p className="terms">
-  Before proceed further you can review{" "}
-  <a href="/tc-of-sale" target="_blank" rel="noopener noreferrer">
-    <span style={{color:'black', fontWeight:'bold'}}> <u>Terms & Conditions of Sale</u> </span> 
-  </a>{" "}
-  and{" "}
-  <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
-      <span style={{color:'black', fontWeight:'bold'}}> <u>Privacy Policy</u> </span>  
-  </a>
-</p>
+          <p className="terms">
+            Before proceed further you can review{" "}
+            <a href="/tc-of-sale" target="_blank" rel="noopener noreferrer">
+              <span style={{ color: 'black', fontWeight: 'bold' }}> <u>Terms & Conditions of Sale</u> </span>
+            </a>{" "}
+            and{" "}
+            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
+              <span style={{ color: 'black', fontWeight: 'bold' }}> <u>Privacy Policy</u> </span>
+            </a>
+          </p>
           <div className="root_track">
             {/* <button onClick={startPayment} className="payment-btn">
               CONTINUE TO PAYMENT
             </button> */}
 
-      <button
-    className="payment-btn"
-  onClick={startPayment}
-  disabled={isProcessing}
-  type="button"
->
-  {isProcessing ? (
-    <>
-      <span
-        className="spinner-border spinner-border-sm me-2"
-        role="status"
-        aria-hidden="true"
-      ></span>
-      Processing...
-    </>
-  ) : (
-    "CONTINUE TO PAYMENT"
-  )}
-</button>
+            <button
+              className="payment-btn"
+              onClick={startPayment}
+              disabled={isProcessing}
+              type="button"
+            >
+              {isProcessing ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Processing...
+                </>
+              ) : (
+                "CONTINUE TO PAYMENT"
+              )}
+            </button>
 
           </div>
           {/* <div className="root_track">
@@ -345,7 +346,7 @@ const PaymentPage = () => {
               </span>
             </div>
             <div>
-              <p style={{ fontSize: "12px", color:"#7C7C7C" }}>If a product doesn’t meet your expectations, we’re happy to
+              <p style={{ fontSize: "12px", color: "#7C7C7C" }}>If a product doesn’t meet your expectations, we’re happy to
                 offer a refund for the product value.
                 Please note, a 5% deduction will be made from the total invoice
                 value to cover partial freight and packaging costs.</p>

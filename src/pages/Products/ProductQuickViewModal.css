@@ -171,6 +171,9 @@
   z-index: 1000;
   width: 100%;
 }
+.color-label-st{
+  margin-bottom: 10px;
+}
 
 /* .add-cart-section {
   display: flex;

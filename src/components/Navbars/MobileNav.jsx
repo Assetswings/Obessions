@@ -45,6 +45,9 @@ const MobileNav = () => {
   const [searchData, setSearchData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [mergedCategories, setmergedCategories] = useState([]);
+  const NavsetImage = data[0]?.media;
+
+
   useEffect(() => {
     const hero_banner_categories = JSON.parse(localStorage.getItem('hero_banner_categories') || '[]');
     setmergedCategories(hero_banner_categories);
@@ -238,7 +241,6 @@ const MobileNav = () => {
       </header>
 
       <Mobileansbar />
-
       <div className={`drawer ${isOpen ? "open" : ""}`}>
         <div className="drawer-header">
 
@@ -301,7 +303,7 @@ const MobileNav = () => {
 
             {/* 🔥 Image after all text content */}
             <div className="drawer-image">
-              <img src={newsdrwimage} alt="Menu Banner" />
+            <img src={NavsetImage} alt="Menu Banner" />
             </div>
           </div>
 
@@ -363,7 +365,6 @@ const MobileNav = () => {
       </div>
 
       {isOpen && <div className="overlay" onClick={toggleDrawer}></div>}
-
       {showWishlist && <WishlistModal onClose={() => setShowWishlist(false)} />}
       {showLoginPrompt && (
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />

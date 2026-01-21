@@ -999,8 +999,8 @@ const ProductDetailPage = () => {
               </div>
             ) : selectedSize?.product_colors?.length > 0 ? (
               <>
-                <div>
-                  <p>CHOOSE A COLOR :&nbsp;<span style={{ textTransform: "uppercase", fontWeight: "bold" }}>{selectedColor?.color}</span></p>
+                <div className="color-label-st" >
+                  <p>CHOOSE A COLOR :&nbsp;<span style={{ textTransform: "uppercase", fontWeight: "bold",marginBottom:"10px" }}>{selectedColor?.color}</span></p>
                 </div>
                 <div className="color-options">
                   {selectedSize?.product_colors?.map((color, idx) => (

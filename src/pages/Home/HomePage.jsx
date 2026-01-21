@@ -13,8 +13,6 @@ import emtyimage from "../../assets/images/empty.jpg";
 import ProductQuickViewModal from "../Products/ProductQuickViewModal";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 
-
-
 // Dynamic image
 import aniimage1 from "../../assets/icons/icon_box_ dynamic.png";
 import aniimage2 from "../../assets/icons/icon_home_dynamic.png";
@@ -79,7 +77,7 @@ const HomePage = () => {
   const topRef = useRef(null);
 
 
-    useEffect(() => {
+  useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         // When section is visible => hide icon
@@ -114,24 +112,24 @@ const HomePage = () => {
     dispatch(fetchHomeData());
   }, [dispatch]);
 
-useEffect(() => {
-  if (!data?.hero_banners) return;
+  useEffect(() => {
+    if (!data?.hero_banners) return;
 
-  const setsFromAPI = Object.values(data.hero_banners);
+    const setsFromAPI = Object.values(data.hero_banners);
 
-  // Keep only sets that have all 4 sequences
-  const validSets = setsFromAPI.filter((set) => {
-    if (!Array.isArray(set)) return false;
-    const sequences = set.map(img => img.sequence);
-    return sequences.includes(1) && sequences.includes(2) && sequences.includes(3) && sequences.includes(4);
-  });
+    // Keep only sets that have all 4 sequences
+    const validSets = setsFromAPI.filter((set) => {
+      if (!Array.isArray(set)) return false;
+      const sequences = set.map(img => img.sequence);
+      return sequences.includes(1) && sequences.includes(2) && sequences.includes(3) && sequences.includes(4);
+    });
 
-  console.log("✅ Valid hero sets saved:", validSets.length);
+    console.log("✅ Valid hero sets saved:", validSets.length);
 
-  if (validSets.length) {
-    localStorage.setItem("hero_all_sets", JSON.stringify(validSets));
-  }
-}, [data]);
+    if (validSets.length) {
+      localStorage.setItem("hero_all_sets", JSON.stringify(validSets));
+    }
+  }, [data]);
 
 
   const handleSearch = () => {
@@ -171,7 +169,6 @@ useEffect(() => {
 
 
 
-
   // scale image
   useEffect(() => {
     // ✅ disable on tablet & mobile
@@ -181,11 +178,11 @@ useEffect(() => {
     if (!obsessionSection || !obsessionImage) return;
     const START_WIDTH = 75;  // %
     const END_WIDTH = 135;   // %
-      const onScroll = () => {
+    const onScroll = () => {
       const rect = obsessionSection.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       let progress =
-    (windowHeight - rect.top) / (windowHeight + rect.height);
+        (windowHeight - rect.top) / (windowHeight + rect.height);
 
 
       progress = Math.max(0, Math.min(1, progress));
@@ -285,10 +282,10 @@ useEffect(() => {
 
 
   function formatLabel(key) {
-  return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   }
 
-  
+
   //🖼️ Image fetcing for LIVE_THE_ART_OF_HOME
   const images_live_art = data?.banners?.LIVE_THE_ART_OF_HOME || [];
   const leftImage = images_live_art.find((img) => img.sequence === 1)?.media;
@@ -326,20 +323,20 @@ useEffect(() => {
     setShowModal(true);
   };
 
-useEffect(() => {
-  const cachedSets = localStorage.getItem("hero_all_sets");
-  if (!cachedSets) return;
+  useEffect(() => {
+    const cachedSets = localStorage.getItem("hero_all_sets");
+    if (!cachedSets) return;
 
-  const sets = JSON.parse(cachedSets);
-  if (!sets.length) return;
+    const sets = JSON.parse(cachedSets);
+    if (!sets.length) return;
 
-  // pick a random set every time you enter the page
-  let index = Math.floor(Math.random() * sets.length);
-  localStorage.setItem("hero_set_index", index);
+    // pick a random set every time you enter the page
+    let index = Math.floor(Math.random() * sets.length);
+    localStorage.setItem("hero_set_index", index);
 
-  setSetIndex(index);
-  setCurrentSet(sets[index]);
-}, [location.key]); // reruns whenever you navigate pages
+    setSetIndex(index);
+    setCurrentSet(sets[index]);
+  }, [location.key]); // reruns whenever you navigate pages
 
   const renderImages = (set, extraClass = "") => {
     if (!set) return null;

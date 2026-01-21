@@ -280,9 +280,6 @@ p {
     justify-content: space-between;
   }
 
-  .track_social {
-    display: none;
-  }
 
   .track_social-mlb {
     display: inline;

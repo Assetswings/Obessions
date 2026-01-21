@@ -329,13 +329,11 @@ font-family: "Playfair Display", serif; */
 }
 
 .color-options {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 items per row */
   gap: 10px;
-  width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;      /* Firefox */
+  width: 50%;
 }
-
 .color-options::-webkit-scrollbar {
   display: none;             /* Chrome, Safari */
 }
@@ -508,6 +506,12 @@ font-family: "Playfair Display", serif; */
     /* margin-bottom: 15px; */
     padding: 0px;
   }
+   .color-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 5 items per row */
+  gap: 10px;
+  width: 50%;
+}
 
 }
 
@@ -877,7 +881,7 @@ font-family: "Playfair Display", serif; */
 .product-img-box img {
   width: 100%;
   mix-blend-mode: darken;
-  max-height: 240px;
+  max-height: 350px;
 }
 
 .wishlist-btn {
@@ -1104,15 +1108,19 @@ font-family: "Playfair Display", serif; */
   }
 
   .product-price {
-    font-size: 12px;
-    font-weight: 600;
-    position: relative;
-    top: 0px;
+        font-size: 12px;
+        font-weight: 600;
+        position: relative;
+        top: 0px;
+        display: flex;
+        align-items: center;
   }
 
   .product-price .discount {
     font-size: 12px;
-    margin-left: 0px;
+   position: relative;
+    bottom: 2px;
+    left: 2px;
   }
 }
 

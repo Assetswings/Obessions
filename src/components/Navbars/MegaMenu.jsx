@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMegamenuData } from "./megamenuSlice";
 import { Link, useNavigate } from "react-router-dom";
 
-const MegaMenu = ({ closeMenu }) => {
+  const MegaMenu = ({ closeMenu }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -14,9 +14,10 @@ const MegaMenu = ({ closeMenu }) => {
 
   const menuList = Array.isArray(data) ? data : [];
   const activeSection = menuList[activeSectionIndex];
+  console.log("MegaMenu data:::::::::::::--------->", data);
 
-  useEffect(() => {
-    dispatch(fetchMegamenuData());
+     useEffect(() => {
+     dispatch(fetchMegamenuData());
   }, [dispatch]);
 
   useEffect(() => {
@@ -80,9 +81,8 @@ const MegaMenu = ({ closeMenu }) => {
 
         {/* RIGHT: Image */}
         <div className="mega-menu-right">
-          <img src={activeSection.media} alt={activeSection.name} />
+        <img src={activeSection.media} alt={activeSection.name} />
         </div>
-
         {/* Close Button */}
         {/* <button className="close-btn" onClick={closeMenu}>
           ×

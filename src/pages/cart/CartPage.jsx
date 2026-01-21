@@ -246,7 +246,11 @@ const CartPage = () => {
                         </>
                     
                   </span>
-                  <p className="item-size">Size : {item.product?.size}</p>
+
+                    {
+                    item.product?.size === "0 cm"? null  : <p className="item-size">Size : {item.product?.size}</p>
+                   }
+                   
                   <p>
                     Color : <span>{item.product?.color}</span>{" "}
                   </p>

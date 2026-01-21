@@ -376,9 +376,13 @@ const CheckoutPage = () => {
                     <span className="dis-sub">{`(-${item.product.discount}%)`}</span>{" "}
                   </span> */}
                   </p>
-                  <p className="item-size">
+                  {/* <p className="item-size">
                     Size: {item.product.size}
-                  </p>
+                  </p> */}
+                     {
+                    item.product?.size === "0 cm"? null  : <p className="item-size">Size : {item.product?.size}</p>
+                   }
+                   
                   <p>
                     Color:{" "}
                     <span className={`color-${item.product.color.toLowerCase()}`}>

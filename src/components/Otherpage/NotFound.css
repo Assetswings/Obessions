@@ -23,12 +23,12 @@
 }
 
 .notfound-404 span {
-  font-size: 96px;
+  font-size: 145px;
   line-height: 1;
 }
 
 .notfound-icon {
-  width: 70px;
+  width: 145px;
   height: auto;
 }
 
@@ -77,4 +77,13 @@
   .notfound-content p {
     font-size: 13px;
   }
+   .notfound-container {
+    min-height: 79vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    padding: 20px;
+    box-sizing: border-box;
+}
 }

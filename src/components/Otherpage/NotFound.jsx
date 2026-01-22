@@ -1,7 +1,7 @@
 import React from "react";
 import "./NotFound.css";
 import { Link } from "react-router-dom";
-
+import bin from "../../assets/images/Bin.png";
 const NotFound = ({ onGoHome }) => {
   return (
     <div className="notfound-container">
@@ -9,7 +9,7 @@ const NotFound = ({ onGoHome }) => {
         <div className="notfound-404">
           <span>4</span>
           <img
-            src="/trash-bin.png"
+            src={bin}
             alt="404 icon"
             className="notfound-icon"
           />

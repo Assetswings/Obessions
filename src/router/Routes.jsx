@@ -39,6 +39,8 @@ import StyleGuide from "../pages/Styleguid/StyleGuide";
 import TrackOrder from "../pages/Trackorder/TrackOrder";
 import CancelSuccess from "../pages/CancelOrder/CancelSuccess";
 import ReturnExchangeSuccess from "../pages/ReturnExchange/ReturnExchangeSuccess";
+import NotFound from "../components/Otherpage/NotFound";
+import NoInternet from "../components/Otherpage/NoInternet";
 const AppRoutes = () => {
   return (
     // <ScrollToTopWrapper>
@@ -91,6 +93,8 @@ const AppRoutes = () => {
           <Route path="style-guide" element={<SizeGuide/>} />
           <Route path="size-guide" element={<StyleGuide/>} />
           <Route path="track-order" element={<TrackOrder/>} />
+          <Route path="not-found" element={<NotFound/>} />
+          <Route path="NoInternet" element={<NoInternet/>} />
         </Route>
       </Routes>
     // </ScrollToTopWrapper>

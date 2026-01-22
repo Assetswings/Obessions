@@ -1,5 +1,6 @@
 import React from "react";
 import "./NotFound.css";
+import { Link } from "react-router-dom";
 
 const NotFound = ({ onGoHome }) => {
   return (
@@ -21,7 +22,7 @@ const NotFound = ({ onGoHome }) => {
         </p>
 
         <button className="home-btn" onClick={onGoHome}>
-          GO BACK TO HOME →
+          <Link to='/'>GO BACK TO HOME →</Link>
         </button>
       </div>
     </div>

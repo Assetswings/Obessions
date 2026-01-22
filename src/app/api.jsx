@@ -1,40 +1,55 @@
 import axios from "axios";
+
 const API = axios.create({
   baseURL: "https://apis-staging.obsessions.co.in/v1",
   headers: {
-    "Content-Type": "application/json",
-  },
+    "Content-Type": "application/json"
+  }
 });
 
-// Interceptor to attach token from localStorage or Redux
+// REQUEST INTERCEPTOR
 API.interceptors.request.use(
   (config) => {
+    // 🚫 stop request if offline
+    if (!navigator.onLine) {
+      return Promise.reject({ isOffline: true });
+    }
+
     const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => Promise.reject(error)
 );
 
+// RESPONSE INTERCEPTOR
 API.interceptors.response.use(
   (response) => response,
   (error) => {
+    // 🔐 AUTH ERRORS
     if (
       error.response &&
-      (error.response.status === 401 || error.response.status === 403) && // check both
-      (
-        error.response.data?.message === "Invalid authentication token." ||
-        error.response.data?.message === "Token is Expired" ||
-        error.response.data?.message === "Token is Invalid" ||
-        error.response.data?.message === "No token provided." ||
-        error.response.data?.message === "Authorization Token not found"
-      )
+      [401, 403].includes(error.response.status) &&
+      [
+        "Invalid authentication token.",
+        "Token is Expired",
+        "Token is Invalid",
+        "No token provided.",
+        "Authorization Token not found"
+      ].includes(error.response.data?.message)
     ) {
       localStorage.clear();
       window.location.href = "/login";
     }
+
+    // ❌ PAGE ERRORS
+    if (error.response && [404, 500].includes(error.response.status)) {
+      window.location.href = "/not-found";
+    }
+
     return Promise.reject(error);
   }
 );

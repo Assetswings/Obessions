@@ -1,0 +1,80 @@
+.notfound-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.notfound-content {
+  text-align: center;
+  max-width: 480px;
+}
+
+.notfound-404 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 700;
+  color: #111;
+}
+
+.notfound-404 span {
+  font-size: 96px;
+  line-height: 1;
+}
+
+.notfound-icon {
+  width: 70px;
+  height: auto;
+}
+
+.notfound-content h2 {
+  font-size: 22px;
+  margin-top: 20px;
+  color: #111;
+}
+
+.notfound-content p {
+  font-size: 14px;
+  color: #777;
+  margin: 8px 0 24px;
+}
+
+.home-btn {
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+  cursor: pointer;
+  border-bottom: 1px solid #111;
+  padding-bottom: 2px;
+  transition: opacity 0.2s ease;
+}
+
+.home-btn:hover {
+  opacity: 0.6;
+}
+
+/* 📱 Mobile tweaks */
+@media (max-width: 480px) {
+  .notfound-404 span {
+    font-size: 72px;
+  }
+
+  .notfound-icon {
+    width: 55px;
+  }
+
+  .notfound-content h2 {
+    font-size: 18px;
+  }
+
+  .notfound-content p {
+    font-size: 13px;
+  }
+}

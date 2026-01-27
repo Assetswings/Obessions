@@ -66,10 +66,10 @@ const ProductsPage = () => {
   const rangeStart = total === 0 ? 0 : (currentPage - 1) * limit + 1;
   const rangeEnd = Math.min(currentPage * limit, total);
 
-      useEffect(() => {
-       if (loading) {
-       setDataReady(true);   // still fetching
-       return;
+  useEffect(() => {
+    if (loading) {
+      setDataReady(true);   // still fetching
+      return;
     }
     if (Array.isArray(data)) {
       setProducts(data);
@@ -86,10 +86,11 @@ const ProductsPage = () => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
     const urlFilters = getFiltersFromURL(location.search);
+    setSelectedFilters({});    
     setSelectedFilters(urlFilters);
-  }, []);
+  }, [location.pathname]);
 
-  const getFiltersFromURL = (search) => {
+  const getFiltersFromURL = (search) => {    
     const params = new URLSearchParams(search);
     const filters = {};
     for (const [key, value] of params.entries()) {
@@ -99,6 +100,7 @@ const ProductsPage = () => {
         ? decoded.split(",").map(v => v.trim())
         : [decoded];
     }
+    
     return filters;
   };
 
@@ -126,7 +128,7 @@ const ProductsPage = () => {
   //   getbestsellerBanner();
   // }, [dispatch]);
 
-   const getPLPbotton = async () => {
+  const getPLPbotton = async () => {
     try {
       const res = await API.get("banners/product-listing-bottom");
       if (res.data.status === 200) {
@@ -138,7 +140,7 @@ const ProductsPage = () => {
     }
   };
 
-    const getbestsellerBanner = async () => {
+  const getbestsellerBanner = async () => {
     try {
       const res = await API.get("bestsellers/banner");
       if (res.data.status === 200) {
@@ -151,7 +153,7 @@ const ProductsPage = () => {
   };
 
 
-    const handlePageChange = (page) => {
+  const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
       // 👇 Scroll smoothly to the top after changing page
@@ -164,7 +166,7 @@ const ProductsPage = () => {
     }
   };
 
-    const handleFilterChange = (filterKey, value) => {
+  const handleFilterChange = (filterKey, value) => {
     setSelectedFilters((prev) => {
       const current = prev[filterKey] || [];
       const updated = current.includes(value)
@@ -174,9 +176,9 @@ const ProductsPage = () => {
       const newFilters = { ...prev, [filterKey]: updated };
       return newFilters;
     });
-    };
+  };
 
-    useEffect(() => {
+  useEffect(() => {
     const params = new URLSearchParams();
     Object.entries(selectedFilters).forEach(([key, values]) => {
       if (Array.isArray(values) && values.length > 0) {
@@ -191,12 +193,12 @@ const ProductsPage = () => {
   }, [selectedFilters]);
 
 
-    const toggleWishlist = async (e, product) => {
+  const toggleWishlist = async (e, product) => {
     toast.dismiss();
     e.stopPropagation();
     if (!isLoggedIn) {
-    setShowLoginPrompt(true);
-    return;
+      setShowLoginPrompt(true);
+      return;
     }
 
     const isInWishlist = product.is_wishlisted;
@@ -780,7 +782,7 @@ const ProductsPage = () => {
                   );
                 })}
 
-              
+
                 {/* 🔹 REMAINING PRODUCTS */}
                 {products.slice(10).map((item, index) => {
                   const isWishlisted = item.is_wishlisted;

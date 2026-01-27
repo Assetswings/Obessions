@@ -106,21 +106,45 @@ const Otherpage = () => {
     getPLPbotton();
   }, []);
 
-  useEffect(() => {
-    if (slug) {
-      dispatch({ type: "otherproduct/clear" });
-      setProducts([]);
-      dispatch(
-        fetchOtherProducts({
-          slug,
-          page: currentPage,
-          limit: 40,
-          filters: selectedFilters,
-        })
-      );
-    }
-         getbestsellerBanner();
-  }, [dispatch, slug, selectedFilters, currentPage]);
+  // useEffect(() => {
+  //   if (slug) {
+  //     dispatch({ type: "otherproduct/clear" });
+  //     setProducts([]);
+  //     dispatch(
+  //       fetchOtherProducts({
+  //         slug,
+  //         page: currentPage,
+  //         limit: 40,
+  //         filters: selectedFilters,
+  //       })
+  //     );
+  //   }
+  //        getbestsellerBanner();
+  // }, [dispatch, slug, selectedFilters, currentPage]);
+
+   useEffect(() => {
+  if (!slug) return;
+
+  const timer = setTimeout(() => {
+    dispatch({ type: "otherproduct/clear" });
+    setProducts([]);
+
+    dispatch(
+      fetchOtherProducts({
+        slug,
+        page: currentPage,
+        limit: 40,
+        filters: selectedFilters || {},
+      })
+    );
+
+    getbestsellerBanner();
+  }, 400);
+
+  return () => clearTimeout(timer);
+
+}, [slug, selectedFilters, currentPage]);
+
 
     const getbestsellerBanner = async () => {
     try {

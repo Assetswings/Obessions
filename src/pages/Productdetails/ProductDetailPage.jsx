@@ -69,6 +69,7 @@ const ProductDetailPage = () => {
 
 
   console.log("selectedColor---->", selectedColor);
+  console.log("selectedSize 00000---->", selectedSize);
 
   useEffect(() => {
     document.title = "Obsession - Products Details ";

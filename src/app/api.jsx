@@ -46,10 +46,9 @@ API.interceptors.response.use(
     }
 
     // ❌ PAGE ERRORS
-    if (error.response && [404, 500].includes(error.response.status)) {
+    if (error.response && [404].includes(error.response.status)) {
       window.location.href = "/not-found";
     }
-
     return Promise.reject(error);
   }
 );

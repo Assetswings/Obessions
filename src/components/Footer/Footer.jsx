@@ -299,7 +299,7 @@ const Footer = () => {
 
       {/* Bottom */}
       <div className="footer-bottom">
-        <p>© 2025 obsessions.co.in | All Rights Reserved</p>
+        <p>© 2026 obsessions.co.in | All Rights Reserved</p>
         <div className="payments">
           <img className="img_tracker_footer" src={marstrcards} alt="Visa" />
         </div>

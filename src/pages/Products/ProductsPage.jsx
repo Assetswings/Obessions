@@ -65,17 +65,33 @@ const ProductsPage = () => {
   const totalPages = Math.ceil(total / limit);
   const rangeStart = total === 0 ? 0 : (currentPage - 1) * limit + 1;
   const rangeEnd = Math.min(currentPage * limit, total);
+  const [hasFetchedOnce, setHasFetchedOnce] = useState(false);
 
-  useEffect(() => {
-    if (loading) {
-      setDataReady(true);   // still fetching
-      return;
-    }
-    if (Array.isArray(data)) {
-      setProducts(data);
-      setDataReady(false);    // API DONE + state set
-    }
-  }, [data, loading]);
+  // useEffect(() => {
+  //   if (loading) {
+  //     setDataReady(true);   // still fetching
+  //     return;
+  //   }
+  //   if (Array.isArray(data)) {
+  //     setProducts(data);
+  //     setDataReady(false);    // API DONE + state set
+  //   }
+  // }, [data, loading]);
+
+   useEffect(() => {
+  if (!hasFetchedOnce) return; // ⭐ BLOCK first render
+
+  if (loading) {
+    setDataReady(true);
+    return;
+  }
+
+  if (Array.isArray(data)) {
+    setProducts(data);
+    setDataReady(false);
+  }
+}, [data, loading, hasFetchedOnce]);
+
 
   useEffect(() => {
     setCurrentPage(1);
@@ -86,11 +102,11 @@ const ProductsPage = () => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
     const urlFilters = getFiltersFromURL(location.search);
-    setSelectedFilters({});    
+    setSelectedFilters({});
     setSelectedFilters(urlFilters);
   }, [location.pathname]);
 
-  const getFiltersFromURL = (search) => {    
+  const getFiltersFromURL = (search) => {
     const params = new URLSearchParams(search);
     const filters = {};
     for (const [key, value] of params.entries()) {
@@ -100,27 +116,53 @@ const ProductsPage = () => {
         ? decoded.split(",").map(v => v.trim())
         : [decoded];
     }
-    
+
     return filters;
   };
 
-  useEffect(() => {
-    if (category) {
-      setProducts([]);
-      dispatch(
-        fetchProducts({
-          category,
-          subcategory,
-          page: currentPage,
-          limit: 40,
-          filters: selectedFilters,
-        })
-      );
-      dispatch(fetchTopPicks());
+  // useEffect(() => {
+  //   if (category) {
+  //     setProducts([]);
+  //     dispatch(
+  //       fetchProducts({
+  //         category,
+  //         subcategory,
+  //         page: currentPage,
+  //         limit: 40,
+  //         filters: selectedFilters,
+  //       })
+  //     );
+  //     dispatch(fetchTopPicks());
+  //     getPLPbotton();
+  //     getbestsellerBanner();
+  //   }
+  // }, [dispatch, category, subcategory, selectedFilters, currentPage]);
+
+ useEffect(() => {
+  if (!category) return;
+
+  const timer = setTimeout(() => {
+    setDataReady(true);
+    setHasFetchedOnce(true);
+
+    dispatch(
+      fetchProducts({
+        category,
+        subcategory,
+        page: currentPage,
+        limit: 40,
+        filters: selectedFilters || {},
+      })
+    );
+         dispatch(fetchTopPicks());
       getPLPbotton();
       getbestsellerBanner();
-    }
-  }, [dispatch, category, subcategory, selectedFilters, currentPage]);
+  }, 400);
+
+  return () => clearTimeout(timer);
+}, [category, subcategory, selectedFilters, currentPage]);
+
+
 
   // useEffect(() => {
   //   dispatch(fetchTopPicks());

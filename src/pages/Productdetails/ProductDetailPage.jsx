@@ -1048,7 +1048,7 @@ const ProductDetailPage = () => {
                     −
                   </button>
                   <span className="order_track_count">{quantity}</span>
-                  <button onClick={() => setQuantity((q) => q + 1)}>+</button>
+                  <button className="qty-inc" onClick={() => setQuantity((q) => q + 1)} disabled={quantity >= selectedSize?.stock}>+</button>
                 </>
               )}
             </div>
@@ -1183,7 +1183,7 @@ const ProductDetailPage = () => {
               </>
             ) : (
               <>
-                <button className="add-to-cart-btn" onClick={handleAddToCart}>
+                <button className="add-to-cart-btn" onClick={handleAddToCart} disabled={quantity > selectedSize?.stock}>
                   ADD TO CART
                 </button>
                 <div

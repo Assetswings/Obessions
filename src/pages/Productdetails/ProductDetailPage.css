@@ -1445,3 +1445,12 @@ ul.custom-tick-list li::before {
     margin-bottom: 40px;
   }
 }
+
+.add-to-cart-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.qty-inc:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

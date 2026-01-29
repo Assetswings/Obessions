@@ -703,7 +703,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     <div className="qty-control">
                       <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>−</button>
                       <span className="order_track_count">{quantity}</span>
-                      <button onClick={() => setQuantity((q) => q + 1)}>+</button>
+                      <button className="qty-inc" onClick={() => setQuantity((q) => q + 1)} disabled={quantity >= selectedSize?.stock}>+</button>
                     </div>
                   </>
                 )}
@@ -789,7 +789,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                     </>
                   ) : (
                     <>
-                      <button className="add-to-cart-btn_qucick" onClick={handleAddToCart}>
+                      <button className="add-to-cart-btn_qucick" onClick={handleAddToCart} disabled={quantity > selectedSize?.stock}>
                         ADD TO CART
                       </button>
                       <div className="wst_box_quick pointer-crusser" onClick={(e) => toggleWishlist(e, selectedSize)}>

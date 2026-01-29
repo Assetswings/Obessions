@@ -192,3 +192,7 @@
 
   background:red;
 }
+.add-to-cart-btn_qucick:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

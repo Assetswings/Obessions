@@ -516,9 +516,11 @@ const ProductDetailPage = () => {
   const handleToggle = (section) => {
     setActiveSection(prev => (prev === section ? null : section));
   };
+ const shortText = (text, limit = 13) =>
+  text?.length > limit ? text.slice(0, limit) + "..." : text;
   const breadcrumbPaths = [
     { label: data?.sub_category_action_url, to: `/products/${data?.category_action_url}/${data?.sub_category_action_url}` },
-    // { label: 'Product Details', to: "" }, // last one (no link)
+    { label: shortText(selectedSize?.name), to: "" }, // last one (no link)
   ];
 
   // Build full product URL (works with #/ hash routing)

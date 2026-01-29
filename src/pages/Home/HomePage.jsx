@@ -62,7 +62,9 @@ const HomePage = () => {
   const [currentSet, setCurrentSet] = useState(null);
   const [nextSet, setNextSet] = useState(null);
   const [setIndex, setSetIndex] = useState(null);
-
+  const [logo, setLogo] = useState(() => {
+    return localStorage.getItem("logo") || null;
+  });
 
   const [fade, setFade] = useState(false);
   const { data } = useSelector((state) => state.home);
@@ -159,10 +161,14 @@ const HomePage = () => {
       if (data?.hero_banner_categories) {
         localStorage.setItem('hero_banner_categories', JSON.stringify(data?.hero_banner_categories));
       }
-      if (data?.logo_content) {
-        localStorage.setItem('logo', data?.logo_content?.logo);
-        localStorage.setItem('favicon', data?.logo_content?.favicon);
-        setFavicon(data?.logo_content?.favicon);
+      if (data?.logo_content?.logo) {
+        localStorage.setItem("logo", data.logo_content.logo);
+        setLogo(data.logo_content.logo);
+      }
+
+      if (data?.logo_content?.favicon) {
+        localStorage.setItem("favicon", data.logo_content.favicon);
+        setFavicon(data.logo_content.favicon);
       }
     }
   }, [data]);
@@ -508,7 +514,11 @@ const HomePage = () => {
       <div className="spacer_track"></div>
       {/* ───────────────────── HERO ───────────────────── */}
       <div className="homepage container-fluid position-relative p-5">
-        <img src={data?.logo_content?.logo} className="img-left-logo" alt="Obesession" />
+        <img
+          src={logo || obslogo}
+          className="img-left-logo"
+          alt="Obsession"
+        />
         <h1 className="display-1 bold position-absolute obsessions-text">
           obsessions
         </h1>

@@ -380,3 +380,57 @@
     display: none;
   }
 }
+
+.bestseller-fixed-card {
+    width: 220px;
+    background: white;
+    font-family: "Playfair Display", serif;
+    font-size: 1.5rem;
+    padding: 1rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    min-height: 330px;
+    position: absolute;
+    z-index: 999;
+}
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+    .bestseller-fixed-card {
+        left: 16%;
+    }
+}
+
+/* Laptop (1200px – 1439px) */
+@media (min-width: 1200px) and (max-width: 1352px) {
+    .bestseller-fixed-card {
+        left: 12%;
+    }
+}
+
+@media (min-width: 1251px) and (max-width: 1352px) {
+    .bestseller-fixed-card {
+        left:20%;
+    }
+}
+
+/* Tablet (768px – 1199px) */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .bestseller-fixed-card {
+        left: 6%;
+    }
+}
+
+/* Mobile (≤767px) */
+@media (max-width: 767px) {
+    .bestseller-fixed-card {
+        position: static;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (min-width: 1352px) and (max-width: 960px) {
+    .bestseller-fixed-card {
+        left: 12%;
+    }
+}

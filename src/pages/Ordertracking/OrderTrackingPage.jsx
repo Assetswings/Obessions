@@ -23,6 +23,8 @@ const OrderTrackingPage = () => {
   const { results, loading, error } = useSelector((state) => state.orders);
   // console.log('url order no',orderNo, order_no);
 
+  
+
   const order = results[0]; // ✅ take first order safely
   const trackingUpdates = [
     { label: "Order Placed", time: null, status: "done", type: "major" },
@@ -200,9 +202,10 @@ const OrderTrackingPage = () => {
           </div>
 
           {order.order_items?.map((item, i) => (
+             <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer"> 
             <div className="product-item" key={i}>
               <div className="track_checkbox">
-                <input
+                {/* <input
                   type="checkbox"
                   checked={selectedItem.some((it) => it.itemId === item.id)}
                   onChange={(e) => {
@@ -255,7 +258,7 @@ const OrderTrackingPage = () => {
                       if (selectedItem.length === 1) setSelectedOrder(null); // reset if last removed
                     }
                   }}
-                />
+                /> */}
               </div>
 
               <img src={item.product_media} alt={item.product_name} />
@@ -272,6 +275,7 @@ const OrderTrackingPage = () => {
                 </div>
               </div>
             </div>
+             </Link>
           ))}
 
           {/* Exchange Modal */}
@@ -321,7 +325,8 @@ const OrderTrackingPage = () => {
               </div>
             </div>
           )}
-          <div style={{ padding: "10px", display:"flex", justifyContent:"space-between" }}>
+             <Link to={order?.invoice_url} target="_blank" rel="noopener noreferrer">
+               <div style={{ padding: "10px", display:"flex", justifyContent:"space-between" }}>
             <div>
               <span>
                 View Invoice
@@ -331,6 +336,8 @@ const OrderTrackingPage = () => {
               <ChevronRight />
             </div>
           </div>
+             </Link>
+         
           <div className="price-details">
             <div>
               <span>Sub Total</span>

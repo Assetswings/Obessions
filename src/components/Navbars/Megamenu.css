@@ -162,3 +162,34 @@
   .other-nav-offset .mega-menu {
     top: calc(100% + 20px); /* move it a little lower */
   }
+
+   .mega-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+.mega-backdrop {
+  position: absolute;
+  inset: 0;
+  /* background: rgba(0, 0, 0, 0.45); */
+}
+.mega-menu-content {
+  position: relative;
+  background: #ffffff;
+  height: 88vh;
+  width: 100%;
+  display: flex;
+  overflow-y: auto;          
+  overscroll-behavior: contain; 
+}
+
+ .mega-menu-content-duo{
+  position: relative;
+  background: #ffffff;
+  height: 90vh;
+  width: 100%;
+  display: flex;
+  overflow-y: auto;          
+  overscroll-behavior: contain; 
+
+ }

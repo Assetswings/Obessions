@@ -10,7 +10,6 @@ import SplitType from "split-type";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
-
 // Dynamic image 
 import aniimage1 from "../../assets/icons/icon_box_ dynamic.png";
 import aniimage2 from "../../assets/icons/icon_home_dynamic.png";
@@ -41,10 +40,8 @@ const items = [
   console.log(data, 'about us data');
 
 
-
     useEffect(() => {
     if (!data?.description) return;
-
     // GSAP + Plugins
       gsap.registerPlugin(ScrollTrigger);
       const elements = document.querySelectorAll(".reveal-type");
@@ -81,7 +78,7 @@ const items = [
   }, [dispatch]);
 
 
-  useEffect(() => {
+    useEffect(() => {
     const interval = setInterval(() => {
       setFade(true);
 

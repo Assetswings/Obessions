@@ -24,6 +24,7 @@ const LoginPage = () => {
   const mobileRef = useRef(null);
   const otpRef = useRef(null);
   const loginstep = localStorage.getItem('loginstep');
+   
 
   useEffect(() => {
     if (loginstep) {
@@ -39,7 +40,12 @@ const LoginPage = () => {
     } else if (step === 2 && otpRef.current) {
       otpRef.current.focus();
     }
+     const token = localStorage.getItem("token");
+    if(token){
+      navigate("/")
+    }
   }, [step]);
+
 
   useEffect(() => {
     if (step === 2 && timer > 0) {
@@ -47,6 +53,7 @@ const LoginPage = () => {
       return () => clearInterval(interval);
     }
   }, [step, timer]);
+
 
   const isValidMobile = (number) => /^[0-9]{10}$/.test(number.trim());
   const isValidEmail = (email) =>

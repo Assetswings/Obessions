@@ -95,6 +95,7 @@ const AppRoutes = () => {
           <Route path="track-order" element={<TrackOrder/>} />
           <Route path="not-found" element={<NotFound/>} />
           <Route path="NoInternet" element={<NoInternet/>} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     // </ScrollToTopWrapper>

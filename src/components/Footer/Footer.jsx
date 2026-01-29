@@ -7,6 +7,9 @@ import { RiInstagramLine } from "react-icons/ri";
 import API from "../../app/api";
 import { Link, useNavigate } from "react-router-dom";
 import rightarrow from "../../assets/icons/Vector.svg";
+import phone from "../../assets/icons/phone.svg";
+import gmail from "../../assets/icons/mail.svg";
+import address from "../../assets/icons/address.svg";
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -250,7 +253,7 @@ const Footer = () => {
             {/* <p>A. {CONTACT_US?.address}</p> */}
             <div style={{ display: "flex", gap: "10px" }}>
               <div>
-                <p>A.</p>
+                <p><img src={address} alt="Address" style={{ width: "18px", height: "18px" }} /></p>
               </div>
               <div>
                 <p> {CONTACT_US?.address}</p>
@@ -259,7 +262,7 @@ const Footer = () => {
             {/* <p>T. <a href={`tel:${CONTACT_US?.phone}`}>{CONTACT_US?.phone}</a></p> */}
             <div style={{ display: "flex", gap: "10px" }}>
               <div>
-                <p>T.</p>
+                <p><img src={phone} alt="Phone" style={{ width: "18px", height: "18px" }} /></p>
               </div>
               <div>
                 <p style={{width:"100%"}}> <a href={`tel:${CONTACT_US?.phone}`}>{CONTACT_US?.phone}</a></p>
@@ -268,7 +271,7 @@ const Footer = () => {
             {/* <p> E. <a href={`mailto:${CONTACT_US?.email}`}>{CONTACT_US?.email}</a></p> */}
             <div style={{ display: "flex", gap: "10px" }}>
               <div>
-                <p>E.</p>
+                <p><img src={gmail } alt="email" style={{ width: "18px", height: "18px" }} /></p>
               </div>
               <div>
                 <p><a href={`mailto:${CONTACT_US?.email}`}><u>{CONTACT_US?.email}</u></a></p>

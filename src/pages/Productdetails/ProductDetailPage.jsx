@@ -945,9 +945,10 @@ const ProductDetailPage = () => {
                       className={`size-btn ${selectedSize?.id === size.id ? "active-size" : ""
                         }`}
                       onClick={() => {
+                        if (selectedSize?.id === size.id) return; // 👈 same size, do nothing
                         setSelectedSize(size);
                         sizeSelection(size);
-                        //  setQuantity(1);
+                        setQuantity(1); // reset ONLY when size actually changes
                       }}
                     >
                       <div className="set_btn_trcak">
@@ -1001,7 +1002,7 @@ const ProductDetailPage = () => {
             ) : selectedSize?.product_colors?.length > 0 ? (
               <>
                 <div className="color-label-st" >
-                  <p>CHOOSE A COLOR :&nbsp;<span style={{ textTransform: "uppercase", fontWeight: "bold",marginBottom:"10px" }}>{selectedColor?.color}</span></p>
+                  <p>CHOOSE A COLOR :&nbsp;<span style={{ textTransform: "uppercase", fontWeight: "bold", marginBottom: "10px" }}>{selectedColor?.color}</span></p>
                 </div>
                 <div className="color-options">
                   {selectedSize?.product_colors?.map((color, idx) => (
@@ -1010,9 +1011,10 @@ const ProductDetailPage = () => {
                         }`}
                       key={idx}
                       onClick={() => {
+                        if (selectedColor?.id === color.id) return;
                         setSelectedColor(color);
                         selectionColor(color);
-                        // setQuantity(1);
+                        setQuantity(1);
                       }}
                     >
                       <div className="color-circle pointer-crusser">

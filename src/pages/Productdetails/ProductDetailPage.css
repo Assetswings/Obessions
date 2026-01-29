@@ -106,7 +106,7 @@ font-family: "Playfair Display", serif; */
 
 
 .product-info .title {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 400;
   margin-bottom: 0.2rem;
   color: #111;
@@ -114,6 +114,7 @@ font-family: "Playfair Display", serif; */
   text-wrap: auto;
   width: 205px;
   font-family: "Helvetica Neue", sans-serif;
+  text-transform: capitalize;
 }
 
 .thumbnail {
@@ -246,7 +247,7 @@ font-family: "Playfair Display", serif; */
     border: 1.5px solid #ccc;
     background: none;
     cursor: pointer;
-       width: 135px;
+       width: 140px;
     align-items: center;
 }
 
@@ -881,7 +882,8 @@ font-family: "Playfair Display", serif; */
 .product-img-box img {
   width: 100%;
   mix-blend-mode: darken;
-  max-height: 350px;
+  height: 260px;
+  object-fit: contain;
 }
 
 .wishlist-btn {

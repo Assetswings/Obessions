@@ -298,7 +298,7 @@ const Carpetfinderserch = () => {
 
     return (
       <div className="custom-filter-group" key="categories">
-        <h4>Other Categories</h4>
+        <h4>Categories</h4>
         {/* <label>
           <span className="txt_checkbox">{categories.name}</span>
         </label> */}

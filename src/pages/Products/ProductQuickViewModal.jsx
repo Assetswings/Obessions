@@ -42,7 +42,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const [similarStyle, setSimilarStyle] = useState([]);
   const [matchingFound, setMatchingFound] = useState([]);
   const [pincodeDetails, setPincodeDetails] = useState({});
-  const [zoomStyle, setZoomStyle] = useState({});  
+  const [zoomStyle, setZoomStyle] = useState({});
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [unit, setUnit] = useState("cm");
   const imageRef = useRef(null);
@@ -107,22 +107,22 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
 
 
   useEffect(() => {
-  if (data?.product_sizes?.length > 0) {
-    const firstColor = data.product_sizes[0].product_colors[0];
-    const firstMedia = firstColor?.product_media?.[0]?.media;
+    if (data?.product_sizes?.length > 0) {
+      const firstColor = data.product_sizes[0].product_colors[0];
+      const firstMedia = firstColor?.product_media?.[0]?.media;
 
-    setSelectedSize(data.product_sizes[0]);
-    setSelectedColor(firstColor);
-    setSelectedImage(firstMedia);
-    setSelectedMedia(firstMedia); // 🔥 IMPORTANT
+      setSelectedSize(data.product_sizes[0]);
+      setSelectedColor(firstColor);
+      setSelectedImage(firstMedia);
+      setSelectedMedia(firstMedia); // 🔥 IMPORTANT
 
-    setLocalLoading(false);
-  }
-}, [data]);
+      setLocalLoading(false);
+    }
+  }, [data]);
 
   useEffect(() => {
-  setQuantity(1);
-}, [actionurl]); // or product?.id
+    setQuantity(1);
+  }, [actionurl]); // or product?.id
 
   // Scroll tracking (for highlights/description tabs)
   useEffect(() => {
@@ -143,22 +143,22 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   }, []);
 
   const handleMouseMove = (e) => {
-  if (!imageRef.current) return;
+    if (!imageRef.current) return;
 
-  const rect = e.currentTarget.getBoundingClientRect();
-  const x = ((e.clientX - rect.left) / rect.width) * 100;
-  const y = ((e.clientY - rect.top) / rect.height) * 100;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-  imageRef.current.style.transformOrigin = `${x}% ${y}%`;
-  imageRef.current.style.transform = "scale(1.8)";
-};
+    imageRef.current.style.transformOrigin = `${x}% ${y}%`;
+    imageRef.current.style.transform = "scale(1.8)";
+  };
 
-const handleMouseLeave = () => {
-  if (!imageRef.current) return;
+  const handleMouseLeave = () => {
+    if (!imageRef.current) return;
 
-  imageRef.current.style.transform = "scale(1)";
-  imageRef.current.style.transformOrigin = "center center";
-};
+    imageRef.current.style.transform = "scale(1)";
+    imageRef.current.style.transformOrigin = "center center";
+  };
 
   // Price dynamics solution
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
@@ -209,13 +209,13 @@ const handleMouseLeave = () => {
   //   setPincodeChecked(false);
   // };
 
-   const handleReset = () => {
-  dispatch(resetPincodeState());
-  setPincode("");
-  setPincodeChecked(false);
-  setPincodeDetails({});
-  localStorage.removeItem("pincode");
-};
+  const handleReset = () => {
+    dispatch(resetPincodeState());
+    setPincode("");
+    setPincodeChecked(false);
+    setPincodeDetails({});
+    localStorage.removeItem("pincode");
+  };
 
   // ADD TO CART FUNCTION (restricted until pincode check success)
   const handleAddToCart = () => {
@@ -376,10 +376,20 @@ const handleMouseLeave = () => {
       toast.error("Something went wrong");
     }
   };
-  const selectionColor = (color) => {
-    // setSelectedColor(color);
-    setSelectedImage(color?.product_media[0]?.media);
-  };
+  // const selectionColor = (color) => {
+  //   // setSelectedColor(color);
+  //   setSelectedImage(color?.product_media[0]?.media);
+  // };
+
+
+   const selectionColor = (color) => {
+  const firstMedia = color?.product_media?.[0]?.media;
+
+  setSelectedColor(color);
+  setSelectedMedia(firstMedia); // 🔥 THIS is the key
+  setSelectedImage(firstMedia); // optional but safe
+};
+
   const sizeSelection = (size) => {
     setSelectedColor(size?.product_colors[0]);
     setSelectedImage(size?.product_colors[0]?.product_media[0]?.media);
@@ -391,132 +401,130 @@ const handleMouseLeave = () => {
         style={{ zIndex: 9999999999999 }}
         autoClose={3000}
       /> */}
-   <div className="quickview-modal-overlay" onClick={handleOutsideClick}>
-      <div className="quickview-modal" ref={modalRef}>
-        <div className="quickview-header">
-          <div />
-          <div
-            className="close-icon"
-            onClick={() => {
-              onHide();
-              closediloug();
-            }}
-          >
-            ×
+      <div className="quickview-modal-overlay" onClick={handleOutsideClick}>
+        <div className="quickview-modal" ref={modalRef}>
+          <div className="quickview-header">
+            <div />
+            <div
+              className="close-icon"
+              onClick={() => {
+                onHide();
+                closediloug();
+              }}
+            >
+              ×
+            </div>
           </div>
-        </div>
 
-        <div className="product-page">
-          {/* ================== GALLERY ================== */}
-          <div className="product-gallery">
-            <div className="sector_quick">
-              <div
-                className="image_track_quick zoom-container"
-                style={{ width: "100%", minHeight: "400px" }}
-                onMouseMove={selectedMedia !== "video" ? handleMouseMove : null}
-                onMouseLeave={handleMouseLeave}
-              >
-                {loading || !selectedMedia ? (
-                  <Skeleton height={630} width="100%" />
-                ) : selectedMedia === "video" ? (
-                  selectedColor?.video_source?.includes("youtube") ? (
-                    <iframe
-                      src={`${selectedColor.video_source}?autoplay=1&mute=1`}
-                      width="100%"
-                      style={{height:"400px"}}
-                      frameBorder="0"
-                      allow="autoplay; encrypted-media"
-                      allowFullScreen
-                    />
-                  ) : (
-                    <video
-                      controls
-                      autoPlay
-                      muted
-                   
-                    >
-                      <source
-                        src={selectedColor?.video_source}
-                        type="video/mp4"
+          <div className="product-page">
+            {/* ================== GALLERY ================== */}
+            <div className="product-gallery">
+              <div className="sector_quick">
+                <div
+                  className="image_track_quick zoom-container"
+                  style={{ width: "100%", minHeight: "400px" }}
+                  onMouseMove={selectedMedia !== "video" ? handleMouseMove : null}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  {loading || !selectedMedia ? (
+                    <Skeleton height={630} width="100%" />
+                  ) : selectedMedia === "video" ? (
+                    selectedColor?.video_source?.includes("youtube") ? (
+                      <iframe
+                        src={`${selectedColor.video_source}?autoplay=1&mute=1`}
+                        width="100%"
+                        style={{ height: "455px" }}
+                        frameBorder="0"
+                        allow="autoplay; encrypted-media"
+                        allowFullScreen
                       />
-                    </video>
-                  )
-                ) : (
-                  <img
-                    src={selectedMedia}
-                      ref={imageRef}
-                    alt="Product"
-                    className="main-image zoom-image"
-                    style={{
-                      ...zoomStyle,
-                      mixBlendMode: "darken",
-                      objectFit: "cover",
-                    }}
-                  />
-                )}
-              </div>
+                    ) : (
+                      <video
+                        controls
+                        autoPlay
+                        muted
 
-              {/* ================== THUMBNAILS ================== */}
-              <div className="thumbnail-row">
-                {localLoading
-                  ? Array(4)
+                      >
+                        <source
+                          src={selectedColor?.video_source}
+                          type="video/mp4"
+                        />
+                      </video>
+                    )
+                  ) : (
+                    <img
+                      src={selectedMedia}
+                      ref={imageRef}
+                      alt="Product"
+                      className="main-image zoom-image"
+                      style={{
+                        ...zoomStyle,
+                        mixBlendMode: "darken",
+                        objectFit: "cover",
+                      }}
+                    />
+                  )}
+                </div>
+
+                {/* ================== THUMBNAILS ================== */}
+                <div className="thumbnail-row">
+                  {localLoading
+                    ? Array(4)
                       .fill(0)
                       .map((_, i) => (
                         <Skeleton key={i} height={70} width={70} />
                       ))
-                  : selectedColor?.product_media?.map((img, i) => (
+                    : selectedColor?.product_media?.map((img, i) => (
                       <img
                         key={i}
                         src={img.media}
-                        className={`thumbnail ${
-                          selectedMedia === img.media ? "selected-thumb" : ""
-                        }`}
+                        className={`thumbnail ${selectedMedia === img.media ? "selected-thumb" : ""
+                          }`}
                         onClick={() => setSelectedMedia(img.media)}
                       />
                     ))}
 
-                {selectedColor?.video_source && (
-                  <div
-                    className={`thumbnail video-thumb ${
-                      selectedMedia === "video" ? "selected-thumb" : ""
-                    }`}
-                    onClick={() => setSelectedMedia("video")}
-                  >
-                    <img
-                      src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
-                      alt="video"
-                    />
-                    <span className="thumb-overlay">▶</span>
-                  </div>
-                )}
+                  {selectedColor?.video_source && (
+                    <div
+                      className={`thumbnail video-thumb ${selectedMedia === "video" ? "selected-thumb" : ""
+                        }`}
+                      onClick={() => setSelectedMedia("video")}
+                    >
+                      <img
+                        src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
+                        alt="video"
+                      />
+                      <span className="thumb-overlay">▶</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Product Info */}
+            {/* Product Info */}
             <div className="product-info">
               <h1 className="title_details">
                 {loading ? <Skeleton width={200} /> : selectedSize?.name}
               </h1>
 
-             <p className="price_details">
-  {loading ? (
-    <Skeleton width={120} />
-  ) : (
-    <>
-      ₹{currentPrice}{" "}
-      {selectedSize?.mrp && selectedSize?.discount > 0 && (
-        <span className="sub-1">
-          <del>₹{selectedSize.mrp}</del> &nbsp;
-          <span className="dis-sub">
-            {selectedSize.discount}% OFF
-          </span>{" "}
-          (Inclusive of all taxes)
-        </span>
-      )}
-    </>
-  )}
-</p>
+              <p className="price_details">
+                {loading ? (
+                  <Skeleton width={120} />
+                ) : (
+                  <>
+                    ₹{currentPrice}{" "}
+                    {selectedSize?.mrp && selectedSize?.discount > 0 && (
+                      <span className="sub-1">
+                        <del>₹{selectedSize.mrp}</del> &nbsp;
+                        <span className="dis-sub">
+                          {selectedSize.discount}% OFF
+                        </span>{" "}
+                        (Inclusive of all taxes)
+                      </span>
+                    )}
+                  </>
+                )}
+              </p>
 
               <p className="id_tracker">
                 {loading ? (
@@ -525,118 +533,119 @@ const handleMouseLeave = () => {
                   `SKU: ${selectedSize?.sku}`
                 )}
               </p>
-             
 
-                 <div className="size-selector">
-                          {localLoading ? (
-                            <>
-                              <p>
-                                <Skeleton width={150} />
-                              </p>
-                              <div style={{ display: "flex", gap: 10 }}>
-                                {Array(3)
-                                  .fill(0)
-                                  .map((_, i) => (
-                                    <Skeleton key={i} width={60} height={60} />
-                                  ))}
+
+              <div className="size-selector">
+                {localLoading ? (
+                  <>
+                    <p>
+                      <Skeleton width={150} />
+                    </p>
+                    <div style={{ display: "flex", gap: 10 }}>
+                      {Array(3)
+                        .fill(0)
+                        .map((_, i) => (
+                          <Skeleton key={i} width={60} height={60} />
+                        ))}
+                    </div>
+                  </>
+                ) : productDetails?.product_sizes?.length > 0 && selectedSize.size !== "NA" ? (
+                  <>
+                    {productDetails?.category_action_url === "dustbins" ? (
+                      <p className="selected-size-label">
+                        CHOOSE A CAPACITY:&nbsp;
+                        {selectedSize && <strong>{selectedSize.capacity}</strong>}
+                      </p>
+                    ) : productDetails?.category_action_url === "floor-covering" ? (
+                      <p className="selected-size-label">
+                        CHOOSE A SIZE :&nbsp;
+                        {selectedSize && (
+                          <strong>
+                            {unit === "cm"
+                              ? selectedSize.size
+                              : unit === "ft"
+                                ? selectedSize.size_in_feet
+                                : ""}
+                          </strong>
+                        )}
+
+                      </p>
+                    ) : (
+                      <p className="selected-size-label">
+                        CHOOSE A SIZE :&nbsp;
+                        {selectedSize && <strong>{selectedSize.size}</strong>}
+                      </p>
+                    )}
+                    {productDetails?.sub_category_action_url === "carpet" ? (
+                      <div className="unit-toggle">
+                        <button
+                          className={unit === "cm" ? "active" : ""}
+                          onClick={() => setUnit("cm")}
+                        >
+                          Cm
+                        </button>
+
+                        <button
+                          className={unit === "ft" ? "active" : ""}
+                          onClick={() => setUnit("ft")}
+                        >
+                          Feet
+                        </button>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                    <div className="size-options">
+                      {productDetails.product_sizes.map((size) => (
+                        <div
+                          key={size.id}
+                          className={`size-btn ${selectedSize?.id === size.id ? "active-size" : ""
+                            }`}
+                          onClick={() => {
+                            if (selectedSize?.id === size.id) return;
+                            setSelectedSize(size);
+                            sizeSelection(size);
+                            setQuantity(1);
+                          }}
+                        >
+                          <div className="set_btn_trcak">
+                            {size?.size_vector_media ? (
+                              <img
+                                src={size?.size_vector_media}
+                                className="size-image"
+                                alt={size.size}
+                              />
+                            ) : (
+                              <></>
+                            )}
+                          </div>
+
+
+                          {productDetails?.category_action_url === "dustbins" ? (
+                            <div className="lbl-track">{size.capacity}</div>
+                          ) : productDetails?.category_action_url === "floor-covering" ? (
+                            selectedSize && (
+                              <div className="lbl-track">
+                                {unit === "cm"
+                                  ? size.size
+                                  : unit === "ft"
+                                    ? size.size_in_feet
+                                    : ""}
                               </div>
-                            </>
-                          ) : productDetails?.product_sizes?.length > 0 && selectedSize.size !== "NA" ? (
-                            <>
-                              {productDetails?.category_action_url === "dustbins" ? (
-                                <p className="selected-size-label">
-                                  CHOOSE A CAPACITY:&nbsp;
-                                  {selectedSize && <strong>{selectedSize.capacity}</strong>}
-                                </p>
-                              ) : productDetails?.category_action_url === "floor-covering" ? (
-                                <p className="selected-size-label">
-                                  CHOOSE A SIZE :&nbsp;
-                                  {selectedSize && (
-                                    <strong>
-                                      {unit === "cm"
-                                        ? selectedSize.size
-                                        : unit === "ft"
-                                          ? selectedSize.size_in_feet
-                                          : ""}
-                                    </strong>
-                                  )}
-              
-                                </p>
-                              ) : (
-                                <p className="selected-size-label">
-                                  CHOOSE A SIZE :&nbsp;
-                                  {selectedSize && <strong>{selectedSize.size}</strong>}
-                                </p>
-                              )}
-                              {productDetails?.sub_category_action_url === "carpet" ? (
-                                <div className="unit-toggle">
-                                  <button
-                                    className={unit === "cm" ? "active" : ""}
-                                    onClick={() => setUnit("cm")}
-                                  >
-                                    Cm
-                                  </button>
-              
-                                  <button
-                                    className={unit === "ft" ? "active" : ""}
-                                    onClick={() => setUnit("ft")}
-                                  >
-                                    Feet
-                                  </button>
-                                </div>
-                              ) : (
-                                <></>
-                              )}
-                              <div className="size-options">
-                                {productDetails.product_sizes.map((size) => (
-                                  <div
-                                    key={size.id}
-                                    className={`size-btn ${selectedSize?.id === size.id ? "active-size" : ""
-                                      }`}
-                                    onClick={() => {
-                                      setSelectedSize(size);
-                                      sizeSelection(size);
-                                      // setQuantity(1);
-                                    }}
-                                  >
-                                    <div className="set_btn_trcak">
-                                      {size?.size_vector_media ? (
-                                        <img
-                                          src={size?.size_vector_media}
-                                          className="size-image"
-                                          alt={size.size}
-                                        />
-                                      ) : (
-                                        <></>
-                                      )}
-                                    </div>
-              
-                                    
-                                    {productDetails?.category_action_url === "dustbins" ? (
-                                      <div className="lbl-track">{size.capacity}</div>
-                                    ) : productDetails?.category_action_url === "floor-covering" ? (
-                                      selectedSize && (
-                                        <div className="lbl-track">
-                                          {unit === "cm"
-                                            ? size.size
-                                            : unit === "ft"
-                                              ? size.size_in_feet
-                                              : ""}
-                                        </div>
-                                      )
-                                    ) : (
-                                      <div className="lbl-track">{size.size}</div>
-                                    )}
-                                  </div>
-                                ))}
-                              </div>
-                            </>
+                            )
                           ) : (
-                            // <Skeleton count={2} />
-                            <></>
+                            <div className="lbl-track">{size.size}</div>
                           )}
                         </div>
-              
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  // <Skeleton count={2} />
+                  <></>
+                )}
+              </div>
+
               <div className="color-selector">
                 {loading ? (
                   <div style={{ display: "flex", gap: "10px" }}>
@@ -649,7 +658,7 @@ const handleMouseLeave = () => {
                 ) : (
                   <>
                     <div className="color-label-st">
-                     <p>CHOOSE A COLOR :&nbsp;<span style={{ textTransform: "uppercase", fontWeight: "bold" , }}>{selectedColor?.color}</span></p>
+                      <p>CHOOSE A COLOR :&nbsp;<span style={{ textTransform: "uppercase", fontWeight: "bold", }}>{selectedColor?.color}</span></p>
                     </div>
                     <div className="color-options">
                       {selectedSize?.product_colors?.map((color, idx) => (
@@ -657,10 +666,12 @@ const handleMouseLeave = () => {
                           className={`selected-color ${selectedColor?.id === color.id ? "active-size" : ""
                             }`}
                           key={idx}
-                          onClick={() => {
-                            setSelectedColor(color);
-                            selectionColor(color);
-                          }}
+                         onClick={() => {
+                        if (selectedColor?.id === color.id) return;
+                        setSelectedColor(color);
+                        selectionColor(color);
+                        setQuantity(1);
+                      }}
                         >
                           <div className="color-circle">
                             <img
@@ -709,44 +720,44 @@ const handleMouseLeave = () => {
                     <p className="check-heading">CHECK AVAILABILITY</p>
                     <div className="input-wrapper-quick-2">
                       <input
-    className="checkup_track_txt"
-    type="text"
-    placeholder="Enter Delivery Pincode"
-    value={pincode}
-    maxLength={6}
-    disabled={isPincodeLocked}
-    onChange={(e) => {
-      if (isPincodeLocked) return;
-      const onlyNums = e.target.value.replace(/\D/g, "");
-      setPincode(onlyNums);
-    }}
-    onKeyDown={(e) => {
-      if (isPincodeLocked) return;
-      if (e.key === "Enter" && pincode.length === 6) {
-        handleCheck();
-      }
-    }}
-  />
+                        className="checkup_track_txt"
+                        type="text"
+                        placeholder="Enter Delivery Pincode"
+                        value={pincode}
+                        maxLength={6}
+                        disabled={isPincodeLocked}
+                        onChange={(e) => {
+                          if (isPincodeLocked) return;
+                          const onlyNums = e.target.value.replace(/\D/g, "");
+                          setPincode(onlyNums);
+                        }}
+                        onKeyDown={(e) => {
+                          if (isPincodeLocked) return;
+                          if (e.key === "Enter" && pincode.length === 6) {
+                            handleCheck();
+                          }
+                        }}
+                      />
 
-  <div className="btn-group">
-    {/* Show CHECK only if not verified */}
-    {!isPincodeLocked && (
-      <button
-        onClick={handleCheck}
-        className="check-btn-2"
-        disabled={pinloading || pincode.length !== 6}
-      >
-        {pinloading ? "Checking..." : "Check"}
-      </button>
-    )}
+                      <div className="btn-group">
+                        {/* Show CHECK only if not verified */}
+                        {!isPincodeLocked && (
+                          <button
+                            onClick={handleCheck}
+                            className="check-btn-2"
+                            disabled={pinloading || pincode.length !== 6}
+                          >
+                            {pinloading ? "Checking..." : "Check"}
+                          </button>
+                        )}
 
-    {/* Show RESET only if verified */}
-    {isPincodeLocked && (
-      <button onClick={handleReset} className="rest-btn">
-        Reset
-      </button>
-    )}
-  </div>
+                        {/* Show RESET only if verified */}
+                        {isPincodeLocked && (
+                          <button onClick={handleReset} className="rest-btn">
+                            Reset
+                          </button>
+                        )}
+                      </div>
 
                     </div>
                     {pinloading && <p>Checking...</p>}
@@ -859,9 +870,9 @@ const handleMouseLeave = () => {
                 )}
               </div> */}
             </div>
+          </div>
         </div>
       </div>
-    </div>
       {showLoginPrompt && (
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}

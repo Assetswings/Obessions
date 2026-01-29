@@ -71,10 +71,11 @@ const Otherpage = () => {
   const [customerfavourite, setCustomerfavourite] = useState();
   const [dataReady, setDataReady] = useState(true);
   const [bestsellerfav, setBestsellerFav] = useState();
-
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
   const totalPages = Math.ceil(total / limit);
+  const [hasFetchedOnce, setHasFetchedOnce] = useState(false);
+
 
   const rangeStart = total === 0 ? 0 : (currentPage - 1) * limit + 1;
   const rangeEnd = Math.min(currentPage * limit, total);
@@ -90,7 +91,9 @@ const Otherpage = () => {
       setDataReady(false);    // API DONE + state set
     }
   }, [otherproduct, loading]);
-  useEffect(() => {
+
+
+    useEffect(() => {
     setCurrentPage(1);
     const urlFilters = getFiltersFromURL(location.search);
     setSelectedFilters(urlFilters);
@@ -122,10 +125,13 @@ const Otherpage = () => {
   //        getbestsellerBanner();
   // }, [dispatch, slug, selectedFilters, currentPage]);
 
-   useEffect(() => {
+ useEffect(() => {
   if (!slug) return;
 
   const timer = setTimeout(() => {
+    setDataReady(true);        
+    setHasFetchedOnce(true);  
+
     dispatch({ type: "otherproduct/clear" });
     setProducts([]);
 
@@ -142,7 +148,6 @@ const Otherpage = () => {
   }, 400);
 
   return () => clearTimeout(timer);
-
 }, [slug, selectedFilters, currentPage]);
 
 
@@ -197,7 +202,7 @@ const Otherpage = () => {
     }
   };
 
-      const limitWords = (text, limit = 15) => {
+    const limitWords = (text, limit = 15) => {
     if (!text) return "";
     const words = text.split(" ");
     return words.length > limit
@@ -231,7 +236,7 @@ const Otherpage = () => {
     );
   }, [selectedFilters]);
 
-  const toggleWishlist = async (e, product) => {
+   const toggleWishlist = async (e, product) => {
     toast.dismiss();
     e.stopPropagation();
     if (!isLoggedIn) {
@@ -393,7 +398,7 @@ const Otherpage = () => {
 
     return (
       <div className="custom-filter-group" key="categories">
-        <h4>Other Categories</h4>
+        <h4>Categories</h4>
         {/* <label>
           <span className="txt_checkbox">{categories.name}</span>
         </label> */}

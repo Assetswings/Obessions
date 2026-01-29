@@ -17,13 +17,13 @@ export default function useNetworkStatus() {
 
   useEffect(() => {
     const handleOffline = () => {
-      navigate("/NoInternet"); // ❌ no replace
+      navigate("/NoInternet"); 
     };
 
     const handleOnline = () => {
       const lastRoute =
         sessionStorage.getItem("lastRoute") || "/";
-      navigate(lastRoute); // ❌ no replace
+      navigate(lastRoute); 
     };
 
     window.addEventListener("offline", handleOffline);

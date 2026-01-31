@@ -12,7 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index:99999999999999;
+   z-index:99999999999999 !important;
   }
   
   .login-prompt-modal {
@@ -22,6 +22,7 @@
     position: relative;
     text-align: center;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+      z-index:99999999999999 !important;
   }
   
   .modal-logo {

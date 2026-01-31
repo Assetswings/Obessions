@@ -300,12 +300,12 @@ const LoginPage = () => {
           {step === 2 && (
             <>
               <div className="title_track">
-                <h2>Verification Code</h2>
+              <h2>Verification Code</h2>
               </div>
               <p>
-                A verification code has been sent to <span>{mobile || localMobile}</span>{" "}
+                 A verification code has been sent to <span>{mobile || localMobile}</span>{" "}
                 <span  className="tracker_port pointer-crusser" onClick={() => {setStep(1); localStorage.setItem('loginstep',1)}}>
-                  <u>Change</u>
+                <u>Change</u>
                 </span>
               </p>
               <input
@@ -314,6 +314,7 @@ const LoginPage = () => {
                 placeholder="Verification Code"
                 value={otp}
                 max={6}
+                  inputMode="numeric"
                 onChange={(e) => setOtp(e.target.value)}
               />
               <button className="btn-dark" onClick={handleVerifyOtp}>

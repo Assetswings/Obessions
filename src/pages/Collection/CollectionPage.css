@@ -194,6 +194,10 @@ font-family: "Playfair Display", serif; */
     justify-content: space-between;
 
   }
+
+   .product-card:nth-child(1) img, .product-card:nth-child(2) img {
+    height: 180px;
+}
 }
 
 

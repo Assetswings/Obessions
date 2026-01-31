@@ -78,19 +78,19 @@ const ProductsPage = () => {
   //   }
   // }, [data, loading]);
 
-   useEffect(() => {
-  if (!hasFetchedOnce) return; // ⭐ BLOCK first render
+  useEffect(() => {
+    if (!hasFetchedOnce) return; // ⭐ BLOCK first render
 
-  if (loading) {
-    setDataReady(true);
-    return;
-  }
+    if (loading) {
+      setDataReady(true);
+      return;
+    }
 
-  if (Array.isArray(data)) {
-    setProducts(data);
-    setDataReady(false);
-  }
-}, [data, loading, hasFetchedOnce]);
+    if (Array.isArray(data)) {
+      setProducts(data);
+      setDataReady(false);
+    }
+  }, [data, loading, hasFetchedOnce]);
 
 
   useEffect(() => {
@@ -138,29 +138,29 @@ const ProductsPage = () => {
   //   }
   // }, [dispatch, category, subcategory, selectedFilters, currentPage]);
 
- useEffect(() => {
-  if (!category) return;
+  useEffect(() => {
+    if (!category) return;
 
-  const timer = setTimeout(() => {
-    setDataReady(true);
-    setHasFetchedOnce(true);
+    const timer = setTimeout(() => {
+      setDataReady(true);
+      setHasFetchedOnce(true);
 
-    dispatch(
-      fetchProducts({
-        category,
-        subcategory,
-        page: currentPage,
-        limit: 40,
-        filters: selectedFilters || {},
-      })
-    );
-         dispatch(fetchTopPicks());
+      dispatch(
+        fetchProducts({
+          category,
+          subcategory,
+          page: currentPage,
+          limit: 40,
+          filters: selectedFilters || {},
+        })
+      );
+      dispatch(fetchTopPicks());
       getPLPbotton();
       getbestsellerBanner();
-  }, 400);
+    }, 400);
 
-  return () => clearTimeout(timer);
-}, [category, subcategory, selectedFilters, currentPage]);
+    return () => clearTimeout(timer);
+  }, [category, subcategory, selectedFilters, currentPage]);
 
 
 
@@ -529,53 +529,61 @@ const ProductsPage = () => {
       </div>
       {/* MOBILE FILTER BUTTON */}
       {products.length > 0 &&
-        <div className="track_filter">
-          <div className="title_hader_filter"> <h2 className="title_prd_roots">
-            {dataReady ? (
-              <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
-            ) : subcategory ? (
-              formatTitle(subcategory)
-            ) : (
-              formatTitle(category)
-            )}
-          </h2>
-          </div>
-
-          <div className="root_btn_filter_hader">
-            <div
-              className="mobile-filter-btn"
-              onClick={() => setIsFilterOpen(true)}
-            >
-              FILTERS
+        <>
+          <div className="track_filter">
+            <div className="title_hader_filter"> <h2 className="title_prd_roots">
+              {dataReady ? (
+                <Skeleton height={28} width={180} style={{ marginBottom: 10 }} />
+              ) : subcategory ? (
+                formatTitle(subcategory)
+              ) : (
+                formatTitle(category)
+              )}
+            </h2>
             </div>
-            {/* shop by */}
-            <div className="sortby-container">
-              <div className="dropdown">
-                <div
-                  className="dropdown-toggle sortby-btn"
-                  id="dropdownMenuButton"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  SORT BY
+
+            <div className="root_btn_filter_hader">
+              <div
+                className="mobile-filter-btn"
+                onClick={() => setIsFilterOpen(true)}
+              >
+                FILTERS
+              </div>
+              {/* shop by */}
+              <div className="sortby-container">
+                <div className="dropdown">
+                  <div
+                    className="dropdown-toggle sortby-btn"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    SORT BY
+                  </div>
+                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {Object.entries(sorting).map(([key, label]) => (
+                      <li key={key}>
+                        <button
+                          className={`dropdown-item ${selected === key ? "active-option" : ""}`}
+                          onClick={() => handleSelect(key, label)}
+                        >
+                          {label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  {Object.entries(sorting).map(([key, label]) => (
-                    <li key={key}>
-                      <button
-                        className={`dropdown-item ${selected === key ? "active-option" : ""}`}
-                        onClick={() => handleSelect(key, label)}
-                      >
-                        {label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
           </div>
-        </div>
+        </>
       }
+
+      <div>
+        <span style={{ fontWeight: "bold" }} className="track_contuing_mlb">
+          {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
+        </span>
+      </div>
       <div className="custom-products-page">
         <aside className="custom-filters">
           {products.length > 0 &&
@@ -661,7 +669,6 @@ const ProductsPage = () => {
                   <span style={{ fontWeight: "bold" }} className="track_contuing">
                     {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
                   </span>
-
                 </div>
                 <div className="dropdown" style={{ display: "flex", gap: "10px" }}>
                   <div

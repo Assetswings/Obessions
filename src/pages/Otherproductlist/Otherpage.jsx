@@ -514,11 +514,10 @@ const Otherpage = () => {
             </h2>
           </div>
 
-          <div className="root_btn_filter_hader">
-            <div
+              <div className="root_btn_filter_hader">
+              <div
               className="mobile-filter-btn"
-              onClick={() => setIsFilterOpen(true)}
-            >
+              onClick={() => setIsFilterOpen(true)}>
               FILTERS
             </div>
             {/* shop by */}
@@ -549,6 +548,12 @@ const Otherpage = () => {
           </div>
         </div>
       }
+
+        <div>
+        <span style={{ fontWeight: "bold" }} className="track_contuing_mlb">
+          {`Showing ${rangeStart} to ${rangeEnd} of ${total} items`}
+        </span>
+      </div>
       <div className={`custom-products-page ${products?.length < 8 ? "page-wrapper" : ""}`}>
         <aside className="custom-filters">
           <h2 className="title_prd_roots">{slug ? formatTitle(slug) : ""}</h2>
@@ -1083,7 +1088,7 @@ const Otherpage = () => {
       {/* SLIDE FILTER MODAL (Mobile) */}
       <div className={`mobile-filter-modal ${isFilterOpen ? "open" : ""}`}>
         <div className="mobile-filter-header">
-          <h3>Filters</h3>
+          <h3>Filter</h3>
           <X size={20} onClick={() => setIsFilterOpen(false)} />
         </div>
 

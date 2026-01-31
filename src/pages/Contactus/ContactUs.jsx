@@ -14,6 +14,7 @@ import helpchat from "../../assets/icons/helpchat.png";
 import sizeguide from "../../assets/icons/sizeguide.png";
 import styleguild from "../../assets/icons/styleguild.png";
 import { Link } from "react-router-dom";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const ContactUs = () => {
   const dispatch = useDispatch();
@@ -104,8 +105,14 @@ const ContactUs = () => {
       });
   };
 
+     const breadcrumbPaths = [
+    { label: "Contact Us", to: "" }, // last one (no link)
+  ];
+
+
   return (
     <>
+     <Breadcrumbs paths={breadcrumbPaths} />
       <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000}   limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
       <div className="contact-page">
         <section

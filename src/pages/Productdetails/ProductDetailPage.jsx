@@ -67,6 +67,8 @@ const ProductDetailPage = () => {
     (state) => state.pincode
   );
 
+    const desktopImageRef = useRef(null);
+const mobileImageRef = useRef(null);
 
   console.log("selectedColor---->", selectedColor);
   console.log("selectedSize 00000---->", selectedSize);
@@ -119,23 +121,45 @@ const ProductDetailPage = () => {
   //   });
   // };
 
+
   const handleMouseMove = (e) => {
-    if (!imageRef.current) return;
+  if (!desktopImageRef.current) return;
 
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-    imageRef.current.style.transformOrigin = `${x}% ${y}%`;
-    imageRef.current.style.transform = "scale(1.8)";
-  };
+  desktopImageRef.current.style.transformOrigin = `${x}% ${y}%`;
+  desktopImageRef.current.style.transform = "scale(1.8)";
+};
 
-  const handleMouseLeave = () => {
-    if (!imageRef.current) return;
+const handleMouseLeave = () => {
+  if (!desktopImageRef.current) return;
 
-    imageRef.current.style.transform = "scale(1)";
-    imageRef.current.style.transformOrigin = "center center";
-  };
+  desktopImageRef.current.style.transform = "scale(1)";
+  desktopImageRef.current.style.transformOrigin = "center center";
+};
+
+const handleTouchMove = (e) => {
+  if (!mobileImageRef.current) return;
+
+  const touch = e.touches[0];
+  const rect = e.currentTarget.getBoundingClientRect();
+
+  const x = ((touch.clientX - rect.left) / rect.width) * 100;
+  const y = ((touch.clientY - rect.top) / rect.height) * 100;
+
+  mobileImageRef.current.style.transformOrigin = `${x}% ${y}%`;
+  mobileImageRef.current.style.transform = "scale(1.8)";
+};
+
+const handleTouchEnd = () => {
+  if (!mobileImageRef.current) return;
+
+  mobileImageRef.current.style.transform = "scale(1)";
+  mobileImageRef.current.style.transformOrigin = "center center";
+};
+
 
   useEffect(() => {
     if (!data?.id) return;
@@ -697,7 +721,7 @@ const ProductDetailPage = () => {
               >
                 <img
                   src={selectedImage}
-                  ref={imageRef}
+                 ref={desktopImageRef}
                   alt="Main Product"
                   className="main-image zoom-image"
                   style={zoomStyle}
@@ -708,105 +732,39 @@ const ProductDetailPage = () => {
           </div>
 
           {/* Mobile view */}
-          {/* <div className="image_track_mobile" style={{ width: "100%", minHeight: "250px" }}>
-            {loading || !selectedImage ? (
-              <div style={{ width: "100%", height: "100%" }}>
-                <Skeleton
-                  height="100%"
-                  width="100%"
-                  baseColor="#e0e0e0"
-                  highlightColor="#f5f5f5"
-                />
-              </div>
-            ) : selectedImage === "video" ? (
-              selectedColor?.video_source?.includes("youtube.com") ? (
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src={`${selectedColor.video_source}?autoplay=1&mute=1&playsinline=1`}
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  style={{ borderRadius: "10px", width: "100%", height: "100%" }}
-                ></iframe>
+        <div className="image_track_mobile" style={{ width: "100%", minHeight: "250px" }}>
+  {loading || !selectedImage ? (
+    <Skeleton height="100%" width="100%" />
+  ) : selectedImage === "video" ? (
+    selectedColor?.video_source?.includes("youtube.com") ? (
+      <iframe
+        src={`${selectedColor.video_source}?autoplay=1&mute=1&playsinline=1`}
+        style={{ width: "100%", height: "100%" }}
+        allowFullScreen
+      />
+    ) : (
+      <video autoPlay muted controls style={{ width: "100%", height: "100%" }}>
+        <source src={selectedColor?.video_source} type="video/mp4" />
+      </video>
+    )
+  ) : (
+    <div
+      className="zoom-container"
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <img
+        src={selectedImage}
+        ref={mobileImageRef}
+        className="main-image zoom-image"
+        alt="Product"
+      />
+    </div>
+  )}
+</div>
 
-              ) : (
-                <video
-                  controls
-                  autoPlay
-                  muted
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
 
-                  }}
-                >
-                  <source src={selectedColor?.video_source} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              )
-            ) : (
-              <img
-                src={selectedImage}
-                alt="Main Product"
-                className="main-image"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  mixBlendMode: "darken",
-                  objectFit: "cover",
-
-                }}
-              />
-            )}
-          </div> */}
-
-          {/* Mobile view */}
-          <div
-            className="image_track_mobile"
-            style={{ width: "100%", minHeight: "250px" }}
-            onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
-            onTouchEnd={(e) => handleSwipe(e.changedTouches[0].clientX)}
-          >
-            {loading || !selectedImage ? (
-              <div style={{ width: "100%", height: "100%" }}>
-                <Skeleton height="100%" width="100%" baseColor="#e0e0e0" highlightColor="#f5f5f5" />
-              </div>
-            ) : selectedImage === "video" ? (
-              selectedColor?.video_source?.includes("youtube.com") ? (
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src={`${selectedColor.video_source}?autoplay=1&mute=1&playsinline=1`}
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  style={{ width: "100%", height: "100%" }}
-                ></iframe>
-              ) : (
-                <video autoPlay muted controls style={{ width: "100%", height: "100%", objectFit: "cover" }}>
-                  <source src={selectedColor?.video_source} type="video/mp4" />
-                </video>
-              )
-            ) : (
-              <img
-                src={selectedImage}
-                alt="Main Product"
-                className="main-image"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  objectFit: "cover",
-                  mixBlendMode: "darken",
-                }}
-              />
-            )}
-          </div>
+    
 
           {/* Thumbnails */}
           <div className="thumbnail-row">

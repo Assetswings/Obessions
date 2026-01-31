@@ -1124,6 +1124,13 @@ font-family: "Playfair Display", serif; */
     bottom: 2px;
     left: 2px;
   }
+
+  .product-img-box img {
+  width: 100%;
+  mix-blend-mode: darken;
+  height: 160px;
+  object-fit: cover;
+}
 }
 
 /* Responsive */

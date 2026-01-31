@@ -7,6 +7,7 @@ import Breadcrumbs from "../Breadcum/Breadcrumbs";
 import insta from '../../assets/icons/Insta.png';
 import facebookimg from "../../assets/icons/facebook.png"
 import youtube from '../../assets/icons/youtube.png';
+import { Share2 } from "lucide-react";
 
 const BlogPost = () => {
   const location = useLocation();
@@ -17,11 +18,11 @@ const BlogPost = () => {
   const currentUrl = window.location.href;
   const shareText = encodeURIComponent(data?.blog?.name || "Check this out");
   const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-  currentUrl
+    currentUrl
   )}`;
   const instagramShareUrl = `https://www.instagram.com/?url=${encodeURIComponent(
-  currentUrl
-)}`;
+    currentUrl
+  )}`;
 
 
 
@@ -50,6 +51,21 @@ const BlogPost = () => {
     }
   };
 
+
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          url: window.location.href,
+        });
+      } catch (e) {
+        console.log("Share cancelled");
+      }
+    } else {
+      alert("Sharing not supported on this browser");
+    }
+  };
   const handleBlogClick = (slug) => {
     navigate("/blog-details", { state: { blog: slug } });
   };
@@ -91,14 +107,25 @@ const BlogPost = () => {
           {/* Left Blog Content */}
           <div>
             <div className="post-main">
-              <p className="post-date">
-                Posted on{" "}
-                {new Date(data?.blog?.created_at).toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })}
-              </p>
+              <div className="track_share_bt">
+                <div>
+                  <p className="post-date">
+                    Posted on{" "}
+                    {new Date(data?.blog?.created_at).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
+                </div>
+                  <div className="share_root"> 
+ <div className="share_btn mobshare" onClick={handleShare}>
+                  <span><Share2 size={14} /></span>
+                  <span style={{ fontSize: '13px', paddingLeft: "5px" }}>SHARE</span>
+                </div>
+                  </div>
+               
+              </div>
               <h1 className="post-title">{data?.blog?.name}</h1>
               {/* <div className="post-subtitle">
                 <div dangerouslySetInnerHTML={{ __html: data.blog?.description }} />
@@ -163,16 +190,16 @@ const BlogPost = () => {
                 allowFullScreen
               /> */}
               <iframe
-                  width="100%"
-                  height="400"
-                  src={`${data.blog?.video}?autoplay=1&mute=1&playsinline=1`}
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  style={{ width: "100%", height: "400" }}
-                ></iframe>
+                width="100%"
+                height="400"
+                src={`${data.blog?.video}?autoplay=1&mute=1&playsinline=1`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                style={{ width: "100%", height: "400" }}
+              ></iframe>
             </div>
             <p className="post-text">
               {data.blog?.description}
@@ -215,30 +242,30 @@ const BlogPost = () => {
           </div>
         </section>
 
-        <div className="track_social">
+        {/* <div className="track_social">
           <div className="track-flex-social">
-  Connect With Us :
+            Connect With Us :
 
-  <a
-    href={instagramShareUrl}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <img src={insta} />
-  </a>
+            <a
+              href={instagramShareUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={insta} />
+            </a>
 
-  <a
-    href={facebookShareUrl}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <img src={facebookimg} />
-  </a>
+            <a
+              href={facebookShareUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={facebookimg} />
+            </a>
 
 
-</div>
+          </div>
 
-        </div>
+        </div> */}
         {/* Recommended Posts Mobile */}
         <section on className="flat_overview mob">
           <h4 className="releted-head">Recommended Posts</h4>

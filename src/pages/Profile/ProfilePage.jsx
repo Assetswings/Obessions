@@ -156,6 +156,19 @@ const ProfilePage = () => {
   }
 };
 
+   useEffect(() => {
+    if (showOtpModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    // cleanup (important)
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showOtpModal]);
+
 
   // Verify OTP API
   const handleVerifyOtp = async (e) => {
@@ -710,6 +723,7 @@ const ProfilePage = () => {
                     name="mobile"
                     value={editForm.mobile}
                     onChange={handleEditChange}
+                    readOnly={true}
                   />
                   {errors.mobile && <p className="error">{errors.mobile}</p>}
                 </label>
@@ -1056,6 +1070,7 @@ const ProfilePage = () => {
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
                 placeholder="Enter OTP"
+                 inputMode="numeric"
                 required
               />
             </div>
@@ -1075,7 +1090,7 @@ const ProfilePage = () => {
           </div>
         </div>
       )}
-      <Footer />
+     {!showOtpModal && <Footer />}
     </>
   );
 };

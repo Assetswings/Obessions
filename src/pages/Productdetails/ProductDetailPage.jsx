@@ -228,65 +228,97 @@ const handleTouchEnd = () => {
     }
   }, [pinerror]);
 
-  const handleAddToCart = () => {
-    toast.dismiss();
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setShowLoginPrompt(true);
-      return;
-    }
+ const handleAddToCart = () => {
+  toast.dismiss();
 
-    if (!pincodeChecked || !pincodeDetails?.is_active) {
-      toast.error("Verify delivery pincode before adding this item.", {
-        style: {
-          background: "#1f1f1f",
-          color: "#fff",
-          borderRadius: "0px",
-          padding: "12px 16px",
-          fontSize: "14px",
-        },
-        hideProgressBar: true,
-        closeButton: false,
-        icon: true,
-      });
-      return;
-    }
-    let product = { ...selectedColor };
-    product["quantity"] = quantity;
-    product["name"] = selectedSize?.name;
-    product["image"] = selectedImage;
-    product["price"] = selectedSize?.price;
-    dispatch(addToCart({ product_id: selectedColor?.id, quantity }))
-      .unwrap()
-      .then(() => {
-        const id = toast(
-          <CartToast
-            product={product}
-            onViewCart={() => console.log("Go to cart")}
-            onCheckout={() => console.log("Go to checkout")}
-            onClose={() => toast.dismiss(id)}
-          />,
-          {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: true,
-            closeButton: false, // custom close already inside
-            style: {
-              padding: "12px",
-              background: "#fff",
-              color: "#000",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-            },
-            icon: false,
-            className: "cart-toast-wrapper",
-          }
-        );
-        getCartWishlistCount(); // refresh count after add
-      })
-      .catch((error) => {
-        toast.error(error?.error || "Failed to add to cart");
-      });
-  };
+  const token = localStorage.getItem("token");
+  if (!token) {
+    setShowLoginPrompt(true);
+    return;
+  }
+
+  if (!pincodeChecked || !pincodeDetails?.is_active) {
+    toast.error("Verify delivery pincode before adding this item.", {
+      style: {
+        background: "#1f1f1f",
+        color: "#fff",
+        borderRadius: "0px",
+        padding: "12px 16px",
+        fontSize: "14px",
+      },
+      hideProgressBar: true,
+      closeButton: false,
+      icon: true,
+    });
+    return;
+  }
+
+  // 🔥 THIS IS THE IMPORTANT PART
+  const selectedDimension =
+    unit === "cm"
+      ? selectedSize?.size
+      : selectedSize?.size_in_feet;
+
+  // Toast product (UI only)
+  let product = { ...selectedColor };
+  product["quantity"] = quantity;
+  product["name"] = selectedSize?.name;
+  product["image"] = selectedImage;
+  product["price"] = selectedSize?.price;
+  product["unit"] = unit;
+  product["size"] = selectedDimension;
+
+    const payload = {
+  product_id: selectedColor?.id,
+  quantity,
+  size_id: selectedSize?.id,
+  unit,
+  size_value: selectedDimension,
+};
+
+console.log("ADD TO CART PAYLOAD 👉", payload);
+  // 🔥 SEND SIZE + UNIT TO BACKEND
+  dispatch(
+    addToCart({
+      product_id: selectedColor?.id,
+      quantity,
+      size_id: selectedSize?.id,      // 🔥 required
+      unit,                            // cm / ft
+      size_value: selectedDimension,   // actual chosen size
+    })
+  )
+    .unwrap()
+    .then(() => {
+      const id = toast(
+        <CartToast
+          product={product}
+          onViewCart={() => console.log("Go to cart")}
+          onCheckout={() => console.log("Go to checkout")}
+          onClose={() => toast.dismiss(id)}
+        />,
+        {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeButton: false,
+          style: {
+            padding: "12px",
+            background: "#fff",
+            color: "#000",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          },
+          icon: false,
+          className: "cart-toast-wrapper",
+        }
+      );
+
+      getCartWishlistCount();
+    })
+    .catch((error) => {
+      toast.error(error?.error || "Failed to add to cart");
+    });
+};
+
 
   // Price dynamics solution
   const currentPrice = selectedSize ? selectedSize.price : data?.selling_price;
@@ -879,25 +911,23 @@ const handleTouchEnd = () => {
                     {selectedSize && <strong>{selectedSize.size}</strong>}
                   </p>
                 )}
-                {productDetails?.sub_category_action_url === "carpet" ? (
-                  <div className="unit-toggle">
-                    <button
-                      className={unit === "cm" ? "active" : ""}
-                      onClick={() => setUnit("cm")}
-                    >
-                      Cm
-                    </button>
+               {["carpet", "runner"].includes(productDetails?.sub_category_action_url) && (
+  <div className="unit-toggle">
+    <button
+      className={unit === "cm" ? "active" : ""}
+      onClick={() => setUnit("cm")}
+    >
+      Cm
+    </button>
 
-                    <button
-                      className={unit === "ft" ? "active" : ""}
-                      onClick={() => setUnit("ft")}
-                    >
-                      Feet
-                    </button>
-                  </div>
-                ) : (
-                  <></>
-                )}
+    <button
+      className={unit === "ft" ? "active" : ""}
+      onClick={() => setUnit("ft")}
+    >
+      Feet
+    </button>
+  </div>
+)}
                 <div className="size-options">
                   {productDetails.product_sizes.map((size) => (
                     <div
@@ -1688,7 +1718,8 @@ const handleTouchEnd = () => {
                   className="product-card-dtl pointer-crusser"
                   key={item.id}
                 >
-                  <div className="product-img-box">
+                       <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                         <div className="product-img-box">
                     <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
                       <img
                         src={item.media_list?.main?.file}
@@ -1742,6 +1773,8 @@ const handleTouchEnd = () => {
                       )}
                     </button>
                   </div>
+                       </Link>
+                
                   <p className="product-title pointer-crusser truncate truncate-similar">
                     <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">{item.name}</Link>
                   </p>

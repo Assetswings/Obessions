@@ -1,0 +1,32 @@
+.image-rotation-banner {
+  position: relative;
+}
+
+.image-rotation-banner .image-rotation-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 6;
+  color: #000;
+  font-weight: 500;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 19vw;
+  letter-spacing: clamp(-15px, -1.5vw, -15px);
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Mobile: remove spacing and tighten letter-spacing */
+@media (max-width: 768px) {
+  .image-rotation-banner .image-rotation-title {
+    font-size: 17vw;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    letter-spacing: 0;
+  }
+}

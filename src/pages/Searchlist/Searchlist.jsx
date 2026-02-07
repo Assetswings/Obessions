@@ -349,22 +349,24 @@ const Searchlist = () => {
     };
 
     return (
-      <></>
-      // <div className="custom-filter-group" key="price_filter">
-      //   <h4>Price Range</h4>
-      //   {priceFilter.map((price, i) => (
-      //     <label key={i}>
-      //       <input
-      //         type="checkbox"
-      //         checked={
-      //           currentFilters.price_filter?.includes(price.filter_value) || false
-      //         }
-      //         onChange={() => {scrollToTop(); handlePriceChange(price.filter_value)}}
-      //       />
-      //       <span className="txt_checkbox">{price.range_lebel}</span>
-      //     </label>
-      //   ))}
-      // </div>
+      <>
+          <div className="custom-filter-group" key="price_filter">
+        <h4>Price Range</h4>
+        {priceFilter.map((price, i) => (
+          <label key={i}>
+            <input
+              type="checkbox"
+              checked={
+                currentFilters.price_filter?.includes(price.filter_value) || false
+              }
+              onChange={() => {scrollToTop(); handlePriceChange(price.filter_value)}}
+            />
+            <span className="txt_checkbox">{price.range_lebel}</span>
+          </label>
+        ))}
+      </div>
+      </>
+     
     );
   };
 
@@ -713,14 +715,16 @@ const Searchlist = () => {
                       >
                         <div className="product-price">
                           <span>₹{item.selling_price}</span>
-                          {item.mrp && item.mrp !== item.selling_price && (
-                            <>
-                              <span className="original">₹{item.mrp}</span>
-                              <span className="discount">
-                                ({item.discount_percent}% OFF)
-                              </span>
-                            </>
-                          )}
+                           {item.mrp &&
+                            item.mrp !== item.selling_price &&
+                            Number(item.discount_percent) > 0 && (
+                              <>
+                                <span className="original">₹{item.mrp}</span>
+                                <span className="discount">
+                                  ({item.discount_percent}% OFF)
+                                </span>
+                              </>
+                            )}
                         </div>
                       </Link>
                     </div>

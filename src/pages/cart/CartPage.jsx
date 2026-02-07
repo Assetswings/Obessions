@@ -240,7 +240,7 @@ const CartPage = () => {
                           <span className="sub-1">
                             <del>₹{item.product?.mrp}</del> &nbsp;
                             <span className="dis-sub">
-                              (-{item.product?.discount}%)
+                              ({item.product?.discount}%)
                             </span>
                           </span>
                         </>
@@ -353,11 +353,11 @@ const CartPage = () => {
 
               <p className="terms-text">
                 Before proceed further you can review{" "}
-                <a href="/tc-of-sale" style={{ fontWeight: "500" }}>
+                <a href="/tc-of-sale" target="_blank" style={{ fontWeight: "500" }}>
                   <u style={{ color: "#1B170E" }}>Terms & Conditions of Sale</u>
                 </a>{" "}
                 and{" "}
-                <a href="/privacy-policy" style={{ fontWeight: "500" }}>
+                <a href="/privacy-policy"  target="_blank" style={{ fontWeight: "500" }}>
                   <u style={{ color: "#1B170E" }}>Privacy Policy</u>
                 </a>
               </p>

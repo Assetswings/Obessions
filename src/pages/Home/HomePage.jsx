@@ -4,6 +4,7 @@ import "./HomePage.css";
 import BestsellersSlider from "../../components/slider/BestsellersSlider";
 import VideoSection from "../../components/InstaVideo/VideoSection";
 import Footer from "../../components/Footer/Footer";
+import ImageRotationAnimation from "../../components/ImageRotationAnimation/ImageRotationAnimation";
 import obslogo from "../../assets/icons/Obslogo.png";
 // import { search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +28,6 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
-
 const items = [
   {
     icon: aniimage1,
@@ -42,7 +42,6 @@ const items = [
     text: "Home isn’t built; it’s curated.",
   },
 ];
-
 
 const HomePage = () => {
   const token = localStorage.getItem("token");
@@ -62,32 +61,48 @@ const HomePage = () => {
   const [currentSet, setCurrentSet] = useState(null);
   const [nextSet, setNextSet] = useState(null);
   const [setIndex, setSetIndex] = useState(null);
-  const [logo, setLogo] = useState(() => {
-    return localStorage.getItem("logo") || null;
-  });
 
   const [fade, setFade] = useState(false);
+  // 🏠 Home Data Fetching
   const { data } = useSelector((state) => state.home);
   const searchState = useSelector((state) => state.search || {});
   const { results = [], loading, error } = searchState;
   const [currentIndex, setCurrentIndex] = useState(0);
   const searchSectionRef = useRef(null);
   const { setShowSearchIcon } = useHeader();
+  const [roleIndex, setRoleIndex] = useState(0);
+  const heroRef = useRef(null);
   const centerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
   const topRef = useRef(null);
 
+  // Load Interaction
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
 
+    const images = hero.querySelectorAll(".floating-img");
+
+    images.forEach((img) => {
+      img.classList.remove("is-visible");
+      requestAnimationFrame(() => {
+        img.classList.add("is-visible");
+      });
+    });
+  }, [setIndex]);
+
+  // Intersection Observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         // When section is visible => hide icon
         // When not visible => show icon
         setShowSearchIcon(!entry.isIntersecting);
-      }, {
-      threshold: 0.1, // triggers when 10% of element is visible
-    }
+      },
+      {
+        threshold: 0.1, // triggers when 10% of element is visible
+      },
     );
     if (searchSectionRef.current) {
       observer.observe(searchSectionRef.current);
@@ -99,7 +114,7 @@ const HomePage = () => {
     };
   }, [setShowSearchIcon]);
 
-
+  // Search
   useEffect(() => {
     document.title = "Obsession - Home";
     if (!query.trim()) {
@@ -109,30 +124,9 @@ const HomePage = () => {
     dispatch(fetchSearchResults({ query }));
   }, [query, dispatch]);
 
-
   useEffect(() => {
     dispatch(fetchHomeData());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (!data?.hero_banners) return;
-
-    const setsFromAPI = Object.values(data.hero_banners);
-
-    // Keep only sets that have all 4 sequences
-    const validSets = setsFromAPI.filter((set) => {
-      if (!Array.isArray(set)) return false;
-      const sequences = set.map(img => img.sequence);
-      return sequences.includes(1) && sequences.includes(2) && sequences.includes(3) && sequences.includes(4);
-    });
-
-    console.log("✅ Valid hero sets saved:", validSets.length);
-
-    if (validSets.length) {
-      localStorage.setItem("hero_all_sets", JSON.stringify(validSets));
-    }
-  }, [data]);
-
 
   const handleSearch = () => {
     if (query.trim()) {
@@ -141,7 +135,6 @@ const HomePage = () => {
       dispatch(clearSearchResults());
     }
   };
-
 
   useEffect(() => {
     if (data) {
@@ -154,155 +147,249 @@ const HomePage = () => {
               url: value[0]?.action_url ? `${value[0].action_url}` : null,
               sale: key.toLowerCase().includes("sale"),
             };
-          }
+          },
         );
         setShopByItems(formattedItems);
       }
       if (data?.hero_banner_categories) {
-        localStorage.setItem('hero_banner_categories', JSON.stringify(data?.hero_banner_categories));
+        localStorage.setItem(
+          "hero_banner_categories",
+          JSON.stringify(data?.hero_banner_categories),
+        );
       }
-      if (data?.logo_content?.logo) {
-        localStorage.setItem("logo", data.logo_content.logo);
-        setLogo(data.logo_content.logo);
-      }
-
-      if (data?.logo_content?.favicon) {
-        localStorage.setItem("favicon", data.logo_content.favicon);
-        setFavicon(data.logo_content.favicon);
+      if (data?.logo_content) {
+        localStorage.setItem("logo", data?.logo_content?.logo);
+        localStorage.setItem("favicon", data?.logo_content?.favicon);
+        setFavicon(data?.logo_content?.favicon);
       }
     }
   }, [data]);
-
-
 
   // scale image
   useEffect(() => {
     // ✅ disable on tablet & mobile
     if (window.innerWidth < 992) return;
+
     const obsessionSection = document.querySelector(".obsession-section");
     const obsessionImage = document.querySelector(".obsession-image img");
+
     if (!obsessionSection || !obsessionImage) return;
-    const START_WIDTH = 75;  // %
-    const END_WIDTH = 135;   // %
+
+    const START_WIDTH = 75; // %
+    const END_WIDTH = 135; // %
+
     const onScroll = () => {
       const rect = obsessionSection.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      let progress =
-        (windowHeight - rect.top) / (windowHeight + rect.height);
 
+      let progress = (windowHeight - rect.top) / (windowHeight + rect.height);
 
       progress = Math.max(0, Math.min(1, progress));
 
-
-      const width =
-        START_WIDTH + (END_WIDTH - START_WIDTH) * progress;
-
+      const width = START_WIDTH + (END_WIDTH - START_WIDTH) * progress;
 
       obsessionImage.style.width = `${width}%`;
     };
 
-
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
-
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // rorate
+
+  useLayoutEffect(() => {
+    if (
+      !centerRef.current ||
+      !rightRef.current ||
+      !leftRef.current ||
+      !topRef.current
+    )
+      return;
+
+    // 🔒 lock refs once
+    const images = [
+      centerRef.current,
+      rightRef.current,
+      topRef.current,
+      leftRef.current,
+    ];
+
+    // initial placement
+    images.forEach((img, i) => {
+      gsap.set(img, {
+        ...POSITIONS[i],
+        rotate: 0,
+        transformOrigin: "50% 50%",
+      });
+    });
+
+    const rotateImages = () => {
+      // ✅ rotate roles (THIS WAS MISSING EARLIER)
+      images.unshift(images.pop());
+
+      gsap.to(images, {
+        duration: 1.4,
+        ease: "expo.inOut",
+        stagger: 0,
+        keyframes: images.map((img, i) => ({
+          ...POSITIONS[i],
+          rotate: i === 0 ? 0 : gsap.utils.random(-6, 6),
+        })),
+      });
+    };
+
+    const interval = setInterval(rotateImages, 5000);
+
+    return () => {
+      clearInterval(interval);
+      gsap.killTweensOf(images);
+    };
+  }, [currentSet]);
 
   // parallax
   useEffect(() => {
     const images = document.querySelectorAll(".collection-img");
 
-
     let lastScrollY = window.scrollY;
     let currentOffset = 0;
 
-
-    const MAX_OFFSET = 18;   // max px up/down
-    const SPEED = 0.05;     // smaller = slower
-
+    const MAX_OFFSET = 18; // max px up/down
+    const SPEED = 0.05; // smaller = slower
 
     const onScroll = () => {
       const scrollY = window.scrollY;
       const delta = scrollY - lastScrollY;
 
-
       // accumulate offset slowly
       currentOffset -= delta * SPEED;
 
-
       // clamp movement
-      currentOffset = Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, currentOffset));
-
+      currentOffset = Math.max(
+        -MAX_OFFSET,
+        Math.min(MAX_OFFSET, currentOffset),
+      );
 
       images.forEach((img) => {
         img.style.transform = `translateY(${currentOffset}px)`;
       });
 
-
       lastScrollY = scrollY;
     };
 
-
     window.addEventListener("scroll", onScroll, { passive: true });
-
 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // mouse
+
+  useEffect(() => {
+    const items = [
+      { ref: centerRef, depth: 40, ease: 0.035, z: 0, float: 0.4 },
+      { ref: rightRef, depth: 28, ease: 0.045, z: 0, float: 0.6 },
+      { ref: leftRef, depth: 22, ease: 0.05, z: 0, float: 0.8 },
+      { ref: topRef, depth: 14, ease: 0.06, z: 0, float: 1 },
+    ];
+
+    let targetX = 0;
+    let targetY = 0;
+    let idleTime = 0;
+
+    const onMouseMove = (e) => {
+      targetX = (e.clientX / window.innerWidth) * 2 - 1;
+      targetY = (e.clientY / window.innerHeight) * 2 - 1;
+    };
+
+    const animate = () => {
+      idleTime += 0.01;
+
+      items.forEach(({ ref, depth, ease, float }) => {
+        if (!ref.current) return;
+
+        const cx = ref.current._cx || 0;
+        const cy = ref.current._cy || 0;
+
+        // subtle idle drift
+        const idleX = Math.sin(idleTime) * 0.08 * float;
+        const idleY = Math.cos(idleTime * 1.2) * 0.08 * float;
+
+        const nx = cx + (targetX + idleX - cx) * ease;
+        const ny = cy + (targetY + idleY - cy) * ease;
+
+        ref.current._cx = nx;
+        ref.current._cy = ny;
+
+        // gentle movement
+        const tx = nx * depth * 0.6;
+        const ty = ny * depth * 0.6;
+
+        // tiny editorial skew
+        const skewX = nx * 1.2;
+        const skewY = ny * 1.2;
+
+        ref.current.style.transform = `
+        translate3d(${tx}px, ${ty}px, 0)
+        skew(${skewX}deg, ${skewY}deg)
+      `;
+      });
+
+      requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+    animate();
+
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+    };
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setFade(true);
 
-
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % items.length);
       }, 300); // fade-out before content changes
-
 
       setTimeout(() => {
         setFade(false);
       }, 600); // fade-in after content changes
     }, 5000);
 
-
     return () => clearInterval(interval);
   }, []);
   const setFavicon = (url) => {
     localStorage.setItem("favicon_url", url);
 
-
     const existingLink = document.querySelector("link[rel='icon']");
     if (existingLink) existingLink.remove();
-
 
     const link = document.createElement("link");
     link.rel = "icon";
     link.type = "image/png";
     link.href = url;
     console.log(link);
+
     document.head.appendChild(link);
     console.log(document.head);
   };
 
-
   function formatLabel(key) {
     return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   }
-
 
   //🖼️ Image fetcing for LIVE_THE_ART_OF_HOME
   const images_live_art = data?.banners?.LIVE_THE_ART_OF_HOME || [];
   const leftImage = images_live_art.find((img) => img.sequence === 1)?.media;
   const rightImage = images_live_art.find((img) => img.sequence === 2)?.media;
 
-
   //SALE ON THE TABLE
   const saleTableData = data?.banners?.SALE_ON_THE_TABLE || [];
   const tableSectionImage = saleTableData[0];
   const promoData = saleTableData.slice(1);
-
 
   // Carpet BY SECTION
   const carpetCategories =
@@ -313,7 +400,6 @@ const HomePage = () => {
       link: item.action_url,
     })) || [];
 
-
   //OBSESSED_RIGHT_NOW section
   const obsessedItems =
     data?.banners?.OBSESSED_RIGHT_NOW?.map((item) => ({
@@ -323,36 +409,122 @@ const HomePage = () => {
       url: item.action_url,
     })) || [];
 
-
   const handleQuickView = (product) => {
     setQuickViewProduct(product);
     setShowModal(true);
   };
 
   useEffect(() => {
-    const cachedSets = localStorage.getItem("hero_all_sets");
-    if (!cachedSets) return;
+    if (data?.hero_banners) {
+      const sets = Object.values(data.hero_banners);
+      const randomIndex = Math.floor(Math.random() * sets.length);
+      const chosenSet = sets[randomIndex];
 
-    const sets = JSON.parse(cachedSets);
-    if (!sets.length) return;
+      setSetIndex(randomIndex);
+      setNextSet(chosenSet); // load into nextSet
 
-    // pick a random set every time you enter the page
-    let index = Math.floor(Math.random() * sets.length);
-    localStorage.setItem("hero_set_index", index);
+      const timer = setTimeout(() => {
+        setCurrentSet(chosenSet);
+        setNextSet(null);
+      }, 600); // must match CSS animation time
 
-    setSetIndex(index);
-    setCurrentSet(sets[index]);
-  }, [location.key]); // reruns whenever you navigate pages
+      return () => clearTimeout(timer);
+    }
+  }, [data, location.pathname]); // runs when data loads or you come back
+
+  const POSITIONS = [
+    {
+      // CENTER
+      top: "38%",
+      left: "35%",
+      width: "16vw",
+      zIndex: 4,
+      scale: 1.15,
+    },
+    {
+      // RIGHT
+      top: "20%",
+      right: "20%",
+      left: "auto",
+      width: "12vw",
+      zIndex: 3,
+      scale: 1,
+    },
+    {
+      // TOP
+      top: "6%",
+      left: "38%",
+      width: "6vw",
+      zIndex: 2,
+      scale: 0.95,
+    },
+    {
+      // LEFT
+      top: "40%",
+      left: "10%",
+      width: "11vw",
+      zIndex: 1,
+      scale: 1,
+    },
+  ];
+
+  // useLayoutEffect(() => {
+  //   if (!centerRef.current) return;
+
+  //   const images = [
+  //     centerRef.current,
+  //     rightRef.current,
+  //     topRef.current,
+  //     leftRef.current,
+  //   ];
+
+  //   const order = ["center", "right", "top", "left"];
+
+  //   const tl = gsap.timeline({
+  //     repeat: -1,
+  //     repeatDelay: 0.6,
+  //     defaults: {
+  //       duration: 1.1,
+  //       ease: "power3.inOut",
+  //     },
+  //   });
+
+  //   tl.to({}, { duration: 0 }); // anchor
+
+  //   order.forEach((_, i) => {
+  //     tl.to(
+  //       images,
+  //       {
+  //         keyframes: images.map((img, idx) => {
+  //           const nextRole = order[(idx + 1) % order.length];
+  //           const pos = POSITIONS[nextRole];
+
+  //           return {
+  //             targets: img,
+  //             top: pos.top,
+  //             left: pos.left ?? "auto",
+  //             right: pos.right ?? "auto",
+  //             width: pos.width,
+  //             zIndex: pos.zIndex,
+  //             scale: nextRole === "center" ? 1.15 : 1,
+  //             rotate: nextRole === "center" ? 0 : gsap.utils.random(-6, 6),
+  //           };
+  //         }),
+  //       },
+  //       i * 5 // ⏱ every 5 seconds
+  //     );
+  //   });
+
+  //   return () => tl.kill();
+  // }, [currentSet]);
 
   const renderImages = (set, extraClass = "") => {
     if (!set) return null;
-
 
     const centerImg = set.find((img) => img.sequence === 1)?.media;
     const leftImg = set.find((img) => img.sequence === 2)?.media;
     const rightImg = set.find((img) => img.sequence === 3)?.media;
     const topImg = set.find((img) => img.sequence === 4)?.media;
-
 
     return (
       <>
@@ -394,21 +566,20 @@ const HomePage = () => {
 
   useLayoutEffect(() => {
     if (!centerRef.current) return;
+
     // Center card → goes up **and slightly right**
     gsap.to(centerRef.current, {
-      y: -480,
+      y: -240,
       // x: 60,
       // rotate: 15,
       scale: 1.32,
       ease: "power3.out",
       scrollTrigger: {
-
         start: "top top",
         end: "bottom top",
-        scrub: 1.2,
+        scrub: 0.5,
       },
     });
-
 
     // Left card → goes up and **more left**, rotates opposite
     gsap.to(leftRef.current, {
@@ -418,13 +589,11 @@ const HomePage = () => {
       scale: 1.25,
       ease: "power2.out",
       scrollTrigger: {
-
         start: "top 30%",
         end: "bottom top",
-        scrub: 2.4,
+        scrub: 0.5,
       },
     });
-
 
     // Right card → goes up and **more right**
     gsap.to(rightRef.current, {
@@ -434,13 +603,11 @@ const HomePage = () => {
       scale: 1.27,
       ease: "power4.out",
       scrollTrigger: {
-
         start: "top 15%",
         end: "bottom top",
-        scrub: 1.8,
+        scrub: 0.5,
       },
     });
-
 
     // Top card → goes up **and slightly left**, most dramatic movement
     gsap.to(topRef.current, {
@@ -450,15 +617,14 @@ const HomePage = () => {
       scale: 1.45,
       ease: "expo.out",
       scrollTrigger: {
-
         start: "top -5%",
         end: "bottom top",
-        scrub: 3.1,
+        scrub: 0.5,
       },
     });
+
     return () => ScrollTrigger.killAll();
   }, [currentSet]);
-
 
   useEffect(() => {
     if (isSearchActive) {
@@ -469,21 +635,21 @@ const HomePage = () => {
       document.body.style.overflow = "";
     }
 
-
     // cleanup just in case
     return () => {
       document.body.style.overflow = "";
     };
   }, [isSearchActive]);
 
-
   const handleFocus = () => {
     setIsSearchActive(true);
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
+
         const rect = inputRef.current.getBoundingClientRect();
         const scrollY = window.scrollY + rect.top - window.innerHeight / 3;
+
         window.scrollTo({
           top: scrollY,
           behavior: "smooth",
@@ -492,13 +658,18 @@ const HomePage = () => {
     }, 300);
   };
 
-
-  const FloorDesign1 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[0]?.media || "";
-  const FloorDesign2 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[1]?.media || "";
-  const FloorDesign3 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[2]?.media || "";
-  const FloorDesign4 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[3]?.media || "";
-  const FloorDesign5 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[4]?.media || "";
-  const FloorDesign6 = data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[5]?.media || "";
+  const FloorDesign1 =
+    data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[0]?.media || "";
+  const FloorDesign2 =
+    data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[1]?.media || "";
+  const FloorDesign3 =
+    data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[2]?.media || "";
+  const FloorDesign4 =
+    data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[3]?.media || "";
+  const FloorDesign5 =
+    data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[4]?.media || "";
+  const FloorDesign6 =
+    data?.banners?.LETS_FIND_YOUR_FLOORS_BEST_FRIEND?.[5]?.media || "";
   const floatingImages = [
     { id: 1, src: FloorDesign1, className: "imgf1" },
     { id: 2, src: FloorDesign2, className: "imgf2" },
@@ -508,39 +679,36 @@ const HomePage = () => {
     { id: 6, src: FloorDesign6, className: "imgf6" },
   ];
 
-
   return (
     <>
       <div className="spacer_track"></div>
       {/* ───────────────────── HERO ───────────────────── */}
-      <div className="homepage container-fluid position-relative p-5">
-        <img
-          src={logo || obslogo}
-          className="img-left-logo"
-          alt="Obsession"
-        />
-        <h1 className="display-1 bold position-absolute obsessions-text">
-          obsessions
-        </h1>
-        {/* Current visible set */}
-        <div className={`${setIndex !== null ? `set-${setIndex}` : ""}`}>
-          {renderImages(currentSet, "fade-in")}
-          {renderImages(nextSet, "fade-out")}
-        </div>
+      <div className="homepage container-fluid position-relative">
+        {/* New Image Rotation Animation */}
+        {currentSet && (
+          <ImageRotationAnimation
+            images={currentSet}
+            logoUrl={data?.logo_content?.logo}
+          />
+        )}
 
-
-        <ul className="list-unstyled position-absolute category-list text-uppercase">
+        <ul
+          className="list-unstyled position-absolute category-list text-uppercase"
+          style={{ zIndex: 10 }}
+        >
           {data?.hero_banner_categories?.map((item) => (
-            <li key={item.id} >
+            <li key={item.id}>
               <Link to={`/products/${item.action_url}`}>{item.name}</Link>
               {/* target="_blank" rel="noopener noreferrer" */}
             </li>
           ))}
         </ul>
 
-
         {/* Description */}
-        <div className="position-absolute description-hero text-secondary">
+        <div
+          className="position-absolute description-hero text-secondary"
+          style={{ zIndex: 10 }}
+        >
           <p>
             We believe home is more than just a place. It's a feeling. That’s
             why we design enduring products that strike the perfect balance
@@ -548,10 +716,11 @@ const HomePage = () => {
           </p>
         </div>
 
-
-        <div ref={searchSectionRef}
-          className={`search-wrapper bg-white rounded shadow ${isSearchActive ? "active" : ""
-            }`}
+        <div
+          ref={searchSectionRef}
+          className={`search-wrapper bg-white rounded shadow ${
+            isSearchActive ? "active" : ""
+          }`}
         >
           <div className="d-flex">
             <input
@@ -565,10 +734,8 @@ const HomePage = () => {
                 // Allow only letters, numbers, and spaces (no special characters)
                 let value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
 
-
                 // Remove leading spaces
                 value = value.replace(/^\s+/, "");
-
 
                 setQuery(value);
               }}
@@ -602,17 +769,17 @@ const HomePage = () => {
             </button>
           </div>
 
-
           {isSearchActive && Array.isArray(results) && (
             <>
               {results.length > 0 ? (
                 <div className="search-results-grid">
                   {results.slice(0, 8).map((item, index) => (
-                    <div
-                      key={index}
-                      className="search-card"
-                    >
-                      <Link to={`/productsdetails/${item.action_url}`} target="_blank" rel="noopener noreferrer">
+                    <div key={index} className="search-card">
+                      <Link
+                        to={`/productsdetails/${item.action_url}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <img
                           src={item.media_list?.main?.file}
                           alt={item.name}
@@ -629,8 +796,16 @@ const HomePage = () => {
                 </div>
               ) : (
                 // ✅ No Data Found message
-                !loading && query?.trim() && (
-                  <div className="search-results-grid" style={{ display: "flex", justifyContent: "center", padding: "150px" }}>
+                !loading &&
+                query?.trim() && (
+                  <div
+                    className="search-results-grid"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      padding: "150px",
+                    }}
+                  >
                     <p>No Result found</p>
                   </div>
                 )
@@ -639,20 +814,51 @@ const HomePage = () => {
           )}
         </div>
 
-
         {/* Overlay */}
         {isSearchActive && (
           <div
             className="search-overlay"
-            onClick={() => { setIsSearchActive(false); setQuery(""); }}
+            onClick={() => {
+              setIsSearchActive(false);
+              setQuery("");
+            }}
           />
         )}
+
+        {/* <div className="txt_dynamic_betlt">
+         <p className="position-absolute footer-note text-center small">
+           <span>
+             <img
+               src={items[currentIndex].icon}
+               className="img_turner"
+             />
+             &nbsp;
+           </span>
+           {items[currentIndex].text}
+         </p>
+       </div> */}
+
+        {/*
+       <div className="txt_dynamic_betlt">
+         <p
+           className={`position-absolute footer-note text-center small ${fade ? "fade-out" : "fade-in"
+             }`}
+         >
+           <span>
+             <img src={items[currentIndex].icon} className="img_turner" />
+             &nbsp;
+           </span>
+           {items[currentIndex].text}
+         </p>
+       </div> */}
 
         <section>
           <div className="slogan_part">
             <p
-              className={`position-absolute footer-note small ${fade ? "fade-out" : "fade-in"
-                }`}>
+              className={`position-absolute footer-note small ${
+                fade ? "fade-out" : "fade-in"
+              }`}
+            >
               <span>
                 <img src={items[currentIndex].icon} className="img_turner" />
                 &nbsp;
@@ -661,10 +867,7 @@ const HomePage = () => {
             </p>
           </div>
         </section>
-
-
       </div>
-
 
       {/* ────────────────── 🐉 💎💎🥀 COLLECTION  🥀💎💎 🐉────────────────── */}
       <section className="section_collection position-relative d-flex justify-content-center align-items-center">

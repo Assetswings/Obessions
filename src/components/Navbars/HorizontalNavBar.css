@@ -14,10 +14,10 @@
   border-bottom: 1px solid #8c8981;
 }
 
-.nav-item {
+ .nav-item {
   font-size: 12px;
   cursor: pointer;
-}
+ }
 
 .nav-item:hover {
   color: #d32020;

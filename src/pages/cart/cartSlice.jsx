@@ -3,9 +3,9 @@ import API from '../../app/api';
 
 export const addToCart = createAsyncThunk(
   'cart/addToCart',
-  async ({ product_id, quantity }, { rejectWithValue }) => {
+  async ({ product_id, quantity , size_id, size_value}, { rejectWithValue }) => {
     try {
-      const response = await API.post('/cart/add-to-cart', { product_id, quantity });
+      const response = await API.post('/cart/add-to-cart', { product_id, quantity, size_id, size_value });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);

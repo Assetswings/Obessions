@@ -636,14 +636,16 @@ const Carpetfinderserch = () => {
                       >
                         <div className="product-price">
                           <span>₹{item.selling_price}</span>
-                          {item.mrp && item.mrp !== item.selling_price && (
-                            <>
-                              <span className="original">₹{item.mrp}</span>
-                              <span className="discount">
-                                ({item.discount_percent}% OFF)
-                              </span>
-                            </>
-                          )}
+                          {item.mrp &&
+                            item.mrp !== item.selling_price &&
+                            Number(item.discount_percent) > 0 && (
+                              <>
+                                <span className="original">₹{item.mrp}</span>
+                                <span className="discount">
+                                  ({item.discount_percent}% OFF)
+                                </span>
+                              </>
+                            )}
                         </div>
                       </Link>
                     </div>

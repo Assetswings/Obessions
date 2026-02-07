@@ -576,25 +576,23 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                         {selectedSize && <strong>{selectedSize.size}</strong>}
                       </p>
                     )}
-                    {productDetails?.sub_category_action_url === "carpet" ? (
-                      <div className="unit-toggle">
-                        <button
-                          className={unit === "cm" ? "active" : ""}
-                          onClick={() => setUnit("cm")}
-                        >
-                          Cm
-                        </button>
+                    {["carpet", "runner"].includes(productDetails?.sub_category_action_url) && (
+  <div className="unit-toggle">
+    <button
+      className={unit === "cm" ? "active" : ""}
+      onClick={() => setUnit("cm")}
+    >
+      Cm
+    </button>
 
-                        <button
-                          className={unit === "ft" ? "active" : ""}
-                          onClick={() => setUnit("ft")}
-                        >
-                          Feet
-                        </button>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
+    <button
+      className={unit === "ft" ? "active" : ""}
+      onClick={() => setUnit("ft")}
+    >
+      Feet
+    </button>
+  </div>
+)}
                     <div className="size-options">
                       {productDetails.product_sizes.map((size) => (
                         <div

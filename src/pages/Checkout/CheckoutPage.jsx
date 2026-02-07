@@ -74,9 +74,9 @@ const CheckoutPage = () => {
   });
   const [expanded, setExpanded] = useState(false);
   const [defuktAddr, setDefultAddr] = useState();
-
   const { checkoutData, loading } = useSelector((state) => state.checkout);
   const { orderResponse } = useSelector((state) => state.checkout);
+  console.log("The checkout data---->",checkoutData); 
 
   useEffect(() => {
     document.title = "Obsession - Checkout";

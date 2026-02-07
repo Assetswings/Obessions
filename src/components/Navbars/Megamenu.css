@@ -125,7 +125,7 @@
   
   .menu-section li {
     margin-bottom: 11px;
-    cursor: pointer;
+    /* cursor: pointer; */
     color: #444;
     font-size: 12px;
   }
@@ -193,3 +193,11 @@
   overscroll-behavior: contain; 
 
  }
+
+
+  .mega-menu-content,
+.mega-menu-left,
+.mega-menu-center,
+.mega-menu-right {
+  cursor: default;
+}

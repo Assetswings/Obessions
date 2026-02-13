@@ -27,7 +27,7 @@ import emptyproduct from "../../assets/images/empty-product.png";
 import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
 import { useCartWishlist } from "../../app/CartWishlistContext";
 
-const ProductsPage = () => {
+   const ProductsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -98,7 +98,7 @@ const ProductsPage = () => {
   }, [location.pathname]); // runs on route change
 
   useEffect(() => {
-    document.title = "Obsession - Product List";
+    document.title = "Obsessions- Product List";
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
     const urlFilters = getFiltersFromURL(location.search);

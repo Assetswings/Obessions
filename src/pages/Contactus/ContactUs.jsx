@@ -25,7 +25,7 @@ const ContactUs = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    document.title = "Obsession - Contact Us";
+    document.title = "Obsessions- Contact Us";
     dispatch(fetchContactDetails());
   }, [dispatch]);
 

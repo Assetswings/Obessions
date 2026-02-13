@@ -15,7 +15,7 @@ import SuccessIcon from "../../assets/icons/Success-Icon.png";
   const { addOns } = useSelector((state) => state.toppick);
 
     useEffect(() => {
-    document.title = "Obsession - Payment Success";
+    document.title = "Obsessions- Payment Success";
     dispatch(fetchAddOns());
   },[dispatch]);
 

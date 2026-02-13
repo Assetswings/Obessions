@@ -31,7 +31,7 @@ const CartPage = () => {
   const lastErrorRef = useRef(null);
 
   useEffect(() => {
-    document.title = "Obsession - Cart";
+    document.title = "Obsessions- Cart";
     if (!token) {
       navigate("/login");
     }

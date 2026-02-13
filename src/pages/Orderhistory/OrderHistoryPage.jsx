@@ -54,7 +54,7 @@ const OrderHistoryPage = () => {
     }
   };
   useEffect(() => {
-    document.title = "Obsession - Order History";
+    document.title = "Obsessions- Order History";
     dispatch(fetchTopPicks());
   }, [dispatch]);
 

@@ -21,7 +21,7 @@ const CarpetFinder = () => {
 
   // Fetch data when mounted
   useEffect(() => {
-    document.title = "Obsession - Floor Matcher";
+    document.title = "Obsessions- Floor Matcher";
     dispatch(fetchCarpetFinder([]));
   }, [dispatch]);
 

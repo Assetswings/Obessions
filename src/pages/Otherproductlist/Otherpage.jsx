@@ -81,7 +81,7 @@ const Otherpage = () => {
   const rangeEnd = Math.min(currentPage * limit, total);
 
   useEffect(() => { 
-    document.title = `Obsession - ${Titelslug}`;
+    document.title = `Obsessions- ${Titelslug}`;
     if (loading) {
       setDataReady(true);   // still fetching
       return;
@@ -501,6 +501,12 @@ const Otherpage = () => {
   const breadcrumbPaths = [
     { label: Titelslug, to: "" }, // last one (no link)
   ];
+
+    const hasActiveFilters = Object.values(selectedFilters).some(
+    (value) => Array.isArray(value) && value.length > 0
+  );
+
+
   return (
     <>
       <ToastContainer style={{ zIndex: 9999999999999 }} position="top-right" autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
@@ -559,11 +565,20 @@ const Otherpage = () => {
           <h2 className="title_prd_roots">{slug ? formatTitle(slug) : ""}</h2>
           <div className="root_devider_flt">
             <h2>Filters</h2>
-            {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
-              <p className="clr-all" onClick={() => { setSelectedFilters({}); }}>
-                Clear all
-              </p>
-            ) : null}
+             {hasActiveFilters && (
+  <p
+    className="clr-all"
+    onClick={() => {
+      setSelectedFilters({});
+      setTempMobileFilters({});
+      setCurrentPage(1);
+      setSelected("");
+      setShowShort("");
+    }}
+  >
+    Clear all
+  </p>
+)}
           </div>
 
           {dataReady ? (

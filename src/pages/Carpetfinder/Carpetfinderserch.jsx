@@ -41,6 +41,12 @@ const Carpetfinderserch = () => {
   const [tempMobileFilters, setTempMobileFilters] = useState({});
   const [selected, setSelected] = useState("");
   const [showShort, setShowShort] = useState("");
+ 
+    const hasActiveFilters = Object.values(selectedFilters).some(
+    (values) => Array.isArray(values) && values.length > 0
+  );
+
+
   const filtercarpetdata = location.state;
   const { filteredData, filters, sorting, pagination, loading, error } = useSelector(
     (state) => state.carpetFinder
@@ -77,6 +83,9 @@ const Carpetfinderserch = () => {
       setDataReady(false);
     }
   }, [filteredData, loading]);
+
+
+   
 
 
   useEffect(() => {
@@ -256,6 +265,7 @@ const Carpetfinderserch = () => {
       ? handleMobileFilterChange
       : handleFilterChange;
 
+     
     return (
       <div className="custom-filter-group" key={key}>
         <h4>{title}</h4>
@@ -296,6 +306,12 @@ const Carpetfinderserch = () => {
       ? handleMobileFilterChange
       : handleFilterChange;
 
+
+       const hasActiveFilters = Object.values(selectedFilters).some(
+  (values) => Array.isArray(values) && values.length > 0
+);
+
+
     return (
       <div className="custom-filter-group" key="categories">
         <h4>Categories</h4>
@@ -326,10 +342,7 @@ const Carpetfinderserch = () => {
     const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
     const onChangeHandler = isMobile ? handleMobileFilterChange : handleFilterChange;
 
-    const handlePriceChange = (filterValue) => {
-      onChangeHandler("price_filter", filterValue);
-    };
-
+ 
     return (
       <></>
       // <div className="custom-filter-group" key="price_filter">
@@ -437,11 +450,20 @@ const Carpetfinderserch = () => {
           <h2 className="title_prd_roots">Floor Matcher</h2>
           <div className="root_devider_flt">
             <h2>Filters</h2>
-            {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
-              <p className="clr-all" onClick={() => { setSelectedFilters({}); }}>
-                Clear all
-              </p>
-            ) : null}
+           {hasActiveFilters && (
+  <p
+    className="clr-all"
+    onClick={() => {
+      setSelectedFilters({});
+      setTempMobileFilters({});
+      setCurrentPage(1);
+      setSelected("");
+      setShowShort("");
+    }}
+  >
+    Clear all
+  </p>
+)}
           </div>
 
           {dataReady ? (

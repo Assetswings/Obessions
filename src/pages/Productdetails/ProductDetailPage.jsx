@@ -74,7 +74,7 @@ const mobileImageRef = useRef(null);
   console.log("selectedSize 00000---->", selectedSize);
 
   useEffect(() => {
-    document.title = "Obsession - Products Details ";
+    document.title = "Obsessions- Products Details ";
     let storagePin = localStorage.getItem('pincode');
     if (!productSlug) return;
     // Only run when slug actually changes

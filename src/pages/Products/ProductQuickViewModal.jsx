@@ -53,11 +53,11 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   const actionurl = product?.action_url ? product?.action_url : product?.slug;
   const { data, loading, error } = useSelector((state) => state.productDetail);
   const { pinset, pinloading, pinerror } = useSelector(
-    (state) => state.pincode
-  );
+  (state) => state.pincode);
   const wishlist = useSelector((state) => state.wishlist);
+  console.log("data in quick view -------->", data);
 
-  useEffect(() => {
+    useEffect(() => {
     let storagePin = localStorage.getItem('pincode');
     if (actionurl) {
       setLocalLoading(true);

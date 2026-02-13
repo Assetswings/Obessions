@@ -29,7 +29,7 @@ const SizeGuide = () => {
   };
 
   useEffect(() => {
-    document.title = "Obsession - Style Guide";
+    document.title = "Obsessions- Style Guide";
     handleTerms();
   }, []);
 

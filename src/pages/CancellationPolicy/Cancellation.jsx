@@ -22,7 +22,7 @@ export default function Cancellation() {
   };
 
   useEffect(() => {
-    document.title = "Obsession - Cancellation Return Refund Policy";
+    document.title = "Obsessions- Cancellation Return Refund Policy";
     handleCancel();
   }, []);
 

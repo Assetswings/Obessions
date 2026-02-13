@@ -21,7 +21,7 @@ const Blog = () => {
   };
 
   useEffect(() => {
-  document.title = "Obsession - Blog List";
+  document.title = "Obsessions- Blog List";
   BlogList();
   }, []);
 

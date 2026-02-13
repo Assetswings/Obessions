@@ -23,7 +23,7 @@ export default function Privacypolicy() {
   };
 
   useEffect(() => {
-    document.title = "Obsession - Privacy Policy";
+    document.title = "Obsessions- Privacy Policy";
     fetchPrivacyPolicy();
   }, []);
 

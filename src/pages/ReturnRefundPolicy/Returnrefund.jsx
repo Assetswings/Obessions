@@ -22,7 +22,7 @@ export default function Returnrefund() {
   };
 
   useEffect(() => {
-    document.title = "Obsession - Return Refund Policy";
+    document.title = "Obsessions- Return Refund Policy";
     handleReturnRefund();
   }, []);
 

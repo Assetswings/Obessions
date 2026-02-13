@@ -18,7 +18,7 @@ const PaymentPage = () => {
 
   // Default selection logic
   useEffect(() => {
-    document.title = "Obsession - Payment Page";
+    document.title = "Obsessions- Payment Page";
     if (orderResponse?.data?.payment_gateways?.length) {
       const razorpay = orderResponse.data.payment_gateways.find(
         (g) => g.provider === "RAZORPAY"
@@ -145,7 +145,7 @@ const PaymentPage = () => {
                     <span className="sub-1">
                       <de>₹{item.product?.mrp}</de> &nbsp;
                       <span className="dis-sub">
-                        (-{item.product?.discount}%)
+                        ({item.product?.discount}%)
                       </span>
                     </span>
                   </>

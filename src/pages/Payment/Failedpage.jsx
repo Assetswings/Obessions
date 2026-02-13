@@ -6,7 +6,7 @@ import Footer from "../../components/Footer/Footer";
 const Failedpage = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    document.title = "Obsession - Payment Failed";
+    document.title = "Obsessions- Payment Failed";
   })
   return (
     <>

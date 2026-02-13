@@ -18,7 +18,7 @@ import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
   const orderNo = state?.orderNo;
   const selectOption = state?.selectOption;
   useEffect(() => {
-  document.title = "Obsession - Return / Exchange";
+  document.title = "Obsessions- Return / Exchange";
   getReason("return");
   }, []);
   useEffect(() => {

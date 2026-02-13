@@ -73,7 +73,7 @@ const items = [
   }, [data]);
 
     useEffect(() => {
-    document.title = "Obsession - About Us";
+    document.title = "Obsessions - About Us";
     dispatch(fetchAboutUs());
   }, [dispatch]);
 
@@ -299,7 +299,7 @@ const items = [
         <section className="promise-section">
           <div className="promise-header">
             <h2>
-              The Obsession <span>Promise</span>
+              The Obsessions<span>Promise</span>
             </h2>
             <p>{data?.obsession_promise?.description}</p>
           </div>

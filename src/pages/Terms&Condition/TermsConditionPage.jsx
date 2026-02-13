@@ -22,7 +22,7 @@ export default function TermsAndConditions() {
   };
 
   useEffect(() => {
-    document.title = "Obsession - Terms & Condition of Sale";
+    document.title = "Obsessions- Terms & Condition of Sale";
     handleTerms();
   }, []);
 

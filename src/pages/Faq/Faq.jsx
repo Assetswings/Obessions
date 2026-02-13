@@ -24,7 +24,7 @@ const Faq = () => {
   const isManualScroll = useRef(false);
 
   useEffect(() => {
-    document.title = "Obsession - FAQ";
+    document.title = "Obsessions- FAQ";
     dispatch(fetchFaqs());
     getBanner();
   }, [dispatch]);

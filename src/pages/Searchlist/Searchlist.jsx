@@ -61,7 +61,7 @@ const Searchlist = () => {
   const rangeEnd = Math.min(currentPage * limit, total);
 
   useEffect(() => {
-    document.title = "Obsession - Search Item List";
+    document.title = "Obsessions- Search Item List";
     dispatch(fetchTopPicks());
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
@@ -437,6 +437,10 @@ const Searchlist = () => {
       label: "Search List", to: ""
     }
   ];
+
+   const hasActiveFilters = Object.values(selectedFilters).some(
+  (values) => Array.isArray(values) && values.length > 0
+);
   return (
     <>
       <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
@@ -513,11 +517,20 @@ const Searchlist = () => {
                 ) : (
                   <>
                     <h2>Filters</h2>
-                    {selectedFilters && Object.keys(selectedFilters).length > 0 ? (
-                      <p className="clr-all" onClick={() => { setSelectedFilters({}); }}>
-                        Clear all
-                      </p>
-                    ) : null}
+                     {hasActiveFilters && (
+  <p
+    className="clr-all"
+    onClick={() => {
+      setSelectedFilters({});
+      setTempMobileFilters({});
+      setCurrentPage(1);
+      setSelected("Recommended");
+      setShowShort("");
+    }}
+  >
+    Clear all
+  </p>
+)}
                   </>
                 )}
               </div>

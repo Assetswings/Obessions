@@ -17,7 +17,7 @@ const CancelSuccess = () => {
     const { addOns } = useSelector((state) => state.toppick);
     
     useEffect(() => {
-        document.title = "Obsession - Payment Success";
+        document.title = "Obsessions- Payment Success";
         dispatch(fetchAddOns());
     }, [dispatch]);
     return (

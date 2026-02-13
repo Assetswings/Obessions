@@ -116,7 +116,7 @@ const HomePage = () => {
 
   // Search
   useEffect(() => {
-    document.title = "Obsession - Home";
+    document.title = "Obsessions- Home";
     if (!query.trim()) {
       dispatch(clearSearchResults());
       return;

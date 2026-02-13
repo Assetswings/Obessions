@@ -33,7 +33,7 @@ const LoginPage = () => {
   }, [loginstep]);
 
   useEffect(() => {
-    document.title = `Obsession - Sign In`;
+    document.title = `Obsessions- Sign In`;
     // Autofocus handling for each step
     if (step === 1 && mobileRef.current) {
       mobileRef.current.focus();

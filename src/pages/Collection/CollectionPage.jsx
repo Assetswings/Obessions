@@ -22,7 +22,7 @@ const CollectionPage = () => {
   );
 
   useEffect(() => {
-    document.title = "Obsession - Collections";
+    document.title = "Obsessions- Collections";
     if (slug) {
       dispatch(fetchCollections(slug));
     } else {

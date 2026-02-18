@@ -5,6 +5,7 @@ import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
 import tickicon from "../../assets/icons/tick-Icons.svg";
 import { Slide, ToastContainer, toast } from "react-toastify";
+ import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const TrackOrder = () => {
   const [orderId, setOrderId] = useState("");
@@ -48,8 +49,11 @@ const TrackOrder = () => {
     setErrorMsg("");
   };
 
+    const breadcrumbPaths = [{ label: "Track Order", to: "" }];
+
   return (
     <>
+        <Breadcrumbs paths={[{ label: "Track Order", to: "" }]} />
       <ToastContainer
         position="top-right"
         style={{ zIndex: 9999999999999 }}

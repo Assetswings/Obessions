@@ -27,7 +27,11 @@ const CartPage = () => {
   const { pinset, pinloading, pinerror } = useSelector(
     (state) => state.pincode
   );
+  useEffect(() => {
+       document.title = "Obsessions- My Cart";
+     }, []);
 
+     
   const lastErrorRef = useRef(null);
 
   useEffect(() => {
@@ -165,6 +169,8 @@ const CartPage = () => {
   const breadcrumbPaths = [
     { label: "Cart", to: "" }, // last one (no link)
   ];
+
+  
   return (
     <>
       <ToastContainer

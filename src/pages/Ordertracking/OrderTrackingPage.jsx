@@ -8,6 +8,7 @@ import API from "../../app/api";
 import Footer from "../../components/Footer/Footer";
 import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
+
 const OrderTrackingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,7 +24,6 @@ const OrderTrackingPage = () => {
   const { results, loading, error } = useSelector((state) => state.orders);
   // console.log('url order no',orderNo, order_no);
 
-  
 
   const order = results[0]; // ✅ take first order safely
   const trackingUpdates = [
@@ -143,10 +143,9 @@ const OrderTrackingPage = () => {
                   }
                 </div>
               </div>
-
             </div>
           </div>
-          <hr />
+          <hr/>
 
           <div className="order-info-2">
             <div>

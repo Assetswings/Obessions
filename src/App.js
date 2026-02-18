@@ -4,12 +4,9 @@ import AppRoutes from "./router/Routes";
 import ScrollRestoration from "./router/ScrollRestoration";
 import { CartWishlistProvider, HeaderProvider } from "./app/CartWishlistContext";
 import MetaListener from "./app/MetaListener";
-import useNetworkStatus from "./app/useNetworkStatus";
 import OfflineGuard from "./app/OfflineGuard";
 
 function AppContent() {
-  useNetworkStatus();
-
   return (
     <OfflineGuard>
       <MetaListener />

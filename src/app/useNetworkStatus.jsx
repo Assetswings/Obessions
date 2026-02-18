@@ -1,53 +1,20 @@
-import { useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function useNetworkStatus() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const lastRouteRef = useRef("/");
-
-  // Save last valid route
-  useEffect(() => {
-    if (navigator.onLine && location.pathname !== "/NoInternet") {
-      const currentRoute = location.pathname + location.search;
-      lastRouteRef.current = currentRoute;
-      sessionStorage.setItem("lastRoute", currentRoute);
-    }
-  }, [location.pathname, location.search]);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   useEffect(() => {
-    const goOffline = () => {
-      if (location.pathname !== "/NoInternet") {
-        navigate("/NoInternet", { replace: true });
-      }
-    };
+    const handleOffline = () => setIsOnline(false);
+    const handleOnline = () => setIsOnline(true);
 
-    const goOnline = () => {
-      const lastRoute =
-        sessionStorage.getItem("lastRoute") || "/";
-      navigate(lastRoute, { replace: true });
-    };
-
-    // Event listeners
-    window.addEventListener("offline", goOffline);
-    window.addEventListener("online", goOnline);
-
-    // 🔥 Mobile Safari fallback (polling)
-    const interval = setInterval(() => {
-      if (!navigator.onLine && location.pathname !== "/NoInternet") {
-        goOffline();
-      }
-
-      if (navigator.onLine && location.pathname === "/NoInternet") {
-        goOnline();
-      }
-    }, 1500);
+    window.addEventListener("offline", handleOffline);
+    window.addEventListener("online", handleOnline);
 
     return () => {
-      window.removeEventListener("offline", goOffline);
-      window.removeEventListener("online", goOnline);
-      clearInterval(interval);
+      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener("online", handleOnline);
     };
-  }, [navigate, location.pathname]);
+  }, []);
 
+  return isOnline;
 }

@@ -396,7 +396,7 @@
 /* Large Desktop (1440px+) */
 @media (min-width: 1440px) {
     .bestseller-fixed-card {
-        left: 16%;
+    left: 242px;
     }
 }
 

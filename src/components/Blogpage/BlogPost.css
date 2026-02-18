@@ -208,6 +208,7 @@ p {
 }
 .track_share_bt{
   display: flex;
+  justify-content: space-between;
 }
 .share_root{
   position: relative;

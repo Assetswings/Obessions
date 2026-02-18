@@ -19,7 +19,7 @@ const CarpetFinder = () => {
   const [selectedFilter, setSelectedFilter] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch data when mounted
+  // Fetch data when mounted  
   useEffect(() => {
     document.title = "Obsessions- Floor Matcher";
     dispatch(fetchCarpetFinder([]));
@@ -301,19 +301,20 @@ const CarpetFinder = () => {
                 </div>
               </div>
             }
+             
             {currentStep < steps.length - 1 ? (
               <div
-                className="arrow-stack"
-                onClick={() => {
-                  if (!selections[currentStep]?.length) {
-                    toast.error(
-                      "Please select at least one option to proceed."
-                    );
-                    return;
-                  }
-                  setCurrentStep((prev) => prev + 1);
-                  getNextSterData(currentStep);
-                }}>
+  className="arrow-stack"
+  style={{ fontSize: "12px" }}  // change value as you want
+  onClick={() => {
+    if (!selections[currentStep]?.length) {
+      toast.error("Choose an option to continue.");
+      return;
+    }
+    setCurrentStep((prev) => prev + 1);
+    getNextSterData(currentStep);
+  }}
+>
                 <div style={{ display: "flex" }}>
                   <div>
                     <span> NEXT </span>

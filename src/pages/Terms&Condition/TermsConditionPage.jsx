@@ -3,6 +3,7 @@ import "./Terms.css";
 import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
 import Skeleton from "react-loading-skeleton";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 export default function TermsAndConditions() {
   const [data, setData] = useState([]);
@@ -28,8 +29,12 @@ export default function TermsAndConditions() {
 
   const terms = data?.[0];
 
+   
+  const breadcrumbPaths = [{ label: "Terms & Conditions", to: "" }];
+
   return (
     <>
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="terms-page">
         <div className="terms-container">
           <h1 className="terms-title">Terms &amp; Condition</h1>

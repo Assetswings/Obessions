@@ -3,12 +3,13 @@ import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 export default function Returnrefund() {
   const [policy, setPolicy] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const handleReturnRefund = async () => {
+    const handleReturnRefund = async () => {
     try {
       const res = await API.get("/policy/terms-of-use");
       if (res.data?.status === 200 && Array.isArray(res.data?.data)) {
@@ -21,13 +22,18 @@ export default function Returnrefund() {
     }
   };
 
-  useEffect(() => {
-    document.title = "Obsessions- Return Refund Policy";
+    useEffect(() => {
+    document.title = "Obsessions- Terms of Use";
     handleReturnRefund();
   }, []);
 
+    
+  const breadcrumbPaths = [{ label: "Terms of Use", to: "" }];
+
+     
   return (
     <>
+        <Breadcrumbs paths={breadcrumbPaths} />
       <div className="terms-page">
         <div className="terms-container">
           {loading ? (

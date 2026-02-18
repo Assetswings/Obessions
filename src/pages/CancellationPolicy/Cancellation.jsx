@@ -3,6 +3,7 @@ import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 export default function Cancellation() {
   const [policy, setPolicy] = useState(null);
@@ -26,8 +27,20 @@ export default function Cancellation() {
     handleCancel();
   }, []);
 
+  const fullTitle = "Cancellation, Return & Refund Policy";
+
+const shortTitle =
+  fullTitle.length > 20
+    ? fullTitle.substring(0, 20) + "..."
+    : fullTitle;
+
+const breadcrumbPaths = [
+  { label: shortTitle, to: "" },
+];
+
   return (
     <>
+      <Breadcrumbs paths={breadcrumbPaths} />
       <div className="terms-page">
         <div className="terms-container">
           {loading ? (
@@ -84,7 +97,6 @@ export default function Cancellation() {
           )}
         </div>
       </div>
-
       <Footer />
     </>
   );

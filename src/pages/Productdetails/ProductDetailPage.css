@@ -868,7 +868,7 @@ font-family: "Playfair Display", serif; */
   background: #fff;
   border-radius: 8px;
   text-align: left;
-  padding: 16px;
+  margin: 16px;
   position: relative;
 }
 

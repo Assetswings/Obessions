@@ -286,7 +286,7 @@ const MobileNav = () => {
               </li>
               <li className="border-buttom">
                 <Link to="/bestseller" onClick={toggleDrawer}>
-                  BEST SELLERS
+                  BESTSELLERS
                 </Link>
               </li>
               <li className="border-buttom">

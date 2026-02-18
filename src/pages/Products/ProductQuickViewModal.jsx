@@ -26,6 +26,7 @@ import CartToast from "../../components/AddtoCartToster/CartToast";
 import { useCartWishlist } from "../../app/CartWishlistContext";
 import { LocationTick } from "iconsax-react";
 
+
 const ProductQuickViewModal = ({ show, product, onHide }) => {
   const { getCartWishlistCount } = useCartWishlist();
   const [quantity, setQuantity] = useState(1);
@@ -56,6 +57,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
   (state) => state.pincode);
   const wishlist = useSelector((state) => state.wishlist);
   console.log("data in quick view -------->", data);
+  console.log("color---selected-->", selectedColor); 
 
     useEffect(() => {
     let storagePin = localStorage.getItem('pincode');
@@ -64,7 +66,7 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
       setSelectedImage(null);
       setSelectedSize(null);
       setSelectedColor([]);
-      setSelectedMedia(null); // 🔥 THIS WAS MISSING
+      setSelectedMedia(null); 
       setProductsDetails([]);
       setSimilarStyle([]);
       setMatchingFound([]);
@@ -491,9 +493,8 @@ const ProductQuickViewModal = ({ show, product, onHide }) => {
                       onClick={() => setSelectedMedia("video")}
                     >
                       <img
-                        src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
-                        alt="video"
-                      />
+                        src={selectedColor?.color_media}
+                        alt="video"/>
                       <span className="thumb-overlay">▶</span>
                     </div>
                   )}

@@ -174,7 +174,7 @@
   align-items: center;
 }
 
-.stepper-circle {
+.stepper-circle { 
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -199,6 +199,10 @@
   background-color: #ccc;
 }
 
+.arrow-stack {
+  font-size: 12px !important; 
+
+}
 
 @media (max-width: 768px) {
   .finder-grid {
@@ -318,4 +322,34 @@
 
 .finder-card.selected {
   border: 2px solid #657567;
+}
+
+
+/* Make toast layout stable */
+.Toastify__toast {
+  display: flex;
+  align-items: flex-start;
+  padding-right: 45px !important; 
+  align-items: center;
+}
+
+/* Allow text to wrap properly */
+.Toastify__toast-body {
+  margin: 0;
+  padding: 0;
+  word-break: break-word;
+  white-space: normal;
+  flex: 1;
+}
+
+/* Keep close button fixed at top right */
+.Toastify__close-button {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+}
+
+/* Optional: control width */
+.Toastify__toast-container {
+  width: 380px;
 }

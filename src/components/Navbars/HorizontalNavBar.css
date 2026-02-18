@@ -52,6 +52,10 @@
   font-size: 28px;
 }
 
+.nav-item :hover{
+color: #d32020;
+}
+
 @media (max-width: 768px) {
   .floating-whatsapp {
     bottom: 80px;

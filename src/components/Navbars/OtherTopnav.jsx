@@ -263,13 +263,13 @@ const OtherTopnav = () => {
           </li>
           <li>
             <NavLink to='/bestseller' className={({ isActive }) => (isActive ? "active-tab" : "")}>
-              <div className="track_poster"> BEST SELLERS </div>
+              <div className="track_poster"> BESTSELLERS </div>
 
             </NavLink>
           </li>
           <li>
             <NavLink to='/offer-spot' className={({ isActive }) => (isActive ? "active-tab" : "")}>
-              <div className="track_poster">  OFFERS SPOT</div>
+              <div className="track_poster">  OFFERS SPOTS</div>
 
             </NavLink>
           </li>

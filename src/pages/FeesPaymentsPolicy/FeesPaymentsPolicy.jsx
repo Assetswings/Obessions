@@ -3,6 +3,7 @@ import Footer from "../../components/Footer/Footer";
 import API from "../../app/api";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 export default function FeesPaymentsPolicy() {
   const [policy, setPolicy] = useState(null);
@@ -22,12 +23,15 @@ export default function FeesPaymentsPolicy() {
   };
 
   useEffect(() => {
-    document.title = "Obsessions- Fees Payment Policy";
+    document.title = "Obsessions - Fees Payment Policy";
     handleFees();
   }, []);
 
+      
+  const breadcrumbPaths = [{ label: "Fees & Payments Polic", to: "" }];
   return (
     <>
+        <Breadcrumbs paths={breadcrumbPaths} />
       <div className="terms-page">
         <div className="terms-container">
           {loading ? (
@@ -42,6 +46,7 @@ export default function FeesPaymentsPolicy() {
                 </div>
               ))}
             </>
+        
           ) : (
             <>
               {/* TITLE */}

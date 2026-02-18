@@ -264,3 +264,6 @@ span.track_poster {
 .megamenu-wrapper.visible {
   display: block;
 }
+.track_poster:hover{
+  color: red !important;
+}

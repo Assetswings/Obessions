@@ -6,7 +6,6 @@ import arrowleft from "../../assets/icons/left_arrow_black.svg";
 import arrowright from "../../assets/icons/right_arrow_black.svg";
 import arrowhvrleft from "../../assets/icons/left_arrow_red.svg";
 import arrowhvrright from "../../assets/icons/right_arrow_red.svg";
-
 import { addToWishlist, removeFromWishlist } from "../Wishtlist/WishlistSlice";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import { Player } from "@lottiefiles/react-lottie-player";
@@ -15,12 +14,11 @@ import LoginPromptModal from "../LoginModal/LoginPromptModal";
 import { Link } from "react-router-dom";
 import { useCartWishlist } from "../../app/CartWishlistContext";
 
-const BestsellersSlider = ({ onQuickView }) => {
+  const BestsellersSlider = ({ onQuickView }) => {
   const { getCartWishlistCount } = useCartWishlist();
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.home);
   const sliderRef = useRef(null);
-
   const [bestsellers, setBestsellers] = useState([]);
   const [animatedWish, setAnimatedWish] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,10 +31,10 @@ const BestsellersSlider = ({ onQuickView }) => {
   const cardWidth = 220;
   const gap = 20;
 
-  // Initialize products & login state
-  useEffect(() => {
-    const allProducts = data?.bestSellers?.products || [];
-    if (allProducts.length > 1) {
+      // Initialize products & login state
+      useEffect(() => {
+      const allProducts = data?.bestSellers?.products || [];
+      if (allProducts.length > 1) {
       const firstBestseller = allProducts[1];
       const rest = allProducts.filter((_, i) => i !== 1);
       setBestsellers([firstBestseller, ...rest]);

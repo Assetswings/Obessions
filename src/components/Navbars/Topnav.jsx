@@ -121,10 +121,10 @@ const handleItemClick = () => {
           <Link to='/new-arrivals'>NEW ARRIVALS</Link>
         </div>
         <div className="nav-item">
-          <Link to='/bestseller'>BEST SELLERS</Link>
+          <Link to='/bestseller'>BESTSELLERS</Link>
         </div>
         <div className="nav-item">
-          <Link to='/offer-spot'>OFFERS SPOT</Link>
+          <Link to='/offer-spot'>OFFERS SPOTS</Link>
         </div>
         <div className="nav-item">
           <Link to='/floor-matcher'>FLOOR MATCHER</Link>

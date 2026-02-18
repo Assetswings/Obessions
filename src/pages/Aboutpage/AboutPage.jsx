@@ -6,6 +6,8 @@ import { FaAward } from "react-icons/fa";
 import Footer from "../../components/Footer/Footer";
 import { fetchAboutUs } from "./aboutSlice";
 import { Lightbulb, Palette, Recycle } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import SplitType from "split-type";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -33,7 +35,7 @@ const items = [
 
   const AboutPage = () => {
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.about);
+  const { data, loading } = useSelector((state) => state.about);
   const [currentSet, setCurrentSet] = useState(null);
   const [fade, setFade] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -95,7 +97,7 @@ const items = [
   }, []);
 
       const breadcrumbPaths = [
-    { label: "Blog", to: "" }, // last one (no link)
+    { label: "About Us", to: "" }, // last one (no link)
   ];
 
   return (
@@ -103,41 +105,91 @@ const items = [
       <Breadcrumbs paths={breadcrumbPaths} />
       <div className="about-wrapper">
         {/* Hero Section */}
-        <section
-          className="about-hero"
-          style={{
-            backgroundImage: `url(${data?.bg_media})`,
+       <section
+  className="about-hero"
+  style={{
+    position: "relative",
+    backgroundImage: loading
+      ? "none"
+      : `url(${data?.bg_media})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    minHeight: "450px",
+  }}
+>
+  {/* Full Hero Skeleton */}
+  {loading && (
+    <Skeleton
+      height={650}
+      width="100%"
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        zIndex: 1,
+      }}
+    />
+  )}
 
-            backgroundSize: "cover",       // makes image fully cover section
-            backgroundPosition: "center",  // centers the image
-            backgroundRepeat: "no-repeat", // prevents tiling
+  <div
+    className="hero-overlay"
+    style={{ position: "relative", zIndex: 2 }}
+  >
+    <h1>
+      {loading ? (
+        <Skeleton height={60} width="60%" />
+      ) : (
+        <p
+          className="track_set_hader"
+          dangerouslySetInnerHTML={{
+            __html: data?.bg_short_desc?.replace(/\{\"\s*\"\}/g, " "),
           }}
-        >
-          <div className="hero-overlay">
-            <h1>
-              <p
-                className="track_set_hader"
-                dangerouslySetInnerHTML={{
-                  __html: data?.bg_short_desc?.replace(/\{\"\s*\"\}/g, " "),
-                }}
-              />
-            </h1>
-          </div>
-        </section>
+        />
+      )}
+    </h1>
+  </div>
+</section>
 
-        <section>
-          <div className="slogan_part">
-            <p
-              className={`position-absolute text-center small ${fade ? "fade-out" : "fade-in"
-                }`}>
-              <span>
-                <img src={items[currentIndex].icon} className="img_turner" />
-                &nbsp;
-              </span>
-              {items[currentIndex].text}
-            </p>
-          </div>
-        </section>
+    <section>
+  <div className="slogan_part">
+    {loading ? (
+      <div className="position-absolute text-center small">
+        {/* Icon Skeleton */}
+        <Skeleton
+          circle
+          height={30}
+          width={30}
+          style={{ marginRight: "10px" }}
+        />
+
+        {/* Text Skeleton */}
+        <Skeleton
+          height={20}
+          width={250}
+          style={{ display: "inline-block" }}
+        />
+      </div>
+    ) : (
+      <p
+        className={`position-absolute text-center small ${
+          fade ? "fade-out" : "fade-in"
+        }`}
+      >
+        <span>
+          <img
+            src={items[currentIndex].icon}
+            className="img_turner"
+            alt=""
+          />
+          &nbsp;
+        </span>
+        {items[currentIndex].text}
+      </p>
+    )}
+  </div>
+</section>
+
 
         {/* Text Content Section */}
         {/* Styled Text Section */}

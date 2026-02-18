@@ -4,6 +4,7 @@ import API from "../../app/api";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./privacy.css";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 export default function Privacypolicy() {
   const [policy, setPolicy] = useState([]);
@@ -23,15 +24,18 @@ export default function Privacypolicy() {
   };
 
   useEffect(() => {
-    document.title = "Obsessions- Privacy Policy";
+    document.title = "Obsessions - Privacy Policy";
     fetchPrivacyPolicy();
   }, []);
 
   const policyData = policy?.[0];
   const sections = policyData?.sections || [];
+  const breadcrumbPaths = [{ label: "Privacy Policy", to: "" }];
 
   return (
     <>
+
+       <Breadcrumbs paths={breadcrumbPaths} />
       <div className="terms-page">
         <div className="terms-container">
           {loading ? (

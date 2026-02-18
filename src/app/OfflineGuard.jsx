@@ -1,22 +1,12 @@
-import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import useNetworkStatus from "./useNetworkStatus";
+import NoInternet from "../components/Otherpage/NoInternet";
 
-const OfflineGuard = ({ children }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
+export default function OfflineGuard({ children }) {
+  const isOnline = useNetworkStatus();
 
-  useEffect(() => {
-    if (!navigator.onLine && location.pathname !== "/NoInternet") {
-      navigate("/NoInternet", { replace: true });
-    }
-  }, [location.pathname, navigate]);
-
-  // ❌ Block rendering any page except NoInternet
-  if (!navigator.onLine && location.pathname !== "/NoInternet") {
-    return null;
+  if (!isOnline) {
+    return <NoInternet />;
   }
 
   return children;
-};
-
-export default OfflineGuard;
+}

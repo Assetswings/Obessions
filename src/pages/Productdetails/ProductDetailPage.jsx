@@ -795,9 +795,6 @@ console.log("ADD TO CART PAYLOAD 👉", payload);
   )}
 </div>
 
-
-    
-
           {/* Thumbnails */}
           <div className="thumbnail-row">
             {localLoading
@@ -829,7 +826,7 @@ console.log("ADD TO CART PAYLOAD 👉", payload);
                       onClick={() => setSelectedImage("video")}
                     >
                       <img
-                        src="https://img.freepik.com/free-vector/play-video-button-design_1017-33889.jpg"
+                        src={selectedColor?.color_media}
                         alt="Video Thumbnail"
                       />
                       <div className="thumb-overlay">▶</div>
@@ -1417,11 +1414,8 @@ console.log("ADD TO CART PAYLOAD 👉", payload);
                 )}
             </>
           ) : null}
-
-
         </div>
       </div >
-
       {
         ["carpet", "runner"].includes(productDetails?.sub_category_action_url) ? (
           <>

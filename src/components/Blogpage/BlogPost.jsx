@@ -8,7 +8,8 @@ import insta from '../../assets/icons/Insta.png';
 import facebookimg from "../../assets/icons/facebook.png"
 import youtube from '../../assets/icons/youtube.png';
 import { Share2 } from "lucide-react";
-
+import { BsWhatsapp } from "react-icons/bs";
+import { Facebook, Instagram, } from "lucide-react";
 const BlogPost = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ const BlogPost = () => {
   const blugSlug = location.state?.blog || blog || null;
   const [data, setData] = useState("");
   const currentUrl = window.location.href;
+  const [open, setOpen] = useState(false);
+
   const shareText = encodeURIComponent(data?.blog?.name || "Check this out");
   const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
     currentUrl
@@ -25,11 +28,9 @@ const BlogPost = () => {
   )}`;
 
 
-
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [blugSlug]);
-
 
 
 
@@ -85,10 +86,23 @@ const BlogPost = () => {
       : "";
   };
 
-  const breadcrumbPaths = [
-    { label: "Blog", to: "/blog" },
-    { label: "Blog Details", to: "" }, // last one (no link)
-  ];
+const shortTitle =
+  data?.blog?.name?.length > 10
+    ? data.blog.name.substring(0, 10) + "..."
+    : data?.blog?.name;
+
+const breadcrumbPaths = [
+  { label: "Blog", to: "/blog" },
+  { label: shortTitle || "Loading...", to: "" },
+];
+
+    const encodedUrl = encodeURIComponent();
+     const shareLinks = {
+    whatsapp: `https://api.whatsapp.com/send?text=${encodedUrl}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    instagram: `https://www.instagram.com/?url=${encodedUrl}`,
+  };
+
   return (
     <>
       <Breadcrumbs paths={breadcrumbPaths} />
@@ -118,6 +132,10 @@ const BlogPost = () => {
                     })}
                   </p>
                 </div>
+
+                 
+
+
                   <div className="share_root"> 
  <div className="share_btn mobshare" onClick={handleShare}>
                   <span><Share2 size={14} /></span>
@@ -127,6 +145,59 @@ const BlogPost = () => {
                
               </div>
               <h1 className="post-title">{data?.blog?.name}</h1>
+                {/* Share Button or Skeleton for Web */}
+        { true? (
+          <div className="share_btn"></div>
+        ) : (
+          !open && (
+            <div
+              className="share_btn webshare"
+              onMouseEnter={() => setOpen(true)}
+            >
+              <span><Share2 size={14} /></span> <span style={{ fontSize: '13px' }}>SHARE</span>
+            </div>
+          )
+        )}
+
+        {/* Dropdown */}
+        {open  && (
+          <>
+            <div className="relative">
+              <div
+                className="absolute left-1/2 -translate-x-1/2  shadow-lg rounded-xl p-3 mt-2 flex gap-3 z-999999  track_bound"
+                onMouseLeave={() => setOpen(false)}
+                onMouseEnter={() => setOpen(true)}>
+                {/* WhatsApp */}
+                <a
+                  href={shareLinks.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full hover:bg-gray-100 transition">
+                  <BsWhatsapp size={16} className="text-green-600" />
+                </a>
+
+                {/* Facebook */}
+                <a
+                  href={shareLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full hover:bg-gray-100 transition"
+                >
+                  <Facebook size={16} className="text-blue-600" />
+                </a>
+                {/* Instagram */}
+                <a
+                  href={shareLinks.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full hover:bg-gray-100 transition"
+                >
+                  <Instagram size={16} className="text-pink-500" />
+                </a>
+              </div>
+            </div>
+          </>
+        )}
               {/* <div className="post-subtitle">
                 <div dangerouslySetInnerHTML={{ __html: data.blog?.description }} />
               </div>
@@ -242,7 +313,7 @@ const BlogPost = () => {
           </div>
         </section>
 
-        {/* <div className="track_social">
+        <div className="track_social">
           <div className="track-flex-social">
             Connect With Us :
 
@@ -265,7 +336,7 @@ const BlogPost = () => {
 
           </div>
 
-        </div> */}
+        </div>
         {/* Recommended Posts Mobile */}
         <section on className="flat_overview mob">
           <h4 className="releted-head">Recommended Posts</h4>

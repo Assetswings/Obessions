@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./PaymentPage.css";
 import Footer from "../../components/Footer/Footer";
 import { Info } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { initiatePayment, verifyPayment } from "./paymentService";
 import { useNavigate } from "react-router-dom";
 import { Slide, ToastContainer, toast } from "react-toastify";
@@ -126,18 +126,32 @@ const PaymentPage = () => {
       <div className="cart_mlb">
         <span className="txt_mlb_my"> Payment</span>
       </div>
+      
       <div className="checkout-container_chk">
         <div className="checkout-right_ck">
           {checkoutData?.data?.items.map((item) => (
             <div className="cart-item" key={item.id}>
               <div className="item-image">
-                <img
+                  <Link
+                    to={`/productsdetails/${item.product?.action_url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+               <img
                   className="img-cart-page"
                   src={item.product.media}
                   alt="product"
                 />
+                  </Link>
+                
               </div>
-              <div className="item-details">
+                <Link
+                    to={`/productsdetails/${item.product?.action_url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+
+                     <div className="item-details">
                 <h4 className="item-title">{item.product.name}</h4>
                 <p className="price_details">
                   ₹{item.product.selling_price}{" "}
@@ -164,6 +178,8 @@ const PaymentPage = () => {
                   Quantity: <span>{item.cart_qty}</span>
                 </p>
               </div>
+                  </Link>
+             
             </div>
           ))}
         </div>

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import API from "../../app/api";
 import helprightimg from "../../assets/images/need-help-right.jpg";
 import helpleftimg from "../../assets/images/need-help-left.jpg";
+import Breadcrumbs from "../../components/Breadcum/Breadcrumbs";
 
 const SCROLL_OFFSET = 120;
 
@@ -113,9 +114,11 @@ const Faq = () => {
 
   if (loading) return <p>Loading FAQs...</p>;
   if (error) return <p>Error: {error}</p>;
+  const breadcrumbPaths = [{ label: "FAQ", to: "" }];
 
   return (
     <>
+            <Breadcrumbs paths={breadcrumbPaths} />
       {/* Hero */}
       <section className="faq-hero">
         <img src={bannerimg?.left} alt="" className="faq-decor left" />

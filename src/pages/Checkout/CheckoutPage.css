@@ -12,6 +12,15 @@
   padding-bottom: 100px;
 }
 
+  .item-details-checkout{
+   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+   bottom: 45px;
+    line-height: 15px;
+ }
 .title_chk {
   font-size: 32px;
   font-family: "Playfair Display", serif;
@@ -183,6 +192,7 @@ root_promo_sector {
   position: relative;
   right: 10px;
 }
+
 
 .coupon-input {
   border: none;
@@ -374,6 +384,14 @@ root_promo_sector {
   .root_promo_sector {
     right: 0px;
   }
+   .item-details-checkout{
+   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+    bottom: 0px;
+ }
 
 }
 
@@ -407,5 +425,13 @@ root_promo_sector {
   .price-summary {
     margin-top: -10px !important;
   }
+ .item-details-checkout{
+   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+   bottom: 0px;
+ }
 
 }

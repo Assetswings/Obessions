@@ -3,7 +3,6 @@ import "./CheckoutPage.css";
 import Footer from "../../components/Footer/Footer";
 import { IoMdClose } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
-
 import { fetchCheckout, processCheckout } from "./checkoutSlice";
 import {
   getAddress,
@@ -403,7 +402,7 @@ const CheckoutPage = () => {
                   rel="noopener noreferrer"
                 >
 
-                  <div className="item-details">
+                  <div className="item-details-checkout">
                     <h4 className="item-title-cart">
                       {item.product?.name}
                     </h4>

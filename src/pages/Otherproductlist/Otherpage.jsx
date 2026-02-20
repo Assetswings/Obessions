@@ -40,8 +40,8 @@ const Otherpage = () => {
           : path == "end-of-seasonal-sale"
             ? "seasonal-sale" : "";
 
-  const Titelslug =
-    path == "new-arrivals"
+     const Titelslug =
+     path == "new-arrivals"
       ? "New Arrivals"
       : path == "bestseller"
         ? "Bestsellers"

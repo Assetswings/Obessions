@@ -277,6 +277,9 @@ const Searchlist = () => {
     return (
       <div className="custom-filter-group" key={key}>
         <h4>{title}</h4>
+         
+
+          
 
         {visibleOptions.map((opt, i) => (
           <label key={i}>
@@ -509,6 +512,15 @@ const Searchlist = () => {
                 )}
               </h2> */}
 
+  {query && (
+      <div className="search-keyword-box">
+      <p>
+      You searched for: <span className="search-highlight">   
+      <span className="search_blast" style={{color:'red'}}>"{query}"</span>
+       </span>
+    </p>
+  </div>
+  )}
               <div className="root_devider_flt">
                 {dataReady ? (
                   <>
@@ -516,7 +528,7 @@ const Searchlist = () => {
                   </>
                 ) : (
                   <>
-                    <h2>Filters</h2>
+                     <h2>Filters</h2>
                      {hasActiveFilters && (
   <p
     className="clr-all"

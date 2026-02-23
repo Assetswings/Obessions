@@ -18,7 +18,7 @@ import API from "../../app/api";
 import { useCartWishlist } from "../../app/CartWishlistContext";
 import searchicon from "../../assets/icons/Searchicon.svg";
 
-const OtherTopnav = () => {
+  const OtherTopnav = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { countData } = useCartWishlist();
@@ -244,8 +244,8 @@ const OtherTopnav = () => {
           <li
             className="shop-wrapper"
             onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
+            onMouseLeave={handleMouseLeave}>
+
             <div className="track_poster">
               <span>SHOP</span>
             </div>
@@ -253,6 +253,7 @@ const OtherTopnav = () => {
             <div className={`megamenu-wrapper ${showMegaMenu ? "visible" : ""}`}>
               <MegamenuDuo closeMenu={handleItemClick} />
             </div>
+
           </li>
           <li>
             <NavLink to="/new-arrivals" className={({ isActive }) => (isActive ? "active-tab" : "")}>
@@ -364,9 +365,7 @@ const OtherTopnav = () => {
         </div>
       </nav>
       <div style={{ height: "50px" }}></div>
-
       {showWishlist && <WishlistModal onClose={() => setShowWishlist(false)} />}
-
       {showLoginPrompt && location.pathname !== "/login" && (
         <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />
       )}

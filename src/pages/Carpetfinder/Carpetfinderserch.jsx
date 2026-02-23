@@ -61,31 +61,33 @@ const Carpetfinderserch = () => {
 
   const rangeStart = total === 0 ? 0 : (currentPage - 1) * limit + 1;
   const rangeEnd = Math.min(currentPage * limit, total);
-  useEffect(() => {
-    if (filtercarpetdata) {
-      dispatch(
-        filterCarpet({
-          selectedFilter: filtercarpetdata,
-          filters: selectedFilters,
-          page: currentPage,
-          limit: 40,
-        })
-      );
-    }
-    dispatch(fetchTopPicks());
-  }, [dispatch, selectedFilters, currentPage]);
-
-  useEffect(() => {
-    if (loading) return;
-
-    if (Array.isArray(filteredData)) {
-      setProducts(filteredData);
-      setDataReady(false);
-    }
-  }, [filteredData, loading]);
 
 
-   
+   useEffect(() => {
+  if (filtercarpetdata) {
+    setDataReady(true);  
+
+    dispatch(
+      filterCarpet({
+        selectedFilter: filtercarpetdata,
+        filters: selectedFilters,
+        page: currentPage,
+        limit: 40,
+      })
+    );
+  }
+
+  dispatch(fetchTopPicks());
+}, [dispatch, selectedFilters, currentPage]);
+
+
+ useEffect(() => {
+  if (!loading && Array.isArray(filteredData)) {
+    setProducts(filteredData);
+    setDataReady(false);  
+  }
+}, [filteredData, loading]);
+
 
 
   useEffect(() => {
@@ -265,7 +267,7 @@ const Carpetfinderserch = () => {
       ? handleMobileFilterChange
       : handleFilterChange;
 
-     
+      
     return (
       <div className="custom-filter-group" key={key}>
         <h4>{title}</h4>
@@ -341,25 +343,44 @@ const Carpetfinderserch = () => {
   const renderPriceFilter = (priceFilter, isMobile = false) => {
     const currentFilters = isMobile ? tempMobileFilters : selectedFilters;
     const onChangeHandler = isMobile ? handleMobileFilterChange : handleFilterChange;
+    
+     const handlePriceChange = (value) => {
+  setSelectedFilters((prev) => {
+    const current = prev.price_filter || [];
+    const updated = current.includes(value)
+      ? current.filter((v) => v !== value)
+      : [...current, value];
 
+    return {
+      ...prev,
+      price_filter: updated,
+    };
+  });
+
+  setCurrentPage(1);
+};
+     
  
     return (
-      <></>
-      // <div className="custom-filter-group" key="price_filter">
-      //   <h4>Price Range</h4>
-      //   {priceFilter.map((price, i) => (
-      //     <label key={i}>
-      //       <input
-      //         type="checkbox"
-      //         checked={
-      //           currentFilters.price_filter?.includes(price.filter_value) || false
-      //         }
-      //         onChange={() => {scrollToTop(); handlePriceChange(price.filter_value)}}
-      //       />
-      //       <span className="txt_checkbox">{price.range_lebel}</span>
-      //     </label>
-      //   ))}
-      // </div>
+      <>
+         <div className="custom-filter-group" key="price_filter">
+        <h4>Price Range</h4>
+        {priceFilter.map((price, i) => (
+          <label key={i}>
+            <input
+              type="checkbox"
+              checked={
+                currentFilters.price_filter?.includes(price.filter_value) || false
+              }
+              onChange={() => {scrollToTop(); handlePriceChange(price.filter_value)}}
+            />
+            <span className="txt_checkbox">{price.range_lebel}</span>
+          </label>
+        ))}
+      </div>
+      
+      </>
+    
     );
   };
 

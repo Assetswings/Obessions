@@ -285,7 +285,7 @@ const OrderHistoryPage = () => {
                               </div>
                             </div>
                           }
-                          {allCancellable &&
+                          {/* {allCancellable &&
                             <div className="order-actions">
                               <p
                                 className="cancel-order"
@@ -300,7 +300,32 @@ const OrderHistoryPage = () => {
                                 <u>Cancel Order</u>
                               </p>
                             </div>
-                          }
+                          } */}
+
+                           <div className="order-actions">
+  <p
+    className="cancel-order"
+    title={
+      selectedItemsForThisOrder.length === 0
+        ? "Please select any item"
+        : !allCancellable
+        ? "Selected item cannot be cancelled"
+        : ""
+    }
+    onClick={() => {
+      if (allCancellable) {
+        setShowcnModal(true);
+      }
+    }}
+    style={{
+      cursor: allCancellable ? "pointer" : "not-allowed",
+      opacity: allCancellable ? 1 : 0.4,
+      pointerEvents: allCancellable ? "auto" : "auto", 
+    }}
+  >
+    <u>Cancel Order</u>
+  </p>
+</div>
                         </div>
                       </div>
 

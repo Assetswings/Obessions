@@ -9,9 +9,9 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProductQuickViewModal from "../Products/ProductQuickViewModal";
 import {
-  addToWishlist,
-  fetchWishlist,
-  removeFromWishlist,
+   addToWishlist,
+   fetchWishlist,
+   removeFromWishlist,
 } from "../../components/Wishtlist/WishlistSlice";
 import { fetchSearchResults, clearSearchResults } from "../Home/searchSlice";
 

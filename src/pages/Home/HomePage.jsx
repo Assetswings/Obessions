@@ -61,6 +61,7 @@ const HomePage = () => {
   const [currentSet, setCurrentSet] = useState(null);
   const [nextSet, setNextSet] = useState(null);
   const [setIndex, setSetIndex] = useState(null);
+   const selectedSetRef = useRef(null);
 
   const [fade, setFade] = useState(false);
   // 🏠 Home Data Fetching
@@ -83,7 +84,6 @@ const HomePage = () => {
     if (!hero) return;
 
     const images = hero.querySelectorAll(".floating-img");
-
     images.forEach((img) => {
       img.classList.remove("is-visible");
       requestAnimationFrame(() => {
@@ -169,12 +169,9 @@ const HomePage = () => {
   useEffect(() => {
     // ✅ disable on tablet & mobile
     if (window.innerWidth < 992) return;
-
     const obsessionSection = document.querySelector(".obsession-section");
     const obsessionImage = document.querySelector(".obsession-image img");
-
     if (!obsessionSection || !obsessionImage) return;
-
     const START_WIDTH = 75; // %
     const END_WIDTH = 135; // %
 
@@ -414,23 +411,44 @@ const HomePage = () => {
     setShowModal(true);
   };
 
+  // useEffect(() => {
+  //   if (data?.hero_banners) {
+  //     const sets = Object.values(data.hero_banners);
+  //     const randomIndex = Math.floor(Math.random() * sets.length);
+  //     const chosenSet = sets[randomIndex];
+
+  //     setSetIndex(randomIndex);
+  //     setNextSet(chosenSet); // load into nextSet
+
+  //     const timer = setTimeout(() => {
+  //       setCurrentSet(chosenSet);
+  //       setNextSet(null);
+  //     }, 600); // must match CSS animation time
+
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [data, location.pathname]); 
+
+
   useEffect(() => {
-    if (data?.hero_banners) {
-      const sets = Object.values(data.hero_banners);
-      const randomIndex = Math.floor(Math.random() * sets.length);
-      const chosenSet = sets[randomIndex];
+    if (!data?.hero_banners) return;
 
-      setSetIndex(randomIndex);
-      setNextSet(chosenSet); // load into nextSet
+    const sets = Object.values(data.hero_banners);
+    if (!sets.length) return;
 
-      const timer = setTimeout(() => {
-        setCurrentSet(chosenSet);
-        setNextSet(null);
-      }, 600); // must match CSS animation time
-
-      return () => clearTimeout(timer);
+    if (selectedSetRef.current) {
+      setCurrentSet(selectedSetRef.current);
+      return;
     }
-  }, [data, location.pathname]); // runs when data loads or you come back
+
+    const randomIndex = Math.floor(Math.random() * sets.length);
+    const chosenSet = sets[randomIndex];
+
+    selectedSetRef.current = chosenSet;
+    setCurrentSet(chosenSet);
+
+  }, [data]);
+
 
   const POSITIONS = [
     {

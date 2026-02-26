@@ -759,7 +759,7 @@ const HomePage = () => {
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && query.trim()) {
-                  navigate("/searchlist", { state: { query } });
+                  navigate(`/searchlist?query=${encodeURIComponent(query)}`);
                 }
               }}
             />

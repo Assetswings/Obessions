@@ -335,7 +335,7 @@ const TopAnnouncementBar = () => {
                   if (e.key === "Enter" && query.trim()) {
                     claersearch();
                     setSearchData([]);
-                    navigate("/searchlist", { state: { query } });
+                    navigate(`/searchlist?query=${encodeURIComponent(query)}`);
                   }
                 }}
               // onFocus={handleFocus}

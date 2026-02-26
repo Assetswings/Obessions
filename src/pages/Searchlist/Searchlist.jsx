@@ -4,14 +4,14 @@ import "../Products/ProductsPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import productsSlice, { fetchProducts } from "../Products/productsSlice";
 import { Expand, Heart, SlidersHorizontal, X } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProductQuickViewModal from "../Products/ProductQuickViewModal";
 import {
-   addToWishlist,
-   fetchWishlist,
-   removeFromWishlist,
+  addToWishlist,
+  fetchWishlist,
+  removeFromWishlist,
 } from "../../components/Wishtlist/WishlistSlice";
 import { fetchSearchResults, clearSearchResults } from "../Home/searchSlice";
 
@@ -31,8 +31,9 @@ const Searchlist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { getCartWishlistCount } = useCartWishlist();
-  const query = location.state?.query;
+  const query = searchParams.get("query");
 
   const { results, pagination, sorting, filters, loading } = useSelector((state) => state.search || {});
   //  = searchState;
@@ -277,9 +278,9 @@ const Searchlist = () => {
     return (
       <div className="custom-filter-group" key={key}>
         <h4>{title}</h4>
-         
 
-          
+
+
 
         {visibleOptions.map((opt, i) => (
           <label key={i}>
@@ -353,23 +354,23 @@ const Searchlist = () => {
 
     return (
       <>
-          <div className="custom-filter-group" key="price_filter">
-        <h4>Price Range</h4>
-        {priceFilter.map((price, i) => (
-          <label key={i}>
-            <input
-              type="checkbox"
-              checked={
-                currentFilters.price_filter?.includes(price.filter_value) || false
-              }
-              onChange={() => {scrollToTop(); handlePriceChange(price.filter_value)}}
-            />
-            <span className="txt_checkbox">{price.range_lebel}</span>
-          </label>
-        ))}
-      </div>
+        <div className="custom-filter-group" key="price_filter">
+          <h4>Price Range</h4>
+          {priceFilter.map((price, i) => (
+            <label key={i}>
+              <input
+                type="checkbox"
+                checked={
+                  currentFilters.price_filter?.includes(price.filter_value) || false
+                }
+                onChange={() => { scrollToTop(); handlePriceChange(price.filter_value) }}
+              />
+              <span className="txt_checkbox">{price.range_lebel}</span>
+            </label>
+          ))}
+        </div>
       </>
-     
+
     );
   };
 
@@ -441,9 +442,9 @@ const Searchlist = () => {
     }
   ];
 
-   const hasActiveFilters = Object.values(selectedFilters).some(
-  (values) => Array.isArray(values) && values.length > 0
-);
+  const hasActiveFilters = Object.values(selectedFilters).some(
+    (values) => Array.isArray(values) && values.length > 0
+  );
   return (
     <>
       <ToastContainer position="top-right" style={{ zIndex: 9999999999999 }} autoClose={3000} limit={1} hideProgressBar={true} transition={Slide} newestOnTop={true} />
@@ -512,15 +513,15 @@ const Searchlist = () => {
                 )}
               </h2> */}
 
-  {query && (
-      <div className="search-keyword-box">
-      <p>
-      You searched for: <span className="search-highlight">   
-      <span className="search_blast" style={{color:'red'}}>"{query}"</span>
-       </span>
-    </p>
-  </div>
-  )}
+              {query && (
+                <div className="search-keyword-box">
+                  <p>
+                    You searched for: <span className="search-highlight">
+                      <span className="search_blast" style={{ color: 'red' }}>"{query}"</span>
+                    </span>
+                  </p>
+                </div>
+              )}
               <div className="root_devider_flt">
                 {dataReady ? (
                   <>
@@ -528,21 +529,21 @@ const Searchlist = () => {
                   </>
                 ) : (
                   <>
-                     <h2>Filters</h2>
-                     {hasActiveFilters && (
-  <p
-    className="clr-all"
-    onClick={() => {
-      setSelectedFilters({});
-      setTempMobileFilters({});
-      setCurrentPage(1);
-      setSelected("Recommended");
-      setShowShort("");
-    }}
-  >
-    Clear all
-  </p>
-)}
+                    <h2>Filters</h2>
+                    {hasActiveFilters && (
+                      <p
+                        className="clr-all"
+                        onClick={() => {
+                          setSelectedFilters({});
+                          setTempMobileFilters({});
+                          setCurrentPage(1);
+                          setSelected("Recommended");
+                          setShowShort("");
+                        }}
+                      >
+                        Clear all
+                      </p>
+                    )}
                   </>
                 )}
               </div>
@@ -740,7 +741,7 @@ const Searchlist = () => {
                       >
                         <div className="product-price">
                           <span>₹{item.selling_price}</span>
-                           {item.mrp &&
+                          {item.mrp &&
                             item.mrp !== item.selling_price &&
                             Number(item.discount_percent) > 0 && (
                               <>

@@ -33,17 +33,17 @@ const Otherpage = () => {
   const slug =
     path == "new-arrivals"
       ? "new-arrivals"
-      : path == "bestseller"
+      : path == "bestsellers"
         ? "bestsellers"
         : path == "offer-spot"
           ? "offer-spots"
           : path == "end-of-seasonal-sale"
             ? "seasonal-sale" : "";
 
-     const Titelslug =
-     path == "new-arrivals"
+  const Titelslug =
+    path == "new-arrivals"
       ? "New Arrivals"
-      : path == "bestseller"
+      : path == "bestsellers"
         ? "Bestsellers"
         : path == "offer-spot"
           ? "Offers Spots"
@@ -151,7 +151,7 @@ const Otherpage = () => {
   }, [slug, selectedFilters, currentPage]);
 
 
-    const getbestsellerBanner = async () => {
+  const getbestsellerBanner = async () => {
     try {
       const res = await API.get("bestsellers/banner");
       if (res.data.status === 200) {
@@ -169,7 +169,12 @@ const Otherpage = () => {
     const filters = {};
     for (const [key, value] of params.entries()) {
       const decoded = decodeURIComponent(value.replace(/\+/g, " "));
-
+      // 👇 If key is page, set current page and skip adding to filters
+      if (key === "page") {
+        const pageNumber = parseInt(decoded);
+        setCurrentPage(pageNumber > 0 ? pageNumber : 1);
+        continue;
+      }
       filters[key] = decoded.includes(",")
         ? decoded.split(",").map(v => v.trim())
         : [decoded];
@@ -229,12 +234,16 @@ const Otherpage = () => {
         params.set(key, values.join(","));
       }
     });
+    // 👇 Add page number
+    if (currentPage > 1) {
+      params.set("page", currentPage);
+    }
     navigate({
       pathname: location.pathname,
       search: params.toString()
     }, { replace: true }
     );
-  }, [selectedFilters]);
+  }, [selectedFilters, currentPage]);
 
   const toggleWishlist = async (e, product) => {
     toast.dismiss();

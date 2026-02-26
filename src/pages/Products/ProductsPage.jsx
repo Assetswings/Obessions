@@ -27,7 +27,7 @@ import emptyproduct from "../../assets/images/empty-product.png";
 import rightarrawwhite from "../../assets/icons/rightarrawwhite.png";
 import { useCartWishlist } from "../../app/CartWishlistContext";
 
-   const ProductsPage = () => {
+const ProductsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -111,6 +111,13 @@ import { useCartWishlist } from "../../app/CartWishlistContext";
     const filters = {};
     for (const [key, value] of params.entries()) {
       const decoded = decodeURIComponent(value.replace(/\+/g, " "));
+
+      // 👇 If key is page, set current page and skip adding to filters
+      if (key === "page") {
+        const pageNumber = parseInt(decoded);
+        setCurrentPage(pageNumber > 0 ? pageNumber : 1);
+        continue;
+      }
 
       filters[key] = decoded.includes(",")
         ? decoded.split(",").map(v => v.trim())
@@ -227,12 +234,16 @@ import { useCartWishlist } from "../../app/CartWishlistContext";
         params.set(key, values.join(","));
       }
     });
+    // 👇 Add page number
+    if (currentPage > 1) {
+      params.set("page", currentPage);
+    }
     navigate({
       pathname: location.pathname,
       search: params.toString()
     }, { replace: true }
     );
-  }, [selectedFilters]);
+  }, [selectedFilters, currentPage]);
 
 
   const toggleWishlist = async (e, product) => {
@@ -951,7 +962,7 @@ import { useCartWishlist } from "../../app/CartWishlistContext";
                       >
                         <div className="product-price">
                           <span>₹{item.selling_price}</span>
-                           {item.mrp &&
+                          {item.mrp &&
                             item.mrp !== item.selling_price &&
                             Number(item.discount_percent) > 0 && (
                               <>

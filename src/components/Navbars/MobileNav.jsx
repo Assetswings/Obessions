@@ -285,7 +285,7 @@ const MobileNav = () => {
                 </Link>
               </li>
               <li className="border-buttom">
-                <Link to="/bestseller" onClick={toggleDrawer}>
+                <Link to="/bestsellers" onClick={toggleDrawer}>
                   BESTSELLERS
                 </Link>
               </li>
@@ -394,7 +394,7 @@ const MobileNav = () => {
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && query.trim()) {
                     clearSearch();
-                    navigate("/searchlist", { state: { query } });
+                    navigate(`/searchlist?query=${encodeURIComponent(query)}`);
                   }
                 }}
               />

@@ -263,7 +263,7 @@ import searchicon from "../../assets/icons/Searchicon.svg";
             </NavLink>
           </li>
           <li>
-            <NavLink to='/bestseller' className={({ isActive }) => (isActive ? "active-tab" : "")}>
+            <NavLink to='/bestsellers' className={({ isActive }) => (isActive ? "active-tab" : "")}>
               <div className="track_poster"> BESTSELLERS </div>
 
             </NavLink>
@@ -397,7 +397,7 @@ import searchicon from "../../assets/icons/Searchicon.svg";
                   if (e.key === "Enter" && query.trim()) {
                     claersearch();
                     setSearchData([]);
-                    navigate("/searchlist", { state: { query } });
+                    navigate(`/searchlist?query=${encodeURIComponent(query)}`);
                   }
                 }}
               // onFocus={handleFocus}

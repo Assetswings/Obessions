@@ -86,7 +86,7 @@ const AppRoutes = () => {
           <Route path="fees-payments-policy" element={<FeesPaymentsPolicy />} />
           <Route path="privacy-policy" element={<Privacypolicy />} />
           <Route path="new-arrivals" element={<Otherpage />} />
-          <Route path="bestseller" element={<Otherpage />} />
+          <Route path="bestsellers" element={<Otherpage />} />
           <Route path="offer-spot" element={<Otherpage />} />
           <Route path="end-of-seasonal-sale" element={<Otherpage />} />
           <Route path="videogallery" element={<VideoGallery />} />

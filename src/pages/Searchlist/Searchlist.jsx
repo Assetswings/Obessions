@@ -499,7 +499,7 @@ const Searchlist = () => {
           </div>
         </div>
       }
-      <div className={`custom-products-page ${products?.length < 8 ? "page-wrapper" : ""}`}>
+      <div className="custom-products-page">
         <aside className="custom-filters">
           {products.length > 0 &&
             <>

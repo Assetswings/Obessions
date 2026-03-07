@@ -161,7 +161,7 @@ const handleTouchEnd = () => {
 };
 
 
-  useEffect(() => {
+     useEffect(() => {
     if (!data?.id) return;
     // check if product changed
     if (prevSlugRef.current !== data.id) {
@@ -664,7 +664,7 @@ console.log("ADD TO CART PAYLOAD 👉", payload);
               className="share_btn webshare"
               onMouseEnter={() => setOpen(true)}
             >
-              <span><Share2 size={14} /></span> <span style={{ fontSize: '13px' }}>SHARE</span>
+              <span><Share2 size={14} /></span> <span style={{ fontSize: '13px' }}>SHARE 454</span>
             </div>
           )
         )}

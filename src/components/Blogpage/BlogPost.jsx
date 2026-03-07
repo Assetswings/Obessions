@@ -86,18 +86,18 @@ const BlogPost = () => {
       : "";
   };
 
-const shortTitle =
-  data?.blog?.name?.length > 10
-    ? data.blog.name.substring(0, 10) + "..."
-    : data?.blog?.name;
+  const shortTitle =
+    data?.blog?.name?.length > 10
+      ? data.blog.name.substring(0, 10) + "..."
+      : data?.blog?.name;
 
-const breadcrumbPaths = [
-  { label: "Blog", to: "/blog" },
-  { label: shortTitle || "Loading...", to: "" },
-];
+  const breadcrumbPaths = [
+    { label: "Blog", to: "/blog" },
+    { label: shortTitle || "Loading...", to: "" },
+  ];
 
-    const encodedUrl = encodeURIComponent();
-     const shareLinks = {
+  const encodedUrl = encodeURIComponent();
+  const shareLinks = {
     whatsapp: `https://api.whatsapp.com/send?text=${encodedUrl}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
     instagram: `https://www.instagram.com/?url=${encodedUrl}`,
@@ -131,73 +131,66 @@ const breadcrumbPaths = [
                       year: "numeric",
                     })}
                   </p>
-                </div>
 
-                 
-
-
-                  <div className="share_root"> 
- <div className="share_btn mobshare" onClick={handleShare}>
-                  <span><Share2 size={14} /></span>
-                  <span style={{ fontSize: '13px', paddingLeft: "5px" }}>SHARE</span>
-                </div>
+                  <div>
                   </div>
-               
-              </div>
-              <h1 className="post-title">{data?.blog?.name}</h1>
-                {/* Share Button or Skeleton for Web */}
-        { true? (
-          <div className="share_btn"></div>
-        ) : (
-          !open && (
-            <div
-              className="share_btn webshare"
-              onMouseEnter={() => setOpen(true)}
-            >
-              <span><Share2 size={14} /></span> <span style={{ fontSize: '13px' }}>SHARE</span>
-            </div>
-          )
-        )}
+                </div>
 
-        {/* Dropdown */}
-        {open  && (
-          <>
-            <div className="relative">
-              <div
-                className="absolute left-1/2 -translate-x-1/2  shadow-lg rounded-xl p-3 mt-2 flex gap-3 z-999999  track_bound"
-                onMouseLeave={() => setOpen(false)}
-                onMouseEnter={() => setOpen(true)}>
-                {/* WhatsApp */}
-                <a
-                  href={shareLinks.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-full hover:bg-gray-100 transition">
-                  <BsWhatsapp size={16} className="text-green-600" />
-                </a>
 
-                {/* Facebook */}
-                <a
-                  href={shareLinks.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-full hover:bg-gray-100 transition"
-                >
-                  <Facebook size={16} className="text-blue-600" />
-                </a>
-                {/* Instagram */}
-                <a
-                  href={shareLinks.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-full hover:bg-gray-100 transition"
-                >
-                  <Instagram size={16} className="text-pink-500" />
-                </a>
+                <div className="share_root">
+                  <div className="share_btn mobshare" onClick={handleShare}>
+                    <span><Share2 size={14} /></span>
+                    <span style={{ fontSize: '13px', paddingLeft: "5px" }}>SHARE</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </>
-        )}
+
+                <div className="track_hole">
+                <div>
+                <h1 className="post-title">{data?.blog?.name}</h1>
+                </div>
+              </div>
+
+              {/* Share Button or Skeleton for Web */}
+              {/* Dropdown */}
+              {open && (
+                <>
+                  <div className="relative">
+                    <div
+                      className="absolute left-1/2 -translate-x-1/2  shadow-lg rounded-xl p-3 mt-2 flex gap-3 z-999999  track_bound2"
+                      onMouseLeave={() => setOpen(false)}
+                      onMouseEnter={() => setOpen(true)}>
+                      {/* WhatsApp */}
+                      <a
+                        href={shareLinks.whatsapp}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full hover:bg-gray-100 transition">
+                        <BsWhatsapp size={16} className="text-green-600" />
+                      </a>
+
+                      {/* Facebook */}
+                      <a
+                        href={shareLinks.facebook}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full hover:bg-gray-100 transition"
+                      >
+                        <Facebook size={16} className="text-blue-600" />
+                      </a>
+                      {/* Instagram */}
+                      <a
+                        href={shareLinks.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full hover:bg-gray-100 transition"
+                      >
+                        <Instagram size={16} className="text-pink-500" />
+                      </a>
+                    </div>
+                  </div>
+                </>
+              )}
               {/* <div className="post-subtitle">
                 <div dangerouslySetInnerHTML={{ __html: data.blog?.description }} />
               </div>

@@ -63,6 +63,8 @@ const HomePage = () => {
   const [setIndex, setSetIndex] = useState(null);
    const selectedSetRef = useRef(null);
 
+     console.log("shop by items------>", shopByItems);
+
   const [fade, setFade] = useState(false);
   // 🏠 Home Data Fetching
   const { data } = useSelector((state) => state.home);

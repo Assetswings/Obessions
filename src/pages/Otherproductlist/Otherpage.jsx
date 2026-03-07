@@ -46,7 +46,7 @@ const Otherpage = () => {
       : path == "bestsellers"
         ? "Bestsellers"
         : path == "offer-spot"
-          ? "Offers Spots"
+          ? "Offer Spot"
           : path == "end-of-seasonal-sale"
             ? "End of Seasonal Sale" : "";
 
@@ -60,7 +60,7 @@ const Otherpage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { items } = useSelector((state) => state.toppick);
-  const [isFilterOpen, setIsFilterOpen] = useState(false); // NEW: mobile filter modal state
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState({});
   const [tempMobileFilters, setTempMobileFilters] = useState({});
   const [minPrice, setMinPrice] = useState();
@@ -83,12 +83,12 @@ const Otherpage = () => {
   useEffect(() => {
     document.title = `Obsessions - ${Titelslug}`;
     if (loading) {
-      setDataReady(true);   // still fetching
+      setDataReady(true);  
       return;
     }
     if (Array.isArray(otherproduct)) {
       setProducts(otherproduct);
-      setDataReady(false);    // API DONE + state set
+      setDataReady(false);    
     }
   }, [otherproduct, loading]);
 
@@ -97,7 +97,7 @@ const Otherpage = () => {
     setCurrentPage(1);
     const urlFilters = getFiltersFromURL(location.search);
     setSelectedFilters(urlFilters);
-  }, [location.pathname]); // runs on route change
+  }, [location.pathname]); 
 
   useEffect(() => {
     dispatch(fetchTopPicks());

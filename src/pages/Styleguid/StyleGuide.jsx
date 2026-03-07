@@ -64,7 +64,7 @@ import Breadcrumbs from '../../components/Breadcum/Breadcrumbs';
   // const current = data?.content[0]?.size_guides.find((s) => s.id === activeShape);
   const room = roomData[activeRoom];
    const breadcrumbPaths = [
-    { label: "size-guide", to: "" }, // last one (no link)
+    { label: "size guide", to: "" }, // last one (no link)
   ];
 
   return (

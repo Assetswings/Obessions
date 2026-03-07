@@ -17,7 +17,7 @@ import { IoLogoWhatsapp } from "react-icons/io";
 import API from "../../app/api";
 import { useCartWishlist } from "../../app/CartWishlistContext";
 import searchicon from "../../assets/icons/Searchicon.svg";
-
+import logo from "../../assets/icons/Obslogo.png";
   const OtherTopnav = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -237,7 +237,8 @@ import searchicon from "../../assets/icons/Searchicon.svg";
           className="nav-logo"
           style={{ cursor: "pointer" }}>
           <Link to='/'>
-            <img src="https://efi-s3-private.s3.ap-south-1.amazonaws.com/b2c-img/EnvogueImages/ReactJs_App/assets/logo-white.png" alt="Obsession" />
+            {/* <img src="https://efi-s3-private.s3.ap-south-1.amazonaws.com/b2c-img/EnvogueImages/ReactJs_App/assets/logo-white.png" alt="Obsession" /> */}
+            <img src={logo} alt="Obsession" style={{ height: '40px' }} />  
           </Link>
         </div>
         <ul className="nav-links">
@@ -270,7 +271,7 @@ import searchicon from "../../assets/icons/Searchicon.svg";
           </li>
           <li>
             <NavLink to='/offer-spot' className={({ isActive }) => (isActive ? "active-tab" : "")}>
-              <div className="track_poster">  OFFERS SPOTS</div>
+              <div className="track_poster">  OFFER SPOT</div>
 
             </NavLink>
           </li>

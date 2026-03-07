@@ -344,6 +344,7 @@ p {
     padding-bottom: 20px;
     padding-left: 16px;
   }
+  
 
   .relet-blog-sec {
     padding-top: 15px;
@@ -363,4 +364,15 @@ p {
   .post-subheading {
     line-height: 25px;
   }
+}
+
+
+  .track_hole{
+   
+      justify-content: space-between;
+   }
+    .track_bound2 {
+  position: relative;
+  background-color: white;
+  width: 130px;
 }

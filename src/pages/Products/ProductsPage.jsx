@@ -97,14 +97,32 @@ const ProductsPage = () => {
     setCurrentPage(1);
   }, [location.pathname]); // runs on route change
 
-  useEffect(() => {
-    document.title = "Obsessions- Product List";
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-    const urlFilters = getFiltersFromURL(location.search);
-    setSelectedFilters({});
-    setSelectedFilters(urlFilters);
-  }, [location.pathname]);
+  // useEffect(() => {
+  //   document.title = "Obsessions- Product List";
+  //   const token = localStorage.getItem("token");
+  //   setIsLoggedIn(!!token);
+  //   const urlFilters = getFiltersFromURL(location.search);
+  //   setSelectedFilters({});
+  //   setSelectedFilters(urlFilters);
+  // }, [location.pathname]);
+
+  
+    useEffect(() => {
+  document.title = "Obsessions- Product List";
+  const token = localStorage.getItem("token");
+  setIsLoggedIn(!!token);
+
+  const urlFilters = getFiltersFromURL(location.search);
+  if (subcategorySlug) {
+    const formattedSubcategory = subcategorySlug
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+
+    urlFilters.categories = [formattedSubcategory];
+  }
+
+  setSelectedFilters(urlFilters);
+}, [location.pathname, subcategorySlug]);
 
   const getFiltersFromURL = (search) => {
     const params = new URLSearchParams(search);

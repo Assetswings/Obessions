@@ -50,14 +50,14 @@
     animation: fadeSlideDown 0s ease-out forwards;
     opacity: 0;
     transform: translateY(-20px);
-       box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
   }
   
   @keyframes fadeSlideDown {
-    to {
+        to {
       opacity: 1;
       transform: translateY(0);
-    }
+       }
   }
 
   /* Sections */
@@ -191,13 +191,16 @@
   display: flex;
   overflow-y: auto;          
   overscroll-behavior: contain; 
-
  }
 
+.menu-section li:hover{
+  color: red;
+}
 
-  .mega-menu-content,
+.mega-menu-content,
 .mega-menu-left,
 .mega-menu-center,
 .mega-menu-right {
   cursor: default;
 }
+

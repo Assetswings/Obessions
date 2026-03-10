@@ -416,12 +416,13 @@ const CheckoutPage = () => {
                         </span>
                       </span>
                     </p>
-
+   
                     {item.product?.size !== "0 cm" && (
                       <p className="item-size">
                         Size : {item.product?.size}
                       </p>
                     )}
+                     <br/>
                     <p>Quantity: {item.cart_qty}</p>
                   </div>
                   </Link>

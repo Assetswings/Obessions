@@ -79,7 +79,7 @@ const ProductsPage = () => {
   // }, [data, loading]);
 
   useEffect(() => {
-    if (!hasFetchedOnce) return; // ⭐ BLOCK first render
+    if (!hasFetchedOnce) return; 
 
     if (loading) {
       setDataReady(true);

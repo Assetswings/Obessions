@@ -80,6 +80,7 @@ const HomePage = () => {
   const rightRef = useRef(null);
   const topRef = useRef(null);
 
+   console.log("home data---------lpf-->", data);
   // Load Interaction
   useEffect(() => {
     const hero = heroRef.current;

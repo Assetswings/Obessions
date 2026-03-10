@@ -664,7 +664,7 @@ console.log("ADD TO CART PAYLOAD 👉", payload);
               className="share_btn webshare"
               onMouseEnter={() => setOpen(true)}
             >
-              <span><Share2 size={14} /></span> <span style={{ fontSize: '13px' }}>SHARE 454</span>
+              <span><Share2 size={14} /></span> <span style={{ fontSize: '13px' }}>SHARE</span>
             </div>
           )
         )}
@@ -672,7 +672,8 @@ console.log("ADD TO CART PAYLOAD 👉", payload);
         {/* Dropdown */}
         {open && !loading && (
           <>
-            <div className="relative">
+           <div className=""> 
+   <div className="relative">
               <div
                 className="absolute left-1/2 -translate-x-1/2  shadow-lg rounded-xl p-3 mt-2 flex gap-3 z-999999  track_bound"
                 onMouseLeave={() => setOpen(false)}
@@ -706,6 +707,7 @@ console.log("ADD TO CART PAYLOAD 👉", payload);
                 </a>
               </div>
             </div>
+           </div>
           </>
         )}
       </div>

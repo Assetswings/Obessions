@@ -60,7 +60,6 @@ span.track_poster {
   outline: none;
   font-size: 13px;
   width: 210px;
-
 }
 
 .search-bar button {
@@ -120,10 +119,11 @@ span.track_poster {
   align-items: center;
   cursor: pointer;
   font-size: 14px;
+
 }
 
 .popup-item:hover {
-  background-color: #f0f0f0;
+  background-color: red;
 }
 
 .popup-login-btn {
@@ -267,3 +267,4 @@ span.track_poster {
 .track_poster:hover{
   color: red !important;
 }
+

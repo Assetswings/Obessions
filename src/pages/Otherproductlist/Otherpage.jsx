@@ -69,7 +69,7 @@ const Otherpage = () => {
   const [selected, setSelected] = useState("");
   const [showShort, setShowShort] = useState("");
   const [customerfavourite, setCustomerfavourite] = useState();
-  const [dataReady, setDataReady] = useState(true);
+  const [dataReady, setDataReady] = useState(false);
   const [bestsellerfav, setBestsellerFav] = useState();
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
@@ -80,17 +80,31 @@ const Otherpage = () => {
   const rangeStart = total === 0 ? 0 : (currentPage - 1) * limit + 1;
   const rangeEnd = Math.min(currentPage * limit, total);
 
-  useEffect(() => {
-    document.title = `Obsessions - ${Titelslug}`;
-    if (loading) {
-      setDataReady(true);  
-      return;
-    }
-    if (Array.isArray(otherproduct)) {
-      setProducts(otherproduct);
-      setDataReady(false);    
-    }
-  }, [otherproduct, loading]);
+  // useEffect(() => {
+  //   document.title = `Obsessions - ${Titelslug}`;
+  //   if (loading) {
+  //     setDataReady(true);  
+  //     return;
+  //   }
+  //   if (Array.isArray(otherproduct)) {
+  //     setProducts(otherproduct);
+  //     setDataReady(false);    
+  //   }
+  // }, [otherproduct, loading]);
+
+   useEffect(() => {
+  document.title = `Obsessions - ${Titelslug}`;
+
+  if (loading) {
+    setDataReady(true); // show skeleton
+    return;
+  }
+
+  if (!loading && Array.isArray(otherproduct)) {
+    setProducts(otherproduct);
+    setDataReady(false); // show products
+  }
+}, [otherproduct, loading]);
 
 
   useEffect(() => {
@@ -125,31 +139,25 @@ const Otherpage = () => {
   //        getbestsellerBanner();
   // }, [dispatch, slug, selectedFilters, currentPage]);
 
-  useEffect(() => {
-    if (!slug) return;
+   useEffect(() => {
+  if (!slug) return;
 
-    const timer = setTimeout(() => {
-      setDataReady(true);
-      setHasFetchedOnce(true);
+  setDataReady(true); // show skeleton immediately
 
-      dispatch({ type: "otherproduct/clear" });
-      setProducts([]);
+  dispatch({ type: "otherproduct/clear" });
 
-      dispatch(
-        fetchOtherProducts({
-          slug,
-          page: currentPage,
-          limit: 40,
-          filters: selectedFilters || {},
-        })
-      );
+  dispatch(
+    fetchOtherProducts({
+      slug,
+      page: currentPage,
+      limit: 40,
+      filters: selectedFilters || {},
+    })
+  );
 
-      getbestsellerBanner();
-    }, 400);
+  getbestsellerBanner();
 
-    return () => clearTimeout(timer);
-  }, [slug, selectedFilters, currentPage]);
-
+}, [slug, selectedFilters, currentPage]);
 
   const getbestsellerBanner = async () => {
     try {

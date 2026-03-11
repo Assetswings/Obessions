@@ -35,6 +35,8 @@ const TopAnnouncementBar = () => {
   const [query, setQuery] = useState("");
   const [searchData, setSearchData] = useState([]);
   const [loading, setLoading] = useState(false);
+   const [dataReady, setDataReady] = useState(false);
+const [hasFetchedOnce, setHasFetchedOnce] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -90,27 +92,40 @@ const TopAnnouncementBar = () => {
     }
   }, [banners]);
 
-  useEffect(() => {
-    if (!query.trim()) {
-      setSearchData([]);
-      return;
-    }
-    setLoading(true);
+ useEffect(() => {
+  if (!query.trim()) {
+    setSearchData([]);
+    setHasFetchedOnce(false);
+    return;
+  }
+
+  setLoading(true);
+  setDataReady(true);
+
+  const timer = setTimeout(() => {
     handleSearch(query);
-  }, [query, dispatch]);
+  }, 400);
+
+  return () => clearTimeout(timer);
+}, [query]);
 
   const handleSearch = async (query) => {
-    try {
-      const res = await API.get(`search?q=${query}`);
-      if (res.data.status === 200) {
-        setLoading(false);
-        setSearchData(res.data?.data?.products);
-      }
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
+  try {
+    const res = await API.get(`search?q=${query}`);
+
+    if (res.data.status === 200) {
+      const products = res.data?.data?.products || [];
+
+      setSearchData(products);
+      setHasFetchedOnce(true);
     }
-  };
+  } catch (err) {
+    console.log(err);
+  } finally {
+    setLoading(false);
+    setDataReady(false);
+  }
+};
 
   useEffect(() => {
     if (showSearch) {
@@ -351,6 +366,7 @@ const TopAnnouncementBar = () => {
                   </div>
                 </div>
               )}
+
               <button
                 className="btn btn-dark  button_search"
                 disabled={!query?.trim()}
@@ -361,9 +377,12 @@ const TopAnnouncementBar = () => {
                     state: { query: query },
                   });
                 }}
+
+                
               >
                 <Search strokeWidth={1.25} />
               </button>
+
             </div>
 
             {Array.isArray(searchData) && (
@@ -396,11 +415,11 @@ const TopAnnouncementBar = () => {
                   </div>
                 ) : (
                   // ✅ No Data Found message 
-                  !loading && query?.trim() && (
-                    <div className="no-data-found-top">
-                      <p>No Result found</p>
-                    </div>
-                  )
+                  !loading && hasFetchedOnce && query?.trim() && (
+  <div className="no-data-found-top">
+    <p>No Result found</p>
+  </div>
+)
                 )}
               </>
             )}

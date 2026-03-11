@@ -52,11 +52,11 @@ const Searchlist = () => {
   const [selected, setSelected] = useState("Recommended");
   const [customerfavourite, setCustomerfavourite] = useState();
   const [dataReady, setDataReady] = useState(true);
-   const [hasFetchedOnce, setHasFetchedOnce] = useState(false);
+  const [hasFetchedOnce, setHasFetchedOnce] = useState(false);
   const [showShort, setShowShort] = useState("");
   const [showEmpty, setShowEmpty] = useState(false);
 
-  
+
   const total = pagination?.total || 0;
   const limit = pagination?.limit || 40;
   const totalPages = Math.ceil(total / limit);
@@ -74,54 +74,56 @@ const Searchlist = () => {
     setSelectedFilters(urlFilters);
   }, [dispatch]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (loading) {
-    setDataReady(true);
-    return;
-  }
+      setDataReady(true);
+      return;
+    }
 
     if (!loading) {
-    setProducts(Array.isArray(results) ? results : []);
-    setDataReady(false);
-    
-    if (results !== undefined) {
-    setHasFetchedOnce(true);
+      setProducts(Array.isArray(results) ? results : []);
+      setDataReady(false);
+
+      if (results !== undefined) {
+        setHasFetchedOnce(true);
+      }
     }
+  }, [results, loading]);
+
+
+  useEffect(() => {
+    if (!query?.trim()) {
+      dispatch(clearSearchResults());
+      return;
     }
-    }, [results, loading]);
-   
 
-   useEffect(() => {
-  if (!query?.trim()) {
-    dispatch(clearSearchResults());
-    return;
-  }
+    const timeoutId = setTimeout(() => {
+      setDataReady(true); // show skeleton when fetching
 
-  const timeoutId = setTimeout(() => {
-    setDataReady(true); // show skeleton when fetching
+      dispatch(
+        fetchSearchResults({
+          query,
+          page: currentPage,
+          limit: 40,
+          filters: selectedFilters,
+        })
+      );
+    }, 400);
 
-    dispatch(
-      fetchSearchResults({
-        query,
-        page: currentPage,
-        limit: 40,
-        filters: selectedFilters,
-      })
-    );
-  }, 400);
-
-  return () => clearTimeout(timeoutId);
-}, [dispatch, query, selectedFilters, currentPage]);
+    return () => clearTimeout(timeoutId);
+  }, [dispatch, query, selectedFilters, currentPage]);
 
   const getFiltersFromURL = (search) => {
     const params = new URLSearchParams(search);
     const filters = {};
     for (const [key, value] of params.entries()) {
       const decoded = decodeURIComponent(value.replace(/\+/g, " "));
-
-      filters[key] = decoded.includes(",")
-        ? decoded.split(",").map(v => v.trim())
-        : [decoded];
+      console.log(key,'?????????');
+      // if(key != 'query'){
+        filters[key] = decoded.includes(",")
+          ? decoded.split(",").map(v => v.trim())
+          : [decoded];
+      // }
     }
     return filters;
   };
@@ -636,162 +638,162 @@ const Searchlist = () => {
 
             </>
           }
-        <div className="mb-6">
-  {dataReady ? (  // Loading State
-    <div className="product-grid">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="product-card-dtl">
-          <Skeleton height={200} />
-          <Skeleton height={20} width={150} />
-          <Skeleton height={20} width={100} />
-        </div>
-      ))}
-    </div>
-
-  ) : products?.length > 0 ? (  // Product State
-
-    <div className="product-grid">
-      {products.map((item, index) => {
-        const isWishlisted = item.is_wishlisted;
-
-        return (
-          <div
-            key={index}
-            className="product-card-dtl pointer-crusser"
-            style={{ cursor: "pointer" }}
-          >
-            <div className="product-img-box">
-              <Link
-                to={`/productsdetails/${item.action_url}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src={item.media_list?.main?.file}
-                  alt={item.name}
-                  title={item.name}
-                  className="main_image"
-                />
-                <img
-                  src={item.media_list?.hover?.file}
-                  alt={item.name}
-                  title={item.name}
-                  className="hover_image"
-                />
-              </Link>
-
-              {/* Wishlist Button */}
-              <button
-                className="wishlist-btn_products pointer-crusser"
-                onClick={(e) => toggleWishlist(e, item)}
-              >
-                {animatedWish === item.id ? (
-                  <div
-                    style={{
-                      width: 20,
-                      height: 24,
-                      overflow: "hidden",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Player
-                      autoplay
-                      keepLastFrame
-                      src={heartAnimation}
-                      style={{
-                        width: 139,
-                        height: 139,
-                        transform: "scale(0.5)",
-                        transformOrigin: "center",
-                      }}
-                    />
+          <div className="mb-6">
+            {dataReady ? (  // Loading State
+              <div className="product-grid">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="product-card-dtl">
+                    <Skeleton height={200} />
+                    <Skeleton height={20} width={150} />
+                    <Skeleton height={20} width={100} />
                   </div>
-                ) : (
-                  <Heart
-                    color={isWishlisted ? "#FF0000" : "#000"}
-                    fill={isWishlisted ? "#FF0000" : "none"}
-                    size={20}
-                    strokeWidth={2}
-                  />
-                )}
-              </button>
+                ))}
+              </div>
 
-              {/* Quick View */}
-              <div className="qucick_dv">
-                <span
-                  className="quick-view_pd"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setQuickViewProduct(item);
-                    setShowModal(true);
-                  }}
+            ) : products?.length > 0 ? (  // Product State
+
+              <div className="product-grid">
+                {products.map((item, index) => {
+                  const isWishlisted = item.is_wishlisted;
+
+                  return (
+                    <div
+                      key={index}
+                      className="product-card-dtl pointer-crusser"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="product-img-box">
+                        <Link
+                          to={`/productsdetails/${item.action_url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            src={item.media_list?.main?.file}
+                            alt={item.name}
+                            title={item.name}
+                            className="main_image"
+                          />
+                          <img
+                            src={item.media_list?.hover?.file}
+                            alt={item.name}
+                            title={item.name}
+                            className="hover_image"
+                          />
+                        </Link>
+
+                        {/* Wishlist Button */}
+                        <button
+                          className="wishlist-btn_products pointer-crusser"
+                          onClick={(e) => toggleWishlist(e, item)}
+                        >
+                          {animatedWish === item.id ? (
+                            <div
+                              style={{
+                                width: 20,
+                                height: 24,
+                                overflow: "hidden",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Player
+                                autoplay
+                                keepLastFrame
+                                src={heartAnimation}
+                                style={{
+                                  width: 139,
+                                  height: 139,
+                                  transform: "scale(0.5)",
+                                  transformOrigin: "center",
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <Heart
+                              color={isWishlisted ? "#FF0000" : "#000"}
+                              fill={isWishlisted ? "#FF0000" : "none"}
+                              size={20}
+                              strokeWidth={2}
+                            />
+                          )}
+                        </button>
+
+                        {/* Quick View */}
+                        <div className="qucick_dv">
+                          <span
+                            className="quick-view_pd"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setQuickViewProduct(item);
+                              setShowModal(true);
+                            }}
+                          >
+                            Quick View &nbsp;
+                            <Expand color="#000000" size={15} strokeWidth={1.25} />
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Product Title */}
+                      <p className="product-title truncate pointer-crusser">
+                        <Link
+                          to={`/productsdetails/${item.action_url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {item.name}
+                        </Link>
+                      </p>
+
+                      {/* Product Price */}
+                      <Link
+                        to={`/productsdetails/${item.action_url}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <div className="product-price">
+                          <span>₹{item.selling_price}</span>
+
+                          {item.mrp &&
+                            item.mrp !== item.selling_price &&
+                            Number(item.discount_percent) > 0 && (
+                              <>
+                                <span className="original">₹{item.mrp}</span>
+                                <span className="discount">
+                                  ({item.discount_percent}% OFF)
+                                </span>
+                              </>
+                            )}
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })}
+              </div>
+
+            ) : hasFetchedOnce ? (  // Empty State only after API fetch
+
+              <div className="empty-product">
+                <img
+                  src={emptyproduct}
+                  alt="Empty cart"
+                  className="empty-cart-image"
+                />
+                <p className="empty-cart-subtitle">
+                  We couldn’t find a match, but there’s more waiting to be discovered.
+                </p>
+                <button
+                  className="empty-cart-btn"
+                  onClick={() => navigate("/")}
                 >
-                  Quick View &nbsp;
-                  <Expand color="#000000" size={15} strokeWidth={1.25} />
-                </span>
+                  EXPLORE
+                </button>
               </div>
-            </div>
 
-            {/* Product Title */}
-            <p className="product-title truncate pointer-crusser">
-              <Link
-                to={`/productsdetails/${item.action_url}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {item.name}
-              </Link>
-            </p>
-
-            {/* Product Price */}
-            <Link
-              to={`/productsdetails/${item.action_url}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="product-price">
-                <span>₹{item.selling_price}</span>
-
-                {item.mrp &&
-                  item.mrp !== item.selling_price &&
-                  Number(item.discount_percent) > 0 && (
-                    <>
-                      <span className="original">₹{item.mrp}</span>
-                      <span className="discount">
-                        ({item.discount_percent}% OFF)
-                      </span>
-                    </>
-                  )}
-              </div>
-            </Link>
+            ) : null}
           </div>
-        );
-      })}
-    </div>
-
-  ) : hasFetchedOnce ? (  // Empty State only after API fetch
-
-    <div className="empty-product">
-      <img
-        src={emptyproduct}
-        alt="Empty cart"
-        className="empty-cart-image"
-      />
-      <p className="empty-cart-subtitle">
-        We couldn’t find a match, but there’s more waiting to be discovered.
-      </p>
-      <button
-        className="empty-cart-btn"
-        onClick={() => navigate("/")}
-      >
-        EXPLORE
-      </button>
-    </div>
-
-  ) : null}
-</div>
           <Pagination
             className="mt-6"
             currentPage={currentPage}

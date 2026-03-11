@@ -420,9 +420,7 @@ import logo from "../../assets/icons/Obslogo.png";
                 onClick={() => {
                   claersearch();
                   setSearchData([]);
-                  navigate("/searchlist", {
-                    state: { query: query },
-                  });
+                  navigate(`/searchlist?query=${encodeURIComponent(query)}`);
                 }}
               >
                 <Search strokeWidth={1.25} />

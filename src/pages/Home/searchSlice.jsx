@@ -29,10 +29,12 @@ export const fetchSearchResults = createAsyncThunk(
         params.append(key, value);
       }
     });
-    const url = `search?q=${query}`;
-    // const url = subcategory
-    //   ? `/products/${category}/${subcategory}?${params.toString()}`
-    //   : `/products/${category}?${params.toString()}`;
+    params.delete('query');
+    params.delete('page');
+    params.delete('limit');
+    
+    const paramString = params.toString();
+    const url = paramString ? `search?q=${query}&${paramString}` : `search?q=${query}`;
 
     const response = await API.get(url);
     return response.data.data;
@@ -44,7 +46,7 @@ const searchSlice = createSlice({
   initialState: {
     results: [],
     pagination: {},
-    sorting:{},
+    sorting: {},
     filters: {},
     loading: false,
     error: null,
